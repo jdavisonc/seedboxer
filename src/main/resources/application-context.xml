@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:*.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<import resource="classpath:camel-context.xml" />
+
+	<bean id="proEasyFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+		<!-- include and file in the subfolder that has day in the name -->
+		<property name="includes" value="${includePattern}" />
+	</bean>
+
+</beans>
