@@ -16,5 +16,7 @@
 		<!-- include and file in the subfolder that has day in the name -->
 		<property name="includes" value="${includePattern}" />
 	</bean>
+	
+	<bean id="fileRecievedProcessor" class="superdownloaderserver.proEasy.processors.FileRecievedProcessor"/>
 
 </beans>

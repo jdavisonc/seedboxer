@@ -28,17 +28,19 @@
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<endpoint id="loadedFileEndpoint" uri="file:${basePath}?delay=${pollPeriod}&amp;delete=true&amp;readLock=${readLock}&amp;recursive=true&amp;filter=#proEasyFilter"/>
+		<endpoint id="processEndpoint" uri="ftp:"/>
+		<endpoint id="notificationEndpoint" uri="smtp:"/>
 		
-		<!-- <onException>
+		<onException>
 			<exception>java.lang.Exception</exception>
-			<process ref="exceptionsHandler" />
 		</onException>
 		
 		<route>
 			<from ref="loadedFileEndpoint" />
-			<process ref="fileReceivedProcessor" />
+			<process ref="fileRecievedProcessor" />
 			<to ref="processEndpoint" />
-		</route>-->
+			<to ref="notificationEndpoint" />
+		</route>
 		
 	</camelContext>
 	
