@@ -35,6 +35,7 @@ public class FileReceivedProcessor implements Processor {
 		
 		//TODO: Set header for SMTP component to send notification
 
+
 	}
 
 }
