@@ -1,5 +1,5 @@
 
-package superdownloaderserver.proEasy.filters;
+package com.superdownloader.proEasy.filters;
 
 import java.io.File;
 import java.util.regex.Pattern;

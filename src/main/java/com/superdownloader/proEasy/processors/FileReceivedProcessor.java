@@ -1,5 +1,5 @@
 
-package superdownloaderserver.proEasy.processors;
+package com.superdownloader.proEasy.processors;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
