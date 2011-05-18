@@ -1,5 +1,5 @@
 
-package superdownloaderserver.proEasy;
+package com.superdownloader.proEasy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
