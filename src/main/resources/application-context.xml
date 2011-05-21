@@ -1,6 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	
+
+	<context:component-scan base-package="com.superdownloader.proEasy"/>
 	
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -10,13 +16,15 @@
 		</property>
 	</bean>
 	
-	<import resource="classpath:camel-context.xml" />
-
-	<bean id="proEasyFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
-		<!-- include and file in the subfolder that has day in the name -->
-		<property name="includes" value="${includePattern}" />
-	</bean>
+	<!-- CAMEL -->
 	
-	<bean id="fileRecievedProcessor" class="superdownloaderserver.proEasy.processors.FileRecievedProcessor"/>
+<!-- 	<import resource="classpath:camel-context.xml" /> -->
+
+<!-- 	<bean id="proEasyFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter"> -->
+<!-- 		include and file in the subfolder that has day in the name -->
+<!-- 		<property name="includes" value="${includePattern}" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="fileRecievedProcessor" class="superdownloaderserver.proEasy.processors.FileRecievedProcessor"/> -->
 
 </beans>
