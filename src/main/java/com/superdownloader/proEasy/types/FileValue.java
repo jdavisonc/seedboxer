@@ -1,7 +1,6 @@
-package com.superdownloader.proEasy.services.types;
+package com.superdownloader.proEasy.types;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 
 @XmlRootElement(name="file")
 public class FileValue {
@@ -9,6 +8,8 @@ public class FileValue {
 	private String name;
 
 	private boolean downloaded;
+
+	public FileValue() { }
 
 	public FileValue(String name, boolean downloaded) {
 		this.name = name;

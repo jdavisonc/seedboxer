@@ -12,9 +12,9 @@ import org.apache.camel.component.file.GenericFileFilter;
  *
  */
 public class FileFilter implements GenericFileFilter<Object> {
-	
+
 	private Pattern pattern = null;
-	
+
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}
