@@ -1,7 +1,7 @@
 
 package com.superdownloader.proEasy.processors;
 
-import java.io.File;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +11,8 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.superdownloader.proEasy.persistence.UsersDao;
+
 /**
  * @author jdavison
  *
@@ -18,6 +20,8 @@ import org.slf4j.LoggerFactory;
 public class FileReceivedProcessor implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileReceivedProcessor.class);
+
+	private UsersDao usersDao;
 
 	private Pattern pattern = null;
 
@@ -30,17 +34,20 @@ public class FileReceivedProcessor implements Processor {
 		Message msg = exchange.getIn();
 		LOGGER.debug(msg.toString());
 
-		String origFileName = (String) msg.getHeader(Exchange.FILE_NAME_ONLY);
-		File f = new File((String) msg.getHeader(Exchange.FILE_PATH));
-		String fileFolder = (String) msg.getHeader(Exchange.FILE_NAME);
-
 		Matcher m = pattern.matcher((String) msg.getHeader(Exchange.FILE_NAME));
 		if (m.matches()) {
-			String userName = m.group(1);
-			msg.setHeader("USER_NAME", userName);
-			LOGGER.debug("USERNAME={}", userName);
-		}else
+			String username = m.group(1);
+
+			Map<String, String> configs = usersDao.getUserConfigs(username);
+			msg.setHeader(Headers.CONFIGURATIONS, configs);
+			msg.setHeader(Headers.USERNAME, username);
+
+			LOGGER.debug("USERNAME={}", username);
+			LOGGER.debug("CONFIGS={}", configs);
+
+		} else {
 			throw new Exception("The file doesn't compile with the pattern.");
+		}
 
 		//TODO: Set header for FTP component to upload
 

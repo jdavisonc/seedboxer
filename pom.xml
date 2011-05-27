@@ -29,6 +29,8 @@
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
 		<logback.version>0.9.28</logback.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<mysql-connector.version>5.1.16</mysql-connector.version>
 	</properties>
 
 	<dependencies>
@@ -132,6 +134,21 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
 		</dependency>
 	</dependencies>
 
