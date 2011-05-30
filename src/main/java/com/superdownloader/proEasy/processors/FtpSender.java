@@ -8,11 +8,13 @@ import java.io.File;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.stereotype.Service;
 
 /**
  * @author harley
  *
  */
+@Service(value = "ftpSender")
 public class FtpSender implements Processor {
 
 	@Override

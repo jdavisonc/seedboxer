@@ -10,6 +10,8 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.superdownloader.proEasy.persistence.UsersDao;
 
@@ -17,6 +19,7 @@ import com.superdownloader.proEasy.persistence.UsersDao;
  * @author jdavison
  *
  */
+@Service(value = "fileRecievedProcessor")
 public class FileReceivedProcessor implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileReceivedProcessor.class);
@@ -25,6 +28,7 @@ public class FileReceivedProcessor implements Processor {
 
 	private Pattern pattern = null;
 
+	@Value("${proEasy.includePattern}")
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}

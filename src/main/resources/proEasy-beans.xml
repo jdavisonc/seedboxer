@@ -15,10 +15,6 @@
 		<property name="pattern" value="${proEasy.includePattern}" />
 	</bean>
 	
-	<bean id="fileRecievedProcessor" class="com.superdownloader.proEasy.processors.FileReceivedProcessor">
-		<property name="pattern" value="${proEasy.includePattern}" />
-	</bean>
-	
 	<!-- Data sources -->
 	
 	<bean id="proEasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
