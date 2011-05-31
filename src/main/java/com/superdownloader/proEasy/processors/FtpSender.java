@@ -1,13 +1,8 @@
-/**
- *
- */
-package com.superdownloader.proEasy.processors;
 
-import java.io.File;
+package com.superdownloader.proEasy.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Processor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,18 +10,25 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value = "ftpSender")
-public class FtpSender implements Processor {
+public class FtpSender {
 
-	@Override
-	public void process(Exchange exchange) throws Exception {
-
+	public String sendToFtp(Exchange exchange) {
 		Message msg = exchange.getIn();
 
-		File file = new File((String) msg.getHeader(Exchange.FILE_PATH));
+		if (msg.getHeader(Headers.FTP_SENT) == null) {
 
-		//producerTemplate.sendBodyAndHeader("ftp://user@host.com/remoteDirectory?password=secret", file, Exchange.FILE_NAME, file.getName());
-		// TODO Auto-generated method stub
+			String ftp_user = (String) msg.getHeader(Headers.FTP_USERNAME);
+			String ftp_pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
+			String ftp_url = (String) msg.getHeader(Headers.FTP_URL);
+			String ftp_remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
 
+			msg.setHeader(Headers.FTP_SENT, true);
+
+			return "ftp://" + ftp_user + "@" + ftp_url + "/" + ftp_remoteDir + "?password=" + ftp_pass + "&binary=true&delay=60000";
+
+		} else {
+			return null;
+		}
 	}
 
 }

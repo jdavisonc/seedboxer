@@ -11,19 +11,27 @@
 	<!-- Endpoints and routes -->
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		
 		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
-		<!-- <endpoint id="processEndpoint" uri="ftp:"/>
-		<endpoint id="notificationEndpoint" uri="smtp:"/> -->
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
 		</onException>
 		
 		<route>
+			<!-- Get new files -->
 			<from ref="loadedFileEndpoint" />
+			
+			<!-- Extract configurations based in username -->
 			<process ref="fileRecievedProcessor" />
-			<!--<to ref="processEndpoint" />
-			<to ref="notificationEndpoint" />-->
+			
+			<!-- Send to FTP via dynamic router -->
+			<dynamicRouter>
+	            <method ref="ftpSender" method="sendToFtp"/>
+	        </dynamicRouter>
+	        
+	        <!-- Notifications -->
+	        
 		</route>
 		
 	</camelContext>
