@@ -16,6 +16,7 @@
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
+			<!-- If it was an exception in ftp sender, set ftp.sent header to null for upload again.  -->
 		</onException>
 		
 		<route>
