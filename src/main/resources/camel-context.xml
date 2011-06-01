@@ -14,18 +14,36 @@
 		
 		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
 		
+		<!-- <endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Always&amp;timeout=${threadTimeout}"/> -->
+		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		
+		<endpoint id="emailEndpoint" uri="smtp://${smtp.user}@${smtp.host}?password=${smtp.password}"/>
+		
 		<onException>
 			<exception>java.lang.Exception</exception>
 			<to uri="log:com.superdownloader.proEasy?level=ERROR"/>
 			<!-- If it was an exception in ftp sender, set ftp.sent header to null for upload again.  -->
 		</onException>
 		
+		<!-- Get new files -->
 		<route>
-			<!-- Get new files -->
 			<from ref="loadedFileEndpoint" />
 			
 			<!-- Extract configurations based in username -->
 			<process ref="fileRecievedProcessor" />
+			<to ref="processEndpoint" />
+		</route>
+		
+		<!-- FTP Sender -->
+		<route>
+			<from ref="processEndpoint" />
+			
+			<!-- <onException>
+				<exception>com.cccinteractive.groupcast.file.exceptions.InvalidFileException</exception>
+				<handled>
+			      <constant>true</constant>
+			    </handled>
+				<to uri="direct:discardedFile" />
 			
 			<!-- Send to FTP via dynamic router -->
 			<dynamicRouter>
@@ -33,8 +51,15 @@
 	        </dynamicRouter>
 	        
 	        <to uri="log:com.superdownloader.proEasy?level=DEBUG"/>
-	        <!-- Notifications -->
 	        
+	        <to uri="direct:notificationEndpoint" />
+		</route>
+		
+		<!-- Notifications -->
+		<route>
+			<from uri="direct:notificationEndpoint"/>
+			
+	        <to ref="emailEndpoint"/>
 		</route>
 		
 	</camelContext>
