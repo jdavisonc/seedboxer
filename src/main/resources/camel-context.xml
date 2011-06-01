@@ -15,9 +15,9 @@
 		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
 		
 		<!-- <endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Always&amp;timeout=${threadTimeout}"/> -->
-		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${smtp.user}@${smtp.host}?password=${smtp.password}"/>
+		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}?password=${smtp.password}&amp;username=${smtp.user}"/>
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
