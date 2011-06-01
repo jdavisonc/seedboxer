@@ -3,7 +3,9 @@ package com.superdownloader.proEasy.processors;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.stereotype.Service;
 
+@Service(value = "emailProcessor")
 public class EmailProcessor implements Processor {
 
 	@Override

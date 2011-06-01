@@ -17,7 +17,7 @@
 		<!-- <endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Always&amp;timeout=${threadTimeout}"/> -->
 		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}?password=${smtp.password}&amp;username=${smtp.user}"/>
+		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}"/>
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
@@ -43,7 +43,7 @@
 				<handled>
 			      <constant>true</constant>
 			    </handled>
-				<to uri="direct:discardedFile" />
+				<to uri="direct:discardedFile" /> -->
 			
 			<!-- Send to FTP via dynamic router -->
 			<dynamicRouter>
@@ -58,7 +58,7 @@
 		<!-- Notifications -->
 		<route>
 			<from uri="direct:notificationEndpoint"/>
-			
+			<process ref="emailProcessor" />
 	        <to ref="emailEndpoint"/>
 		</route>
 		
