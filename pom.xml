@@ -22,7 +22,7 @@
 	</repositories>
 
 	<properties>
-		<tomcat.webapps>${env.TOMCAT_HOME}/webapps</tomcat.webapps>
+		<tomcat.webapps>/var/lib/tomcat6/webapps</tomcat.webapps>
 		<camel.version>2.7.1</camel.version>
 		<jersey.version>1.7</jersey.version>
 		<javaee-api.version>6.0</javaee-api.version>

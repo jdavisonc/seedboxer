@@ -16,6 +16,7 @@
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
+			<to uri="log:com.superdownloader.proEasy?level=ERROR"/>
 			<!-- If it was an exception in ftp sender, set ftp.sent header to null for upload again.  -->
 		</onException>
 		
@@ -31,6 +32,7 @@
 	            <method ref="ftpSender" method="sendToFtp"/>
 	        </dynamicRouter>
 	        
+	        <to uri="log:com.superdownloader.proEasy?level=DEBUG"/>
 	        <!-- Notifications -->
 	        
 		</route>

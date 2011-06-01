@@ -2,6 +2,7 @@
 package com.superdownloader.proEasy.processors;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,7 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class FileReceivedProcessor implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileReceivedProcessor.class);
 
+	@Autowired
 	private UsersDao usersDao;
 
 	private Pattern pattern = null;
@@ -42,9 +45,11 @@ public class FileReceivedProcessor implements Processor {
 		if (m.matches()) {
 			String username = m.group(1);
 
-			Map<String, String> configs = usersDao.getUserConfigs(username);
-			msg.setHeader(Headers.CONFIGURATIONS, configs);
 			msg.setHeader(Headers.USERNAME, username);
+			Map<String, String> configs = usersDao.getUserConfigs(username);
+			for (Entry<String, String> entry : configs.entrySet()) {
+				msg.setHeader(entry.getKey(), entry.getValue());
+			}
 
 			LOGGER.debug("USERNAME={}", username);
 			LOGGER.debug("CONFIGS={}", configs);
@@ -52,12 +57,6 @@ public class FileReceivedProcessor implements Processor {
 		} else {
 			throw new Exception("The file doesn't compile with the pattern.");
 		}
-
-		//TODO: Set header for FTP component to upload
-
-		//TODO: Set header for SMTP component to send notification
-
-
 	}
 
 }

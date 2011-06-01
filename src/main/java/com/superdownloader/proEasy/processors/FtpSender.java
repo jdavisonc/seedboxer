@@ -12,19 +12,41 @@ import org.springframework.stereotype.Service;
 @Service(value = "ftpSender")
 public class FtpSender {
 
+	public static final String TIMEOUT = "60000";
+
 	public String sendToFtp(Exchange exchange) {
 		Message msg = exchange.getIn();
 
-		if (msg.getHeader(Headers.FTP_SENT) == null) {
+		if (exchange.getProperty(Exchange.SLIP_ENDPOINT) == null) {
+
+			/**
+			 * TODO: Currently only upload the file get! We need to upload the path in the first
+			 * 		 line of this file!!
+			 * 		 Also check the remote path
+			 */
 
 			String ftp_user = (String) msg.getHeader(Headers.FTP_USERNAME);
 			String ftp_pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
 			String ftp_url = (String) msg.getHeader(Headers.FTP_URL);
 			String ftp_remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
 
-			msg.setHeader(Headers.FTP_SENT, true);
+			StringBuilder ftpEndpoint = new StringBuilder("ftp://")
+												.append(ftp_user)
+												.append("@")
+												.append(ftp_url)
+												.append("/")
+												.append(ftp_remoteDir)
+												.append("?password=")
+												.append(ftp_pass);
 
-			return "ftp://" + ftp_user + "@" + ftp_url + "/" + ftp_remoteDir + "?password=" + ftp_pass + "&binary=true&delay=60000";
+			ftpEndpoint.append("&connectTimeout=" + TIMEOUT);
+			ftpEndpoint.append("&timeout=" + TIMEOUT);
+			ftpEndpoint.append("&soTimeout=" + TIMEOUT);
+			ftpEndpoint.append("&throwExceptionOnConnectFailed=true");
+			ftpEndpoint.append("&disconnect=true");
+			ftpEndpoint.append("&binary=true");
+
+			return  ftpEndpoint.toString();
 
 		} else {
 			return null;

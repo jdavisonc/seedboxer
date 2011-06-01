@@ -3,15 +3,15 @@ package com.superdownloader.proEasy.persistence;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public class JdbcUsersDao extends JdbcDaoSupport implements UsersDao {
+public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 
 	@Autowired
 	public void setProEasyDataSource(DataSource proEasyDataSource) {
@@ -37,7 +37,7 @@ public class JdbcUsersDao extends JdbcDaoSupport implements UsersDao {
 		args.addValue("username", username);
 		args.addValue("password", password);
 
-		return (getJdbcTemplate().queryForInt(sql, args) == 0);
+		return (getSimpleJdbcTemplate().queryForInt(sql, args) == 0);
 	}
 
 	@Override
@@ -49,20 +49,31 @@ public class JdbcUsersDao extends JdbcDaoSupport implements UsersDao {
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("username", username);
 
-		return getJdbcTemplate().query(sql, new MapExtractor(), args);
+		List<Config> configs = getSimpleJdbcTemplate().query(sql, new ConfigsMapper(), args);
+
+		Map<String, String> configMap = new HashMap<String, String>();
+		for (Config c : configs) {
+			configMap.put(c.name, c.value);
+		}
+
+		return configMap;
 	}
 
-	public class MapExtractor implements ResultSetExtractor<Map<String, String>> {
+	private class Config {
+
+		public String name;
+		public String value;
+
+	}
+
+	public class ConfigsMapper implements RowMapper<Config> {
 
 		@Override
-		public Map<String, String>  extractData(ResultSet rs) throws SQLException, DataAccessException {
-			Map<String, String> map = new HashMap<String, String>();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String value = rs.getString("value");
-				map.put(name, value);
-			}
-			return map;
+		public Config mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Config c = new Config();
+			c.name = rs.getString("name");
+			c.value = rs.getString("value");
+			return c;
 		}
 
 	}
