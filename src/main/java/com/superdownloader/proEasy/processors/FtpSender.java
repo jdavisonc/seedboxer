@@ -1,6 +1,9 @@
 
 package com.superdownloader.proEasy.processors;
 
+import java.io.File;
+import java.util.List;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.springframework.stereotype.Service;
@@ -24,12 +27,17 @@ public class FtpSender {
 			 * 		 line of this file!!
 			 * 		 Also check the remote path
 			 */
+			List<String> filesToUpload = (List<String>) msg.getHeader(Headers.FILES);
+			File fileToUpload = new File(filesToUpload.get(0));
+			msg.setBody(fileToUpload);
+			msg.setHeader(Exchange.FILE_NAME, fileToUpload.getName());
 
 			String ftp_user = (String) msg.getHeader(Headers.FTP_USERNAME);
 			String ftp_pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
 			String ftp_url = (String) msg.getHeader(Headers.FTP_URL);
 			String ftp_remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
 
+			// Create ftp endoint
 			StringBuilder ftpEndpoint = new StringBuilder("ftp://")
 												.append(ftp_user)
 												.append("@")

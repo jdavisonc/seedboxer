@@ -8,6 +8,8 @@ public class Headers {
 
 	public static final String USERNAME = PREFIX + "username";
 
+	public static final String FILES = PREFIX + "files";
+
 	public static final String FTP_PREFIX = PREFIX + "ftp" + SEPARATOR;
 	public static final String FTP_USERNAME = FTP_PREFIX + "username";
 	public static final String FTP_PASSWORD = FTP_PREFIX +"password";

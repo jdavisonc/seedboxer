@@ -1,6 +1,11 @@
 
 package com.superdownloader.proEasy.processors;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -39,7 +44,7 @@ public class FileReceivedProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		LOGGER.debug(msg.toString());
+		LOGGER.debug("{}", msg.getHeaders());
 
 		Matcher m = pattern.matcher((String) msg.getHeader(Exchange.FILE_NAME));
 		if (m.matches()) {
@@ -51,12 +56,31 @@ public class FileReceivedProcessor implements Processor {
 				msg.setHeader(entry.getKey(), entry.getValue());
 			}
 
+			List<String> filesToUpload = getLines((String) msg.getHeader(Exchange.FILE_PATH));
+			msg.setHeader(Headers.FILES, filesToUpload);
+
 			LOGGER.debug("USERNAME={}", username);
 			LOGGER.debug("CONFIGS={}", configs);
+			LOGGER.debug("FILES_TO_UPLOAD={}", filesToUpload);
 
 		} else {
 			throw new Exception("The file doesn't compile with the pattern.");
 		}
+	}
+
+	private List<String> getLines(String filePath) {
+		List<String> lines = new ArrayList<String>();
+		try {
+		    BufferedReader in = new BufferedReader(new FileReader(filePath));
+		    String str;
+		    while ((str = in.readLine()) != null) {
+		    	lines.add(str);
+		    }
+		    in.close();
+		} catch (IOException e) {
+			LOGGER.error("Cannot open file", e);
+		}
+		return lines;
 	}
 
 }
