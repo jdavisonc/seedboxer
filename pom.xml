@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>project</groupId>
+	<groupId>com.superdownloaders</groupId>
 	<artifactId>proEasy</artifactId>
 	<packaging>war</packaging>
 	<version>0.1</version>
@@ -31,6 +31,8 @@
 		<logback.version>0.9.28</logback.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<mysql-connector.version>5.1.16</mysql-connector.version>
+		<ftp-common.version>0.1</ftp-common.version>
+		<freemarker.version>2.3.9</freemarker.version>
 	</properties>
 
 	<dependencies>
@@ -149,6 +151,16 @@
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.superdownloader</groupId>
+			<artifactId>ftp-common</artifactId>
+			<version>${ftp-common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version>
 		</dependency>
 	</dependencies>
 
