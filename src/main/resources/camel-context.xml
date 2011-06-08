@@ -23,7 +23,9 @@
 		
 		<onException>
 			<exception>java.lang.Exception</exception>
-			<redeliveryPolicy maximumRedeliveries="2"/>
+			<handled>
+		      <constant>true</constant>
+		    </handled>
 			<to uri="log:com.superdownloader.proEasy?level=ERROR"/>
 			<to uri="direct:notificationEndpoint" />
 		</onException>
@@ -42,7 +44,7 @@
 			<from ref="processEndpoint" />
 			
 			<onException redeliveryPolicyRef="redeliveryPolicy">
-				<exception>java.lang.Exception</exception>
+				<exception>com.superdownloader.proEasy.exceptions.TransportException</exception>
 			</onException>
 			
 			<!-- Send to FTP via dynamic router -->
