@@ -38,12 +38,12 @@ public class EmailProcessor implements Processor {
 		String email = (String) msg.getHeader(Headers.NOTIFICATION_EMAIL);
 		msg.setHeader(TO_HEADER, email);
 
-		if (exchange.getException() == null) {
+		if (exchange.getProperty(Exchange.FAILURE_ENDPOINT) == null) {
 			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(SUCCESS_SUBJECT_FTL, msg.getHeaders()));
 			msg.setBody(getProcessedTemplate(SUCCESS_BODY_FTL, msg.getHeaders()));
 		} else {
 			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(DISCARDED_SUBJECT_FTL, msg.getHeaders()));
-			msg.setBody(getProcessedTemplate(DISCARDED_BODY_FTL, msg.getHeaders()));
+			msg.setBody(getProcessedTemplate(DISCARDED_BODY_FTL, exchange.getProperties()));
 		}
 	}
 

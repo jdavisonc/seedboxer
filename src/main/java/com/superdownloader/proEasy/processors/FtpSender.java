@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.superdownloader.common.ftp.FtpUploader;
+import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.proEasy.exceptions.TransportException;
 
 /**
@@ -45,6 +47,7 @@ public class FtpSender implements Processor {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload));
 			}
+			throw new Exception ("test");
 		} catch (Exception e) {
 			throw new TransportException("Error at uploading file via FTP.", e);
 		} finally {

@@ -11,24 +11,17 @@
 	<!-- Endpoints and routes -->
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-				
+		
+		<errorHandler id="deadLetterErrorHandler" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
+    		<redeliveryPolicy maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
+		</errorHandler>
+		
 		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
 		
 		<!-- <endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Always&amp;timeout=${threadTimeout}"/> -->
 		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
 		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}"/>
-		
-		<redeliveryPolicyProfile id="redeliveryPolicy" maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" retryAttemptedLogLevel="WARN"/>
-		
-		<onException>
-			<exception>java.lang.Exception</exception>
-			<handled>
-		      <constant>true</constant>
-		    </handled>
-			<to uri="log:com.superdownloader.proEasy?level=ERROR"/>
-			<to uri="direct:notificationEndpoint" />
-		</onException>
 		
 		<!-- Get new files -->
 		<route>
@@ -40,13 +33,9 @@
 		</route>
 		
 		<!-- FTP Sender -->
-		<route>
+		<route errorHandlerRef="deadLetterErrorHandler">
 			<from ref="processEndpoint" />
-			
-			<onException redeliveryPolicyRef="redeliveryPolicy">
-				<exception>com.superdownloader.proEasy.exceptions.TransportException</exception>
-			</onException>
-			
+
 			<!-- Send to FTP via dynamic router -->
 			<process ref="ftpSender" />
 	        

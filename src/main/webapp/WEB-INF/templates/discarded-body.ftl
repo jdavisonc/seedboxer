@@ -1,1 +1,1 @@
-The error was :
+The error was : ${CamelExceptionCaught}
