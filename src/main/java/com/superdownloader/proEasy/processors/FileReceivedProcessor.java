@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -51,6 +52,7 @@ public class FileReceivedProcessor implements Processor {
 			String username = m.group(1);
 
 			msg.setHeader(Headers.USERNAME, username);
+			msg.setHeader(Headers.START_TIME, new Date());
 			Map<String, String> configs = usersDao.getUserConfigs(username);
 			for (Entry<String, String> entry : configs.entrySet()) {
 				msg.setHeader(entry.getKey(), entry.getValue());

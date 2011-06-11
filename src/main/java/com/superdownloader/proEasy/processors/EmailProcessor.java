@@ -1,6 +1,8 @@
 package com.superdownloader.proEasy.processors;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
@@ -22,6 +24,7 @@ public class EmailProcessor implements Processor {
 
 	private static final String TO_HEADER = "To";
 	private static final String SUBJECT_HEADER = "Subject";
+	private static final String CAUSE_VAR = "Cause";
 
 	private static final String SUCCESS_SUBJECT_FTL = "success-subject.ftl";
 	private static final String SUCCESS_BODY_FTL = "success-body.ftl";
@@ -37,13 +40,17 @@ public class EmailProcessor implements Processor {
 
 		String email = (String) msg.getHeader(Headers.NOTIFICATION_EMAIL);
 		msg.setHeader(TO_HEADER, email);
+		Map<String, Object> templateVars = new HashMap<String, Object>();
+		templateVars.putAll(msg.getHeaders());
+		templateVars.put(Headers.END_TIME, new Date());
 
 		if (exchange.getProperty(Exchange.FAILURE_ENDPOINT) == null) {
-			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(SUCCESS_SUBJECT_FTL, msg.getHeaders()));
-			msg.setBody(getProcessedTemplate(SUCCESS_BODY_FTL, msg.getHeaders()));
+			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(SUCCESS_SUBJECT_FTL, templateVars));
+			msg.setBody(getProcessedTemplate(SUCCESS_BODY_FTL, templateVars));
 		} else {
-			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(DISCARDED_SUBJECT_FTL, msg.getHeaders()));
-			msg.setBody(getProcessedTemplate(DISCARDED_BODY_FTL, exchange.getProperties()));
+			templateVars.put(CAUSE_VAR, exchange.getProperty(Exchange.FAILURE_ENDPOINT));
+			msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(DISCARDED_SUBJECT_FTL, templateVars));
+			msg.setBody(getProcessedTemplate(DISCARDED_BODY_FTL, templateVars));
 		}
 	}
 

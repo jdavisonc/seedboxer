@@ -10,6 +10,9 @@ public class Headers {
 
 	public static final String FILES = PREFIX + "files";
 
+	public static final String START_TIME = PREFIX + "start";
+	public static final String END_TIME = PREFIX + "end";
+
 	public static final String FTP_PREFIX = PREFIX + "ftp" + SEPARATOR;
 	public static final String FTP_USERNAME = FTP_PREFIX + "username";
 	public static final String FTP_PASSWORD = FTP_PREFIX +"password";

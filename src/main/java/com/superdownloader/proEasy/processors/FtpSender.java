@@ -47,9 +47,8 @@ public class FtpSender implements Processor {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload));
 			}
-			throw new Exception ("test");
 		} catch (Exception e) {
-			throw new TransportException("Error at uploading file via FTP.", e);
+			throw new TransportException("Error at uploading file via FTP", e);
 		} finally {
 			// Disconnect and Exit
 			LOGGER.info("Disconnecting...");
