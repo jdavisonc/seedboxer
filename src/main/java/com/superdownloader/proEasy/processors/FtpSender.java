@@ -41,8 +41,8 @@ public class FtpSender implements Processor {
 		try {
 			ftpUploader.configure(ftp_server, ftp_user, ftp_pass, ftp_remoteDir);
 			// Connect and Upload
-			LOGGER.info("Connecting to {}...", ftp_server);
 			ftpUploader.connect();
+			LOGGER.info("Connected to {}", ftp_server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload));
@@ -51,8 +51,8 @@ public class FtpSender implements Processor {
 			throw new TransportException("Error at uploading file via FTP", e);
 		} finally {
 			// Disconnect and Exit
-			LOGGER.info("Disconnecting...");
 			ftpUploader.disconnect();
+			LOGGER.info("Disconnected");
 		}
 	}
 
