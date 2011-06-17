@@ -84,16 +84,14 @@ public class EmailNotification extends Notification {
 	 * @return
 	 */
 	private String getProcessedTemplate(String template, Map<String, Object> templateVars) {
-		StringBuffer content = new StringBuffer();
-
 		try {
-		    content.append(FreeMarkerTemplateUtils.processTemplateIntoString(
-		    		freemarkerConfiguration.getTemplate(template), templateVars));
+		    return FreeMarkerTemplateUtils.processTemplateIntoString(
+		    		freemarkerConfiguration.getTemplate(template), templateVars);
 		} catch (IOException e) {
 			LOGGER.warn("Error at processing template", e);
 		} catch (TemplateException e) {
 			LOGGER.warn("Error at processing template", e);
 		}
-		return content.toString();
+		return null;
 	}
 }
