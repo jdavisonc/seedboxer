@@ -33,17 +33,15 @@ public class SSHCommandSender implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		if (msg.getHeaders().containsKey(Headers.SSH_CMD)) {
-	        String ssh_url = (String) msg.getHeader(Headers.SSH_URL);
-	        String ssh_username = (String) msg.getHeader(Headers.SSH_USERNAME);
-	        String ssh_password = (String) msg.getHeader(Headers.SSH_PASSWORD);
-	        String ssh_cmd = (String) msg.getHeader(Headers.SSH_CMD);
+        String ssh_url = (String) msg.getHeader(Headers.SSH_URL);
+        String ssh_username = (String) msg.getHeader(Headers.SSH_USERNAME);
+        String ssh_password = (String) msg.getHeader(Headers.SSH_PASSWORD);
+        String ssh_cmd = (String) msg.getHeader(Headers.SSH_CMD);
 
-			try {
-				sendSSHCmd(ssh_url, ssh_username, ssh_password, ssh_cmd);
-			} catch (IOException e) {
-				LOGGER.warn("Error sending ssh SUCCESS command.", e);
-			}
+		try {
+			sendSSHCmd(ssh_url, ssh_username, ssh_password, ssh_cmd);
+		} catch (IOException e) {
+			LOGGER.warn("Error sending ssh SUCCESS command.", e);
 		}
 	}
 

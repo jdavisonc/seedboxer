@@ -2,7 +2,7 @@ package com.superdownloader.proEasy.processors;
 
 public class Headers {
 
-	public static final String SEPARATOR = ".";
+	public static final String SEPARATOR = "_";
 
 	public static final String PREFIX = "proEasy" + SEPARATOR;
 

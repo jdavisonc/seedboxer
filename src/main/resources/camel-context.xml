@@ -38,7 +38,20 @@
 			<!-- Send to FTP via dynamic router -->
 			<process ref="ftpSender" />
 	        
-	        <to uri="direct:notificationEndpoint" />
+	        <to uri="direct:postActionsEndpoint" />
+		</route>
+		
+		<!-- Post Actions -->
+		<route>
+			<from uri="direct:postActionsEndpoint"/>
+			
+			<!-- SSH command sender -->
+			<filter>
+	           <simple>${in.header.proEasy_ssh_cmd} != null</simple>
+	           <process ref="sshCommandSender" />
+	       </filter>
+	       
+	       <to uri="direct:notificationEndpoint" />
 		</route>
 		
 		<!-- Notifications -->
