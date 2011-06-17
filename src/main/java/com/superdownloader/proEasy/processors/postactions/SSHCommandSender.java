@@ -22,10 +22,10 @@ import com.superdownloader.proEasy.processors.Headers;
  * @author harley
  *
  */
-@Service(value = "sshNotification")
-public class SSHCmdNotification implements Processor {
+@Service(value = "sshCommandSender")
+public class SSHCommandSender implements Processor {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SSHCmdNotification.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SSHCommandSender.class);
 
 	@Value("${proEasy.ssh.timeToJoin}")
 	private int timeToJoin;
