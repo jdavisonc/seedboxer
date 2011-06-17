@@ -20,14 +20,14 @@
 		
 		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}"/>
+		<endpoint id="emailEndpoint" uri="smtp://${proEasy.smtp.host}:${proEasy.smtp.port}"/>
 		
 		<!-- Get new files -->
 		<route>
 			<from ref="loadedFileEndpoint" />
 			
 			<!-- Extract configurations based in username -->
-			<process ref="fileRecievedProcessor" />
+			<process ref="fileReciever" />
 			<to ref="processEndpoint" />
 		</route>
 		
@@ -44,7 +44,7 @@
 		<!-- Notifications -->
 		<route>
 			<from uri="direct:notificationEndpoint"/>
-			<process ref="emailProcessor" />
+			<process ref="emailNotification" />
 	        <to ref="emailEndpoint"/>
 		</route>
 		

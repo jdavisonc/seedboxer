@@ -22,7 +22,6 @@
 	</repositories>
 
 	<properties>
-		<tomcat.webapps>/var/lib/tomcat6/webapps</tomcat.webapps>
 		<camel.version>2.7.1</camel.version>
 		<jersey.version>1.7</jersey.version>
 		<javaee-api.version>6.0</javaee-api.version>
@@ -33,6 +32,7 @@
 		<mysql-connector.version>5.1.16</mysql-connector.version>
 		<ftp-common.version>0.1</ftp-common.version>
 		<freemarker.version>2.3.9</freemarker.version>
+		<sshj.version>0.4.0</sshj.version>
 	</properties>
 
 	<dependencies>
@@ -162,6 +162,11 @@
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.schmizz</groupId>
+			<artifactId>sshj</artifactId>
+			<version>${sshj.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -178,6 +183,9 @@
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.3</version>
+				<configuration>
+			    	<useDefaultDelimiters>true</useDefaultDelimiters>
+			    </configuration>
 				<executions>
 					<execution>
 						<id>copy-war-bin</id>
@@ -187,25 +195,6 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${basedir}/bin</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}</directory>
-									<includes>
-										<include>${project.build.finalName}.${project.packaging}</include>
-									</includes>
-									<!-- <filtering>true</filtering> -->
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-war-tomcat</id>
-						<phase>install</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${tomcat.webapps}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.build.directory}</directory>
