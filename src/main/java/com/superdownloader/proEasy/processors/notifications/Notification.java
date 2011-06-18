@@ -14,11 +14,11 @@ public abstract class Notification implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		Throwable t = (Throwable) exchange.getProperty(Exchange.FAILURE_ENDPOINT);
-		if (t == null) {
+		String failureEndpoint = (String) exchange.getProperty(Exchange.FAILURE_ENDPOINT);
+		if (failureEndpoint == null) {
 			processSuccessNotification(msg);
 		} else {
-			processFailNotification(msg, t);
+			processFailNotification(msg, (Throwable) exchange.getProperty(Exchange.EXCEPTION_CAUGHT));
 		}
 	}
 
