@@ -30,19 +30,19 @@ public class FtpSender implements Processor {
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
-		String ftp_user = (String) msg.getHeader(Headers.FTP_USERNAME);
-		String ftp_pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
-		String ftp_server = (String) msg.getHeader(Headers.FTP_URL);
-		String ftp_remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
+		String user = (String) msg.getHeader(Headers.FTP_USERNAME);
+		String pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
+		String server = (String) msg.getHeader(Headers.FTP_URL);
+		String remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
 
 		@SuppressWarnings("unchecked")
 		List<String> filesToUpload = (List<String>) msg.getHeader(Headers.FILES);
 
 		try {
-			ftpUploader.configure(ftp_server, ftp_user, ftp_pass, ftp_remoteDir);
+			ftpUploader.configure(server, user, pass, remoteDir);
 			// Connect and Upload
 			ftpUploader.connect();
-			LOGGER.info("Connected to {}", ftp_server);
+			LOGGER.info("Connected to {}", server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload));
