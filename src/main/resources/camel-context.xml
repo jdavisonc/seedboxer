@@ -59,6 +59,13 @@
 			<from uri="direct:notificationEndpoint"/>
 			<process ref="emailNotification" />
 	        <to ref="emailEndpoint"/>
+	        <to uri="direct:finale" />
+		</route>
+		
+		<!-- Finale -->
+		<route>
+			<from uri="direct:finale" />
+			<process ref="uploadSessionManager" />
 		</route>
 		
 	</camelContext>
