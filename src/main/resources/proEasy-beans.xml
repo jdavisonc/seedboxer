@@ -11,6 +11,10 @@
 	
 	<import resource="classpath:camel-context.xml" />
 	
+	<bean id="fileFilter" class="com.superdownloader.proEasy.processors.filters.FileFilter">
+		<property name="pattern" value="${proEasy.includePattern}" />
+	</bean>
+	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
     	<property name="templateLoaderPath" value="/WEB-INF/templates/"/>
 	</bean>

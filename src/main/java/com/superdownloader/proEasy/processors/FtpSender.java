@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
+import com.superdownloader.common.ftp.FtpUploaderListener;
 import com.superdownloader.proEasy.exceptions.TransportException;
 
 /**
@@ -45,7 +46,15 @@ public class FtpSender implements Processor {
 			LOGGER.info("Connected to {}", server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
-				ftpUploader.upload(new File(toUpload));
+				ftpUploader.upload(new File(toUpload), new FtpUploaderListener() {
+
+					@Override
+					public void bytesTransferred(long totalBytesTransferred,
+							int bytesTransferred, long streamSize) {
+						LOGGER.debug("Transfer: {}%", (totalBytesTransferred*100)/streamSize);
+
+					}
+				});
 			}
 		} catch (Exception e) {
 			throw new TransportException("Error at uploading file via FTP", e);

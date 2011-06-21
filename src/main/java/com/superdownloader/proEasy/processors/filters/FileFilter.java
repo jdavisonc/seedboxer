@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import com.superdownloader.proEasy.processors.UploadSessionManager;
 
@@ -17,7 +15,6 @@ import com.superdownloader.proEasy.processors.UploadSessionManager;
  * @author jdavison
  *
  */
-@Service("fileFilter")
 public class FileFilter implements GenericFileFilter<Object> {
 
 	private Pattern pattern = null;
@@ -25,7 +22,6 @@ public class FileFilter implements GenericFileFilter<Object> {
 	@Autowired
 	private UploadSessionManager uploadSessionManager;
 
-	@Value("${proEasy.includePattern}")
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}
