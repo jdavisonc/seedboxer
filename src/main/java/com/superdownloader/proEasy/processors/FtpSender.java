@@ -9,6 +9,7 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.common.ftp.FtpUploader;
@@ -23,11 +24,18 @@ import com.superdownloader.proEasy.exceptions.TransportException;
 @Service(value = "ftpSender")
 public class FtpSender implements Processor {
 
+	private static final long  MEGABYTE = 1024L * 1024L;
+
+	@Autowired
+	private UploadSessionManager uploadSessionManager;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(FtpSender.class);
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
+		final String username = (String) msg.getHeader(Headers.USERNAME);
+		final String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
@@ -48,11 +56,18 @@ public class FtpSender implements Processor {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload), new FtpUploaderListener() {
 
+					private long transferredInMbs = 0L;
+
 					@Override
 					public void bytesTransferred(long totalBytesTransferred,
 							int bytesTransferred, long streamSize) {
-						LOGGER.debug("Transfer: {}%", (totalBytesTransferred*100)/streamSize);
 
+						// totalBytesTransferred is a Mb
+						long totalMbsTransferred = totalBytesTransferred / MEGABYTE;
+						if (totalMbsTransferred > transferredInMbs) {
+							uploadSessionManager.setUserUploadTransfer(username, filepath, transferredInMbs);
+							transferredInMbs = totalMbsTransferred;
+						}
 					}
 				});
 			}

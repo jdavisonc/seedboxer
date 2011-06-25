@@ -1,7 +1,11 @@
 package com.superdownloader.proEasy.processors;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
@@ -19,7 +23,7 @@ import com.superdownloader.proEasy.types.Upload;
 @Service(value = "uploadSessionManager")
 public class UploadSessionManager implements Processor {
 
-	private final static String FILE_EXTENSION = ".upl";
+	private static final String FILE_EXTENSION = ".upl";
 
 	@Value("${proEasy.simultaneousUploadsPerUser}")
 	private int simultaneousUploadsPerUser;
@@ -40,8 +44,9 @@ public class UploadSessionManager implements Processor {
 				userUploads = new HashMap<String, Upload>();
 				uploadsPerUser.put(username, userUploads);
 			}
-			if (userUploads.size() < simultaneousUploadsPerUser && !userUploads.containsKey(filename)) {
-				userUploads.put(filename, new Upload(filename));
+			String file = fixFilename(filename);
+			if (userUploads.size() < simultaneousUploadsPerUser && !userUploads.containsKey(file)) {
+				userUploads.put(file, new Upload(file));
 				return true;
 			} else {
 				return false;
@@ -49,13 +54,46 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public Upload getUserUpload(String username, String filename) {
+	public void setUserUploadSize(String username, String filename, long size) {
 		synchronized (lock) {
 			Map<String, Upload> userUploads = uploadsPerUser.get(username);
 			if (userUploads != null) {
-				return userUploads.get(filename);
+				Upload upload = userUploads.get(fixFilename(filename));
+				if (upload != null) {
+					upload.setSize(size);
+				}
+			}
+		}
+	}
+
+	public void setUserUploadTransfer(String username, String filename, long transferred) {
+		synchronized (lock) {
+			Map<String, Upload> userUploads = uploadsPerUser.get(username);
+			if (userUploads != null) {
+				Upload upload = userUploads.get(fixFilename(filename));
+				if (upload != null) {
+					upload.setTransferred(transferred);
+				}
+			}
+		}
+	}
+
+	public List<Upload> getUserUploads(String username) {
+		synchronized (lock) {
+			Map<String, Upload> userUploads = uploadsPerUser.get(username);
+			if (userUploads != null) {
+				try {
+					Collection<Upload> uploads = userUploads.values();
+					List<Upload> ret = new ArrayList<Upload>(uploads.size());
+					for (Upload upload : uploads) {
+						ret.add(upload.clone());
+					}
+					return ret;
+				} catch (CloneNotSupportedException e) {
+					return Collections.emptyList();
+				}
 			} else {
-				return null;
+				return Collections.emptyList();
 			}
 		}
 	}
@@ -64,10 +102,19 @@ public class UploadSessionManager implements Processor {
 		synchronized (lock) {
 			Map<String, Upload> userUploads = uploadsPerUser.get(username);
 			if (userUploads != null) {
-				return userUploads.remove(filename);
+				return userUploads.remove(fixFilename(filename));
 			} else {
 				return null;
 			}
+		}
+	}
+
+	private static String fixFilename(String filename) {
+		String file = new File(filename).getName();
+		if (file.endsWith(FILE_EXTENSION)){
+			return file.substring(0, file.length() - 4);
+		} else {
+			return file;
 		}
 	}
 
@@ -79,8 +126,7 @@ public class UploadSessionManager implements Processor {
 		Message msg = exchange.getIn();
 		String username = (String) msg.getHeader(Headers.USERNAME);
 		String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
-		File file = new File(filepath);
-		removeUserUpload(username, file.getName().replace(FILE_EXTENSION, ""));
+		removeUserUpload(username, fixFilename(filepath));
 	}
 
 }

@@ -1,14 +1,22 @@
 package com.superdownloader.proEasy.types;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author harley
  *
  */
-public class Upload {
+@XmlRootElement(name="upload")
+public class Upload implements Cloneable {
 
 	private String fileName;
 
-	private double porcentaje = 0;
+	// Size of the file in Mb
+	private long size;
+
+	private long transferred;
+
+	public Upload() { }
 
 	public Upload(String fileName) {
 		this.fileName = fileName;
@@ -22,12 +30,24 @@ public class Upload {
 		this.fileName = fileName;
 	}
 
-	public double getPorcentaje() {
-		return porcentaje;
+	public double getTransferredPorcentaje() {
+		return (transferred*100) / size;
 	}
 
-	public void setPorcentaje(double porcentaje) {
-		this.porcentaje = porcentaje;
+	public long getTransferred() {
+		return transferred;
+	}
+
+	public void setTransferred(long transferred) {
+		this.transferred = transferred;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
 	}
 
 	@Override
@@ -36,6 +56,8 @@ public class Upload {
 		int result = 1;
 		result = prime * result
 				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + (int) (size ^ (size >>> 32));
+		result = prime * result + (int) (transferred ^ (transferred >>> 32));
 		return result;
 	}
 
@@ -53,7 +75,15 @@ public class Upload {
 				return false;
 		} else if (!fileName.equals(other.fileName))
 			return false;
+		if (size != other.size)
+			return false;
+		if (transferred != other.transferred)
+			return false;
 		return true;
 	}
 
+	@Override
+	public Upload clone() throws CloneNotSupportedException {
+		return (Upload) super.clone();
+	}
 }

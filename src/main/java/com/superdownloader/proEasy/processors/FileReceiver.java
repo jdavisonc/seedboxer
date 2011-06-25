@@ -2,6 +2,7 @@
 package com.superdownloader.proEasy.processors;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +31,12 @@ import com.superdownloader.proEasy.persistence.UsersDao;
 @Service(value = "fileReciever")
 public class FileReceiver implements Processor {
 
+	private static final long  MEGABYTE = 1024L * 1024L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileReceiver.class);
+
+	@Autowired
+	private UploadSessionManager uploadSessionManager;
 
 	@Autowired
 	private UsersDao usersDao;
@@ -50,6 +56,7 @@ public class FileReceiver implements Processor {
 		Matcher m = pattern.matcher((String) msg.getHeader(Exchange.FILE_NAME));
 		if (m.matches()) {
 			String username = m.group(1);
+			String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
 
 			msg.setHeader(Headers.USERNAME, username);
 			msg.setHeader(Headers.START_TIME, new Date());
@@ -58,8 +65,18 @@ public class FileReceiver implements Processor {
 				msg.setHeader(entry.getKey(), entry.getValue());
 			}
 
-			List<String> filesToUpload = getLines((String) msg.getHeader(Exchange.FILE_PATH));
+			List<String> filesToUpload = getLines(filepath);
 			msg.setHeader(Headers.FILES, filesToUpload);
+
+			// Calculate size of the upload
+			long totalSize = 0;
+			for (String path : filesToUpload) {
+				File upload = new File(path);
+				totalSize += upload.length();
+			}
+			// Size in Mbs
+			totalSize = totalSize / MEGABYTE;
+			uploadSessionManager.setUserUploadSize(username, filepath, totalSize);
 
 			LOGGER.debug("USERNAME={}", username);
 			LOGGER.debug("CONFIGS={}", configs);
