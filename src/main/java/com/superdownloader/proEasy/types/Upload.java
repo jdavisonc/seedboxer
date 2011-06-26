@@ -12,9 +12,9 @@ public class Upload implements Cloneable {
 	private String fileName;
 
 	// Size of the file in Mb
-	private long size;
+	private long size = 0;
 
-	private long transferred;
+	private long transferred = 0;
 
 	public Upload() { }
 
@@ -30,16 +30,16 @@ public class Upload implements Cloneable {
 		this.fileName = fileName;
 	}
 
-	public double getTransferredPorcentaje() {
-		return (transferred*100) / size;
-	}
-
 	public long getTransferred() {
 		return transferred;
 	}
 
 	public void setTransferred(long transferred) {
 		this.transferred = transferred;
+	}
+
+	public void setProgress(long transferred) {
+		this.transferred += transferred;
 	}
 
 	public long getSize() {

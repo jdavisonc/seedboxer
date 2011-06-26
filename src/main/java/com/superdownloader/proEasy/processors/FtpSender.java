@@ -65,7 +65,7 @@ public class FtpSender implements Processor {
 						// totalBytesTransferred is a Mb
 						long totalMbsTransferred = totalBytesTransferred / MEGABYTE;
 						if (totalMbsTransferred > transferredInMbs) {
-							uploadSessionManager.setUserUploadTransfer(username, filepath, transferredInMbs);
+							uploadSessionManager.setUserUploadProgress(username, filepath, (totalMbsTransferred - transferredInMbs));
 							transferredInMbs = totalMbsTransferred;
 						}
 					}

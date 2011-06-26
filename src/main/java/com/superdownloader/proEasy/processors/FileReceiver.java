@@ -71,8 +71,7 @@ public class FileReceiver implements Processor {
 			// Calculate size of the upload
 			long totalSize = 0;
 			for (String path : filesToUpload) {
-				File upload = new File(path);
-				totalSize += upload.length();
+				totalSize += calculateSize(new File(path));
 			}
 			// Size in Mbs
 			totalSize = totalSize / MEGABYTE;
@@ -84,6 +83,23 @@ public class FileReceiver implements Processor {
 
 		} else {
 			throw new Exception("The file doesn't compile with the pattern.");
+		}
+	}
+
+	/**
+	 * Calculate the size of a file or directory
+	 * @param upload
+	 * @return
+	 */
+	private long calculateSize(File upload) {
+		if (upload.isDirectory()) {
+			long lengthDir = 0L;
+			for (File fileInside : upload.listFiles()) {
+				lengthDir += calculateSize(fileInside);
+			}
+			return lengthDir;
+		} else {
+			return upload.length();
 		}
 	}
 

@@ -66,13 +66,13 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public void setUserUploadTransfer(String username, String filename, long transferred) {
+	public void setUserUploadProgress(String username, String filename, long transferred) {
 		synchronized (lock) {
 			Map<String, Upload> userUploads = uploadsPerUser.get(username);
 			if (userUploads != null) {
 				Upload upload = userUploads.get(fixFilename(filename));
 				if (upload != null) {
-					upload.setTransferred(transferred);
+					upload.setProgress(transferred);
 				}
 			}
 		}
