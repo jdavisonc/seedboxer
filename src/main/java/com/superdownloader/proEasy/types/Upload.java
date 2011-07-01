@@ -38,10 +38,6 @@ public class Upload implements Cloneable {
 		this.transferred = transferred;
 	}
 
-	public void setProgress(long transferred) {
-		this.transferred += transferred;
-	}
-
 	public long getSize() {
 		return size;
 	}

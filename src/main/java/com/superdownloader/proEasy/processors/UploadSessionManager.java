@@ -72,7 +72,7 @@ public class UploadSessionManager implements Processor {
 			if (userUploads != null) {
 				Upload upload = userUploads.get(fixFilename(filename));
 				if (upload != null) {
-					upload.setProgress(transferred);
+					upload.setTransferred(transferred);
 				}
 			}
 		}

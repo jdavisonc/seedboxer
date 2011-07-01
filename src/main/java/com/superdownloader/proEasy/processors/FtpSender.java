@@ -56,18 +56,18 @@ public class FtpSender implements Processor {
 				LOGGER.info("Uploading {}...", toUpload);
 				ftpUploader.upload(new File(toUpload), new FtpUploaderListener() {
 
-					private long transferredInMbs = 0L;
+					private double transferredInMbs = 0L;
 
 					@Override
-					public void bytesTransferred(long totalBytesTransferred,
-							int bytesTransferred, long streamSize) {
+					public void bytesTransferred(long bytesTransferred) {
 
 						// totalBytesTransferred is a Mb
-						long totalMbsTransferred = totalBytesTransferred / MEGABYTE;
-						if (totalMbsTransferred > transferredInMbs) {
-							uploadSessionManager.setUserUploadProgress(username, filepath, (totalMbsTransferred - transferredInMbs));
-							transferredInMbs = totalMbsTransferred;
+						double transferred = transferredInMbs + ((double) bytesTransferred / (double) MEGABYTE);
+
+						if (((long)transferred) > ((long)transferredInMbs)) {
+							uploadSessionManager.setUserUploadProgress(username, filepath, (long)transferred);
 						}
+						transferredInMbs = transferred;
 					}
 				});
 			}
