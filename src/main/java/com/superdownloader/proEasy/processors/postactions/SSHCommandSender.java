@@ -1,6 +1,8 @@
 package com.superdownloader.proEasy.processors.postactions;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -16,12 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.superdownloader.proEasy.processors.Headers;
 
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 /**
@@ -35,6 +34,9 @@ public class SSHCommandSender implements Processor {
 
 	@Value("${proEasy.ssh.timeToJoin}")
 	private int timeToJoin;
+
+	@Value("${proEasy.ssh.variableNameInCmd}")
+	private String variableNameInCmd;
 
 	@Override
 	public void process(Exchange exchange) {
@@ -63,8 +65,9 @@ public class SSHCommandSender implements Processor {
         	ssh.authPassword(username, password);
             final Session session = ssh.startSession();
             try {
+    			LOGGER.info("Sending ssh command: {} to {}", command, url);
                 final Command cmd = session.exec(command);
-                LOGGER.debug("{}", IOUtils.readFully(cmd.getInputStream()).toString());
+                LOGGER.debug("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
                 cmd.join(timeToJoin, TimeUnit.SECONDS);
                 LOGGER.info("Exit status: {}", cmd.getExitStatus());
             } finally {
@@ -77,15 +80,16 @@ public class SSHCommandSender implements Processor {
 
 	private String processTemplate(String command, Map<String, Object> templateVars)
 			throws IOException, TemplateException {
-        StringTemplateLoader stringLoader = new StringTemplateLoader();
-        String cmdTemplate = "command";
-        stringLoader.putTemplate(cmdTemplate, command);
 
-        Configuration cfg = new Configuration();
-        cfg.setTemplateLoader(stringLoader);
+		List<String> files = (List<String>) templateVars.get(Headers.FILES);
+		StringBuffer sb = new StringBuffer();
+		for (String file : files) {
+			sb.append(new File(file).getName());
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length()-1);
 
-	    return FreeMarkerTemplateUtils.processTemplateIntoString(
-	    		cfg.getTemplate(cmdTemplate), templateVars);
+		return command.replaceAll(variableNameInCmd, sb.toString());
 	}
 
 }

@@ -21,10 +21,10 @@ public class Headers {
 	public static final String FTP_SENT = FTP_PREFIX + "sent";
 
 	public static final String SSH_PREFIX = PREFIX + "ssh" + SEPARATOR;
-	public static final String SSH_USERNAME = FTP_PREFIX + "username";
-	public static final String SSH_PASSWORD = FTP_PREFIX + "password";
-	public static final String SSH_URL = FTP_PREFIX + "url";
-	public static final String SSH_CMD = FTP_PREFIX + "cmd";
+	public static final String SSH_USERNAME = SSH_PREFIX + "username";
+	public static final String SSH_PASSWORD = SSH_PREFIX + "password";
+	public static final String SSH_URL = SSH_PREFIX + "url";
+	public static final String SSH_CMD = SSH_PREFIX + "cmd";
 
 	public static final String NOTIFICATION_PREFIX = PREFIX + "notification" + SEPARATOR;
 	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "email";
