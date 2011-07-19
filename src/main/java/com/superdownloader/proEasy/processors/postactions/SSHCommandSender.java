@@ -2,6 +2,7 @@ package com.superdownloader.proEasy.processors.postactions;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
+import net.schmizz.sshj.transport.verification.HostKeyVerifier;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -59,7 +61,15 @@ public class SSHCommandSender implements Processor {
 	private void sendSSHCmd(String url, String username, String password, String command)
 			throws IOException {
 		final SSHClient ssh = new SSHClient();
-        ssh.loadKnownHosts();
+
+		// TODO: Try to change this to loadKnownHost() or something like this
+		ssh.addHostKeyVerifier(new HostKeyVerifier() {
+			@Override
+			public boolean verify(String arg0, int arg1, PublicKey arg2) {
+				return true; // don't bother verifying
+			}
+		});
+
         ssh.connect(url);
         try {
         	ssh.authPassword(username, password);
@@ -78,6 +88,7 @@ public class SSHCommandSender implements Processor {
         }
 	}
 
+	@SuppressWarnings("unchecked")
 	private String processTemplate(String command, Map<String, Object> templateVars)
 			throws IOException, TemplateException {
 
