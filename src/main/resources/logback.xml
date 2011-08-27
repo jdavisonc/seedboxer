@@ -22,6 +22,7 @@
 
 	<logger name="com.superdownloader" level="DEBUG" />
 	<logger name="net.schmizz.sshj" level="OFF" />
+	<logger name="org.apache.camel.processor.DefaultErrorHandler" level="OFF" />
 
 	<root level="WARN">
 		<appender-ref ref="CONSOLE" />

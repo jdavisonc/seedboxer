@@ -12,7 +12,7 @@
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		
-		<errorHandler id="deadLetterErrorHandler" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
+		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
 		</errorHandler>
 		
@@ -21,6 +21,11 @@
 		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
 		<endpoint id="emailEndpoint" uri="smtp://${proEasy.smtp.host}:${proEasy.smtp.port}"/>
+		
+		<onException>
+	        <exception>java.lang.Exception</exception>
+	        <to uri="direct:finale"/>
+	    </onException>
 		
 		<!-- Get new files -->
 		<route>
@@ -32,7 +37,7 @@
 		</route>
 		
 		<!-- FTP Sender -->
-		<route errorHandlerRef="deadLetterErrorHandler">
+		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="processEndpoint" />
 
 			<!-- Send to FTP via dynamic router -->
