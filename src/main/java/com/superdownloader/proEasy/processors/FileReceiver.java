@@ -1,4 +1,3 @@
-
 package com.superdownloader.proEasy.processors;
 
 import java.io.BufferedReader;
@@ -65,14 +64,23 @@ public class FileReceiver implements Processor {
 				msg.setHeader(entry.getKey(), entry.getValue());
 			}
 
-			List<String> filesToUpload = getLines(filepath);
-			msg.setHeader(Headers.FILES, filesToUpload);
-
 			// Calculate size of the upload
+			List<String> filesToUpload = getLines(filepath);
 			long totalSize = 0;
 			for (String path : filesToUpload) {
-				totalSize += calculateSize(new File(path));
+
+				// Removes prefix of Flexget
+				String realPath = path.replaceFirst("file://", "");
+
+				File fileToUpload = new File(realPath);
+				if (fileToUpload.exists()) {
+					totalSize += calculateSize(fileToUpload);
+				} else {
+					throw new Exception("File " + realPath + " doesn't exists.");
+				}
 			}
+			msg.setHeader(Headers.FILES, filesToUpload);
+
 			// Size in Mbs
 			totalSize = totalSize / MEGABYTE;
 			uploadSessionManager.setUserUploadSize(username, filepath, totalSize);

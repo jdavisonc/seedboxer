@@ -4,7 +4,6 @@
 	<groupId>com.superdownloaders</groupId>
 	<artifactId>proEasy</artifactId>
 	<packaging>war</packaging>
-	<version>0.1</version>
 
 	<repositories>
 		<repository>
@@ -169,6 +168,7 @@
 		</dependency>
 	</dependencies>
 
+	<version>1.0</version>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
