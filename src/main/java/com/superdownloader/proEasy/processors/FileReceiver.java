@@ -65,16 +65,18 @@ public class FileReceiver implements Processor {
 			}
 
 			// Calculate size of the upload
-			List<String> filesToUpload = getLines(filepath);
+			List<String> filesPaths = getLines(filepath);
+			List<String> filesToUpload = new ArrayList<String>();
 			long totalSize = 0;
-			for (String path : filesToUpload) {
+			for (String path : filesPaths) {
 
 				// Removes prefix of Flexget
 				String realPath = path.replaceFirst("file://", "");
 
-				File fileToUpload = new File(realPath);
-				if (fileToUpload.exists()) {
-					totalSize += calculateSize(fileToUpload);
+				File toUpload = new File(realPath);
+				if (toUpload.exists()) {
+					totalSize += calculateSize(toUpload);
+					filesToUpload.add(realPath);
 				} else {
 					throw new Exception("File " + realPath + " doesn't exists.");
 				}
