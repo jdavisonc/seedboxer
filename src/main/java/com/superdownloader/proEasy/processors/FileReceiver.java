@@ -67,6 +67,7 @@ public class FileReceiver implements Processor {
 			// Calculate size of the upload
 			List<String> filesPaths = getLines(filepath);
 			List<String> filesToUpload = new ArrayList<String>();
+			List<String> filesName = new ArrayList<String>();
 			long totalSize = 0;
 			for (String path : filesPaths) {
 
@@ -77,11 +78,13 @@ public class FileReceiver implements Processor {
 				if (toUpload.exists()) {
 					totalSize += calculateSize(toUpload);
 					filesToUpload.add(realPath);
+					filesName.add(toUpload.getName());
 				} else {
 					throw new Exception("File " + realPath + " doesn't exists.");
 				}
 			}
 			msg.setHeader(Headers.FILES, filesToUpload);
+			msg.setHeader(Headers.FILES_NAME, filesName);
 
 			// Size in Mbs
 			totalSize = totalSize / MEGABYTE;
@@ -116,12 +119,12 @@ public class FileReceiver implements Processor {
 	private List<String> getLines(String filePath) {
 		List<String> lines = new ArrayList<String>();
 		try {
-		    BufferedReader in = new BufferedReader(new FileReader(filePath));
-		    String str;
-		    while ((str = in.readLine()) != null) {
-		    	lines.add(str);
-		    }
-		    in.close();
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String str;
+			while ((str = in.readLine()) != null) {
+				lines.add(str);
+			}
+			in.close();
 		} catch (IOException e) {
 			LOGGER.error("Cannot open file", e);
 		}

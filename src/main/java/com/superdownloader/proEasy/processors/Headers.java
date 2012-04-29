@@ -9,6 +9,7 @@ public class Headers {
 	public static final String USERNAME = PREFIX + "username";
 
 	public static final String FILES = PREFIX + "files";
+	public static final String FILES_NAME = PREFIX + "filesName";
 
 	public static final String START_TIME = PREFIX + "start";
 	public static final String END_TIME = PREFIX + "end";
@@ -28,5 +29,7 @@ public class Headers {
 
 	public static final String NOTIFICATION_PREFIX = PREFIX + "notification" + SEPARATOR;
 	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "email";
+
+	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_PREFIX + "c2dm" + SEPARATOR + "deviceId";
 
 }
