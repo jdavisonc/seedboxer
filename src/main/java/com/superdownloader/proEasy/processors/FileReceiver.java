@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proEasy.persistence.UsersDao;
+import com.superdownloader.proEasy.logic.UsersController;
 
 /**
  * @author jdavison
@@ -38,7 +38,7 @@ public class FileReceiver implements Processor {
 	private UploadSessionManager uploadSessionManager;
 
 	@Autowired
-	private UsersDao usersDao;
+	private UsersController usersController;
 
 	private Pattern pattern = null;
 
@@ -59,7 +59,7 @@ public class FileReceiver implements Processor {
 
 			msg.setHeader(Headers.USERNAME, username);
 			msg.setHeader(Headers.START_TIME, new Date());
-			Map<String, String> configs = usersDao.getUserConfigs(username);
+			Map<String, String> configs = usersController.userConfiguration(username);
 			for (Entry<String, String> entry : configs.entrySet()) {
 				msg.setHeader(entry.getKey(), entry.getValue());
 			}

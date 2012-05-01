@@ -2,6 +2,7 @@ package com.superdownloader.proEasy.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,25 +27,34 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 		setDataSource(proEasyDataSource);
 	}
 
+	private int getUserId(String username) {
+		String sql = "SELECT id FROM users WHERE username = :username LIMIT 1;";
+
+		MapSqlParameterSource args = new MapSqlParameterSource();
+		args.addValue("username", username);
+
+		return getSimpleJdbcTemplate().queryForInt(sql, args);
+	}
+
 	@Override
 	public boolean isValidUser(String username, String password) {
 		String sql = "SELECT id " +
-						"FROM users " +
-						"WHERE username = :username AND password = MD5(:password) " +
-						"LIMIT 1;";
+				"FROM users " +
+				"WHERE username = :username AND password = MD5(:password) " +
+				"LIMIT 1;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("username", username);
 		args.addValue("password", password);
 
-		return (getSimpleJdbcTemplate().queryForInt(sql, args) == 0);
+		return (getSimpleJdbcTemplate().queryForInt(sql, args) != 0);
 	}
 
 	@Override
 	public Map<String, String> getUserConfigs(String username) {
 		String sql = "SELECT c.name as name, c.value as value " +
-						"FROM configurations c, users u " +
-						"WHERE c.id_user = u.id AND u.username = :username;";
+				"FROM configurations c, users u " +
+				"WHERE c.id_user = u.id AND u.username = :username;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("username", username);
@@ -76,6 +86,38 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 			return c;
 		}
 
+	}
+
+	@Override
+	public void saveUserConfigs(String username, Map<String, String> configs) {
+		String insertSql = "INSERT INTO configurations VALUES (:userId, :name, :value);";
+		String updateSql = "UPDATE configurations SET name = :name, value = :value WHERE id_user = :userId;";
+
+		int userId = getUserId(username);
+		Map<String, String> userConfigs = getUserConfigs(username);
+
+		List<MapSqlParameterSource> toInsert = new ArrayList<MapSqlParameterSource>();
+		List<MapSqlParameterSource> toUpdate = new ArrayList<MapSqlParameterSource>();
+
+		for (Map.Entry<String, String> entry : configs.entrySet()) {
+			MapSqlParameterSource args = new MapSqlParameterSource();
+			args.addValue("userId", userId);
+			args.addValue("name", entry.getKey());
+			args.addValue("value", entry.getValue());
+
+			if (!userConfigs.containsKey(entry.getKey())) {
+				toInsert.add(args);
+			} else if (!userConfigs.get(entry.getKey()).equals(entry.getValue())) {
+				toUpdate.add(args);
+			}
+		}
+
+		if (!toInsert.isEmpty()) {
+			getSimpleJdbcTemplate().batchUpdate(insertSql, (MapSqlParameterSource[]) toInsert.toArray());
+		}
+		if (!toUpdate.isEmpty()) {
+			getSimpleJdbcTemplate().batchUpdate(updateSql, (MapSqlParameterSource[]) toUpdate.toArray());
+		}
 	}
 
 }

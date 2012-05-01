@@ -8,4 +8,6 @@ public interface UsersDao {
 
 	public Map<String, String> getUserConfigs(String username);
 
+	public void saveUserConfigs(String username, Map<String, String> configs);
+
 }
