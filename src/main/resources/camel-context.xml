@@ -62,8 +62,20 @@
 		<!-- Notifications -->
 		<route>
 			<from uri="direct:notificationEndpoint"/>
-			<process ref="emailNotification" />
-	        <to ref="emailEndpoint"/>
+			
+			<!-- Email notifiction -->
+			<filter>
+	           <simple>${in.header.proEasy_notification_email} != null</simple>
+	           	<process ref="emailNotification" />
+	        	<to ref="emailEndpoint"/>
+	        </filter>
+	        
+	        <!-- C2DM notification -->
+			<filter>
+	           <simple>${in.header.proEasy_notification_c2dm} != null</simple>
+	           <process ref="c2dmNotification" />
+	        </filter>
+	        
 	        <to uri="direct:finale" />
 		</route>
 		

@@ -71,7 +71,7 @@ public class EmailNotification extends Notification {
 	 * @param params
 	 */
 	private void setEmailProperties(Message msg, String subjectTpl, String bodyTpl, Map<String, Object> params) {
-		String email = (String) msg.getHeader(Headers.NOTIFICATION_EMAIL);
+		String email = (String) msg.getHeader(Headers.NOTIFICATION_EMAIL_EMAIL);
 		msg.setHeader(TO_HEADER, email);
 		msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(subjectTpl, params));
 		msg.setBody(getProcessedTemplate(bodyTpl, params));
@@ -85,8 +85,8 @@ public class EmailNotification extends Notification {
 	 */
 	private String getProcessedTemplate(String template, Map<String, Object> templateVars) {
 		try {
-		    return FreeMarkerTemplateUtils.processTemplateIntoString(
-		    		freemarkerConfiguration.getTemplate(template), templateVars);
+			return FreeMarkerTemplateUtils.processTemplateIntoString(
+					freemarkerConfiguration.getTemplate(template), templateVars);
 		} catch (IOException e) {
 			LOGGER.warn("Error at processing template", e);
 		} catch (TemplateException e) {

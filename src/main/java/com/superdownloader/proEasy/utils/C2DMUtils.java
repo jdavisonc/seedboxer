@@ -18,6 +18,9 @@ import javax.net.ssl.SSLSession;
  */
 public class C2DMUtils {
 
+	private static final String C2DM_SEND_URL = "https://android.clients.google.com/c2dm/send";
+	private static final String C2DM_LOGIN_URL = "https://www.google.com/accounts/ClientLogin";
+
 	private final static String AUTH = "authentication";
 
 	private static final String UPDATE_CLIENT_AUTH = "Update-Client-Auth";
@@ -42,7 +45,7 @@ public class C2DMUtils {
 
 		// Hit the dm URL.
 
-		URL url = new URL("https://android.clients.google.com/c2dm/send");
+		URL url = new URL(C2DM_SEND_URL);
 		HttpsURLConnection.setDefaultHostnameVerifier(new CustomizedHostnameVerifier());
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 		conn.setDoOutput(true);
@@ -80,7 +83,7 @@ public class C2DMUtils {
 
 		// Setup the Http Post
 		byte[] data = builder.toString().getBytes();
-		URL url = new URL("https://www.google.com/accounts/ClientLogin");
+		URL url = new URL(C2DM_LOGIN_URL);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setUseCaches(false);
 		con.setDoOutput(true);

@@ -28,10 +28,12 @@ public class Headers {
 	public static final String SSH_CMD = SSH_PREFIX + "cmd";
 
 	public static final String NOTIFICATION_PREFIX = PREFIX + "notification" + SEPARATOR;
-	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "email";
 
-	public static final String NOTIFICATION_C2DM_PREFIX = NOTIFICATION_PREFIX + "c2dm" + SEPARATOR;
-	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_C2DM_PREFIX + "deviceId";
-	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM_PREFIX + "registrationId";
+	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "email";
+	public static final String NOTIFICATION_EMAIL_EMAIL = NOTIFICATION_EMAIL + SEPARATOR + "email";
+
+	public static final String NOTIFICATION_C2DM = NOTIFICATION_PREFIX + "c2dm";
+	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_C2DM + SEPARATOR + "deviceId";
+	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM + SEPARATOR + "registrationId";
 
 }

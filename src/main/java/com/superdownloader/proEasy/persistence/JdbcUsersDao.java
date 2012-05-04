@@ -113,10 +113,10 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 		}
 
 		if (!toInsert.isEmpty()) {
-			getSimpleJdbcTemplate().batchUpdate(insertSql, (MapSqlParameterSource[]) toInsert.toArray());
+			getSimpleJdbcTemplate().batchUpdate(insertSql, toInsert.toArray(new MapSqlParameterSource[0]));
 		}
 		if (!toUpdate.isEmpty()) {
-			getSimpleJdbcTemplate().batchUpdate(updateSql, (MapSqlParameterSource[]) toUpdate.toArray());
+			getSimpleJdbcTemplate().batchUpdate(updateSql, toUpdate.toArray(new MapSqlParameterSource[0]));
 		}
 	}
 

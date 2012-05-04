@@ -3,6 +3,7 @@ package com.superdownloader.proEasy.services;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,9 @@ public class C2DMService {
 
 	@GET
 	@Produces("text/xml")
-	public String registerDevice(String username, String registrationId, String deviceId) {
+	public String registerDevice(@QueryParam("username") String username,
+			@QueryParam("registrationId") String registrationId,
+			@QueryParam("deviceId") String deviceId) {
 		try {
 			controller.registerDevice(username, registrationId, deviceId);
 			return "<response>OK</response>";

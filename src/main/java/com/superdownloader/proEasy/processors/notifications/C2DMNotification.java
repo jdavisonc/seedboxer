@@ -43,14 +43,14 @@ public class C2DMNotification extends Notification {
 
 	@SuppressWarnings("unchecked")
 	private void sendMessage(Message msg, String sucess) {
-		String deviceId = (String) msg.getHeader(Headers.NOTIFICATION_C2DM_DEVICEID);
+		String registrationId = (String) msg.getHeader(Headers.NOTIFICATION_C2DM_REGISTRATIONID);
 		String name = ((List<String>) msg.getHeader(Headers.FILES_NAME)).get(0);
 		String message = sucess + ";Files " + name + "...";
 		try {
-			int responseCode = C2DMUtils.sendMessage(authToken, deviceId, message);
+			int responseCode = C2DMUtils.sendMessage(authToken, registrationId, message);
 			if (responseCode == 401) { // Invalid login, relogin
 				register();
-				C2DMUtils.sendMessage(authToken, deviceId, message);
+				C2DMUtils.sendMessage(authToken, registrationId, message);
 			}
 		} catch (IOException e) {
 			LOGGER.error("Error sending notification to device", e);
