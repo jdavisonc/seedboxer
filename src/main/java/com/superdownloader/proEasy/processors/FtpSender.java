@@ -54,22 +54,7 @@ public class FtpSender implements Processor {
 			LOGGER.info("Connected to {}", server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
-				ftpUploader.upload(new File(toUpload), new FtpUploaderListener() {
-
-					private double transferredInMbs = 0L;
-
-					@Override
-					public void bytesTransferred(long bytesTransferred) {
-
-						// totalBytesTransferred is a Mb
-						double transferred = transferredInMbs + ((double) bytesTransferred / (double) MEGABYTE);
-
-						if (((long)transferred) > ((long)transferredInMbs)) {
-							uploadSessionManager.setUserUploadProgress(username, filepath, (long)transferred);
-						}
-						transferredInMbs = transferred;
-					}
-				});
+				ftpUploader.upload(new File(toUpload), new FtpStatusListener(username, filepath));
 			}
 		} catch (Exception e) {
 			throw new TransportException("Error at uploading file via FTP", e);
@@ -78,6 +63,32 @@ public class FtpSender implements Processor {
 			ftpUploader.disconnect();
 			LOGGER.info("Disconnected");
 		}
+	}
+
+	private final class FtpStatusListener implements FtpUploaderListener {
+
+		private double transferredInMbs = 0L;
+
+		private String username;
+
+		private String filepath;
+
+		public FtpStatusListener(String username, String filepath) {
+			this.username = username;
+			this.filepath = filepath;
+		}
+
+		@Override
+		public void bytesTransferred(long bytesTransferred) {
+			// totalBytesTransferred is a Mb
+			double transferred = transferredInMbs + ((double) bytesTransferred / (double) MEGABYTE);
+
+			if (((long)transferred) > ((long)transferredInMbs)) {
+				uploadSessionManager.setUserUploadProgress(username, filepath, (long)transferred);
+			}
+			transferredInMbs = transferred;
+		}
+
 	}
 
 	/**
