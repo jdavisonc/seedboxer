@@ -91,7 +91,7 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 	@Override
 	public void saveUserConfigs(String username, Map<String, String> configs) {
 		String insertSql = "INSERT INTO configurations VALUES (:userId, :name, :value);";
-		String updateSql = "UPDATE configurations SET name = :name, value = :value WHERE id_user = :userId;";
+		String updateSql = "UPDATE configurations SET value = :value WHERE id_user = :userId AND name = :name;";
 
 		int userId = getUserId(username);
 		Map<String, String> userConfigs = getUserConfigs(username);

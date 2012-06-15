@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proEasy.logic.UsersController;
+import com.superdownloader.proEasy.types.Response;
 
 /**
  * WebService for list files
@@ -30,15 +31,15 @@ public class C2DMService {
 
 	@GET
 	@Produces("text/xml")
-	public String registerDevice(@QueryParam("username") String username,
+	public Response registerDevice(@QueryParam("username") String username,
 			@QueryParam("registrationId") String registrationId,
 			@QueryParam("deviceId") String deviceId) {
 		try {
 			controller.registerDevice(username, registrationId, deviceId);
-			return "<response>OK</response>";
+			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Error registering device", e);
-			return "<response>Error</response>";
+			return Response.createErrorResponse("The device can not be registered");
 		}
 	}
 

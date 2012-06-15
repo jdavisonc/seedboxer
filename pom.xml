@@ -32,6 +32,7 @@
 		<ftp-common.version>0.3</ftp-common.version>
 		<freemarker.version>2.3.9</freemarker.version>
 		<sshj.version>0.4.0</sshj.version>
+		<guava.version>12.0</guava.version>
 	</properties>
 
 	<dependencies>
@@ -165,6 +166,11 @@
 			<groupId>net.schmizz</groupId>
 			<artifactId>sshj</artifactId>
 			<version>${sshj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 		</dependency>
 	</dependencies>
 
