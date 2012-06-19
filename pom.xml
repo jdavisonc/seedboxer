@@ -4,6 +4,7 @@
 	<groupId>com.superdownloaders</groupId>
 	<artifactId>proEasy</artifactId>
 	<packaging>war</packaging>
+	<version>1.1-SNAPSHOT</version>
 
 	<repositories>
 		<repository>
@@ -174,9 +175,8 @@
 		</dependency>
 	</dependencies>
 
-	<version>1.0</version>
 	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
