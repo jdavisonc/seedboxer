@@ -34,20 +34,41 @@ public class FilesController {
 		return listFiles(inProgressPath);
 	}
 
-	public void putToDownload(String username, String name) throws Exception {
-		if (fileExists(name, inProgressPath) || fileExists(name, completePath)) {
-			File download = new File(getWorkingFolder(username) + name + MAGIC_EXTENSION);
-			if (download.createNewFile()) {
-				Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
+	public void putToDownload(String username, List<String> fileNames) throws Exception {
+		for (String name : fileNames) {
+			if (fileExists(name, inProgressPath) || fileExists(name, completePath)) {
+				File download = new File(getWorkingFolder(username) + File.separator + name + MAGIC_EXTENSION);
+				if (download.createNewFile()) {
+					Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
+				}
+			} else {
+				throw new IllegalArgumentException("The file does not exist");
 			}
-		} else {
-			throw new IllegalArgumentException("The file does not exist");
 		}
+	}
+
+	public List<FileValue> downloadsInQueue(String username) throws Exception {
+		List<String> inQueue = new ArrayList<String>();
+		File directory = new File(getWorkingFolder(username));
+		if (directory.exists()) {
+			for (File file: directory.listFiles()) {
+				if (file.isFile() && file.getName().endsWith(MAGIC_EXTENSION)) {
+					inQueue.addAll(Files.readLines(file, Charset.defaultCharset()));
+				}
+			}
+		}
+
+		List<FileValue> queue = new ArrayList<FileValue>();
+		for (String name : inQueue) {
+			queue.add(new FileValue(name.replace(completePath + File.separator, ""), false));
+		}
+
+		return queue;
 	}
 
 	private String getWorkingFolder(String username) {
 		return basePath + File.separator + username + File.separator
-				+ MAGIC_FOLDER + File.separator;
+				+ MAGIC_FOLDER;
 	}
 
 	private boolean fileExists(String name, String path) {

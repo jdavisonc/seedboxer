@@ -1,5 +1,6 @@
 package com.superdownloader.proEasy.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -18,7 +19,7 @@ import com.superdownloader.proEasy.types.FileValue;
 import com.superdownloader.proEasy.types.Response;
 
 /**
- * WebService for list files
+ * WebService for handle downloads
  * @author harley
  *
  */
@@ -36,20 +37,37 @@ public class DownloadsService {
 	@Path("/list")
 	@Produces("text/xml")
 	public List<FileValue> list() {
-		return controller.getCompletedFiles();
+		try {
+			return controller.getCompletedFiles();
+		} catch (Exception e) {
+			LOGGER.error("Can not read list of downloads", e);
+			return Collections.emptyList();
+		}
 	}
 
 	@GET
 	@Path("/put")
 	@Produces("text/xml")
 	public Response put(@QueryParam("username") String username,
-			@QueryParam("name") String name) {
+			@QueryParam("fileName") List<String> fileNames) {
 		try {
-			controller.putToDownload(username, name);
+			controller.putToDownload(username, fileNames);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not put to download", e);
 			return Response.createErrorResponse("Can not put to download");
+		}
+	}
+
+	@GET
+	@Path("/queue")
+	@Produces("text/xml")
+	public List<FileValue> queue(@QueryParam("username") String username) {
+		try {
+			return controller.downloadsInQueue(username);
+		} catch (Exception e) {
+			LOGGER.error("Can not read queue", e);
+			return Collections.emptyList();
 		}
 	}
 
