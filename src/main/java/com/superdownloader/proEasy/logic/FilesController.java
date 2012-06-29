@@ -36,13 +36,19 @@ public class FilesController {
 
 	public void putToDownload(String username, List<String> fileNames) throws Exception {
 		for (String name : fileNames) {
-			if (fileExists(name, inProgressPath) || fileExists(name, completePath)) {
+
+			File inProgressFile = getFile(name, inProgressPath);
+			File completeFile = getFile(name, completePath);
+
+			if (inProgressFile.exists() || completeFile.exists()) {
 				File download = new File(getWorkingFolder(username) + File.separator + name + MAGIC_EXTENSION);
 				if (download.createNewFile()) {
 					Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
 				}
 			} else {
-				throw new IllegalArgumentException("The file does not exist");
+				throw new IllegalArgumentException("The files not exist. Paths: "
+						+ inProgressFile.getAbsolutePath() + " or " +
+						completeFile.getAbsolutePath());
 			}
 		}
 	}
@@ -71,9 +77,8 @@ public class FilesController {
 				+ MAGIC_FOLDER;
 	}
 
-	private boolean fileExists(String name, String path) {
-		File download = new File(path + File.separator + name);
-		return download.exists();
+	private File getFile(String name, String path) {
+		return new File(path + File.separator + name);
 	}
 
 	private List<FileValue> listFiles(String path) {
