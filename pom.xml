@@ -34,6 +34,7 @@
 		<freemarker.version>2.3.9</freemarker.version>
 		<sshj.version>0.4.0</sshj.version>
 		<guava.version>12.0</guava.version>
+		<bencode.version>1.0-SNAPSHOT</bencode.version>
 	</properties>
 
 	<dependencies>
@@ -172,6 +173,11 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.klump.snark</groupId>
+			<artifactId>bencode</artifactId>
+			<version>${bencode.version}</version>
 		</dependency>
 	</dependencies>
 
