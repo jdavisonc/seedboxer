@@ -38,7 +38,9 @@ public class DownloadsService {
 	@Produces("text/xml")
 	public List<FileValue> list() {
 		try {
-			return controller.getCompletedFiles();
+			List<FileValue> files = controller.getCompletedFiles();
+			files.addAll(controller.getInProgressFiles());
+			return files;
 		} catch (Exception e) {
 			LOGGER.error("Can not read list of downloads", e);
 			return Collections.emptyList();
