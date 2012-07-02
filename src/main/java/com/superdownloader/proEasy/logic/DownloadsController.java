@@ -1,18 +1,23 @@
 package com.superdownloader.proEasy.logic;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
+import com.google.common.io.InputSupplier;
 import com.superdownloader.proEasy.types.FileValue;
+import com.superdownloader.proEasy.utils.TorrentUtils;
 
 @Service
-public class FilesController {
+public class DownloadsController {
 
 	private static final String MAGIC_EXTENSION = ".upl";
 	private static final String MAGIC_FOLDER = "to-home-server";
@@ -22,6 +27,9 @@ public class FilesController {
 
 	@Value(value="${proEasy.inProgressPath}")
 	private String inProgressPath;
+	
+	@Value(value="${proEasy.watchDownloaderPath}")
+	private String watchDownloaderPath;
 
 	@Value(value="${proEasy.basePath}")
 	private String basePath;
@@ -34,6 +42,13 @@ public class FilesController {
 		return listFiles(inProgressPath);
 	}
 
+	/**
+	 * Add a download to the user queue.
+	 * 
+	 * @param username
+	 * @param fileNames
+	 * @throws Exception
+	 */
 	public void putToDownload(String username, List<String> fileNames) throws Exception {
 		for (String name : fileNames) {
 
@@ -53,6 +68,13 @@ public class FilesController {
 		}
 	}
 
+	/**
+	 * List all downloads in the user queue.
+	 * 
+	 * @param username
+	 * @return
+	 * @throws Exception
+	 */
 	public List<FileValue> downloadsInQueue(String username) throws Exception {
 		List<String> inQueue = new ArrayList<String>();
 		File directory = new File(getWorkingFolder(username));
@@ -71,6 +93,31 @@ public class FilesController {
 
 		return queue;
 	}
+	
+	/**
+	 * Save torrent file to watch-dog directory of downloader application (rTorrent or uTorrent) and
+	 * add the same torrent to the user queue.
+	 * 
+	 * @param fileName
+	 * @param torrentFileInStream
+	 * @throws Exception
+	 */
+	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
+		File torrent = new File(watchDownloaderPath + fileName);
+		Files.copy(new InputSupplier<InputStream>() {
+			@Override
+			public InputStream getInput() throws IOException {
+				return torrentFileInStream;
+			}
+		}, torrent);
+		
+		String name = TorrentUtils.getName(torrent);
+		putToDownload(username, Collections.singletonList(name));
+	}
+	
+	/*
+	 * Extra functions
+	 */
 
 	private String getWorkingFolder(String username) {
 		return basePath + File.separator + username + File.separator

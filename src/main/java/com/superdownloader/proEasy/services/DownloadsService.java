@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proEasy.logic.FilesController;
+import com.superdownloader.proEasy.logic.DownloadsController;
 import com.superdownloader.proEasy.types.FileValue;
 import com.superdownloader.proEasy.types.Response;
 
@@ -31,7 +31,7 @@ public class DownloadsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
 
 	@Autowired
-	private FilesController controller;
+	private DownloadsController controller;
 
 	@GET
 	@Path("/list")

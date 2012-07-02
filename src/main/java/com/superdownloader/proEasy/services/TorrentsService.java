@@ -1,7 +1,5 @@
 package com.superdownloader.proEasy.services;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
@@ -16,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.google.common.io.Files;
-import com.google.common.io.InputSupplier;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.superdownloader.proEasy.logic.FilesController;
+import com.superdownloader.proEasy.logic.DownloadsController;
 import com.superdownloader.proEasy.types.Response;
 
 /**
@@ -36,31 +32,22 @@ public class TorrentsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
 
 	@Autowired
-	private FilesController controller;
+	private DownloadsController controller;
 
 	@POST
 	@Path("/add")
 	@Produces("text/xml")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
+			@FormDataParam("file") FormDataContentDisposition fileDetail,
+			@FormDataParam("username") String username) {
 		try {
-
-			String uploadedFileLocation = "d://uploaded/" + fileDetail.getFileName();
-
-			// save it
-			writeToFile(uploadedInputStream, uploadedFileLocation);
-
-			String output = "File uploaded to : " + uploadedFileLocation;
-
-			Files.copy(new InputSupplier<InputStream>() {
-				@Override
-				public InputStream getInput() throws IOException {
-					return uploadedInputStream;
-				}
-			}, new File(uploadedFileLocation));
-
-			return Response.createSuccessfulResponse();
+			if (fileDetail.getFileName().endsWith(".torrent")) {
+				controller.addTorrent(username, fileDetail.getFileName(), uploadedInputStream);
+				return Response.createSuccessfulResponse();
+			} else {				
+				return Response.createErrorResponse("Wrong file type, only accept .torrent files");
+			}
 		} catch (Exception e) {
 			LOGGER.error("Can not read list of downloads", e);
 			return Response.createErrorResponse("Can not put to download");
