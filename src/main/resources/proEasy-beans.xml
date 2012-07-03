@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<context:component-scan base-package="com.superdownloader.proEasy"/>
+
+	<!-- CAMEL -->
+	
+	<import resource="camel-context.xml" />
+	
+	<bean id="fileFilter" class="com.superdownloader.proEasy.processors.filters.FileFilter">
+		<property name="pattern" value="${proEasy.includePattern}" />
+	</bean>
+	
+	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+    	<property name="templateLoaderPath" value="/WEB-INF/templates/"/>
+	</bean>
+	
+	<!-- Data sources -->
+	
+	<bean id="proEasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
+		<property name="preferredTestQuery" value="${c3p0.preferredTestQuery}" />
+		<property name="testConnectionOnCheckin" value="${c3p0.testConnectionOnCheckin}" />
+		<property name="maxConnectionAge" value="${c3p0.maxConnectionAge}" />
+		<property name="maxIdleTime" value="${c3p0.maxIdleTime}" />
+	</bean>
+
+</beans>

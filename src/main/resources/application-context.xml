@@ -1,0 +1,18 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath:proEasy-beans.xml"/>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+			    <value>file:/etc/proeasy/jdbc.properties</value>
+			    <value>file:/etc/proeasy/proEasy.properties</value>
+			    <value>file:/etc/proeasy/c3p0.properties</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

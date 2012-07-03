@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Configures the Camel Context-->
+                
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- Endpoints and routes -->
+	
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		
+		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
+    		<redeliveryPolicy maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
+		</errorHandler>
+		
+		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
+		
+		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		
+		<endpoint id="emailEndpoint" uri="smtp://${proEasy.smtp.host}:${proEasy.smtp.port}"/>
+		
+		<onException>
+	        <exception>java.lang.Exception</exception>
+	        <to uri="direct:finale"/>
+	    </onException>
+		
+		<!-- Get new files -->
+		<route>
+			<from ref="loadedFileEndpoint" />
+			
+			<!-- Extract configurations based in username -->
+			<process ref="fileReciever" />
+			<to ref="processEndpoint" />
+		</route>
+		
+		<!-- FTP Sender -->
+		<route errorHandlerRef="errorHandlerFTP">
+			<from ref="processEndpoint" />
+
+			<!-- Send to FTP via dynamic router -->
+			<process ref="ftpSender" />
+	        
+	        <to uri="direct:postActionsEndpoint" />
+		</route>
+		
+		<!-- Post Actions -->
+		<route>
+			<from uri="direct:postActionsEndpoint"/>
+			
+			<!-- SSH command sender -->
+			<filter>
+	           <simple>${in.header.proEasy_ssh_cmd} != null</simple>
+	           <process ref="sshCommandSender" />
+	       </filter>
+	       
+	       <to uri="direct:notificationEndpoint" />
+		</route>
+		
+		<!-- Notifications -->
+		<route>
+			<from uri="direct:notificationEndpoint"/>
+			
+			<!-- Email notifiction -->
+			<filter>
+	           <simple>${in.header.proEasy_notification_email} != null</simple>
+	           	<process ref="emailNotification" />
+	        	<to ref="emailEndpoint"/>
+	        </filter>
+	        
+	        <!-- C2DM notification -->
+			<filter>
+	           <simple>${in.header.proEasy_notification_c2dm} != null</simple>
+	           <process ref="c2dmNotification" />
+	        </filter>
+	        
+	        <to uri="direct:finale" />
+		</route>
+		
+		<!-- Finale -->
+		<route>
+			<from uri="direct:finale" />
+			<process ref="uploadSessionManager" />
+		</route>
+		
+	</camelContext>
+	
+</beans>

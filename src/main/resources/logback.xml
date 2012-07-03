@@ -1,0 +1,5 @@
+<configuration>
+
+    <include file="/etc/proeasy/logback.xml" />
+
+</configuration>
