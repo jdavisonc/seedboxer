@@ -53,11 +53,28 @@ public class DownloadsService {
 	public Response put(@QueryParam("username") String username,
 			@QueryParam("fileName") List<String> fileNames) {
 		try {
-			controller.putToDownload(username, fileNames);
+			controller.putToDownload(username, fileNames, true);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not put to download", e);
 			return Response.createErrorResponse("Can not put to download");
+		}
+	}
+
+	@GET
+	@Path("/delete")
+	@Produces("text/xml")
+	public Response delete(@QueryParam("username") String username,
+			@QueryParam("fileName") String fileNames) {
+		try {
+			if (controller.deleteDownloadInQueue(username, fileNames)) {
+				return Response.createSuccessfulResponse();
+			} else {
+				return Response.createErrorResponse("Can not delete download from queue");
+			}
+		} catch (Exception e) {
+			LOGGER.error("Can not delete download", e);
+			return Response.createErrorResponse("Can not delete download from queue");
 		}
 	}
 

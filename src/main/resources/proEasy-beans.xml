@@ -9,7 +9,7 @@
 
 	<!-- CAMEL -->
 	
-	<import resource="classpath:camel-context.xml" />
+	<import resource="camel-context.xml" />
 	
 	<bean id="fileFilter" class="com.superdownloader.proEasy.processors.filters.FileFilter">
 		<property name="pattern" value="${proEasy.includePattern}" />

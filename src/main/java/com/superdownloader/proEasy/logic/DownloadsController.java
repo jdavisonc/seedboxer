@@ -27,7 +27,7 @@ public class DownloadsController {
 
 	@Value(value="${proEasy.inProgressPath}")
 	private String inProgressPath;
-	
+
 	@Value(value="${proEasy.watchDownloaderPath}")
 	private String watchDownloaderPath;
 
@@ -49,21 +49,21 @@ public class DownloadsController {
 	 * @param fileNames
 	 * @throws Exception
 	 */
-	public void putToDownload(String username, List<String> fileNames) throws Exception {
+	public void putToDownload(String username, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
 			File inProgressFile = getFile(name, inProgressPath);
 			File completeFile = getFile(name, completePath);
 
-			if (inProgressFile.exists() || completeFile.exists()) {
-				File download = new File(getWorkingFolder(username) + File.separator + name + MAGIC_EXTENSION);
-				if (download.createNewFile()) {
-					Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
-				}
-			} else {
+			if (checkExistence && !(inProgressFile.exists() || completeFile.exists())) {
 				throw new IllegalArgumentException("The files not exist. Paths: "
 						+ inProgressFile.getAbsolutePath() + " or " +
 						completeFile.getAbsolutePath());
+			}
+
+			File download = new File(getWorkingFolder(username) + File.separator + name + MAGIC_EXTENSION);
+			if (download.createNewFile()) {
+				Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class DownloadsController {
 
 		return queue;
 	}
-	
+
 	/**
 	 * Save torrent file to watch-dog directory of downloader application (rTorrent or uTorrent) and
 	 * add the same torrent to the user queue.
@@ -103,18 +103,30 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
-		File torrent = new File(watchDownloaderPath + fileName);
+		File torrent = new File(watchDownloaderPath + File.separator + fileName);
 		Files.copy(new InputSupplier<InputStream>() {
 			@Override
 			public InputStream getInput() throws IOException {
 				return torrentFileInStream;
 			}
 		}, torrent);
-		
+
 		String name = TorrentUtils.getName(torrent);
-		putToDownload(username, Collections.singletonList(name));
+		putToDownload(username, Collections.singletonList(name), false);
 	}
-	
+
+	/**
+	 * Delete a download from the queue.
+	 * 
+	 * @param username
+	 * @param fileName
+	 * @return
+	 */
+	public boolean deleteDownloadInQueue(String username, String fileName) {
+		File fileInQueue = new File(getWorkingFolder(username) + File.separator + fileName + MAGIC_EXTENSION);
+		return fileInQueue.delete();
+	}
+
 	/*
 	 * Extra functions
 	 */

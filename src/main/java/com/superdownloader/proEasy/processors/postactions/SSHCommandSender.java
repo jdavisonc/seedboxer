@@ -43,10 +43,10 @@ public class SSHCommandSender implements Processor {
 	@Override
 	public void process(Exchange exchange) {
 		Message msg = exchange.getIn();
-        String url = (String) msg.getHeader(Headers.SSH_URL);
-        String username = (String) msg.getHeader(Headers.SSH_USERNAME);
-        String password = (String) msg.getHeader(Headers.SSH_PASSWORD);
-        String cmd = (String) msg.getHeader(Headers.SSH_CMD);
+		String url = (String) msg.getHeader(Headers.SSH_URL);
+		String username = (String) msg.getHeader(Headers.SSH_USERNAME);
+		String password = (String) msg.getHeader(Headers.SSH_PASSWORD);
+		String cmd = (String) msg.getHeader(Headers.SSH_CMD);
 
 		try {
 			String cmdProcessed = processTemplate(cmd, msg.getHeaders());
@@ -70,22 +70,22 @@ public class SSHCommandSender implements Processor {
 			}
 		});
 
-        ssh.connect(url);
-        try {
-        	ssh.authPassword(username, password);
-            final Session session = ssh.startSession();
-            try {
-    			LOGGER.info("Sending ssh command: {} to {}", command, url);
-                final Command cmd = session.exec(command);
-                LOGGER.debug("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
-                cmd.join(timeToJoin, TimeUnit.SECONDS);
-                LOGGER.info("Exit status: {}", cmd.getExitStatus());
-            } finally {
-                session.close();
-            }
-        } finally {
-            ssh.disconnect();
-        }
+		ssh.connect(url);
+		try {
+			ssh.authPassword(username, password);
+			final Session session = ssh.startSession();
+			try {
+				LOGGER.info("Sending ssh command: {} to {}", command, url);
+				final Command cmd = session.exec(command);
+				LOGGER.debug("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
+				cmd.join(timeToJoin, TimeUnit.SECONDS);
+				LOGGER.info("Exit status: {}", cmd.getExitStatus());
+			} finally {
+				session.close();
+			}
+		} finally {
+			ssh.disconnect();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
