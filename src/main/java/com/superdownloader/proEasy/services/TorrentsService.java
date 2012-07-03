@@ -45,7 +45,7 @@ public class TorrentsService {
 			if (fileDetail.getFileName().endsWith(".torrent")) {
 				controller.addTorrent(username, fileDetail.getFileName(), uploadedInputStream);
 				return Response.createSuccessfulResponse();
-			} else {				
+			} else {
 				return Response.createErrorResponse("Wrong file type, only accept .torrent files");
 			}
 		} catch (Exception e) {
