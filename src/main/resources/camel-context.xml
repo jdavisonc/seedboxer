@@ -13,14 +13,14 @@
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
-    		<redeliveryPolicy maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
+    		<redeliveryPolicy maximumRedeliveries="${proeasy.ftp.retries}" redeliveryDelay="${proeasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
 		</errorHandler>
 		
-		<endpoint id="loadedFileEndpoint" uri="file:${proEasy.basePath}?delay=${proEasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proEasy.readLock}&amp;filter=#fileFilter"/>
+		<endpoint id="loadedFileEndpoint" uri="file:${proeasy.basePath}?delay=${proeasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proeasy.readLock}&amp;filter=#fileFilter"/>
 		
-		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proEasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${proEasy.smtp.host}:${proEasy.smtp.port}"/>
+		<endpoint id="emailEndpoint" uri="smtp://${proeasy.smtp.host}:${proeasy.smtp.port}"/>
 		
 		<onException>
 	        <exception>java.lang.Exception</exception>
@@ -52,7 +52,7 @@
 			
 			<!-- SSH command sender -->
 			<filter>
-	           <simple>${in.header.proEasy_ssh_cmd} != null</simple>
+	           <simple>${in.header.proeasy_ssh_cmd} != null</simple>
 	           <process ref="sshCommandSender" />
 	       </filter>
 	       
@@ -65,14 +65,14 @@
 			
 			<!-- Email notifiction -->
 			<filter>
-	           <simple>${in.header.proEasy_notification_email} != null</simple>
+	           <simple>${in.header.proeasy_notification_email} != null</simple>
 	           	<process ref="emailNotification" />
 	        	<to ref="emailEndpoint"/>
 	        </filter>
 	        
 	        <!-- C2DM notification -->
 			<filter>
-	           <simple>${in.header.proEasy_notification_c2dm} != null</simple>
+	           <simple>${in.header.proeasy_notification_c2dm} != null</simple>
 	           <process ref="c2dmNotification" />
 	        </filter>
 	        

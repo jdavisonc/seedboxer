@@ -4,7 +4,7 @@ public class Headers {
 
 	public static final String SEPARATOR = "_";
 
-	public static final String PREFIX = "proEasy" + SEPARATOR;
+	public static final String PREFIX = "proeasy" + SEPARATOR;
 
 	public static final String USERNAME = PREFIX + "username";
 

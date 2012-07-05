@@ -5,14 +5,14 @@
    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<context:component-scan base-package="com.superdownloader.proEasy"/>
+	<context:component-scan base-package="com.superdownloader.proeasy"/>
 
 	<!-- CAMEL -->
 	
 	<import resource="camel-context.xml" />
 	
-	<bean id="fileFilter" class="com.superdownloader.proEasy.processors.filters.FileFilter">
-		<property name="pattern" value="${proEasy.includePattern}" />
+	<bean id="fileFilter" class="com.superdownloader.proeasy.processors.filters.FileFilter">
+		<property name="pattern" value="${proeasy.includePattern}" />
 	</bean>
 	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
@@ -21,7 +21,7 @@
 	
 	<!-- Data sources -->
 	
-	<bean id="proEasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="proeasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />

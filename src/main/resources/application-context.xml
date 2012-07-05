@@ -3,7 +3,7 @@
 	xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<import resource="classpath:proEasy-beans.xml"/>
+	<import resource="classpath:proeasy-beans.xml"/>
 	
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
