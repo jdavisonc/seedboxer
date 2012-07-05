@@ -20,6 +20,7 @@
 		<sshj.version>0.4.0</sshj.version>
 		<guava.version>12.0</guava.version>
 		<bencode.version>1.0-SNAPSHOT</bencode.version>
+		<jetty.version>8.1.4.v20120524</jetty.version>
 	</properties>
 
 	<dependencies>
@@ -168,6 +169,16 @@
 			<groupId>org.klomp.snark</groupId>
 			<artifactId>bencode</artifactId>
 			<version>${bencode.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
 		</dependency>
 	</dependencies>
 
