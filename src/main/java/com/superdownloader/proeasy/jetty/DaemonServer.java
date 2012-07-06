@@ -1,13 +1,14 @@
-package com.superdownloader.proeasy;
+package com.superdownloader.proeasy.jetty;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.ProtectionDomain;
 
+import org.apache.commons.io.FileUtils;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ShutdownHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -60,7 +61,7 @@ public class DaemonServer {
 
 			// Increase thread pool
 			QueuedThreadPool threadPool = new QueuedThreadPool();
-			threadPool.setMaxThreads(100);
+			threadPool.setMaxThreads(10);
 			srv.setThreadPool(threadPool);
 
 			// Ensure using the non-blocking connector (NIO)
@@ -70,7 +71,7 @@ public class DaemonServer {
 			srv.setConnectors(new Connector[]{connector});
 
 			// Get the war-file
-			ProtectionDomain protectionDomain = Main.class.getProtectionDomain();
+			ProtectionDomain protectionDomain = this.getClass().getProtectionDomain();
 			String warFile = protectionDomain.getCodeSource().getLocation().toExternalForm();
 			String currentDir = new File(protectionDomain.getCodeSource().getLocation().getPath()).getParent();
 
