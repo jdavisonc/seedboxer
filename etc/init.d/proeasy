@@ -3,8 +3,8 @@
 # Just a generic sample init-script. You should integrate it with a proper wrapper for your Distribution / OS.
 #
 
-APP_NAME=appname
-CONFIG=/etc/jetty.properties
+APP_NAME=proeasy
+CONFIG=/etc/proeasy/jetty.properties
 JETTY_ARGS="-Dconfig=${CONFIG}"
 GRACE=10 # 10 secs
 
