@@ -1,5 +1,5 @@
 
-package com.superdownloader.proeasy.processors.filters;
+package com.superdownloader.proeasy.mule.processors.filters;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -9,7 +9,7 @@ import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.superdownloader.proeasy.processors.UploadSessionManager;
+import com.superdownloader.proeasy.mule.processors.UploadSessionManager;
 
 /**
  * @author jdavison

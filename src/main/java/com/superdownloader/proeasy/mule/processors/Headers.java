@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.processors;
+package com.superdownloader.proeasy.mule.processors;
 
 public class Headers {
 

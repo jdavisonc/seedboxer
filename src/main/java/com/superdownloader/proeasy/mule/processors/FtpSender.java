@@ -1,5 +1,5 @@
 
-package com.superdownloader.proeasy.processors;
+package com.superdownloader.proeasy.mule.processors;
 
 import java.io.File;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
-import com.superdownloader.proeasy.exceptions.TransportException;
+import com.superdownloader.proeasy.mule.exceptions.TransportException;
 
 /**
  * @author harley

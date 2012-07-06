@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.processors;
+package com.superdownloader.proeasy.mule.processors;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.types.Upload;
+import com.superdownloader.proeasy.core.types.Upload;
 
 /**
  * @author harley

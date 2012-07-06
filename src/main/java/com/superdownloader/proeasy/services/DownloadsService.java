@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.logic.DownloadsController;
-import com.superdownloader.proeasy.types.FileValue;
-import com.superdownloader.proeasy.types.Response;
+import com.superdownloader.proeasy.core.logic.DownloadsController;
+import com.superdownloader.proeasy.core.types.FileValue;
+import com.superdownloader.proeasy.core.types.Response;
 
 /**
  * WebService for handle downloads

@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.processors.notifications;
+package com.superdownloader.proeasy.mule.processors.notifications;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;

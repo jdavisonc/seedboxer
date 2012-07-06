@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.logic;
+package com.superdownloader.proeasy.core.logic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.persistence.UsersDao;
-import com.superdownloader.proeasy.processors.Headers;
+import com.superdownloader.proeasy.core.persistence.UsersDao;
+import com.superdownloader.proeasy.mule.processors.Headers;
 
 /**
  * @author harley

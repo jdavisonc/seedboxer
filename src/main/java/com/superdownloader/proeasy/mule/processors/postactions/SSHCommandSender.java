@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.processors.postactions;
+package com.superdownloader.proeasy.mule.processors.postactions;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.processors.Headers;
+import com.superdownloader.proeasy.mule.processors.Headers;
 
 import freemarker.template.TemplateException;
 

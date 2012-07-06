@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.processors;
+package com.superdownloader.proeasy.mule.processors;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.logic.UsersController;
+import com.superdownloader.proeasy.core.logic.UsersController;
+
 
 /**
  * @author jdavison

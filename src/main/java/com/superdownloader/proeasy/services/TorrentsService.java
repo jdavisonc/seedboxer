@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.superdownloader.proeasy.logic.DownloadsController;
-import com.superdownloader.proeasy.types.Response;
+import com.superdownloader.proeasy.core.logic.DownloadsController;
+import com.superdownloader.proeasy.core.types.Response;
 
 /**
  * WebService that expose method to work with torrent files

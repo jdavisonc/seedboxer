@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.types;
+package com.superdownloader.proeasy.core.types;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

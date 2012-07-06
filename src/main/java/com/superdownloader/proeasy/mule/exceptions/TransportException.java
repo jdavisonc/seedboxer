@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.exceptions;
+package com.superdownloader.proeasy.mule.exceptions;
 
 public class TransportException extends Exception {
 
