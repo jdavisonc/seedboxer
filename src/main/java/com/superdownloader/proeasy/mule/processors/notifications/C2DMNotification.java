@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.core.utils.C2DMUtils;
 import com.superdownloader.proeasy.mule.processors.Headers;
+import com.superdownloader.proeasy.mule.utils.C2DMUtils;
 
 /**
  * @author harley

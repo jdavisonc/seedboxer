@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.logic.UploadSessionManager;
 import com.superdownloader.proeasy.core.types.Upload;
-import com.superdownloader.proeasy.mule.processors.UploadSessionManager;
 
 /**
  * WebService to get the status of an upload

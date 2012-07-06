@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.DownloadsController;
 import com.superdownloader.proeasy.core.types.FileValue;
-import com.superdownloader.proeasy.core.types.Response;
+import com.superdownloader.proeasy.services.types.Response;
 
 /**
  * WebService for handle downloads

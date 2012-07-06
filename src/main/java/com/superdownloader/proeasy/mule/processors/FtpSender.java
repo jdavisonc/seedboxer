@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
+import com.superdownloader.proeasy.core.logic.UploadSessionManager;
 import com.superdownloader.proeasy.mule.exceptions.TransportException;
 
 /**

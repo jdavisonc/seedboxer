@@ -9,7 +9,7 @@ import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.superdownloader.proeasy.mule.processors.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.UploadSessionManager;
 
 /**
  * @author jdavison

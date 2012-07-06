@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.core.types.Response;
+import com.superdownloader.proeasy.services.types.Response;
 
 /**
  * WebService for list files

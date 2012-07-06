@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors;
+package com.superdownloader.proeasy.core.logic;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.types.Upload;
+import com.superdownloader.proeasy.mule.processors.Headers;
 
 /**
  * @author harley
