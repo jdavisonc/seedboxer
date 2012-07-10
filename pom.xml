@@ -211,7 +211,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>com.superdownloader.proeasy.DaemonServer</mainClass>
+							<mainClass>com.superdownloader.proeasy.jetty.DaemonServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

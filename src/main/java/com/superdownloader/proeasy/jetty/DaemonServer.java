@@ -26,14 +26,18 @@ public class DaemonServer {
 
 	public static void main(String[] args) throws Exception {
 		DaemonServer sc = new DaemonServer();
-
-		if (args.length != 1)               sc.start();
-		else if ("status".equals(args[0]))  sc.status();
-		else if ("offline".equals(args[0])) sc.offline();
-		else if ("online".equals(args[0]))  sc.online();
-		else if ("stop".equals(args[0]))    sc.stop();
-		else if ("start".equals(args[0]))   sc.start();
-		else                                sc.usage();
+		sc.start();
+	}
+	
+	private void registerShutdownHook(final Server server, final WebAppContext context) {
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Shutdown hook ran!");
+    			try { context.stop(); } catch (Exception ignored) {}
+    			try { server.stop();  } catch (Exception ignored) {}
+            }
+        });
 	}
 
 	public DaemonServer() {
@@ -85,42 +89,16 @@ public class DaemonServer {
 			// Add the handlers
 			HandlerList handlers = new HandlerList();
 			handlers.addHandler(context);
-			handlers.addHandler(new ShutdownHandler(srv, context, secret));
-			handlers.addHandler(new BigIPNodeHandler(secret));
 			srv.setHandler(handlers);
+			
+			// Register shutdown hook
+			registerShutdownHook(srv, context);
 
 			srv.start();
 			srv.join();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void stop() {
-		System.out.println(ShutdownHandler.shutdown(port, secret));
-	}
-
-	private void status() {
-		System.out.println(BigIPNodeHandler.check(port));
-	}
-
-	private void online() {
-		System.out.println(BigIPNodeHandler.online(port, secret));
-	}
-
-	private void offline() {
-		System.out.println(BigIPNodeHandler.offline(port, secret));
-	}
-
-	private void usage() {
-		System.out.println("Usage: java -jar <file.jar> [start|stop|status|enable|disable]\n\t" +
-				"start    Start the server (default)\n\t" +
-				"stop     Stop the server gracefully\n\t" +
-				"status   Check the current server status\n\t" +
-				"online   Sign in to BigIP load balancer\n\t" +
-				"offline  Sign out from BigIP load balancer\n"
-				);
-		System.exit(-1);
 	}
 
 	private void resetTempDirectory(WebAppContext context, String currentDir) throws IOException {

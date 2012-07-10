@@ -2,6 +2,17 @@
 #
 # Just a generic sample init-script. You should integrate it with a proper wrapper for your Distribution / OS.
 #
+# 		System.out.println("Usage: java -jar <file.jar> [start|stop|status|enable|disable]\n\t" +
+				"start    Start the server (default)\n\t" +
+				"stop     Stop the server gracefully\n\t" +
+				"status   Check the current server status\n\t" +
+				"online   Sign in to BigIP load balancer\n\t" +
+				"offline  Sign out from BigIP load balancer\n"
+				);
+#
+#
+#
+#
 
 APP_NAME=proeasy
 CONFIG=/etc/proeasy/jetty.properties
