@@ -28,16 +28,16 @@ public class DaemonServer {
 		DaemonServer sc = new DaemonServer();
 		sc.start();
 	}
-	
+
 	private void registerShutdownHook(final Server server, final WebAppContext context) {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                System.out.println("Shutdown hook ran!");
-    			try { context.stop(); } catch (Exception ignored) {}
-    			try { server.stop();  } catch (Exception ignored) {}
-            }
-        });
+			@Override
+			public void run() {
+				System.out.println("Shutdown hook ran!");
+				try { context.stop(); } catch (Exception ignored) {}
+				try { server.stop();  } catch (Exception ignored) {}
+			}
+		});
 	}
 
 	public DaemonServer() {
@@ -65,7 +65,7 @@ public class DaemonServer {
 
 			// Increase thread pool
 			QueuedThreadPool threadPool = new QueuedThreadPool();
-			threadPool.setMaxThreads(10);
+			threadPool.setMaxThreads(5);
 			srv.setThreadPool(threadPool);
 
 			// Ensure using the non-blocking connector (NIO)
@@ -90,7 +90,7 @@ public class DaemonServer {
 			HandlerList handlers = new HandlerList();
 			handlers.addHandler(context);
 			srv.setHandler(handlers);
-			
+
 			// Register shutdown hook
 			registerShutdownHook(srv, context);
 
