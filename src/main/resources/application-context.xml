@@ -8,9 +8,9 @@
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-			    <value>file:/etc/proeasy/jdbc.properties</value>
-			    <value>file:/etc/proeasy/proeasy.properties</value>
-			    <value>file:/etc/proeasy/c3p0.properties</value>
+			    <value>file:${proeasy.config.path}/jdbc.properties</value>
+			    <value>file:${proeasy.config.path}/proeasy.properties</value>
+			    <value>file:${proeasy.config.path}/c3p0.properties</value>
 			</list>
 		</property>
 	</bean>
