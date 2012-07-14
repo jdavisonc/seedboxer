@@ -8,10 +8,9 @@
 	<context:component-scan base-package="com.superdownloader.proeasy"/>
 
 	<!-- CAMEL -->
-	
 	<import resource="camel-context.xml" />
 	
-	<bean id="fileFilter" class="com.superdownloader.proeasy.processors.filters.FileFilter">
+	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processors.filters.FileFilter">
 		<property name="pattern" value="${proeasy.includePattern}" />
 	</bean>
 	
@@ -20,7 +19,6 @@
 	</bean>
 	
 	<!-- Data sources -->
-	
 	<bean id="proeasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />

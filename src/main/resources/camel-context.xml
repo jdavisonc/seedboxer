@@ -1,7 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Configures the Camel Context-->
-                
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
@@ -32,7 +28,7 @@
 			<from ref="loadedFileEndpoint" />
 			
 			<!-- Extract configurations based in username -->
-			<process ref="fileReciever" />
+			<process ref="fileReceiver" />
 			<to ref="processEndpoint" />
 		</route>
 		

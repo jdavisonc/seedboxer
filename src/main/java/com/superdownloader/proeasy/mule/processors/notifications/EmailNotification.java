@@ -9,7 +9,7 @@ import org.apache.camel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.superdownloader.proeasy.mule.processors.Headers;
@@ -22,7 +22,7 @@ import freemarker.template.TemplateException;
  * @author harley
  *
  */
-@Service(value = "emailNotification")
+@Component
 public class EmailNotification extends Notification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotification.class);

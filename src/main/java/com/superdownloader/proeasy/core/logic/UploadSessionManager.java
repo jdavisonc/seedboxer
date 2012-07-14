@@ -21,12 +21,12 @@ import com.superdownloader.proeasy.mule.processors.Headers;
  * @author harley
  *
  */
-@Service(value = "uploadSessionManager")
+@Service
 public class UploadSessionManager implements Processor {
 
 	private static final String FILE_EXTENSION = ".upl";
 
-	@Value("${proEasy.simultaneousUploadsPerUser}")
+	@Value("${proeasy.simultaneousUploadsPerUser}")
 	private int simultaneousUploadsPerUser;
 
 	private final Map<String, Map<String, Upload>> uploadsPerUser;

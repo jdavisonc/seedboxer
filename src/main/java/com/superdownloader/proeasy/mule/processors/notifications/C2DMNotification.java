@@ -9,7 +9,7 @@ import org.apache.camel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.mule.processors.Headers;
 import com.superdownloader.proeasy.mule.utils.C2DMUtils;
@@ -18,15 +18,15 @@ import com.superdownloader.proeasy.mule.utils.C2DMUtils;
  * @author harley
  *
  */
-@Service(value = "c2dmNotification")
+@Component(value = "c2dmNotification")
 public class C2DMNotification extends Notification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(C2DMNotification.class);
 
-	@Value("${proEasy.c2dm.username}")
+	@Value("${proeasy.c2dm.username}")
 	private String c2dmUsername;
 
-	@Value("${proEasy.c2dm.password}")
+	@Value("${proeasy.c2dm.password}")
 	private String c2dmPassword;
 
 	private String authToken = null;

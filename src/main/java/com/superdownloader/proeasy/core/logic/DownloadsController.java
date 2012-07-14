@@ -22,16 +22,16 @@ public class DownloadsController {
 	private static final String MAGIC_EXTENSION = ".upl";
 	private static final String MAGIC_FOLDER = "to-home-server";
 
-	@Value(value="${proEasy.completePath}")
+	@Value(value="${proeasy.completePath}")
 	private String completePath;
 
-	@Value(value="${proEasy.inProgressPath}")
+	@Value(value="${proeasy.inProgressPath}")
 	private String inProgressPath;
 
-	@Value(value="${proEasy.watchDownloaderPath}")
+	@Value(value="${proeasy.watchDownloaderPath}")
 	private String watchDownloaderPath;
 
-	@Value(value="${proEasy.basePath}")
+	@Value(value="${proeasy.basePath}")
 	private String basePath;
 
 	public List<FileValue> getCompletedFiles() {

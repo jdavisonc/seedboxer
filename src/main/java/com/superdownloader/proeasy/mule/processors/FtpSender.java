@@ -10,7 +10,7 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
@@ -22,7 +22,7 @@ import com.superdownloader.proeasy.mule.exceptions.TransportException;
  * @author harley
  *
  */
-@Service(value = "ftpSender")
+@Component
 public class FtpSender implements Processor {
 
 	private static final long  MEGABYTE = 1024L * 1024L;

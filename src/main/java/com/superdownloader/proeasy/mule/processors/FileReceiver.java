@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.UploadSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
@@ -29,7 +29,7 @@ import com.superdownloader.proeasy.core.logic.UsersController;
  * @author jdavison
  *
  */
-@Service(value = "fileReciever")
+@Component
 public class FileReceiver implements Processor {
 
 	private static final long  MEGABYTE = 1024L * 1024L;
@@ -44,7 +44,7 @@ public class FileReceiver implements Processor {
 
 	private Pattern pattern = null;
 
-	@Value("${proEasy.includePattern}")
+	@Value("${proeasy.includePattern}")
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}

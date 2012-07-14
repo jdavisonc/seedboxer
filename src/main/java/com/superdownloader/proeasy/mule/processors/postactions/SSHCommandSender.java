@@ -19,7 +19,7 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.mule.processors.Headers;
 
@@ -29,15 +29,15 @@ import freemarker.template.TemplateException;
  * @author harley
  *
  */
-@Service(value = "sshCommandSender")
+@Component(value = "sshCommandSender")
 public class SSHCommandSender implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SSHCommandSender.class);
 
-	@Value("${proEasy.ssh.timeToJoin}")
+	@Value("${proeasy.ssh.timeToJoin}")
 	private int timeToJoin;
 
-	@Value("${proEasy.ssh.variableNameInCmd}")
+	@Value("${proeasy.ssh.variableNameInCmd}")
 	private String variableNameInCmd;
 
 	@Override
@@ -60,31 +60,34 @@ public class SSHCommandSender implements Processor {
 
 	private void sendSSHCmd(String url, String username, String password, String command)
 			throws IOException {
-		final SSHClient ssh = new SSHClient();
+		final SSHClient sshClient = new SSHClient();
 
 		// TODO: Try to change this to loadKnownHost() or something like this
-		ssh.addHostKeyVerifier(new HostKeyVerifier() {
+		sshClient.addHostKeyVerifier(new HostKeyVerifier() {
 			@Override
 			public boolean verify(String arg0, int arg1, PublicKey arg2) {
 				return true; // don't bother verifying
 			}
 		});
 
-		ssh.connect(url);
 		try {
-			ssh.authPassword(username, password);
-			final Session session = ssh.startSession();
+			sshClient.setConnectTimeout(timeToJoin);
+			sshClient.setTimeout(timeToJoin);
+			sshClient.connect(url);
+			sshClient.authPassword(username, password);
+
+			final Session session = sshClient.startSession();
 			try {
 				LOGGER.info("Sending ssh command: {} to {}", command, url);
 				final Command cmd = session.exec(command);
-				LOGGER.debug("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
+				LOGGER.trace("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
 				cmd.join(timeToJoin, TimeUnit.SECONDS);
-				LOGGER.info("Exit status: {}", cmd.getExitStatus());
+				LOGGER.trace("Exit status: {}", cmd.getExitStatus());
 			} finally {
 				session.close();
 			}
 		} finally {
-			ssh.disconnect();
+			sshClient.disconnect();
 		}
 	}
 
