@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.UploadSessionManager;
-import com.superdownloader.proeasy.core.types.Upload;
+import com.superdownloader.proeasy.core.types.Download;
 
 /**
  * WebService to get the status of an upload
@@ -29,7 +29,7 @@ public class StatusService {
 
     @GET
     @Produces("text/xml")
-    public List<Upload> status(@QueryParam("username") String username) {
+    public List<Download> status(@QueryParam("username") String username) {
     	return uploadSessionManager.getUserUploads(username);
     }
 

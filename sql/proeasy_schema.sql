@@ -20,11 +20,11 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `configurations` (
-  `id_user` int(11) NOT NULL DEFAULT '0',
+  `id_user` int NOT NULL DEFAULT '0',
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `value` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_user`,`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `configurations`
@@ -38,13 +38,28 @@ CREATE TABLE IF NOT EXISTS `configurations` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `users`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `downloads_queue`
+--
+
+CREATE TABLE  `proeasy`.`downloads_queue` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user_id` int NOT NULL ,
+`download` varchar( 200 ) NOT NULL ,
+`created_date` datetime NOT NULL ,
+`in_progress` boolean NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

@@ -51,6 +51,25 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 	}
 
 	@Override
+	public Map<String, String> getUserConfigs(int userId) {
+		String sql = "SELECT c.name as name, c.value as value " +
+				"FROM configurations c, users u " +
+				"WHERE c.id_user = u.id AND u.id = :userId;";
+
+		MapSqlParameterSource args = new MapSqlParameterSource();
+		args.addValue("userId", userId);
+
+		List<Config> configs = getSimpleJdbcTemplate().query(sql, new ConfigsMapper(), args);
+
+		Map<String, String> configMap = new HashMap<String, String>();
+		for (Config c : configs) {
+			configMap.put(c.name, c.value);
+		}
+
+		return configMap;
+	}
+
+	@Override
 	public Map<String, String> getUserConfigs(String username) {
 		String sql = "SELECT c.name as name, c.value as value " +
 				"FROM configurations c, users u " +

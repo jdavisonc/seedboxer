@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author harley
  *
  */
-@XmlRootElement(name="upload")
-public class Upload implements Cloneable {
+@XmlRootElement(name="download")
+public class Download implements Cloneable {
 
 	private String fileName;
 
@@ -16,9 +16,9 @@ public class Upload implements Cloneable {
 
 	private long transferred = 0;
 
-	public Upload() { }
+	public Download() { }
 
-	public Upload(String fileName) {
+	public Download(String fileName) {
 		this.fileName = fileName;
 	}
 
@@ -65,7 +65,7 @@ public class Upload implements Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Upload other = (Upload) obj;
+		Download other = (Download) obj;
 		if (fileName == null) {
 			if (other.fileName != null)
 				return false;
@@ -79,7 +79,7 @@ public class Upload implements Cloneable {
 	}
 
 	@Override
-	public Upload clone() throws CloneNotSupportedException {
-		return (Upload) super.clone();
+	public Download clone() throws CloneNotSupportedException {
+		return (Download) super.clone();
 	}
 }

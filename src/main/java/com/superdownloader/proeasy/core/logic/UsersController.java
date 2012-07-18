@@ -30,4 +30,8 @@ public class UsersController {
 		return usersDao.getUserConfigs(username);
 	}
 
+	public Map<String, String> userConfiguration(int userId) {
+		return usersDao.getUserConfigs(userId);
+	}
+
 }

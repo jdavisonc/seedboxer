@@ -18,17 +18,33 @@
 		
 		<endpoint id="emailEndpoint" uri="smtp://${proeasy.smtp.host}:${proeasy.smtp.port}"/>
 		
+		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=60000" />
+		
 		<onException>
 	        <exception>java.lang.Exception</exception>
 	        <to uri="direct:finale"/>
 	    </onException>
+
+		<route>
+			<from ref="pooling" />
+			<process ref="queuePooler" />
+			<filter>
+				<simple>${in.body} != null</simple>
+				<split>
+					<simple>${body}</simple>
+					<process ref="processDownload" />
+				</split>
+			</filter>
+		</route>
 		
 		<!-- Get new files -->
 		<route>
-			<from ref="loadedFileEndpoint" />
+			<from ref="processDownload" />
 			
-			<!-- Extract configurations based in username -->
-			<process ref="fileReceiver" />
+			<!-- Extract configurations based in username id -->
+<!-- 			<process ref="fileReceiver" /> -->
+			
+			<process ref="downloadReceiver"/>
 			<to ref="processEndpoint" />
 		</route>
 		
