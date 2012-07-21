@@ -27,7 +27,8 @@ public class JdbcUsersDao extends SimpleJdbcDaoSupport implements UsersDao {
 		setDataSource(proEasyDataSource);
 	}
 
-	private int getUserId(String username) {
+	@Override
+	public Integer getUserId(String username) {
 		String sql = "SELECT id FROM users WHERE username = :username LIMIT 1;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();

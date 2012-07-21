@@ -94,7 +94,7 @@ public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements Downl
 
 	@Override
 	public void remove(int id) {
-		String updateSql = "DELETE FROM downloads_queue WHERE id = :ids;";
+		String updateSql = "DELETE FROM downloads_queue WHERE id = :id;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("id", id);

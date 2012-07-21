@@ -8,7 +8,7 @@
 	<context:component-scan base-package="com.superdownloader.proeasy"/>
 
 	<!-- CAMEL -->
-	<import resource="camel-context.xml" />
+	<import resource="classpath:camel-context.xml" />
 	
 	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processors.filters.FileFilter">
 		<property name="pattern" value="${proeasy.includePattern}" />

@@ -8,7 +8,7 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/proeasy.log</file>
+		<file>/var/log/proeasy/proeasy.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>/var/log/proeasy/proeasy.%d{yyyy-MM-dd}.log
 			</fileNamePattern>

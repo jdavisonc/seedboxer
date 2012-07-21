@@ -14,14 +14,17 @@
 		
 		<endpoint id="loadedFileEndpoint" uri="file:${proeasy.basePath}?delay=${proeasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proeasy.readLock}&amp;filter=#fileFilter"/>
 		
-		<endpoint id="processEndpoint" uri="seda:processFile?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		<endpoint id="uploadEndpoint" uri="seda:processFile?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
 		<endpoint id="emailEndpoint" uri="smtp://${proeasy.smtp.host}:${proeasy.smtp.port}"/>
 		
-		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=60000" />
+		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${proeasy.pollPeriod}" />
 		
 		<onException>
 	        <exception>java.lang.Exception</exception>
+	        <handled>
+	        	<constant>true</constant>
+	        </handled>
 	        <to uri="direct:finale"/>
 	    </onException>
 
@@ -32,25 +35,21 @@
 				<simple>${in.body} != null</simple>
 				<split>
 					<simple>${body}</simple>
-					<process ref="processDownload" />
+					<to uri="direct:processDownload" />
 				</split>
 			</filter>
 		</route>
 		
-		<!-- Get new files -->
+		<!-- Process download from queue -->
 		<route>
-			<from ref="processDownload" />
-			
-			<!-- Extract configurations based in username id -->
-<!-- 			<process ref="fileReceiver" /> -->
-			
+			<from uri="direct:processDownload" />
 			<process ref="downloadReceiver"/>
-			<to ref="processEndpoint" />
+			<to ref="uploadEndpoint" />
 		</route>
 		
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
-			<from ref="processEndpoint" />
+			<from ref="uploadEndpoint" />
 
 			<!-- Send to FTP via dynamic router -->
 			<process ref="ftpSender" />
@@ -94,7 +93,8 @@
 		<!-- Finale -->
 		<route>
 			<from uri="direct:finale" />
-			<process ref="uploadSessionManager" />
+			<process ref="queueRemover" />
+			<process ref="downloadSessionManager" />
 		</route>
 		
 	</camelContext>

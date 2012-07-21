@@ -8,7 +8,7 @@ import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.superdownloader.proeasy.core.logic.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 
 /**
  * @author jdavison
@@ -19,7 +19,7 @@ public class FileFilter implements GenericFileFilter<Object> {
 	private Pattern pattern = null;
 
 	@Autowired
-	private UploadSessionManager uploadSessionManager;
+	private DownloadSessionManager uploadSessionManager;
 
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
@@ -31,7 +31,9 @@ public class FileFilter implements GenericFileFilter<Object> {
 		if (pattern != null) {
 			Matcher m = pattern.matcher(relativePath);
 			if (m.matches()) {
-				return uploadSessionManager.addUserUpload(m.group(1), m.group(2));
+				//return uploadSessionManager.addUserDownload(m.group(1), m.group(2));
+				// TODO:
+				return false;
 			} else {
 				return false;
 			}

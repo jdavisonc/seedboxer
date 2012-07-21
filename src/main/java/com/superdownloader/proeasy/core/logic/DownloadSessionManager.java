@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,32 +23,40 @@ import com.superdownloader.proeasy.mule.processors.Headers;
  *
  */
 @Service
-public class UploadSessionManager implements Processor {
+public class DownloadSessionManager implements Processor {
 
 	private static final String FILE_EXTENSION = ".upl";
 
 	@Value("${proeasy.simultaneousDownloadsPerUser}")
-	private int simultaneousUploadsPerUser;
+	private int simultaneousDownloadsPerUser;
 
-	private final Map<String, Map<String, Download>> uploadsPerUser;
+	@Autowired
+	private UsersController userController;
+
+	private final Map<Integer, Map<Integer, Download>> downloadsPerUser;
 
 	private final Object lock;
 
-	public UploadSessionManager() {
-		uploadsPerUser = new HashMap<String, Map<String, Download>>();
+	public DownloadSessionManager() {
+		downloadsPerUser = new HashMap<Integer, Map<Integer, Download>>();
 		lock = new Object();
 	}
 
-	public boolean addUserUpload(String username, String filename) {
+	public boolean addUserDownload(String username, int downloadId, String filename) {
+		Integer userId = userController.getUserId(username);
+		return addUserDownload(userId, downloadId, filename);
+	}
+
+	public boolean addUserDownload(int userId, int downloadId, String filename) {
 		synchronized (lock) {
-			Map<String, Download> userUploads = uploadsPerUser.get(username);
+			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads == null) {
-				userUploads = new HashMap<String, Download>();
-				uploadsPerUser.put(username, userUploads);
+				userUploads = new HashMap<Integer, Download>();
+				downloadsPerUser.put(userId, userUploads);
 			}
 			String file = fixFilename(filename);
-			if (userUploads.size() < simultaneousUploadsPerUser && !userUploads.containsKey(file)) {
-				userUploads.put(file, new Download(file));
+			if (userUploads.size() < simultaneousDownloadsPerUser && !userUploads.containsKey(file)) {
+				userUploads.put(downloadId, new Download(file));
 				return true;
 			} else {
 				return false;
@@ -55,11 +64,11 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public void setUserUploadSize(String username, String filename, long size) {
+	public void setUserDownloadSize(int userId, int downloadId, long size) {
 		synchronized (lock) {
-			Map<String, Download> userUploads = uploadsPerUser.get(username);
+			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
-				Download upload = userUploads.get(fixFilename(filename));
+				Download upload = userUploads.get(downloadId);
 				if (upload != null) {
 					upload.setSize(size);
 				}
@@ -67,11 +76,11 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public void setUserUploadProgress(String username, String filename, long transferred) {
+	public void setUserDownloadProgress(int userId, int downloadId, long transferred) {
 		synchronized (lock) {
-			Map<String, Download> userUploads = uploadsPerUser.get(username);
+			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
-				Download upload = userUploads.get(fixFilename(filename));
+				Download upload = userUploads.get(downloadId);
 				if (upload != null) {
 					upload.setTransferred(transferred);
 				}
@@ -79,9 +88,14 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public List<Download> getUserUploads(String username) {
+	public List<Download> getUserDownloads(String username) {
+		Integer userId = userController.getUserId(username);
+		return getUserDownloads(userId);
+	}
+
+	public List<Download> getUserDownloads(int userId) {
 		synchronized (lock) {
-			Map<String, Download> userUploads = uploadsPerUser.get(username);
+			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
 				try {
 					Collection<Download> uploads = userUploads.values();
@@ -99,11 +113,11 @@ public class UploadSessionManager implements Processor {
 		}
 	}
 
-	public Download removeUserUpload(String username, String filename) {
+	public Download removeUserDownload(int userId, int downloadId) {
 		synchronized (lock) {
-			Map<String, Download> userUploads = uploadsPerUser.get(username);
+			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
-				return userUploads.remove(fixFilename(filename));
+				return userUploads.remove(downloadId);
 			} else {
 				return null;
 			}
@@ -125,9 +139,9 @@ public class UploadSessionManager implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		String username = (String) msg.getHeader(Headers.USERNAME);
-		String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
-		removeUserUpload(username, fixFilename(filepath));
+		Integer userId = (Integer) msg.getHeader(Headers.USER_ID);
+		Integer downloadId = (Integer) msg.getHeader(Headers.DOWNLOAD_ID);
+		removeUserDownload(userId, downloadId);
 	}
 
 }

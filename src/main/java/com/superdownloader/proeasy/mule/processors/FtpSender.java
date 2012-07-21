@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
-import com.superdownloader.proeasy.core.logic.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 import com.superdownloader.proeasy.mule.exceptions.TransportException;
 
 /**
@@ -28,15 +28,15 @@ public class FtpSender implements Processor {
 	private static final long  MEGABYTE = 1024L * 1024L;
 
 	@Autowired
-	private UploadSessionManager uploadSessionManager;
+	private DownloadSessionManager uploadSessionManager;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FtpSender.class);
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		final String username = (String) msg.getHeader(Headers.USERNAME);
-		final String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
+		final Integer userId = (Integer) msg.getHeader(Headers.USER_ID);
+		final Integer downloadId = (Integer) msg.getHeader(Headers.DOWNLOAD_ID);
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
@@ -55,7 +55,7 @@ public class FtpSender implements Processor {
 			LOGGER.info("Connected to {}", server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
-				ftpUploader.upload(new File(toUpload), new FtpStatusListener(username, filepath));
+				ftpUploader.upload(new File(toUpload), new FtpStatusListener(userId, downloadId));
 			}
 		} catch (Exception e) {
 			throw new TransportException("Error at uploading file via FTP", e);
@@ -70,13 +70,13 @@ public class FtpSender implements Processor {
 
 		private double transferredInMbs = 0L;
 
-		private String username;
+		private int downloadId;
 
-		private String filepath;
+		private int userId;
 
-		public FtpStatusListener(String username, String filepath) {
-			this.username = username;
-			this.filepath = filepath;
+		public FtpStatusListener(int userId, int downloadId) {
+			this.userId = userId;
+			this.downloadId = downloadId;
 		}
 
 		@Override
@@ -85,60 +85,11 @@ public class FtpSender implements Processor {
 			double transferred = transferredInMbs + ((double) bytesTransferred / (double) MEGABYTE);
 
 			if (((long)transferred) > ((long)transferredInMbs)) {
-				uploadSessionManager.setUserUploadProgress(username, filepath, (long)transferred);
+				uploadSessionManager.setUserDownloadProgress(userId, downloadId, (long)transferred);
 			}
 			transferredInMbs = transferred;
 		}
 
 	}
-
-	/**
-	 * TODO: This was implemented based in ftp endpoint that has Camel (Couldn't get it work properly)
-	 * 		 Currently only upload the file get! We need to upload the path in the first
-	 * 		 line of this file!!
-	 * 		 Also check the remote path
-	 *
-	 public String sendToFtp(Exchange exchange) {
-		Message msg = exchange.getIn();
-
-		if (exchange.getProperty(Exchange.SLIP_ENDPOINT) == null) {
-
-			List<String> filesToUpload = (List<String>) msg.getHeader(Headers.FILES);
-			File f = new File(filesToUpload.get(0));
-
-			LOGGER.debug("{}", exchange.getProperties());
-			LOGGER.debug("{}", msg.getHeaders());
-
-			String ftp_user = (String) msg.getHeader(Headers.FTP_USERNAME);
-			String ftp_pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
-			String ftp_url = (String) msg.getHeader(Headers.FTP_URL);
-			String ftp_remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
-
-			// Create ftp endoint
-			StringBuilder ftpEndpoint = new StringBuilder("ftp://")
-												.append(ftp_user)
-												.append("@")
-												.append(ftp_url)
-												.append("/")
-												//.append(ftp_remoteDir)
-												.append("?password=")
-												.append(ftp_pass);
-
-			ftpEndpoint.append("&connectTimeout=" + TIMEOUT);
-			ftpEndpoint.append("&timeout=" + TIMEOUT);
-			ftpEndpoint.append("&soTimeout=" + TIMEOUT);
-			ftpEndpoint.append("&throwExceptionOnConnectFailed=true");
-			ftpEndpoint.append("&disconnect=true");
-			ftpEndpoint.append("&binary=true");
-			ftpEndpoint.append("&recursive=true");
-			ftpEndpoint.append("&doneFileName="+f.getName());
-			ftpEndpoint.append("&fileName="+filesToUpload.get(0));
-
-			return  ftpEndpoint.toString();
-
-		} else {
-			return null;
-		}
-	}*/
 
 }

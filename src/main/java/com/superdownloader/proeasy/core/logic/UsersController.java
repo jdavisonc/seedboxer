@@ -34,4 +34,12 @@ public class UsersController {
 		return usersDao.getUserConfigs(userId);
 	}
 
+	public int getUserId(String username) {
+		Integer userId = usersDao.getUserId(username);
+		if (userId == null) {
+			throw new IllegalArgumentException("Username doesn't exist");
+		}
+		return userId;
+	}
+
 }

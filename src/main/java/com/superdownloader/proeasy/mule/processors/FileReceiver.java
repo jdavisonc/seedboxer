@@ -2,6 +2,7 @@ package com.superdownloader.proeasy.mule.processors;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
 
 
@@ -37,7 +38,7 @@ public class FileReceiver implements Processor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileReceiver.class);
 
 	@Autowired
-	private UploadSessionManager uploadSessionManager;
+	private DownloadSessionManager uploadSessionManager;
 
 	@Autowired
 	private UsersController usersController;
@@ -58,10 +59,11 @@ public class FileReceiver implements Processor {
 		if (m.matches()) {
 			String username = m.group(1);
 			String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
+			int userId = usersController.getUserId(username);
 
-			msg.setHeader(Headers.USERNAME, username);
+			msg.setHeader(Headers.USER_ID, userId);
 			msg.setHeader(Headers.START_TIME, new Date());
-			Map<String, String> configs = usersController.userConfiguration(username);
+			Map<String, String> configs = usersController.userConfiguration(userId);
 			for (Entry<String, String> entry : configs.entrySet()) {
 				msg.setHeader(entry.getKey(), entry.getValue());
 			}
@@ -82,7 +84,7 @@ public class FileReceiver implements Processor {
 					filesToUpload.add(realPath);
 					filesName.add(toUpload.getName());
 				} else {
-					throw new Exception("File " + realPath + " doesn't exists.");
+					throw new FileNotFoundException("File " + realPath + " doesn't exists.");
 				}
 			}
 			msg.setHeader(Headers.FILES, filesToUpload);
@@ -90,9 +92,9 @@ public class FileReceiver implements Processor {
 
 			// Size in Mbs
 			totalSize = totalSize / MEGABYTE;
-			uploadSessionManager.setUserUploadSize(username, filepath, totalSize);
+			//uploadSessionManager.setUserDownloadSize(userId, filepath, totalSize);
 
-			LOGGER.debug("USERNAME={}", username);
+			LOGGER.debug("USERNAME={}", userId);
 			LOGGER.debug("CONFIGS={}", configs);
 			LOGGER.debug("FILES_TO_UPLOAD={}", filesToUpload);
 

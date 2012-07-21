@@ -17,7 +17,7 @@
 	</listener>
 	
 	<servlet>
-		<servlet-name>proEasy webservices</servlet-name>
+		<servlet-name>proeasy webservices</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.feature.XmlRootElementProcessing</param-name>
@@ -26,7 +26,7 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>proEasy webservices</servlet-name>
+		<servlet-name>proeasy webservices</servlet-name>
 		<url-pattern>/webservices/*</url-pattern>
 	</servlet-mapping>
 	

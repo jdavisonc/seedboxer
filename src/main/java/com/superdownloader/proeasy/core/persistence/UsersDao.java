@@ -12,4 +12,6 @@ public interface UsersDao {
 
 	public void saveUserConfigs(String username, Map<String, String> configs);
 
+	public Integer getUserId(String username);
+
 }

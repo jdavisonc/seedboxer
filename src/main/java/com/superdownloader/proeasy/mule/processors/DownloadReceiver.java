@@ -1,6 +1,8 @@
 package com.superdownloader.proeasy.mule.processors;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
 import com.superdownloader.proeasy.core.types.DownloadQueueItem;
 
@@ -31,7 +33,7 @@ public class DownloadReceiver implements Processor {
 	private UsersController usersController;
 
 	@Autowired
-	private UploadSessionManager uploadSessionManager;
+	private DownloadSessionManager uploadSessionManager;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -39,7 +41,24 @@ public class DownloadReceiver implements Processor {
 		LOGGER.debug("{}", msg.getHeaders());
 
 		DownloadQueueItem item = (DownloadQueueItem) msg.getBody();
+		int userId = item.getUserId();
+		int downloadId = item.getId();
 
+		msg.setHeader(Headers.USER_ID, userId);
+		msg.setHeader(Headers.DOWNLOAD_ID, downloadId);
+		msg.setHeader(Headers.START_TIME, new Date());
+		Map<String, String> configs = usersController.userConfiguration(userId);
+		for (Entry<String, String> entry : configs.entrySet()) {
+			msg.setHeader(entry.getKey(), entry.getValue());
+		}
+		LOGGER.debug("USER_ID={}", userId);
+		LOGGER.debug("CONFIGS={}", configs);
+		LOGGER.debug("DOWNLOAD_ID={}", downloadId);
+
+		processDownload(msg, item);
+	}
+
+	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
 		// Calculate size of the upload
 		String fileName;
 		long totalSize = 0;
@@ -52,24 +71,16 @@ public class DownloadReceiver implements Processor {
 			totalSize += calculateSize(toUpload);
 			fileName = toUpload.getName();
 		} else {
-			throw new Exception("File " + realPath + " doesn't exists.");
+			throw new FileNotFoundException("File " + realPath + " doesn't exists.");
 		}
 
-		msg.setHeader(Headers.FILES, toUpload);
-		msg.setHeader(Headers.FILES_NAME, fileName);
-		msg.setHeader(Headers.USERNAME, username);
-		msg.setHeader(Headers.START_TIME, new Date());
-		Map<String, String> configs = usersController.userConfiguration(item.getUserId());
-		for (Entry<String, String> entry : configs.entrySet()) {
-			msg.setHeader(entry.getKey(), entry.getValue());
-		}
+		msg.setHeader(Headers.FILES, Collections.singletonList(realPath));
+		msg.setHeader(Headers.FILES_NAME, Collections.singletonList(fileName));
 
 		// Size in Mbs
 		totalSize = totalSize / MEGABYTE;
-		uploadSessionManager.setUserUploadSize(username, fileName, totalSize);
+		uploadSessionManager.setUserDownloadSize(item.getUserId(), item.getId(), totalSize);
 
-		LOGGER.debug("USERNAME={}", username);
-		LOGGER.debug("CONFIGS={}", configs);
 		LOGGER.debug("FILES_TO_UPLOAD={}", toUpload);
 	}
 

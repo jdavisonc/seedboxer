@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.UploadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 import com.superdownloader.proeasy.core.types.Download;
 
 /**
@@ -25,12 +25,12 @@ import com.superdownloader.proeasy.core.types.Download;
 public class StatusService {
 
 	@Autowired
-	private UploadSessionManager uploadSessionManager;
+	private DownloadSessionManager downloadSessionManager;
 
-    @GET
-    @Produces("text/xml")
-    public List<Download> status(@QueryParam("username") String username) {
-    	return uploadSessionManager.getUserUploads(username);
-    }
+	@GET
+	@Produces("text/xml")
+	public List<Download> status(@QueryParam("username") String username) {
+		return downloadSessionManager.getUserDownloads(username);
+	}
 
 }

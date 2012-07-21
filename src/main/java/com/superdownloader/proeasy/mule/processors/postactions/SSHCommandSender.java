@@ -71,8 +71,8 @@ public class SSHCommandSender implements Processor {
 		});
 
 		try {
-			sshClient.setConnectTimeout(timeToJoin);
-			sshClient.setTimeout(timeToJoin);
+			sshClient.setConnectTimeout((timeToJoin+5) * 1000); // Time to join plus 5 seconds
+			sshClient.setTimeout((timeToJoin+5) * 1000);
 			sshClient.connect(url);
 			sshClient.authPassword(username, password);
 
@@ -80,9 +80,9 @@ public class SSHCommandSender implements Processor {
 			try {
 				LOGGER.info("Sending ssh command: {} to {}", command, url);
 				final Command cmd = session.exec(command);
-				LOGGER.trace("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
+				LOGGER.debug("Ssh response: {}", IOUtils.readFully(cmd.getInputStream()).toString());
 				cmd.join(timeToJoin, TimeUnit.SECONDS);
-				LOGGER.trace("Exit status: {}", cmd.getExitStatus());
+				LOGGER.debug("Exit status: {}", cmd.getExitStatus());
 			} finally {
 				session.close();
 			}
