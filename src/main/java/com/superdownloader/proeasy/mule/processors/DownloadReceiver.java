@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

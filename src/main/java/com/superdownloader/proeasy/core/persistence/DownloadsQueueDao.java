@@ -2,7 +2,7 @@ package com.superdownloader.proeasy.core.persistence;
 
 import java.util.List;
 
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

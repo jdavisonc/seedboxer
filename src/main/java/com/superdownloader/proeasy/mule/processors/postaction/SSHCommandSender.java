@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors.postactions;
+package com.superdownloader.proeasy.mule.processors.postaction;
 
 import java.io.File;
 import java.io.IOException;

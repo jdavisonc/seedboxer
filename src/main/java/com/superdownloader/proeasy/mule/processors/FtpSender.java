@@ -16,7 +16,7 @@ import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
-import com.superdownloader.proeasy.mule.exceptions.TransportException;
+import com.superdownloader.proeasy.mule.exception.TransportException;
 
 /**
  * @author harley

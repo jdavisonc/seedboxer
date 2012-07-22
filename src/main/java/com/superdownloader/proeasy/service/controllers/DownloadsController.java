@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.core.logic;
+package com.superdownloader.proeasy.service.controllers;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
-import com.superdownloader.proeasy.core.types.FileValue;
-import com.superdownloader.proeasy.core.utils.TorrentUtils;
+import com.superdownloader.proeasy.core.type.FileValue;
+import com.superdownloader.proeasy.core.util.TorrentUtils;
 
 @Service
 public class DownloadsController {

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.persistence.DownloadsQueueDao;
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

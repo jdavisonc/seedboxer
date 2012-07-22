@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.superdownloader.proeasy.core.types.Download;
+import com.superdownloader.proeasy.core.type.Download;
 
 /**
  * @author harley

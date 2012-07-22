@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.core.utils;
+package com.superdownloader.proeasy.core.util;
 
 import java.io.File;
 import java.io.FileInputStream;

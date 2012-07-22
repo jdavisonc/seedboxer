@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.services;
+package com.superdownloader.proeasy.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.services.types.Response;
+import com.superdownloader.proeasy.service.types.Response;
 
 /**
  * WebService for list files

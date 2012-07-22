@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

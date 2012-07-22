@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.services;
+package com.superdownloader.proeasy.service;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.DownloadsController;
-import com.superdownloader.proeasy.core.types.FileValue;
-import com.superdownloader.proeasy.services.types.Response;
+import com.superdownloader.proeasy.core.type.FileValue;
+import com.superdownloader.proeasy.service.controllers.DownloadsController;
+import com.superdownloader.proeasy.service.types.Response;
 
 /**
  * WebService for handle downloads

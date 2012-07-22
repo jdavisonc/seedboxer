@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

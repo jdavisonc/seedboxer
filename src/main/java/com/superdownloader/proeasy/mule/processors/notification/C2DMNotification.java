@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors.notifications;
+package com.superdownloader.proeasy.mule.processors.notification;
 
 import java.io.IOException;
 import java.util.List;

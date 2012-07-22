@@ -15,7 +15,7 @@ import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
  *
  */
 @Component
-public class QueueRemover implements Processor {
+public class DownloadRemover implements Processor {
 
 	@Autowired
 	private DownloadsQueueManager queueManager;
@@ -36,7 +36,7 @@ public class QueueRemover implements Processor {
 		} else {
 			queueManager.remove(downloadId);
 		}
-
+		// Remove download session
 		sessionManager.removeUserDownload(userId, downloadId);
 	}
 

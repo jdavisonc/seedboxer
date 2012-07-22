@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.services;
+package com.superdownloader.proeasy.service;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
-import com.superdownloader.proeasy.core.types.Download;
+import com.superdownloader.proeasy.core.type.Download;
 
 /**
  * WebService to get the status of an upload
