@@ -8,22 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.types.Download;
-import com.superdownloader.proeasy.mule.processors.Headers;
 
 /**
  * @author harley
  *
  */
 @Service
-public class DownloadSessionManager implements Processor {
+public class DownloadsSessionManager {
 
 	private static final String FILE_EXTENSION = ".upl";
 
@@ -37,7 +33,7 @@ public class DownloadSessionManager implements Processor {
 
 	private final Object lock;
 
-	public DownloadSessionManager() {
+	public DownloadsSessionManager() {
 		downloadsPerUser = new HashMap<Integer, Map<Integer, Download>>();
 		lock = new Object();
 	}
@@ -131,17 +127,6 @@ public class DownloadSessionManager implements Processor {
 		} else {
 			return file;
 		}
-	}
-
-	/**
-	 * Made a processor for remove upload for the session
-	 */
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Message msg = exchange.getIn();
-		Integer userId = (Integer) msg.getHeader(Headers.USER_ID);
-		Integer downloadId = (Integer) msg.getHeader(Headers.DOWNLOAD_ID);
-		removeUserDownload(userId, downloadId);
 	}
 
 }

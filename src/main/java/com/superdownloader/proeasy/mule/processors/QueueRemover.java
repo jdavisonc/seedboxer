@@ -7,7 +7,8 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.mule.logic.DownloadsQueueManager;
+import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
+import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 
 /**
  * @author harley
@@ -19,8 +20,12 @@ public class QueueRemover implements Processor {
 	@Autowired
 	private DownloadsQueueManager queueManager;
 
+	@Autowired
+	private DownloadsSessionManager sessionManager;
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		int userId = (Integer) exchange.getIn().getHeader(Headers.USER_ID);
 		int downloadId = (Integer) exchange.getIn().getHeader(Headers.DOWNLOAD_ID);
 		Exception exception = (Exception) exchange.getProperty("CamelExceptionCaught");
 
@@ -31,6 +36,8 @@ public class QueueRemover implements Processor {
 		} else {
 			queueManager.remove(downloadId);
 		}
+
+		sessionManager.removeUserDownload(userId, downloadId);
 	}
 
 }

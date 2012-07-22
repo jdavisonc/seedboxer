@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.mule.logic.DownloadsQueueManager;
 
 
 /**
@@ -55,6 +55,7 @@ public class FileReceiver implements Processor {
 
 			for (String path : getLines(filepath)) {
 				String realPath = path.replaceFirst("file://", ""); // Removes prefix of Flexget
+				LOGGER.info("Add file to queue. USER_ID={} FILE={}", userId, realPath);
 				queueManager.push(userId, realPath);
 			}
 		} else {

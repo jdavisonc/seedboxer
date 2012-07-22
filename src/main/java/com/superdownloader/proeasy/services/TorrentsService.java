@@ -29,7 +29,7 @@ import com.superdownloader.proeasy.services.types.Response;
 @Scope("request")
 public class TorrentsService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsService.class);
 
 	@Autowired
 	private DownloadsController controller;

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
-import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.mule.exceptions.TransportException;
 
 /**
@@ -28,7 +28,7 @@ public class FtpSender implements Processor {
 	private static final long  MEGABYTE = 1024L * 1024L;
 
 	@Autowired
-	private DownloadSessionManager uploadSessionManager;
+	private DownloadsSessionManager uploadSessionManager;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FtpSender.class);
 

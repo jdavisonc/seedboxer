@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.persistence;
+package com.superdownloader.proeasy.core.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

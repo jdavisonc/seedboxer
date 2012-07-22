@@ -108,7 +108,6 @@
 		<route>
 			<from uri="direct:finale" />
 			<process ref="queueRemover" />
-			<process ref="downloadSessionManager" />
 		</route>
 		
 	</camelContext>

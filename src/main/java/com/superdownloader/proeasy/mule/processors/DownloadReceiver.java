@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
+import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
 import com.superdownloader.proeasy.core.types.DownloadQueueItem;
 
@@ -33,7 +33,7 @@ public class DownloadReceiver implements Processor {
 	private UsersController usersController;
 
 	@Autowired
-	private DownloadSessionManager uploadSessionManager;
+	private DownloadsSessionManager uploadSessionManager;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {

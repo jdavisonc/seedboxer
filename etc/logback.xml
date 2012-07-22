@@ -2,12 +2,11 @@
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%date [%level] %logger{0}\(%line\): %msg %mdc%n</Pattern>
+			<Pattern>%date{yyyy-MM-dd HH:mm:ss} [%level] %logger{0}\(%line\): %msg %mdc%n</Pattern>
 		</layout>
 	</appender>
 
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>/var/log/proeasy/proeasy.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>/var/log/proeasy/proeasy.%d{yyyy-MM-dd}.log
@@ -15,7 +14,7 @@
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<pattern>%date [%level] %logger{0}\(%line\): %msg %mdc%n</pattern>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss} [%level] %logger{0}\(%line\): %msg %mdc%n</pattern>
 		</encoder>
 	</appender>
 

@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 
 /**
  * @author jdavison
@@ -17,9 +14,6 @@ import com.superdownloader.proeasy.core.logic.DownloadSessionManager;
 public class FileFilter implements GenericFileFilter<Object> {
 
 	private Pattern pattern = null;
-
-	@Autowired
-	private DownloadSessionManager uploadSessionManager;
 
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
@@ -30,13 +24,7 @@ public class FileFilter implements GenericFileFilter<Object> {
 		String relativePath = file.getAbsoluteFilePath().substring((file.getEndpointPath() + File.separator).length());
 		if (pattern != null) {
 			Matcher m = pattern.matcher(relativePath);
-			if (m.matches()) {
-				//return uploadSessionManager.addUserDownload(m.group(1), m.group(2));
-				// TODO:
-				return false;
-			} else {
-				return false;
-			}
+			return m.matches();
 		} else {
 			return false;
 		}
