@@ -63,18 +63,16 @@ public class DownloadReceiver implements Processor {
 		String fileName;
 		long totalSize = 0;
 
-		// Removes prefix of Flexget
-		String realPath = item.getDownload().replaceFirst("file://", "");
-
-		File toUpload = new File(realPath);
+		String downloadPath = item.getDownload();
+		File toUpload = new File(downloadPath);
 		if (toUpload.exists()) {
 			totalSize += calculateSize(toUpload);
 			fileName = toUpload.getName();
 		} else {
-			throw new FileNotFoundException("File " + realPath + " doesn't exists.");
+			throw new FileNotFoundException("File " + downloadPath + " doesn't exists.");
 		}
 
-		msg.setHeader(Headers.FILES, Collections.singletonList(realPath));
+		msg.setHeader(Headers.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Headers.FILES_NAME, Collections.singletonList(fileName));
 
 		// Size in Mbs

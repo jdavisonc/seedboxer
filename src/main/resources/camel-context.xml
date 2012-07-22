@@ -12,7 +12,7 @@
     		<redeliveryPolicy maximumRedeliveries="${proeasy.ftp.retries}" redeliveryDelay="${proeasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
 		</errorHandler>
 		
-		<endpoint id="loadedFileEndpoint" uri="file:${proeasy.basePath}?delay=${proeasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proeasy.readLock}&amp;filter=#fileFilter"/>
+		<endpoint id="watchDogFileEndpoint" uri="file:${proeasy.basePath}?delay=${proeasy.pollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proeasy.readLock}&amp;filter=#fileFilter"/>
 		
 		<endpoint id="uploadEndpoint" uri="seda:processFile?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
@@ -27,7 +27,21 @@
 	        </handled>
 	        <to uri="direct:finale"/>
 	    </onException>
+	    
+	    <!-- Get download from file and push to the queue -->
+		<route>
+			<from uri="watchDogFileEndpoint" />
+			<onException>
+		        <exception>java.lang.Exception</exception>
+		        <handled>
+		        	<constant>true</constant>
+		        </handled>
+		        <to uri="log:com.superdownloader.proeasy?level=ERROR"/>
+		    </onException>
+			<process ref="fileReceiver"/>
+		</route>
 
+		<!-- Pooling queue for get new downloads -->
 		<route>
 			<from ref="pooling" />
 			<process ref="queuePooler" />

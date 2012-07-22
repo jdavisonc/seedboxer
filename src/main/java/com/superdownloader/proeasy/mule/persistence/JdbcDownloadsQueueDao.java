@@ -1,15 +1,12 @@
-package com.superdownloader.proeasy.core.persistence;
+package com.superdownloader.proeasy.mule.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -24,16 +21,9 @@ import com.superdownloader.proeasy.core.types.DownloadQueueItem;
 @Repository
 public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements DownloadsQueueDao {
 
-	private Integer maxDownloadPerUser;
-
 	@Autowired
 	public void setProEasyDataSource(DataSource proEasyDataSource) {
 		setDataSource(proEasyDataSource);
-	}
-
-	@Value("${proeasy.simultaneousDownloadsPerUser}")
-	public void setMaxDownloadPerUser(Integer maxDownloadPerUser) {
-		this.maxDownloadPerUser = maxDownloadPerUser;
 	}
 
 	@Override
@@ -59,7 +49,7 @@ public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements Downl
 	}
 
 	@Override
-	public List<DownloadQueueItem> pop() {
+	public List<DownloadQueueItem> pop(int maxDownloadPerUser) {
 		String sql = "SELECT id, user_id, download, in_progress " +
 				"FROM downloads_queue d " +
 				"WHERE ( SELECT count(*) FROM downloads_queue as f WHERE f.user_id = d.user_id AND f.id < d.id ) " +
@@ -68,28 +58,16 @@ public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements Downl
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("maxDownloadPerUser", maxDownloadPerUser);
-		List<DownloadQueueItem> selected = getSimpleJdbcTemplate().query(sql, new ItemsMapper(), args);
+		return getSimpleJdbcTemplate().query(sql, new ItemsMapper(), args);
+	}
 
-		// update to set in progress
-		List<Integer> idsToUpdate = new ArrayList<Integer>();
-		for (Iterator<DownloadQueueItem> iterator = selected.iterator(); iterator.hasNext();) {
-			DownloadQueueItem item = iterator.next();
-			if (item.isInProgress()) {
-				iterator.remove();
-			} else {
-				idsToUpdate.add(item.getId());
-			}
-		}
+	@Override
+	public void setInProgress(List<Integer> idsToUpdate) {
+		String updateSql = "UPDATE downloads_queue SET in_progress = 1 WHERE id IN (:ids);";
 
-		if (!idsToUpdate.isEmpty()) {
-			String updateSql = "UPDATE downloads_queue SET in_progress = 1 WHERE id IN (:ids);";
-
-			args = new MapSqlParameterSource();
-			args.addValue("ids", idsToUpdate);
-			getSimpleJdbcTemplate().update(updateSql, args);
-		}
-
-		return selected;
+		MapSqlParameterSource args = new MapSqlParameterSource();
+		args.addValue("ids", idsToUpdate);
+		getSimpleJdbcTemplate().update(updateSql, args);
 	}
 
 	@Override

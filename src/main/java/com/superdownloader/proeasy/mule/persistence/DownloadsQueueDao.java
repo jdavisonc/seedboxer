@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.core.persistence;
+package com.superdownloader.proeasy.mule.persistence;
 
 import java.util.List;
 
@@ -14,7 +14,9 @@ public interface DownloadsQueueDao {
 
 	void repush(int id);
 
-	List<DownloadQueueItem> pop();
+	List<DownloadQueueItem> pop(int maxDownloadPerUser);
+
+	void setInProgress(List<Integer> idsToUpdate);
 
 	void remove(int id);
 

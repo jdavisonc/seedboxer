@@ -7,7 +7,7 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.persistence.DownloadsQueueDao;
+import com.superdownloader.proeasy.mule.logic.DownloadsQueueManager;
 
 /**
  * @author harley
@@ -17,7 +17,7 @@ import com.superdownloader.proeasy.core.persistence.DownloadsQueueDao;
 public class QueueRemover implements Processor {
 
 	@Autowired
-	private DownloadsQueueDao queueDao;
+	private DownloadsQueueManager queueManager;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -27,9 +27,9 @@ public class QueueRemover implements Processor {
 		if (exception != null && exception instanceof FileNotFoundException) {
 			// If it was due to a FileNotFoundException, then the download is not ready to remove
 			//   from queue, so it need to be pushed again.
-			queueDao.repush(downloadId);
+			queueManager.repush(downloadId);
 		} else {
-			queueDao.remove(downloadId);
+			queueManager.remove(downloadId);
 		}
 	}
 

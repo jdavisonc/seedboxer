@@ -14,6 +14,13 @@ public class DownloadQueueItem {
 
 	private boolean inProgress;
 
+	public DownloadQueueItem() { }
+
+	public DownloadQueueItem(int userId, String download) {
+		this.userId = userId;
+		this.download = download;
+	}
+
 	public int getId() {
 		return id;
 	}
