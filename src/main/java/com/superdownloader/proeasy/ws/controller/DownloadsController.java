@@ -1,26 +1,32 @@
-package com.superdownloader.proeasy.service.controllers;
+package com.superdownloader.proeasy.ws.controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
+import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
+import com.superdownloader.proeasy.core.logic.UsersController;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 import com.superdownloader.proeasy.core.type.FileValue;
 import com.superdownloader.proeasy.core.util.TorrentUtils;
 
 @Service
 public class DownloadsController {
 
-	private static final String MAGIC_EXTENSION = ".upl";
-	private static final String MAGIC_FOLDER = "to-home-server";
+	@Autowired
+	private UsersController usersController;
+
+	@Autowired
+	private DownloadsQueueManager downloadsQueueManager;
 
 	@Value(value="${proeasy.completePath}")
 	private String completePath;
@@ -30,9 +36,6 @@ public class DownloadsController {
 
 	@Value(value="${proeasy.watchDownloaderPath}")
 	private String watchDownloaderPath;
-
-	@Value(value="${proeasy.basePath}")
-	private String basePath;
 
 	public List<FileValue> getCompletedFiles() {
 		return listFiles(completePath);
@@ -49,7 +52,12 @@ public class DownloadsController {
 	 * @param fileNames
 	 * @throws Exception
 	 */
-	public void putToDownload(String username, List<String> fileNames, boolean checkExistence) throws Exception {
+	public void putToDownload(String username, List<String> fileNames) throws Exception {
+		int userId = getUserId(username);
+		putToDownload(userId, fileNames, true);
+	}
+
+	private void putToDownload(int userId, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
 			File inProgressFile = getFile(name, inProgressPath);
@@ -61,10 +69,7 @@ public class DownloadsController {
 						completeFile.getAbsolutePath());
 			}
 
-			File download = new File(getWorkingFolder(username) + File.separator + name + MAGIC_EXTENSION);
-			if (download.createNewFile()) {
-				Files.append(completePath + File.separator + name, download, Charset.defaultCharset());
-			}
+			downloadsQueueManager.push(userId, completePath + File.separator + name);
 		}
 	}
 
@@ -76,22 +81,19 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public List<FileValue> downloadsInQueue(String username) throws Exception {
-		List<String> inQueue = new ArrayList<String>();
-		File directory = new File(getWorkingFolder(username));
-		if (directory.exists()) {
-			for (File file: directory.listFiles()) {
-				if (file.isFile() && file.getName().endsWith(MAGIC_EXTENSION)) {
-					inQueue.addAll(Files.readLines(file, Charset.defaultCharset()));
-				}
-			}
-		}
+		int userId = getUserId(username);
+		List<DownloadQueueItem> userQueue = downloadsQueueManager.userQueue(userId);
 
 		List<FileValue> queue = new ArrayList<FileValue>();
-		for (String name : inQueue) {
-			queue.add(new FileValue(name.replace(completePath + File.separator, ""), false));
+		for (DownloadQueueItem inQueue : userQueue) {
+			String withoutPrefixPath = inQueue.getDownload().replace(completePath + File.separator, "");
+			queue.add(new FileValue(withoutPrefixPath, inQueue.getId()));
 		}
-
 		return queue;
+	}
+
+	private int getUserId(String username) {
+		return usersController.getUserId(username);
 	}
 
 	/**
@@ -103,6 +105,8 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
+		int userId = getUserId(username);
+
 		File torrent = new File(watchDownloaderPath + File.separator + fileName);
 		Files.copy(new InputSupplier<InputStream>() {
 			@Override
@@ -112,7 +116,7 @@ public class DownloadsController {
 		}, torrent);
 
 		String name = TorrentUtils.getName(torrent);
-		putToDownload(username, Collections.singletonList(name), false);
+		putToDownload(userId, Collections.singletonList(name), false);
 	}
 
 	/**
@@ -122,19 +126,14 @@ public class DownloadsController {
 	 * @param fileName
 	 * @return
 	 */
-	public boolean deleteDownloadInQueue(String username, String fileName) {
-		File fileInQueue = new File(getWorkingFolder(username) + File.separator + fileName + MAGIC_EXTENSION);
-		return fileInQueue.delete();
+	public boolean deleteDownloadInQueue(String username, int downloadId) {
+		int userId = getUserId(username);
+		return downloadsQueueManager.remove(userId, downloadId);
 	}
 
 	/*
 	 * Extra functions
 	 */
-
-	private String getWorkingFolder(String username) {
-		return basePath + File.separator + username + File.separator
-				+ MAGIC_FOLDER;
-	}
 
 	private File getFile(String name, String path) {
 		return new File(path + File.separator + name);

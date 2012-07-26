@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors.notification;
+package com.superdownloader.proeasy.mule.processor.notification;
 
 import java.io.IOException;
 import java.util.Date;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.superdownloader.proeasy.mule.processors.Headers;
+import com.superdownloader.proeasy.mule.processor.Headers;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.persistence.UsersDao;
-import com.superdownloader.proeasy.mule.processors.Headers;
+import com.superdownloader.proeasy.mule.processor.Headers;
 
 /**
  * @author harley

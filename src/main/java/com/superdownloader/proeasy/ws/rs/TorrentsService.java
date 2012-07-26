@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.service;
+package com.superdownloader.proeasy.ws.rs;
 
 import java.io.InputStream;
 
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.superdownloader.proeasy.service.controllers.DownloadsController;
-import com.superdownloader.proeasy.service.types.Response;
+import com.superdownloader.proeasy.ws.controller.DownloadsController;
+import com.superdownloader.proeasy.ws.type.Response;
 
 /**
  * WebService that expose method to work with torrent files

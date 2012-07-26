@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.utils;
+package com.superdownloader.proeasy.mule.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

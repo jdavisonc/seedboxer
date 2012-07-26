@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors;
+package com.superdownloader.proeasy.mule.processor;
 
 import java.io.FileNotFoundException;
 
@@ -32,9 +32,9 @@ public class DownloadRemover implements Processor {
 		if (exception != null && exception instanceof FileNotFoundException) {
 			// If it was due to a FileNotFoundException, then the download is not ready to remove
 			//   from queue, so it need to be pushed again.
-			queueManager.repush(downloadId);
+			queueManager.repush(userId, downloadId);
 		} else {
-			queueManager.remove(downloadId);
+			queueManager.remove(userId, downloadId);
 		}
 		// Remove download session
 		sessionManager.removeUserDownload(userId, downloadId);

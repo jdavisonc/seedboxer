@@ -7,6 +7,8 @@ public class FileValue {
 
 	private String name;
 
+	private Integer queueId;
+
 	private boolean downloaded;
 
 	public FileValue() { }
@@ -14,6 +16,11 @@ public class FileValue {
 	public FileValue(String name, boolean downloaded) {
 		this.name = name;
 		this.downloaded = downloaded;
+	}
+
+	public FileValue(String name, int queueId) {
+		this.name = name;
+		this.queueId = queueId;
 	}
 
 	public String getName() {
@@ -30,6 +37,14 @@ public class FileValue {
 
 	public void setDownloaded(boolean downloaded) {
 		this.downloaded = downloaded;
+	}
+
+	public Integer getQueueId() {
+		return queueId;
+	}
+
+	public void setQueueId(Integer queueId) {
+		this.queueId = queueId;
 	}
 
 }

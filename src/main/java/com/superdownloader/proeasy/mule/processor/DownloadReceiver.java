@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors;
+package com.superdownloader.proeasy.mule.processor;
 
 import java.io.File;
 import java.io.FileNotFoundException;

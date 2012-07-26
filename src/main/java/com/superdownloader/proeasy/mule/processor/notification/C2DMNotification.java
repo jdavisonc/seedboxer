@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors.notification;
+package com.superdownloader.proeasy.mule.processor.notification;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.mule.processors.Headers;
-import com.superdownloader.proeasy.mule.utils.C2DMUtils;
+import com.superdownloader.proeasy.mule.processor.Headers;
+import com.superdownloader.proeasy.mule.util.C2DMUtils;
 
 /**
  * @author harley

@@ -48,16 +48,20 @@ public class DownloadsQueueManager {
 		return inQueue;
 	}
 
-	public void remove(int downloadId) {
-		queueDao.remove(downloadId);
+	public boolean remove(int userId, int downloadId) {
+		return queueDao.remove(userId, downloadId);
 	}
 
-	public void repush(int downloadId) {
-		queueDao.repush(downloadId);
+	public void repush(int userId, int downloadId) {
+		queueDao.repush(userId, downloadId);
 	}
 
 	public void push(int userId, String download) {
 		queueDao.push(new DownloadQueueItem(userId, download));
+	}
+
+	public List<DownloadQueueItem> userQueue(int userId) {
+		return queueDao.queue(userId);
 	}
 
 }

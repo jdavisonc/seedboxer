@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.service;
+package com.superdownloader.proeasy.ws.rs;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.type.FileValue;
-import com.superdownloader.proeasy.service.controllers.DownloadsController;
-import com.superdownloader.proeasy.service.types.Response;
+import com.superdownloader.proeasy.ws.controller.DownloadsController;
+import com.superdownloader.proeasy.ws.type.Response;
 
 /**
  * WebService for handle downloads
@@ -53,7 +53,7 @@ public class DownloadsService {
 	public Response put(@QueryParam("username") String username,
 			@QueryParam("fileName") List<String> fileNames) {
 		try {
-			controller.putToDownload(username, fileNames, true);
+			controller.putToDownload(username, fileNames);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not put to download", e);
@@ -65,9 +65,9 @@ public class DownloadsService {
 	@Path("/delete")
 	@Produces("text/xml")
 	public Response delete(@QueryParam("username") String username,
-			@QueryParam("fileName") String fileNames) {
+			@QueryParam("downloadId") Integer downloadId) {
 		try {
-			if (controller.deleteDownloadInQueue(username, fileNames)) {
+			if (controller.deleteDownloadInQueue(username, downloadId)) {
 				return Response.createSuccessfulResponse();
 			} else {
 				return Response.createErrorResponse("Can not delete download from queue");

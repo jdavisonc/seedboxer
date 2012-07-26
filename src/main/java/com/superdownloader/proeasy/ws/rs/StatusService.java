@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.service;
+package com.superdownloader.proeasy.ws.rs;
 
 import java.util.List;
 

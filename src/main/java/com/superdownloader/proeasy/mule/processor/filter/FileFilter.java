@@ -1,4 +1,4 @@
-package com.superdownloader.proeasy.mule.processors.filter;
+package com.superdownloader.proeasy.mule.processor.filter;
 
 import java.io.File;
 import java.util.regex.Matcher;
