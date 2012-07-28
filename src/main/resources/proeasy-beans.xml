@@ -18,6 +18,28 @@
     	<property name="templateLoaderPath" value="/WEB-INF/templates/"/>
 	</bean>
 	
+	<!-- ORM -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="proeasyDataSource" />
+		<property name="annotatedPackages">
+			<list>
+				<value>com.superdownloader.proeasy.core.domain</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.format_sql=true
+				hibernate.show_sql=true
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!-- Data sources -->
 	<bean id="proeasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
