@@ -38,6 +38,11 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	@Override
 	public List<DownloadQueueItem> pop(int maxDownloadPerUser) {
 		// TODO Auto-generated method stub
+		//		String sql = "SELECT id, user_id, download, in_progress " +
+		//"FROM downloads_queue d " +
+		//"WHERE ( SELECT count(*) FROM downloads_queue as f WHERE f.user_id = d.user_id AND f.id < d.id ) " +
+		//"<= :maxDownloadPerUser;";
+
 		return null;
 	}
 
