@@ -107,7 +107,7 @@
 		<!-- Finale -->
 		<route>
 			<from uri="direct:finale" />
-			<process ref="queueRemover" />
+			<process ref="downloadRemover" />
 		</route>
 		
 	</camelContext>

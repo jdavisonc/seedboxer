@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.superdownloader.proeasy.core.types.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley
@@ -39,12 +39,12 @@ public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements Downl
 	}
 
 	@Override
-	public void repush(int id) {
-		String sql = "UPDATE downloads_queue SET in_progress = 0 WHERE id = :id;";
+	public void repush(int userId, int id) {
+		String sql = "UPDATE downloads_queue SET in_progress = 0 WHERE id = :id AND user_id = :userId;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("id", id);
-
+		args.addValue("userId", userId);
 		getSimpleJdbcTemplate().update(sql, args);
 	}
 
@@ -71,12 +71,13 @@ public class JdbcDownloadsQueueDao extends SimpleJdbcDaoSupport implements Downl
 	}
 
 	@Override
-	public void remove(int id) {
-		String updateSql = "DELETE FROM downloads_queue WHERE id = :id;";
+	public boolean remove(int userId, int id) {
+		String updateSql = "DELETE FROM downloads_queue WHERE id = :id AND user_id = :userId;";
 
 		MapSqlParameterSource args = new MapSqlParameterSource();
 		args.addValue("id", id);
-		getSimpleJdbcTemplate().update(updateSql, args);
+		args.addValue("userId", userId);
+		return 1 == getSimpleJdbcTemplate().update(updateSql, args);
 	}
 
 	@Override

@@ -1,17 +1,15 @@
 package com.superdownloader.proeasy.core.persistence;
 
-import java.util.Map;
+import com.superdownloader.proeasy.core.type.User;
 
 public interface UsersDao {
 
-	public boolean isValidUser(String username, String password);
+	boolean isValidUser(String username, String password);
 
-	public Map<String, String> getUserConfigs(String username);
+	User get(String username);
 
-	public Map<String, String> getUserConfigs(int userId);
+	User get(int userId);
 
-	public void saveUserConfigs(String username, Map<String, String> configs);
-
-	public Integer getUserId(String username);
+	void save(User user);
 
 }
