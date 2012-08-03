@@ -193,6 +193,11 @@
 		     <version>${cglib.version}</version>
 		     <scope>runtime</scope>
 		</dependency>
+                <dependency>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>camel-rss</artifactId>
+                    <version>${camel.version}</version>
+                </dependency>
 	</dependencies>
 
 	<build>

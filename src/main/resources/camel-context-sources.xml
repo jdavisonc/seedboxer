@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Configures the Camel Context-->
+                
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- Endpoints and routes -->
+	
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<!--
+		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
+    		<redeliveryPolicy maximumRedeliveries="${proEasy.ftp.retries}" redeliveryDelay="${proEasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
+		</errorHandler>
+		-->
+		<endpoint id="loadedFileEndpoint" uri="rss:http://localhost/feed?consumer.delay=300s&amp;splitEntries=true&amp;throttleEntries=false"/>
+                
+                <endpoint id="loadFeed" uri="http://localhost/feed"/>
+                <endpoint id="seda" uri="seda:a"/>
+                <route>
+                        <from ref="loadedFileEndpoint"/>
+			
+			<process ref="rssConsumer" />
+		</route>
+                
+	</camelContext>
+</beans>

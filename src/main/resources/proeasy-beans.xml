@@ -9,6 +9,9 @@
 
 	<!-- CAMEL -->
 	<import resource="classpath:camel-context.xml" />
+        
+        <!-- SOURCES CAMEL -->
+	<import resource="classpath:camel-context-sources.xml" />
 	
 	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processor.filter.FileFilter">
 		<property name="pattern" value="${proeasy.includePattern}" />
