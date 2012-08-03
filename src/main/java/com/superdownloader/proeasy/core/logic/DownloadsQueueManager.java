@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.persistence.DownloadsQueueDao;
 import com.superdownloader.proeasy.core.type.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.User;
 
 /**
  * @author harley
@@ -32,7 +33,7 @@ public class DownloadsQueueManager {
 		List<DownloadQueueItem> inQueue = queueDao.pop(maxDownloadPerUser);
 
 		// update to set in progress
-		List<Integer> setInProgress = new ArrayList<Integer>();
+		List<Long> setInProgress = new ArrayList<Long>();
 		for (Iterator<DownloadQueueItem> iterator = inQueue.iterator(); iterator.hasNext();) {
 			DownloadQueueItem item = iterator.next();
 			if (item.isInProgress()) {
@@ -48,20 +49,28 @@ public class DownloadsQueueManager {
 		return inQueue;
 	}
 
-	public boolean remove(int userId, int downloadId) {
-		return queueDao.remove(userId, downloadId);
+	public void remove(DownloadQueueItem item) {
+		queueDao.remove(item);
 	}
 
-	public void repush(int userId, int downloadId) {
-		queueDao.repush(userId, downloadId);
+	public void remove(User user, long downloadId) {
+		DownloadQueueItem item = queueDao.get(user.getId(), downloadId);
+		if (item == null) {
+			throw new IllegalArgumentException("There is not download in queue with the given id");
+		}
+		queueDao.remove(item);
 	}
 
-	public void push(int userId, String download) {
-		queueDao.push(new DownloadQueueItem(userId, download));
+	public void repush(DownloadQueueItem item) {
+		queueDao.repush(item);
 	}
 
-	public List<DownloadQueueItem> userQueue(int userId) {
-		return queueDao.queue(userId);
+	public void push(User user, String download) {
+		queueDao.push(new DownloadQueueItem(user, download));
+	}
+
+	public List<DownloadQueueItem> userQueue(User user) {
+		return queueDao.queue(user.getId());
 	}
 
 }

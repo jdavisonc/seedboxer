@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley
@@ -25,19 +26,18 @@ public class DownloadRemover implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		int userId = (Integer) exchange.getIn().getHeader(Headers.USER_ID);
-		int downloadId = (Integer) exchange.getIn().getHeader(Headers.DOWNLOAD_ID);
+		DownloadQueueItem download = (DownloadQueueItem) exchange.getIn().getHeader(Headers.DOWNLOAD);
 		Exception exception = (Exception) exchange.getProperty("CamelExceptionCaught");
 
 		if (exception != null && exception instanceof FileNotFoundException) {
 			// If it was due to a FileNotFoundException, then the download is not ready to remove
 			//   from queue, so it need to be pushed again.
-			queueManager.repush(userId, downloadId);
+			queueManager.repush(download);
 		} else {
-			queueManager.remove(userId, downloadId);
+			queueManager.remove(download);
 		}
 		// Remove download session
-		sessionManager.removeUserDownload(userId, downloadId);
+		sessionManager.removeUserDownload(download.getUser().getId(), download.getId());
 	}
 
 }

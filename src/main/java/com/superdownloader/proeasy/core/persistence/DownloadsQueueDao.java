@@ -16,10 +16,12 @@ public interface DownloadsQueueDao {
 
 	List<DownloadQueueItem> pop(int maxDownloadPerUser);
 
-	void setInProgress(List<Integer> idsToUpdate);
+	void setInProgress(List<Long> idsToUpdate);
 
 	void remove(DownloadQueueItem item);
 
-	List<DownloadQueueItem> queue(int userId);
+	DownloadQueueItem get(long userId, long downloadId);
+
+	List<DownloadQueueItem> queue(long userId);
 
 }

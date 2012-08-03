@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
@@ -25,29 +26,34 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
+	@Transactional
 	public void push(DownloadQueueItem item) {
 		getCurrentSession().save(item);
 	}
 
 	@Override
+	@Transactional
 	public void repush(DownloadQueueItem item) {
-		item.setInProgress(false);
+		DownloadQueueItem itemdb = (DownloadQueueItem) getCurrentSession()
+				.get(DownloadQueueItem.class, item.getId());
+		itemdb.setInProgress(false);
 		getCurrentSession().save(item);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<DownloadQueueItem> pop(int maxDownloadPerUser) {
-		// TODO Auto-generated method stub
-		//		String sql = "SELECT id, user_id, download, in_progress " +
-		//"FROM downloads_queue d " +
-		//"WHERE ( SELECT count(*) FROM downloads_queue as f WHERE f.user_id = d.user_id AND f.id < d.id ) " +
-		//"<= :maxDownloadPerUser;";
-
-		return null;
+		Query query = getCurrentSession().createQuery("from DownloadQueueItem d where " +
+				"(select count(*) from DownloadQueueItem f where " +
+				"f.user.id = d.user.id AND f.id < d.id) <= :maxDownloadPerUser");
+		query.setParameter("maxDownloadPerUser", maxDownloadPerUser);
+		return query.list();
 	}
 
 	@Override
-	public void setInProgress(List<Integer> idsToUpdate) {
+	@Transactional
+	public void setInProgress(List<Long> idsToUpdate) {
 		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
 				"set inProgress = true where id IN (:ids)");
 		query.setParameter("ids", idsToUpdate);
@@ -55,17 +61,31 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
+	@Transactional
 	public void remove(DownloadQueueItem item) {
-		getCurrentSession().delete(item);
+		Query query = getCurrentSession().createQuery("delete from DownloadQueueItem where id = :id");
+		query.setParameter("id", item.getId());
+		query.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DownloadQueueItem> queue(int userId) {
+	@Transactional
+	public List<DownloadQueueItem> queue(long userId) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
 				"where d.user.id = :userId and d.inProgress = false");
 		query.setParameter("userId", userId);
 		return query.list();
+	}
+
+	@Override
+	@Transactional
+	public DownloadQueueItem get(long userId, long downloadId) {
+		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
+				"where d.id = :downloadId and d.user.id = :userId");
+		query.setParameter("downloadId", downloadId);
+		query.setParameter("userId", userId);
+		return (DownloadQueueItem) query.uniqueResult();
 	}
 
 }

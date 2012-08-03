@@ -6,9 +6,9 @@ public class Headers {
 
 	public static final String PREFIX = "proeasy" + SEPARATOR;
 
-	public static final String USER_ID = PREFIX + "userId";
+	public static final String USER = PREFIX + "user";
 
-	public static final String DOWNLOAD_ID = PREFIX + "downloadId";
+	public static final String DOWNLOAD = PREFIX + "download";
 
 	public static final String FILES = PREFIX + "files";
 	public static final String FILES_NAME = PREFIX + "filesName";

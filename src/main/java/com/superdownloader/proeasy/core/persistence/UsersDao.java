@@ -8,7 +8,7 @@ public interface UsersDao {
 
 	User get(String username);
 
-	User get(int userId);
+	User get(long userId);
 
 	void save(User user);
 

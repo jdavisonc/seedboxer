@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.superdownloader.proeasy.core.type.User;
 
@@ -26,6 +27,7 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
+	@Transactional
 	public boolean isValidUser(String username, String password) {
 		Query query = getCurrentSession().createQuery("select 1 from User where username = :username and password = MD5(:password)");
 		query.setParameter("username", username);
@@ -35,16 +37,20 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
+	@Transactional
 	public void save(User user) {
-		getCurrentSession().save(user);
+		// TODO: make save again without session open
+		//getCurrentSession().save(user);
 	}
 
 	@Override
-	public User get(int userId) {
+	@Transactional
+	public User get(long userId) {
 		return (User) getCurrentSession().get(User.class, userId);
 	}
 
 	@Override
+	@Transactional
 	public User get(String username) {
 		Query query = getCurrentSession().createQuery("from User where username = :username");
 		query.setParameter("username", username);

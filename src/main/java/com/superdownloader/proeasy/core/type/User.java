@@ -65,6 +65,14 @@ public class User {
 		this.config = config;
 	}
 
+	public void addConfig(String name, String value) {
+		config.put(name, new UserConfiguration(this, name, value));
+	}
+
+	public void removeConfig(String name) {
+		config.remove(name);
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + "]";

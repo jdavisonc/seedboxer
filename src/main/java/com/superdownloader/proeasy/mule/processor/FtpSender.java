@@ -16,6 +16,7 @@ import com.superdownloader.common.ftp.FtpUploader;
 import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
+import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 import com.superdownloader.proeasy.mule.exception.TransportException;
 
 /**
@@ -35,8 +36,7 @@ public class FtpSender implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		final Integer userId = (Integer) msg.getHeader(Headers.USER_ID);
-		final Integer downloadId = (Integer) msg.getHeader(Headers.DOWNLOAD_ID);
+		final DownloadQueueItem download = (DownloadQueueItem) msg.getHeader(Headers.DOWNLOAD);
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
@@ -55,7 +55,7 @@ public class FtpSender implements Processor {
 			LOGGER.info("Connected to {}", server);
 			for (String toUpload : filesToUpload) {
 				LOGGER.info("Uploading {}...", toUpload);
-				ftpUploader.upload(new File(toUpload), new FtpStatusListener(userId, downloadId));
+				ftpUploader.upload(new File(toUpload), new FtpStatusListener(download.getUser().getId(), download.getId()));
 			}
 		} catch (Exception e) {
 			throw new TransportException("Error at uploading file via FTP", e);
@@ -70,11 +70,11 @@ public class FtpSender implements Processor {
 
 		private double transferredInMbs = 0L;
 
-		private int downloadId;
+		private long downloadId;
 
-		private int userId;
+		private long userId;
 
-		public FtpStatusListener(int userId, int downloadId) {
+		public FtpStatusListener(long userId, long downloadId) {
 			this.userId = userId;
 			this.downloadId = downloadId;
 		}

@@ -7,7 +7,7 @@ public class FileValue {
 
 	private String name;
 
-	private Integer queueId;
+	private Long queueId;
 
 	private boolean downloaded;
 
@@ -18,7 +18,7 @@ public class FileValue {
 		this.downloaded = downloaded;
 	}
 
-	public FileValue(String name, int queueId) {
+	public FileValue(String name, long queueId) {
 		this.name = name;
 		this.queueId = queueId;
 	}
@@ -39,11 +39,11 @@ public class FileValue {
 		this.downloaded = downloaded;
 	}
 
-	public Integer getQueueId() {
+	public Long getQueueId() {
 		return queueId;
 	}
 
-	public void setQueueId(Integer queueId) {
+	public void setQueueId(Long queueId) {
 		this.queueId = queueId;
 	}
 

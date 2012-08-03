@@ -1,12 +1,10 @@
 package com.superdownloader.proeasy.core.logic;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.superdownloader.proeasy.core.persistence.UsersDao;
+import com.superdownloader.proeasy.core.type.User;
 import com.superdownloader.proeasy.mule.processor.Headers;
 
 /**
@@ -20,26 +18,34 @@ public class UsersController {
 	private UsersDao usersDao;
 
 	public void registerDevice(String username, String registrationId, String deviceId) {
-		Map<String, String> configs = new HashMap<String, String>();
-		configs.put(Headers.NOTIFICATION_C2DM_DEVICEID, deviceId);
-		configs.put(Headers.NOTIFICATION_C2DM_REGISTRATIONID, registrationId);
-		usersDao.saveUserConfigs(username, configs);
-	}
-
-	public Map<String, String> userConfiguration(String username) {
-		return usersDao.getUserConfigs(username);
-	}
-
-	public Map<String, String> userConfiguration(int userId) {
-		return usersDao.getUserConfigs(userId);
-	}
-
-	public int getUserId(String username) {
-		Integer userId = usersDao.getUserId(username);
-		if (userId == null) {
+		User user = usersDao.get(username);
+		if (user != null) {
+			user.addConfig(Headers.NOTIFICATION_C2DM_DEVICEID, deviceId);
+			user.addConfig(Headers.NOTIFICATION_C2DM_REGISTRATIONID, registrationId);
+			usersDao.save(user);
+		} else {
 			throw new IllegalArgumentException("Username doesn't exist");
 		}
-		return userId;
+	}
+
+	public User getUser(String username) {
+		User user = usersDao.get(username);
+		if (user == null) {
+			throw new IllegalArgumentException("Username doesn't exist");
+		}
+		return user;
+	}
+
+	public User getUser(long userId) {
+		User user = usersDao.get(userId);
+		if (user == null) {
+			throw new IllegalArgumentException("Username doesn't exist");
+		}
+		return user;
+	}
+
+	public long getUserId(String username) {
+		return getUser(username).getId();
 	}
 
 }

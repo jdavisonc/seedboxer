@@ -29,6 +29,14 @@ public class UserConfiguration {
 
 	private String value;
 
+	public UserConfiguration() { }
+
+	public UserConfiguration(User user, String name, String value) {
+		this.user = user;
+		this.name = name;
+		this.value = value;
+	}
+
 	public long getId() {
 		return id;
 	}

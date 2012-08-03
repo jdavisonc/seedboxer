@@ -17,6 +17,7 @@ import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
 import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 import com.superdownloader.proeasy.core.type.FileValue;
+import com.superdownloader.proeasy.core.type.User;
 import com.superdownloader.proeasy.core.util.TorrentUtils;
 
 @Service
@@ -53,11 +54,10 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public void putToDownload(String username, List<String> fileNames) throws Exception {
-		int userId = getUserId(username);
-		putToDownload(userId, fileNames, true);
+		putToDownload(getUser(username), fileNames, true);
 	}
 
-	private void putToDownload(int userId, List<String> fileNames, boolean checkExistence) throws Exception {
+	private void putToDownload(User user, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
 			File inProgressFile = getFile(name, inProgressPath);
@@ -69,7 +69,7 @@ public class DownloadsController {
 						completeFile.getAbsolutePath());
 			}
 
-			downloadsQueueManager.push(userId, completePath + File.separator + name);
+			downloadsQueueManager.push(user, completePath + File.separator + name);
 		}
 	}
 
@@ -81,8 +81,7 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public List<FileValue> downloadsInQueue(String username) throws Exception {
-		int userId = getUserId(username);
-		List<DownloadQueueItem> userQueue = downloadsQueueManager.userQueue(userId);
+		List<DownloadQueueItem> userQueue = downloadsQueueManager.userQueue(getUser(username));
 
 		List<FileValue> queue = new ArrayList<FileValue>();
 		for (DownloadQueueItem inQueue : userQueue) {
@@ -92,8 +91,8 @@ public class DownloadsController {
 		return queue;
 	}
 
-	private int getUserId(String username) {
-		return usersController.getUserId(username);
+	private User getUser(String username) {
+		return usersController.getUser(username);
 	}
 
 	/**
@@ -105,7 +104,7 @@ public class DownloadsController {
 	 * @throws Exception
 	 */
 	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
-		int userId = getUserId(username);
+		User user = getUser(username);
 
 		File torrent = new File(watchDownloaderPath + File.separator + fileName);
 		Files.copy(new InputSupplier<InputStream>() {
@@ -116,7 +115,7 @@ public class DownloadsController {
 		}, torrent);
 
 		String name = TorrentUtils.getName(torrent);
-		putToDownload(userId, Collections.singletonList(name), false);
+		putToDownload(user, Collections.singletonList(name), false);
 	}
 
 	/**
@@ -126,9 +125,8 @@ public class DownloadsController {
 	 * @param fileName
 	 * @return
 	 */
-	public boolean deleteDownloadInQueue(String username, int downloadId) {
-		int userId = getUserId(username);
-		return downloadsQueueManager.remove(userId, downloadId);
+	public void deleteDownloadInQueue(String username, long downloadId) {
+		downloadsQueueManager.remove(getUser(username), downloadId);
 	}
 
 	/*
