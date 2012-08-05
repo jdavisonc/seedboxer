@@ -7,8 +7,8 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
 
 /**
  * @author harley

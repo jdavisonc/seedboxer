@@ -1,15 +1,10 @@
 /**
  * 
  */
-package com.superdownloader.proeasy.core.type;
+package com.superdownloader.proeasy.core.domain;
 
-import java.util.Map;
-
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -27,11 +22,6 @@ public class User {
 	private String username;
 
 	private String password;
-
-	@OneToMany(mappedBy="user")
-	@ElementCollection
-	@MapKeyColumn(name="name")
-	private Map<String, UserConfiguration> config;
 
 	public long getId() {
 		return id;
@@ -55,22 +45,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Map<String, UserConfiguration> getConfig() {
-		return config;
-	}
-
-	public void setConfig(Map<String, UserConfiguration> config) {
-		this.config = config;
-	}
-
-	public void addConfig(String name, String value) {
-		config.put(name, new UserConfiguration(this, name, value));
-	}
-
-	public void removeConfig(String name) {
-		config.remove(name);
 	}
 
 	@Override

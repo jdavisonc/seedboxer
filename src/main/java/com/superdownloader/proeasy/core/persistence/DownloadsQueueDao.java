@@ -2,7 +2,7 @@ package com.superdownloader.proeasy.core.persistence;
 
 import java.util.List;
 
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
 
 /**
  * @author harley
@@ -12,13 +12,13 @@ public interface DownloadsQueueDao {
 
 	void push(DownloadQueueItem item);
 
-	void repush(DownloadQueueItem item);
+	void repush(long downloadId);
 
-	List<DownloadQueueItem> pop(int maxDownloadPerUser);
+	List<DownloadQueueItem> pop(long maxDownloadPerUser);
 
 	void setInProgress(List<Long> idsToUpdate);
 
-	void remove(DownloadQueueItem item);
+	void remove(long downloadId);
 
 	DownloadQueueItem get(long userId, long downloadId);
 

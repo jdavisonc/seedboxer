@@ -1,6 +1,10 @@
-package com.superdownloader.proeasy.core.type;
+package com.superdownloader.proeasy.core.domain;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,18 +21,23 @@ public class DownloadQueueItem {
 	@Id
 	private long id;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private User user;
 
 	private String download;
 
+	@Column(name="in_progress")
 	private boolean inProgress;
+
+	@Column(name="created_on")
+	private Date createdOn;
 
 	public DownloadQueueItem() { }
 
 	public DownloadQueueItem(User user, String download) {
 		this.user = user;
 		this.download = download;
+		createdOn = new Date();
 	}
 
 	public long getId() {
@@ -65,6 +74,14 @@ public class DownloadQueueItem {
 
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	@Override

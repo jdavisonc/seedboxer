@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.persistence.DownloadsQueueDao;
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
-import com.superdownloader.proeasy.core.type.User;
 
 /**
  * @author harley
@@ -18,6 +20,8 @@ import com.superdownloader.proeasy.core.type.User;
  */
 @Service
 public class DownloadsQueueManager {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsQueueManager.class);
 
 	private Integer maxDownloadPerUser;
 
@@ -30,27 +34,33 @@ public class DownloadsQueueManager {
 	}
 
 	public List<DownloadQueueItem> pop() {
-		List<DownloadQueueItem> inQueue = queueDao.pop(maxDownloadPerUser);
+		try {
+			List<DownloadQueueItem> inQueue = queueDao.pop(maxDownloadPerUser);
 
-		// update to set in progress
-		List<Long> setInProgress = new ArrayList<Long>();
-		for (Iterator<DownloadQueueItem> iterator = inQueue.iterator(); iterator.hasNext();) {
-			DownloadQueueItem item = iterator.next();
-			if (item.isInProgress()) {
-				iterator.remove();
-			} else {
-				setInProgress.add(item.getId());
+			// update to set in progress
+			List<Long> setInProgress = new ArrayList<Long>();
+			for (Iterator<DownloadQueueItem> iterator = inQueue.iterator(); iterator.hasNext();) {
+				DownloadQueueItem item = iterator.next();
+				if (item.isInProgress()) {
+					iterator.remove();
+				} else {
+					setInProgress.add(item.getId());
+				}
 			}
-		}
 
-		if (!setInProgress.isEmpty()) {
-			queueDao.setInProgress(setInProgress);
+			if (!setInProgress.isEmpty()) {
+				queueDao.setInProgress(setInProgress);
+			}
+			return inQueue;
+
+		} catch (Exception e) {
+			LOGGER.warn("error making pooling", e);
+			return null;
 		}
-		return inQueue;
 	}
 
-	public void remove(DownloadQueueItem item) {
-		queueDao.remove(item);
+	public void remove(long downloadId) {
+		queueDao.remove(downloadId);
 	}
 
 	public void remove(User user, long downloadId) {
@@ -58,11 +68,11 @@ public class DownloadsQueueManager {
 		if (item == null) {
 			throw new IllegalArgumentException("There is not download in queue with the given id");
 		}
-		queueDao.remove(item);
+		queueDao.remove(item.getId());
 	}
 
-	public void repush(DownloadQueueItem item) {
-		queueDao.repush(item);
+	public void repush(long downloadId) {
+		queueDao.repush(downloadId);
 	}
 
 	public void push(User user, String download) {

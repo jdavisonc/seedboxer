@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.core.type.User;
 
 
 /**

@@ -3,6 +3,8 @@
  */
 package com.superdownloader.proeasy.core.persistence;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.superdownloader.proeasy.core.type.User;
+import com.superdownloader.proeasy.core.domain.User;
+import com.superdownloader.proeasy.core.domain.UserConfiguration;
 
 /**
  * @author harley
@@ -55,6 +58,38 @@ public class HibernateUsersDao implements UsersDao {
 		Query query = getCurrentSession().createQuery("from User where username = :username");
 		query.setParameter("username", username);
 		return (User) query.uniqueResult();
+	}
+
+	@Override
+	@Transactional
+	public void saveUserConfig(long userId, UserConfiguration config) {
+		User user = get(userId);
+		config.setUser(user);
+		UserConfiguration fromDb;
+		if (config.getId() != 0) {
+			fromDb = (UserConfiguration) getCurrentSession().get(UserConfiguration.class, config.getId());
+		} else {
+			Query query = getCurrentSession().createQuery("from UserConfiguration where user.id = :userId and name = :name");
+			query.setParameter("userId", userId);
+			query.setParameter("name", config.getName());
+			fromDb = (UserConfiguration) query.uniqueResult();
+		}
+
+		if (fromDb == null) {
+			fromDb = config;
+		} else {
+			fromDb.setValue(config.getValue());
+		}
+
+		getCurrentSession().save(fromDb);
+	}
+
+	@Override
+	@Transactional
+	public List<UserConfiguration> getUserConfig(long userId) {
+		Query query = getCurrentSession().createQuery("from UserConfiguration where user.id = :userId");
+		query.setParameter("userId", userId);
+		return query.list();
 	}
 
 }

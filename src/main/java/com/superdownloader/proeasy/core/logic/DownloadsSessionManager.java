@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.type.Download;
-import com.superdownloader.proeasy.core.type.User;
 
 /**
  * @author harley
@@ -83,11 +83,6 @@ public class DownloadsSessionManager {
 				}
 			}
 		}
-	}
-
-	public List<Download> getUserDownloads(String username) {
-		User user = userController.getUser(username);
-		return getUserDownloads(user.getId());
 	}
 
 	public List<Download> getUserDownloads(long userId) {

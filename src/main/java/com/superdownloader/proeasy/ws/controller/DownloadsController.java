@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
+import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
+import com.superdownloader.proeasy.core.type.Download;
 import com.superdownloader.proeasy.core.type.FileValue;
-import com.superdownloader.proeasy.core.type.User;
 import com.superdownloader.proeasy.core.util.TorrentUtils;
 
 @Service
@@ -28,6 +30,9 @@ public class DownloadsController {
 
 	@Autowired
 	private DownloadsQueueManager downloadsQueueManager;
+
+	@Autowired
+	private DownloadsSessionManager downloadSessionManager;
 
 	@Value(value="${proeasy.completePath}")
 	private String completePath;
@@ -127,6 +132,11 @@ public class DownloadsController {
 	 */
 	public void deleteDownloadInQueue(String username, long downloadId) {
 		downloadsQueueManager.remove(getUser(username), downloadId);
+	}
+
+	public List<Download> getUserDownloads(String username) {
+		long userId = getUser(username).getId();
+		return downloadSessionManager.getUserDownloads(userId);
 	}
 
 	/*

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.superdownloader.proeasy.core.type;
+package com.superdownloader.proeasy.core.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
  *
  */
 @Entity
-@Table(name="configurations", uniqueConstraints = {@UniqueConstraint(columnNames={"name"})})
+@Table(name="users_configs", uniqueConstraints = {@UniqueConstraint(columnNames={"name", "user_id"})})
 public class UserConfiguration {
 
 	@Id
@@ -31,8 +31,7 @@ public class UserConfiguration {
 
 	public UserConfiguration() { }
 
-	public UserConfiguration(User user, String name, String value) {
-		this.user = user;
+	public UserConfiguration(String name, String value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -59,6 +58,14 @@ public class UserConfiguration {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
 
 /**
  * @author harley
@@ -33,17 +33,17 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 
 	@Override
 	@Transactional
-	public void repush(DownloadQueueItem item) {
+	public void repush(long downloadId) {
 		DownloadQueueItem itemdb = (DownloadQueueItem) getCurrentSession()
-				.get(DownloadQueueItem.class, item.getId());
+				.get(DownloadQueueItem.class, downloadId);
 		itemdb.setInProgress(false);
-		getCurrentSession().save(item);
+		getCurrentSession().save(itemdb);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<DownloadQueueItem> pop(int maxDownloadPerUser) {
+	public List<DownloadQueueItem> pop(long maxDownloadPerUser) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d where " +
 				"(select count(*) from DownloadQueueItem f where " +
 				"f.user.id = d.user.id AND f.id < d.id) <= :maxDownloadPerUser");
@@ -55,16 +55,16 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	@Transactional
 	public void setInProgress(List<Long> idsToUpdate) {
 		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
-				"set inProgress = true where id IN (:ids)");
-		query.setParameter("ids", idsToUpdate);
+				"set inProgress = true where id in (:ids)");
+		query.setParameterList("ids", idsToUpdate);
 		query.executeUpdate();
 	}
 
 	@Override
 	@Transactional
-	public void remove(DownloadQueueItem item) {
+	public void remove(long downloadId) {
 		Query query = getCurrentSession().createQuery("delete from DownloadQueueItem where id = :id");
-		query.setParameter("id", item.getId());
+		query.setParameter("id", downloadId);
 		query.executeUpdate();
 	}
 

@@ -1,6 +1,9 @@
 package com.superdownloader.proeasy.core.persistence;
 
-import com.superdownloader.proeasy.core.type.User;
+import java.util.List;
+
+import com.superdownloader.proeasy.core.domain.User;
+import com.superdownloader.proeasy.core.domain.UserConfiguration;
 
 public interface UsersDao {
 
@@ -11,5 +14,9 @@ public interface UsersDao {
 	User get(long userId);
 
 	void save(User user);
+
+	void saveUserConfig(long userId, UserConfiguration config);
+
+	List<UserConfiguration> getUserConfig(long userId);
 
 }

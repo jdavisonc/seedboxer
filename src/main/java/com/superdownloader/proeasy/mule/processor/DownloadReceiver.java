@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.domain.DownloadQueueItem;
+import com.superdownloader.proeasy.core.domain.User;
+import com.superdownloader.proeasy.core.domain.UserConfiguration;
 import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
-import com.superdownloader.proeasy.core.type.DownloadQueueItem;
-import com.superdownloader.proeasy.core.type.User;
-import com.superdownloader.proeasy.core.type.UserConfiguration;
 
 /**
  * @author harley
@@ -45,12 +45,12 @@ public class DownloadReceiver implements Processor {
 		User user = item.getUser();
 		long downloadId = item.getId();
 
-		msg.setHeader(Headers.USER, user);
-		msg.setHeader(Headers.DOWNLOAD, item);
+		msg.setHeader(Headers.USER_ID, user.getId());
+		msg.setHeader(Headers.DOWNLOAD_ID, item.getId());
 		msg.setHeader(Headers.START_TIME, new Date());
-		Map<String, UserConfiguration> configs = user.getConfig();
-		for (UserConfiguration entry : configs.values()) {
-			msg.setHeader(entry.getName(), entry.getValue());
+		List<UserConfiguration> configs = usersController.getUserConfig(user.getId());
+		for (UserConfiguration conf : configs) {
+			msg.setHeader(conf.getName(), conf.getValue());
 		}
 		LOGGER.debug("USER_ID={}", user.getId());
 		LOGGER.debug("CONFIGS={}", configs);
