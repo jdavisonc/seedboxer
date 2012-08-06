@@ -35,8 +35,8 @@ public class FtpSender implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		final Integer userId = (Integer) msg.getHeader(Headers.USER_ID);
-		final Integer downloadId = (Integer) msg.getHeader(Headers.DOWNLOAD_ID);
+		final Long downloadId = (Long) msg.getHeader(Headers.DOWNLOAD_ID);
+		final Long userId = (Long) msg.getHeader(Headers.USER_ID);
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
@@ -70,11 +70,11 @@ public class FtpSender implements Processor {
 
 		private double transferredInMbs = 0L;
 
-		private int downloadId;
+		private long downloadId;
 
-		private int userId;
+		private long userId;
 
-		public FtpStatusListener(int userId, int downloadId) {
+		public FtpStatusListener(long userId, long downloadId) {
 			this.userId = userId;
 			this.downloadId = downloadId;
 		}

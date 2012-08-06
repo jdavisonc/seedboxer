@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.core.logic.UsersController;
 
@@ -51,12 +52,12 @@ public class FileReceiver implements Processor {
 		if (m.matches()) {
 			String username = m.group(1);
 			String filepath = (String) msg.getHeader(Exchange.FILE_PATH);
-			int userId = usersController.getUserId(username);
+			User user = usersController.getUser(username);
 
 			for (String path : getLines(filepath)) {
 				String realPath = path.replaceFirst("file://", ""); // Removes prefix of Flexget
-				LOGGER.info("Add file to queue. USER_ID={} FILE={}", userId, realPath);
-				queueManager.push(userId, realPath);
+				LOGGER.info("Add file to queue. USER_ID={} FILE={}", user.getId(), realPath);
+				queueManager.push(user, realPath);
 			}
 		} else {
 			throw new Exception("The file doesn't compile with the pattern.");

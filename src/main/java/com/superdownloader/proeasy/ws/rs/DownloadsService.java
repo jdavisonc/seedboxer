@@ -67,11 +67,8 @@ public class DownloadsService {
 	public Response delete(@QueryParam("username") String username,
 			@QueryParam("downloadId") Integer downloadId) {
 		try {
-			if (controller.deleteDownloadInQueue(username, downloadId)) {
-				return Response.createSuccessfulResponse();
-			} else {
-				return Response.createErrorResponse("Can not delete download from queue");
-			}
+			controller.deleteDownloadInQueue(username, downloadId);
+			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not delete download", e);
 			return Response.createErrorResponse("Can not delete download from queue");

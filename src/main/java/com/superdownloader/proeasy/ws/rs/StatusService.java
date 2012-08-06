@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.superdownloader.proeasy.core.logic.DownloadsSessionManager;
 import com.superdownloader.proeasy.core.type.Download;
+import com.superdownloader.proeasy.ws.controller.DownloadsController;
 
 /**
  * WebService to get the status of an upload
@@ -31,13 +31,13 @@ public class StatusService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StatusService.class);
 
 	@Autowired
-	private DownloadsSessionManager downloadSessionManager;
+	private DownloadsController controller;
 
 	@GET
 	@Produces("text/xml")
 	public List<Download> status(@QueryParam("username") String username) {
 		try {
-			return downloadSessionManager.getUserDownloads(username);
+			return controller.getUserDownloads(username);
 		} catch (Exception e) {
 			LOGGER.error("Wrong request", e);
 			throw new WebApplicationException(Response.Status.BAD_REQUEST);
