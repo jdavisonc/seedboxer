@@ -1,0 +1,1 @@
+insert into `users_configs` (user_id, name, value) select user_id, name, value from configurations;

@@ -47,6 +47,10 @@
 					<artifactId>spring-beans</artifactId>
 					<groupId>org.springframework</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -193,11 +197,11 @@
 		     <version>${cglib.version}</version>
 		     <scope>runtime</scope>
 		</dependency>
-                <dependency>
-                    <groupId>org.apache.camel</groupId>
-                    <artifactId>camel-rss</artifactId>
-                    <version>${camel.version}</version>
-                </dependency>
+		<dependency>
+        	<groupId>org.apache.camel</groupId>
+            <artifactId>camel-rss</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
 	</dependencies>
 
 	<build>

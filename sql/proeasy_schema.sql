@@ -19,12 +19,14 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `configurations`
 --
 
-CREATE TABLE IF NOT EXISTS `configurations` (
-  `id_user` int NOT NULL DEFAULT '0',
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `value` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_user`,`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `users_configs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `value` varchar(301) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `configurations`
@@ -59,7 +61,7 @@ CREATE TABLE  `proeasy`.`downloads_queue` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user_id` int NOT NULL ,
 `download` varchar( 200 ) NOT NULL ,
-`created_date` datetime NOT NULL ,
+`created_on` datetime NOT NULL ,
 `in_progress` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

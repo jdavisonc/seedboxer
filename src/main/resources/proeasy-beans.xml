@@ -1,8 +1,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
 	<context:component-scan base-package="com.superdownloader.proeasy"/>
@@ -10,7 +12,7 @@
 	<!-- CAMEL -->
 	<import resource="classpath:camel-context.xml" />
         
-        <!-- SOURCES CAMEL -->
+    <!-- SOURCES CAMEL -->
 	<import resource="classpath:camel-context-sources.xml" />
 	
 	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processor.filter.FileFilter">
@@ -24,7 +26,7 @@
 	<!-- ORM -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="proeasyDataSource" />
-		<property name="annotatedPackages">
+		<property name="packagesToScan">
 			<list>
 				<value>com.superdownloader.proeasy.core.domain</value>
 			</list>
@@ -32,8 +34,7 @@
 		<property name="hibernateProperties">
 			<value>
 				hibernate.format_sql=true
-				hibernate.show_sql=true
-				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+				hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
 			</value>
 		</property>
 	</bean>
@@ -42,6 +43,8 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<!-- Data sources -->
 	<bean id="proeasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">

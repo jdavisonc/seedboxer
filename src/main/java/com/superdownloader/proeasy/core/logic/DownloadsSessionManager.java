@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.type.Download;
 
 /**
@@ -29,25 +30,25 @@ public class DownloadsSessionManager {
 	@Autowired
 	private UsersController userController;
 
-	private final Map<Integer, Map<Integer, Download>> downloadsPerUser;
+	private final Map<Long, Map<Long, Download>> downloadsPerUser;
 
 	private final Object lock;
 
 	public DownloadsSessionManager() {
-		downloadsPerUser = new HashMap<Integer, Map<Integer, Download>>();
+		downloadsPerUser = new HashMap<Long, Map<Long, Download>>();
 		lock = new Object();
 	}
 
 	public boolean addUserDownload(String username, int downloadId, String filename) {
-		Integer userId = userController.getUserId(username);
-		return addUserDownload(userId, downloadId, filename);
+		User user = userController.getUser(username);
+		return addUserDownload(user.getId(), downloadId, filename);
 	}
 
-	public boolean addUserDownload(int userId, int downloadId, String filename) {
+	public boolean addUserDownload(long userId, long downloadId, String filename) {
 		synchronized (lock) {
-			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
+			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads == null) {
-				userUploads = new HashMap<Integer, Download>();
+				userUploads = new HashMap<Long, Download>();
 				downloadsPerUser.put(userId, userUploads);
 			}
 			String file = fixFilename(filename);
@@ -60,9 +61,9 @@ public class DownloadsSessionManager {
 		}
 	}
 
-	public void setUserDownloadSize(int userId, int downloadId, long size) {
+	public void setUserDownloadSize(long userId, long downloadId, long size) {
 		synchronized (lock) {
-			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
+			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
 				Download upload = userUploads.get(downloadId);
 				if (upload != null) {
@@ -72,9 +73,9 @@ public class DownloadsSessionManager {
 		}
 	}
 
-	public void setUserDownloadProgress(int userId, int downloadId, long transferred) {
+	public void setUserDownloadProgress(long userId, long downloadId, long transferred) {
 		synchronized (lock) {
-			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
+			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
 				Download upload = userUploads.get(downloadId);
 				if (upload != null) {
@@ -84,14 +85,9 @@ public class DownloadsSessionManager {
 		}
 	}
 
-	public List<Download> getUserDownloads(String username) {
-		Integer userId = userController.getUserId(username);
-		return getUserDownloads(userId);
-	}
-
-	public List<Download> getUserDownloads(int userId) {
+	public List<Download> getUserDownloads(long userId) {
 		synchronized (lock) {
-			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
+			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
 				try {
 					Collection<Download> uploads = userUploads.values();
@@ -109,9 +105,9 @@ public class DownloadsSessionManager {
 		}
 	}
 
-	public Download removeUserDownload(int userId, int downloadId) {
+	public Download removeUserDownload(long userId, long downloadId) {
 		synchronized (lock) {
-			Map<Integer, Download> userUploads = downloadsPerUser.get(userId);
+			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads != null) {
 				return userUploads.remove(downloadId);
 			} else {
