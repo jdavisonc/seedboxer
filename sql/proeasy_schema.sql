@@ -65,3 +65,34 @@ CREATE TABLE  `proeasy`.`downloads_queue` (
 `in_progress` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `content`
+--
+
+
+CREATE TABLE IF NOT EXISTS `content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `history` bit(1) NOT NULL,
+  `USER_ID` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `tv_show`
+--
+
+
+CREATE TABLE IF NOT EXISTS `tv_show` (
+  `content_id` int(11) NOT NULL,
+  `season` int(11) DEFAULT NULL,
+  `episode` int(11) DEFAULT NULL,
+  `quality` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`content_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+

@@ -4,32 +4,30 @@
  */
 package com.superdownloader.proeasy.sources.processors;
 
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
+import com.superdownloader.proeasy.sources.parser.ParserManager;
 import com.superdownloader.proeasy.sources.type.MatchableItem;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 /**
  *
  * @author Farid
  */
 @Component
-public class RssConsumer implements Processor{
+public class ParserProcessor implements Processor{
 
+    @Autowired
+    ParserManager parserManager;
+    
     @Override
     public void process(Exchange exchange) throws Exception {
         Message msg = exchange.getIn();
-        SyndFeed feed = (SyndFeed) msg.getBody();
-        List<SyndEntry > entries = feed.getEntries();
-        List<MatchableItem> items = new ArrayList<MatchableItem>();
-        for(SyndEntry  entry : entries){
-            items.add(new MatchableItem(entry.getTitle(),entry.getLink()));
-        }
-        exchange.getOut().setBody(items, items.getClass());
+        List<MatchableItem> items = (List<MatchableItem>) msg.getBody();
+        exchange.getOut().setBody(parserManager.parseMatchableItems(items));
     }
 }
