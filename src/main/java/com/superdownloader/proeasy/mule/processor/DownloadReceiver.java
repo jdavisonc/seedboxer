@@ -43,7 +43,6 @@ public class DownloadReceiver implements Processor {
 
 		DownloadQueueItem item = (DownloadQueueItem) msg.getBody();
 		User user = item.getUser();
-		long downloadId = item.getId();
 
 		msg.setHeader(Headers.USER_ID, user.getId());
 		msg.setHeader(Headers.DOWNLOAD_ID, item.getId());
@@ -54,17 +53,16 @@ public class DownloadReceiver implements Processor {
 		}
 		LOGGER.debug("USER_ID={}", user.getId());
 		LOGGER.debug("CONFIGS={}", configs);
-		LOGGER.debug("DOWNLOAD_ID={}", downloadId);
+		LOGGER.debug("DOWNLOAD_ID={}", item.getId());
 
-		processDownload(msg, item);
+		processDownload(msg, user.getId(), item.getId(), item.getDownload());
 	}
 
-	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
+	private void processDownload(Message msg, long userId, long downloadId, String downloadPath) throws FileNotFoundException {
 		// Calculate size of the upload
 		String fileName;
 		long totalSize = 0;
 
-		String downloadPath = item.getDownload();
 		File toUpload = new File(downloadPath);
 		if (toUpload.exists()) {
 			totalSize += calculateSize(toUpload);
@@ -78,7 +76,7 @@ public class DownloadReceiver implements Processor {
 
 		// Size in Mbs
 		totalSize = totalSize / MEGABYTE;
-		uploadSessionManager.setUserDownloadSize(item.getUser().getId(), item.getId(), totalSize);
+		uploadSessionManager.addUserDownload(userId, downloadId, downloadPath, totalSize);
 
 		LOGGER.debug("FILES_TO_UPLOAD={}", toUpload);
 	}

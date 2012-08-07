@@ -1,7 +1,6 @@
 package com.superdownloader.proeasy.mule.processor.filter;
 
 import java.io.File;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.camel.component.file.GenericFile;
@@ -23,8 +22,7 @@ public class FileFilter implements GenericFileFilter<Object> {
 	public boolean accept(GenericFile<Object> file) {
 		String relativePath = file.getAbsoluteFilePath().substring((file.getEndpointPath() + File.separator).length());
 		if (pattern != null) {
-			Matcher m = pattern.matcher(relativePath);
-			return m.matches();
+			return pattern.matcher(relativePath).matches();
 		} else {
 			return false;
 		}
