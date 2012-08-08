@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Farid
  */
+@Component
 public class ParserManager {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ParserManager.class);
@@ -23,7 +26,8 @@ public class ParserManager {
     public List<ContentParser> getParsers() {
         return parsers;
     }
-
+    
+    @Autowired
     public void setParsers(List<ContentParser> parsers) {
         this.parsers = parsers;
     }

@@ -5,11 +5,14 @@
 package com.superdownloader.proeasy.sources.filters;
 
 import com.superdownloader.proeasy.sources.domain.TvShow;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Farid
  */
+@Component
 public class TvShowFilter extends ContentFilter<TvShow>{
 
 
@@ -31,5 +34,9 @@ public class TvShowFilter extends ContentFilter<TvShow>{
         return false;
     }
 
+    @Autowired
+    public void setType(TvShow tvshow){
+        super.setType(TvShow.class);
+    }
     
 }

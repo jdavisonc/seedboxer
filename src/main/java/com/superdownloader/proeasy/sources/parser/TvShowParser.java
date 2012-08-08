@@ -8,11 +8,13 @@ import com.superdownloader.proeasy.sources.domain.TvShow;
 import com.superdownloader.proeasy.sources.type.Quality;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Farid
  */
+@Component
 public class TvShowParser extends ContentParser<TvShow>{
 
     private final String QUALITY_HD = "720p";

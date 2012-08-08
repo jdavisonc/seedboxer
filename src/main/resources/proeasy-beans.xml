@@ -68,31 +68,8 @@
         <!-- Aggretator for multiple feeds -->
         <bean id="rssAggregationStrategy" class="org.apache.camel.component.rss.AggregateRssFeedStrategy"/>
 
-        <!-- Filter Beans -->
-        <bean id="tvShowsFilter" class="com.superdownloader.proeasy.sources.filters.TvShowFilter">
-            <property name="type" value="com.superdownloader.proeasy.sources.domain.TvShow"/>
-        </bean>
 
-        <!-- Parser Beans -->
-        <bean id="tvShowParser" class="com.superdownloader.proeasy.sources.parser.TvShowParser"/>
 
-        <!-- Parser Manager with parsers -->
-        <bean id="parserManager" class="com.superdownloader.proeasy.sources.parser.ParserManager">
-            <property name="parsers">
-                <list>
-                    <ref bean="tvShowParser"/>
-                </list>
-            </property>
-        </bean>
-
-        <!-- Filter Manager with filters -->
-        <bean id="filterManager" class="com.superdownloader.proeasy.sources.filters.FilterManager" >
-            <property name="filters">
-                <list>
-                    <ref bean="tvShowsFilter"/>
-                </list>
-            </property>
-        </bean>
         
 
 </beans>

@@ -5,11 +5,13 @@
 package com.superdownloader.proeasy.core.persistence;
 
 
+import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.sources.domain.Content;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,6 +45,15 @@ public class ContentDao {
     public <T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory){
         Criteria criteria = getCurrentSession().createCriteria(clazz);
         criteria.add(Restrictions.eq("history", isHistory));
+        return criteria.list();
+    }
+    
+    public <T extends Content> List<T> getHistoryContentFilteredByNameAndUser(Class<T> clazz, String name,
+            User user){
+        Criteria criteria = getCurrentSession().createCriteria(clazz);
+        Criterion rest1 = Restrictions.and(Restrictions.eq("name", name),Restrictions.eq("history",true));
+        rest1 = Restrictions.and(rest1,Restrictions.eq("user",user));
+        criteria.add(rest1);
         return criteria.list();
     }
 }
