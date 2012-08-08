@@ -49,6 +49,21 @@ public class FilterManager {
     
     public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
         List<Content> userContentList = getAllContent(false);
+        Map<Content,List<User>> mappedContent = mapContentWithUsers(userContentList, parsedContentList);
+        mappedContent = filterContentWithHistory(mappedContent);
+        
+        return mappedContent;
+    }
+    
+    /**
+     * Maps the newly parsed content with the users, using the configured 
+     * content for each user on the Database.
+     * 
+     * @param userContentList
+     * @param parsedContentList
+     * @return 
+     */
+    private Map<Content,List<User>> mapContentWithUsers(List<Content> userContentList, List<Content> parsedContentList){
         Map<Content,List<User>> mappedContent = new HashMap<Content,List<User>>();
         for(Content parsedContent : parsedContentList){
             if(mappedContent.containsKey(parsedContent))
@@ -67,7 +82,20 @@ public class FilterManager {
             }
             
         }
-        List<Content> contentExistingInHistory = new ArrayList<Content>();
+        return mappedContent;
+        
+    }
+    
+    /**
+     * After having the content mapped to each user, this method filters the 
+     * users for each content using the user's history, if history content is
+     * equal to a matchedContent, then the user is removed.
+     * 
+     * @param mappedContent
+     * @return 
+     */
+    private Map<Content,List<User>> filterContentWithHistory(Map<Content,List<User>> mappedContent){
+        List<Content> contentInHistory = new ArrayList<Content>();
         for(Content alreadyMappedContent : mappedContent.keySet()){
             List<User> usersThatAlreadyHaveThisContent = new ArrayList<User>();
             for(User user : mappedContent.get(alreadyMappedContent)){
@@ -84,20 +112,17 @@ public class FilterManager {
                 }
             }
             if(usersThatAlreadyHaveThisContent.size() == mappedContent.get(alreadyMappedContent).size())
-                contentExistingInHistory.add(alreadyMappedContent);
+                contentInHistory.add(alreadyMappedContent);
             else{
                 for(User user : usersThatAlreadyHaveThisContent){
                     mappedContent.get(alreadyMappedContent).remove(user);
                 }
             }
         }
-        for(Content content : contentExistingInHistory){
+        for(Content content : contentInHistory){
             mappedContent.remove(content);
         }
         return mappedContent;
     }
-    
-    
-    
     
 }
