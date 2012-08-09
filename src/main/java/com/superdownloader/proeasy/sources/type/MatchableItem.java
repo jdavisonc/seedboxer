@@ -14,6 +14,7 @@ import java.net.URL;
 public class MatchableItem {
     private String title;
     private URL url;
+    private String path;
 
     public MatchableItem(String title, String url) throws MalformedURLException{
         this.title = title;
@@ -33,6 +34,14 @@ public class MatchableItem {
 
     public void setUrl(URL url) {
         this.url = url;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
     
     

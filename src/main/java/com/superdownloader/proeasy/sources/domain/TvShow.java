@@ -70,7 +70,7 @@ public class TvShow extends Content{
     
     @Override
     public String toString(){
-        return this.getName()+ "S"+ season + "E" + episode + this.getQuality();
+        return this.getName()+ "|S"+ season + "|E" + episode + this.getQuality();
     }
 
     @Override

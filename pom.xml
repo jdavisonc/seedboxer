@@ -23,6 +23,7 @@
 		<jaxb.version>2.2.6-b35</jaxb.version>
 		<hibernate.version>4.1.5.SP1</hibernate.version>
 		<cglib.version>2.2.2</cglib.version>
+                <commons.httpclient.version>3.1</commons.httpclient.version>
 	</properties>
 
 	<dependencies>
@@ -198,10 +199,15 @@
 		     <scope>runtime</scope>
 		</dependency>
 		<dependency>
-        	<groupId>org.apache.camel</groupId>
-            <artifactId>camel-rss</artifactId>
-            <version>${camel.version}</version>
-        </dependency>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>camel-rss</artifactId>
+                    <version>${camel.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                    <version>${commons.httpclient.version}</version>
+                </dependency>
 	</dependencies>
 
 	<build>
