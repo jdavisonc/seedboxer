@@ -95,4 +95,14 @@ CREATE TABLE IF NOT EXISTS `tv_show` (
   PRIMARY KEY (`content_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `feeds`
+--
 
+
+CREATE TABLE IF NOT EXISTS `feeds` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `url` varchar(250) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
