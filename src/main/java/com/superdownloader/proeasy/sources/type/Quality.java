@@ -18,10 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.superdownloader.proeasy.sources.type;
 
 /**
@@ -29,9 +26,9 @@ package com.superdownloader.proeasy.sources.type;
  * @author Farid
  */
 public enum Quality {
-    STANDARD,
-    HD,
-    FULLHD;
-    
-    
+	STANDARD,
+	HD,
+	FULLHD;
+
+
 }

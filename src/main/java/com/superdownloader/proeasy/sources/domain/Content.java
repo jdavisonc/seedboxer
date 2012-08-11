@@ -18,15 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.superdownloader.proeasy.sources.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.sources.type.MatchableItem;
-import javax.persistence.*;
 
 /**
  *
@@ -36,89 +44,89 @@ import javax.persistence.*;
 @Table(name= "CONTENT")
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Content {
-    @Id
-    @GeneratedValue
-    @Column(name = "ID")
-    private Long id;
-    
-    @Column(name="NAME")
-    private String name;
-    
-    @Column(name="HISTORY")
-    private Boolean history;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID")
-    private User user;
-    
-    @Transient
-    private MatchableItem matchableItem;
-    
-    public Long getId() {
-        return id;
-    }
+	@Id
+	@GeneratedValue
+	@Column(name = "ID")
+	private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Column(name="NAME")
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	@Column(name="HISTORY")
+	private Boolean history;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "USER_ID")
+	private User user;
 
-    public MatchableItem getMatchableItem() {
-        return matchableItem;
-    }
+	@Transient
+	private MatchableItem matchableItem;
 
-    public void setMatchableItem(MatchableItem matchableItem) {
-        this.matchableItem = matchableItem;
-    }
-    
-    public void setIsHistory(boolean history){
-        this.history = history;
-    }
-    
-    public boolean isHistory(){
-        return this.history;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Boolean getHistory() {
-        return history;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setHistory(Boolean history) {
-        this.history = history;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public MatchableItem getMatchableItem() {
+		return matchableItem;
+	}
 
-    @Override
-    public boolean equals(Object object){
-        if(this == object)
-            return true;
-        if(object instanceof Content){
-            Content content = (Content) object;
-            if(this.name.trim().equalsIgnoreCase(content.getName()))
-                return true;
-        }
-        return false;
-    }
+	public void setMatchableItem(MatchableItem matchableItem) {
+		this.matchableItem = matchableItem;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 43 * hash + (this.name != null ? this.name.hashCode() : 0);
-        return hash;
-    }
-    
+	public void setIsHistory(boolean history){
+		this.history = history;
+	}
+
+	public boolean isHistory(){
+		return history;
+	}
+
+	public Boolean getHistory() {
+		return history;
+	}
+
+	public void setHistory(Boolean history) {
+		this.history = history;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if(this == object)
+			return true;
+		if(object instanceof Content){
+			Content content = (Content) object;
+			if(name.trim().equalsIgnoreCase(content.getName()))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 5;
+		hash = 43 * hash + (name != null ? name.hashCode() : 0);
+		return hash;
+	}
+
 }
