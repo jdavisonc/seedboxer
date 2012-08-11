@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Properties;
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,12 +24,15 @@ public class RouteBuilder extends SpringRouteBuilder{
     @Autowired
     private FeedsDao feedsDao;
     
+    @Value(value="${proeasy.rssPollPeriod}")
+    private String rssPollPeriod;
+    
     @Override
     public void configure() throws Exception {
         List<RssFeed> feeds = feedsDao.getAllFeeds(RssFeed.class);
-        String inputTemplate = "rss:%s?consumer.delay=300s&splitEntries=true&throttleEntries=false";
+        String inputTemplate = "rss:%s?consumer.delay=%s&splitEntries=true&throttleEntries=false";
         for(RssFeed feed : feeds){
-            from(String.format(inputTemplate, feed.getUrl()))
+            from(String.format(inputTemplate, feed.getUrl(),rssPollPeriod))
             .to("direct:mergeFeeds");
         }
     }

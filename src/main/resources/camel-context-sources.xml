@@ -13,23 +13,7 @@
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 
                 <contextScan/>
-		<endpoint id="rssFeed1" uri="rss:http://localhost/feed?consumer.delay=300s&amp;splitEntries=true&amp;throttleEntries=false"/>
-                
-                <endpoint id="rssFeed2" uri="rss:http://localhost/feed2.xml?consumer.delay=300s&amp;splitEntries=true&amp;throttleEntries=false"/>
-                
-                <!--<endpoint id="mergeFeeds" uri="seda:merging?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>-->
-                
-                <!--
-                <route>
-                        <from ref="rssFeed1"/>
-			<to uri="direct:mergeFeeds" />
-		</route>
-
-                <route>
-                        <from ref="rssFeed2"/>
-			<to uri="direct:mergeFeeds" />
-		</route>
-                -->
+		
                 <route>
                         <from uri="direct:mergeFeeds"/>
                         <aggregate strategyRef="rssAggregationStrategy" completionTimeout="5000">
