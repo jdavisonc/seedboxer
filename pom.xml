@@ -1,10 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.superdownloaders</groupId>
+	<groupId>com.seedboxer</groupId>
 	<artifactId>seedboxer</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<name>SeedBoxer</name>
+	<description>SeedBoxer is a content distribution system based on users content queue</description>
+	<url>https://github.com/seedboxer/seedboxer</url>
+	
+    <scm>
+        <connection>scm:git:git@github.com:seedboxer/seedboxer.git</connection>
+        <developerConnection>scm:git:git@github.com:seedboxer/seedboxer.git</developerConnection>
+        <url>git@github.com:seedboxer/seedboxer.git</url>
+    </scm>
 
 	<properties>
 		<camel.version>2.7.1</camel.version>
@@ -23,7 +32,7 @@
 		<jaxb.version>2.2.6-b35</jaxb.version>
 		<hibernate.version>4.1.5.SP1</hibernate.version>
 		<cglib.version>2.2.2</cglib.version>
-                <commons.httpclient.version>3.1</commons.httpclient.version>
+        <commons.httpclient.version>3.1</commons.httpclient.version>
 	</properties>
 
 	<dependencies>
@@ -158,7 +167,7 @@
 			<version>${c3p0.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.superdownloader</groupId>
+			<groupId>com.seedboxer</groupId>
 			<artifactId>ftp-common</artifactId>
 			<version>${ftp-common.version}</version>
 		</dependency>
@@ -199,15 +208,15 @@
 		     <scope>runtime</scope>
 		</dependency>
 		<dependency>
-                    <groupId>org.apache.camel</groupId>
-                    <artifactId>camel-rss</artifactId>
-                    <version>${camel.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>commons-httpclient</groupId>
-                    <artifactId>commons-httpclient</artifactId>
-                    <version>${commons.httpclient.version}</version>
-                </dependency>
+             <groupId>org.apache.camel</groupId>
+             <artifactId>camel-rss</artifactId>
+             <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${commons.httpclient.version}</version>
+        </dependency>
 	</dependencies>
 
 	<build>
