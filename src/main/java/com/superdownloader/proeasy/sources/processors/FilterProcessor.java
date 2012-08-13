@@ -41,7 +41,7 @@ import com.superdownloader.proeasy.sources.type.DownloadableItem;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class FilterProcessor implements Processor{
@@ -49,7 +49,7 @@ public class FilterProcessor implements Processor{
 	@Autowired
 	FilterManager filterManager;
 
-	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(FilterProcessor.class);
 
 	@Override
 	public void process(Exchange exchange) throws Exception {

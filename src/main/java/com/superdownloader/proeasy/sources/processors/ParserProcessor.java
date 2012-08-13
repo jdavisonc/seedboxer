@@ -35,7 +35,7 @@ import com.superdownloader.proeasy.sources.type.MatchableItem;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class ParserProcessor implements Processor{

@@ -33,7 +33,7 @@ import com.superdownloader.proeasy.sources.domain.RssFeed;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class RouteBuilder extends SpringRouteBuilder{

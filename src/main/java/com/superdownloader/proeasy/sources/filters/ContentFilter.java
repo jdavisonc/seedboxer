@@ -24,7 +24,7 @@ import com.superdownloader.proeasy.sources.domain.Content;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 
 public abstract class ContentFilter<T extends Content> {

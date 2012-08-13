@@ -28,7 +28,7 @@ import com.superdownloader.proeasy.sources.domain.TvShow;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class TvShowFilter extends ContentFilter<TvShow>{

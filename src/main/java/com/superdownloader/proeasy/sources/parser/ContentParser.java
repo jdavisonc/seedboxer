@@ -25,7 +25,7 @@ import com.superdownloader.proeasy.sources.type.MatchableItem;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 
 public abstract class ContentParser<T extends Content> {

@@ -5,3 +5,4 @@ GRANT SELECT, INSERT, UPDATE ON  `proeasy`.`users_configs` TO  'proeasy'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`downloads_queue` TO  'proeasy'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`content` TO  'proeasy'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`tv_show` TO  'proeasy'@'%';
+GRANT SELECT ON  `proeasy`.`feeds` TO  'proeasy'@'%';

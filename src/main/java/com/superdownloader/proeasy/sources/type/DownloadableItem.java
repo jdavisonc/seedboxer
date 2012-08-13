@@ -28,7 +28,7 @@ import com.superdownloader.proeasy.sources.domain.Content;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 public class DownloadableItem {
 

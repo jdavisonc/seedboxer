@@ -26,7 +26,7 @@ import java.net.URL;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 public class MatchableItem {
 	private String title;

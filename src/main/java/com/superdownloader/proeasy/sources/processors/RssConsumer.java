@@ -38,12 +38,12 @@ import com.superdownloader.proeasy.sources.type.MatchableItem;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class RssConsumer implements Processor{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RssConsumer.class);
 
 	@Override
 	public void process(Exchange exchange) throws Exception {

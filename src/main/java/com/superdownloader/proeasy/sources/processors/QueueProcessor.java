@@ -48,12 +48,15 @@ import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.mule.processor.DownloadReceiver;
 import com.superdownloader.proeasy.sources.domain.Content;
 import com.superdownloader.proeasy.sources.type.DownloadableItem;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 
 
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class QueueProcessor implements Processor{
@@ -61,20 +64,37 @@ public class QueueProcessor implements Processor{
 	@Autowired
 	private DownloadsQueueManager queueManager;
 
-	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
+        @Value(value="${proeasy.watchDownloaderPath}")
+	private String path;
+        
+        @Value(value="${proeasy.completePath}")
+	private String completePath;
+        
+        
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(QueueProcessor.class);
 
 	@Override
-	public void process(Exchange exchange) throws Exception {
+	public void process(Exchange exchange)  {
 		DownloadableItem downloadableItem = (DownloadableItem) exchange.getIn().getBody();
 		Content content = downloadableItem.getContent();
 		URL url = content.getMatchableItem().getUrl();
-		String path = "/etc/downloadedTorrentss";
-		String filePath = path + "/" + url.getFile();
-		File torrentFile  = downloadFile(url,filePath);
-		String dirName = getDirNameFromTorrentFile(filePath);
-		for(User user : downloadableItem.getUsers()){
-			queueManager.push(user, dirName);
-		}
+                String fileName = url.getFile().substring(url.getFile().lastIndexOf("/"));
+                LOGGER.info("Filename: "+fileName);
+		String filePath = path + "/" + fileName;
+                
+                try {
+                    downloadFile(url,filePath);
+                    String dirName = getDirNameFromTorrentFile(filePath);
+                    LOGGER.info("Downloaded torrent: "+path);
+                    for(User user : downloadableItem.getUsers()){
+                        String absoluteOutputDir = completePath + "/"+ dirName;
+                        queueManager.push(user, absoluteOutputDir);
+                    }
+                } catch (IOException ex) {
+                    LOGGER.error("Error downloading file: "+url.toString()+ex.toString());
+                }
+		
+                
 	}
 
 	private String getDirNameFromTorrentFile(String path) throws FileNotFoundException, IOException{
@@ -88,9 +108,7 @@ public class QueueProcessor implements Processor{
 	}
 
 	private File downloadFile(URL url, String path) throws IOException {
-		HttpMethod method = new GetMethod(url.toString());
 		URLConnection conn =  url.openConnection();
-		String fileName = url.getFile();
 		InputStream in = conn.getInputStream();
 		File file =   new File(path);
 		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));

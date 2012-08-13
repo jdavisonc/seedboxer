@@ -38,25 +38,25 @@ import com.superdownloader.proeasy.sources.type.MatchableItem;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Entity
-@Table(name= "CONTENT")
+@Table(name= "content")
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Content {
 	@Id
 	@GeneratedValue
-	@Column(name = "ID")
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name="NAME")
+	@Column(name="name")
 	private String name;
 
-	@Column(name="HISTORY")
+	@Column(name="history")
 	private Boolean history;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@Transient

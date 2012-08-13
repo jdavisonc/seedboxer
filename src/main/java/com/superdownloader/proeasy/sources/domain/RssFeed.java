@@ -28,12 +28,13 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Entity
-@Table(name= "FEEDS")
+@Table(name= "feeds")
 public class RssFeed {
 	@Id
+        @Column(name = "id")
 	private Long id;
 
 	@Column(name="url")

@@ -23,7 +23,7 @@ package com.superdownloader.proeasy.sources.type;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 public enum Quality {
 	STANDARD,

@@ -33,22 +33,22 @@ import com.superdownloader.proeasy.sources.type.Quality;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Entity
-@Table(name= "TV_SHOW")
-@PrimaryKeyJoinColumn(name="CONTENT_ID")
+@Table(name= "tv_show")
+@PrimaryKeyJoinColumn(name="content_id")
 @Component
 @Scope("prototype")
 public class TvShow extends Content{
 
-	@Column(name="QUALITY")
+	@Column(name="quality")
 	private String quality;
 
-	@Column(name="SEASON")
+	@Column(name="season")
 	private Integer season;
 
-	@Column(name="EPISODE")
+	@Column(name="episode")
 	private Integer episode;
 
 	public TvShow() {

@@ -31,7 +31,7 @@ import com.superdownloader.proeasy.sources.type.Quality;
 
 /**
  *
- * @author Farid
+ * @author The-Sultan
  */
 @Component
 public class TvShowParser extends ContentParser<TvShow>{
