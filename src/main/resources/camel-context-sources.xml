@@ -28,7 +28,7 @@
 
 	<!-- Endpoints and routes -->
 	
-	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	<camelContext id="camel-sources" xmlns="http://camel.apache.org/schema/spring">
 
                 <contextScan/>
 		

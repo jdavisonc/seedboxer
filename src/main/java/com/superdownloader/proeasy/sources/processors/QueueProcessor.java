@@ -35,8 +35,6 @@ import java.util.Map;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.klomp.snark.bencode.BDecoder;
 import org.klomp.snark.bencode.BEValue;
 import org.slf4j.LoggerFactory;
@@ -45,11 +43,8 @@ import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
-import com.superdownloader.proeasy.mule.processor.DownloadReceiver;
 import com.superdownloader.proeasy.sources.domain.Content;
 import com.superdownloader.proeasy.sources.type.DownloadableItem;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
 
