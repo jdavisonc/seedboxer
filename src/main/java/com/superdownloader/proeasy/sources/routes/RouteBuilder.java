@@ -36,7 +36,7 @@ import com.superdownloader.proeasy.sources.domain.RssFeed;
  * @author The-Sultan
  */
 @Component
-public class RouteBuilder extends SpringRouteBuilder{
+public class RouteBuilder extends SpringRouteBuilder {
 
 	@Autowired
 	private FeedsDao feedsDao;

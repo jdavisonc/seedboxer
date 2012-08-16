@@ -33,7 +33,6 @@ import org.springframework.stereotype.Component;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.superdownloader.proeasy.mule.processor.DownloadReceiver;
 import com.superdownloader.proeasy.sources.type.MatchableItem;
 
 /**
@@ -45,13 +44,15 @@ public class RssConsumer implements Processor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RssConsumer.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
 		SyndFeed feed = (SyndFeed) msg.getBody();
 		List<SyndEntry > entries = feed.getEntries();
-		LOGGER.info("Incoming rss entries: "+entries.size());
 		List<MatchableItem> items = new ArrayList<MatchableItem>();
+
+		LOGGER.info("Incoming rss entries: {}", entries.size());
 		for(SyndEntry  entry : entries){
 			items.add(new MatchableItem(entry.getTitle(),entry.getLink()));
 		}

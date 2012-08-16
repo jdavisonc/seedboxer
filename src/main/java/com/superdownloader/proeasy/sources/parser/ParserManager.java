@@ -37,9 +37,11 @@ import com.superdownloader.proeasy.sources.type.MatchableItem;
  * @author The-Sultan
  */
 @Component
+@SuppressWarnings("rawtypes")
 public class ParserManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParserManager.class);
+
 	private List<ContentParser> parsers = new ArrayList<ContentParser>();
 
 	public List<ContentParser> getParsers() {

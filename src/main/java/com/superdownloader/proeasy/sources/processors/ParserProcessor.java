@@ -29,6 +29,7 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.superdownloader.proeasy.sources.domain.Content;
 import com.superdownloader.proeasy.sources.parser.ParserManager;
 import com.superdownloader.proeasy.sources.type.MatchableItem;
 
@@ -43,10 +44,12 @@ public class ParserProcessor implements Processor{
 	@Autowired
 	ParserManager parserManager;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
 		List<MatchableItem> items = (List<MatchableItem>) msg.getBody();
-		exchange.getOut().setBody(parserManager.parseMatchableItems(items));
+		List<Content> macheableItems = parserManager.parseMatchableItems(items);
+		exchange.getOut().setBody(macheableItems);
 	}
 }

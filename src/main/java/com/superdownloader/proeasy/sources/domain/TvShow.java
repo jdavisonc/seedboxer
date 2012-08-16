@@ -51,15 +51,13 @@ public class TvShow extends Content{
 	@Column(name="episode")
 	private Integer episode;
 
-	public TvShow() {
-	}
+	public TvShow() { }
 
 	public TvShow(String name, int season, int episode, Quality quality){
 		super.setName(name);
 		this.quality = quality.name();
 		this.season = season;
 		this.episode = episode;
-
 	}
 
 	public Integer getEpisode() {
@@ -85,7 +83,6 @@ public class TvShow extends Content{
 	public void setSeason(Integer season) {
 		this.season = season;
 	}
-
 
 	@Override
 	public String toString(){

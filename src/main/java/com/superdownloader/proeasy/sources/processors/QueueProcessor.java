@@ -37,15 +37,16 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.klomp.snark.bencode.BDecoder;
 import org.klomp.snark.bencode.BEValue;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.domain.User;
 import com.superdownloader.proeasy.core.logic.DownloadsQueueManager;
 import com.superdownloader.proeasy.sources.domain.Content;
 import com.superdownloader.proeasy.sources.type.DownloadableItem;
-import org.springframework.beans.factory.annotation.Value;
 
 
 
@@ -56,42 +57,40 @@ import org.springframework.beans.factory.annotation.Value;
 @Component
 public class QueueProcessor implements Processor{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueueProcessor.class);
+
 	@Autowired
 	private DownloadsQueueManager queueManager;
 
-        @Value(value="${proeasy.watchDownloaderPath}")
+	@Value(value="${proeasy.watchDownloaderPath}")
 	private String path;
-        
-        @Value(value="${proeasy.completePath}")
+
+	@Value(value="${proeasy.completePath}")
 	private String completePath;
-        
-        
-	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(QueueProcessor.class);
 
 	@Override
 	public void process(Exchange exchange)  {
 		DownloadableItem downloadableItem = (DownloadableItem) exchange.getIn().getBody();
 		Content content = downloadableItem.getContent();
 		URL url = content.getMatchableItem().getUrl();
-                String fileName = url.getFile().substring(url.getFile().lastIndexOf("/"));
-                LOGGER.info("Filename: "+fileName);
+		String fileName = url.getFile().substring(url.getFile().lastIndexOf("/"));
 		String filePath = path + "/" + fileName;
-                
-                try {
-                    downloadFile(url,filePath);
-                    String dirName = getDirNameFromTorrentFile(filePath);
-                    LOGGER.info("Downloaded torrent: "+path);
-                    for(User user : downloadableItem.getUsers()){
-                        String absoluteOutputDir = completePath + "/"+ dirName;
-                        queueManager.push(user, absoluteOutputDir);
-                    }
-                } catch (IOException ex) {
-                    LOGGER.error("Error downloading file: "+url.toString()+ex.toString());
-                }
-		
-                
+		LOGGER.debug("Filename: "+fileName);
+
+		try {
+			downloadFile(url,filePath);
+			String dirName = getDirNameFromTorrentFile(filePath);
+			LOGGER.info("Downloaded torrent: "+path);
+			for(User user : downloadableItem.getUsers()){
+				String absoluteOutputDir = completePath + "/"+ dirName;
+				queueManager.push(user, absoluteOutputDir);
+			}
+		} catch (IOException ex) {
+			LOGGER.error("Error downloading file: {}", url, ex);
+		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private String getDirNameFromTorrentFile(String path) throws FileNotFoundException, IOException{
 		BDecoder decoder;
 		decoder = new BDecoder(new FileInputStream(path));

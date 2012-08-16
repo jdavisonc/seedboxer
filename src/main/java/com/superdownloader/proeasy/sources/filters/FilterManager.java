@@ -21,26 +21,28 @@
 
 package com.superdownloader.proeasy.sources.filters;
 
-import com.superdownloader.proeasy.core.domain.User;
-import com.superdownloader.proeasy.core.persistence.ContentDao;
-import com.superdownloader.proeasy.sources.domain.Content;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.superdownloader.proeasy.core.domain.User;
+import com.superdownloader.proeasy.core.persistence.ContentDao;
+import com.superdownloader.proeasy.sources.domain.Content;
 
 /**
  *
  * @author The-Sultan
  */
 @Component
+@SuppressWarnings("rawtypes")
 public class FilterManager {
 
 	@Autowired
 	private ContentDao contentDao;
-
 
 	private List<ContentFilter> filters;
 
@@ -56,7 +58,8 @@ public class FilterManager {
 	private List<Content> getAllContent(boolean history){
 		List<Content> userContent = new ArrayList<Content>();
 		for(ContentFilter filter : filters){
-			userContent.addAll(contentDao.getContentHistory(filter.getType(),history));
+			List contentHistory = contentDao.getContentHistory(filter.getType(),history);
+			userContent.addAll(contentHistory);
 		}
 		return userContent;
 
@@ -66,7 +69,7 @@ public class FilterManager {
 		List<Content> userContentList = getAllContent(false);
 		Map<Content,List<User>> mappedContent = mapContentWithUsers(userContentList, parsedContentList);
 		mappedContent = filterContentWithHistory(mappedContent);
-                updateHistory(mappedContent);
+		updateHistory(mappedContent);
 		return mappedContent;
 	}
 
@@ -140,15 +143,15 @@ public class FilterManager {
 		return mappedContent;
 	}
 
-        
-        private void updateHistory(Map<Content,List<User>> mappedContent){
-            for(Content content : mappedContent.keySet()){
-                content.setHistory(Boolean.TRUE);
-                for(User user : mappedContent.get(content)){
-                    content.setUser(user);
-                    contentDao.save(content);
-                }
-                
-            }
-        }
+
+	private void updateHistory(Map<Content,List<User>> mappedContent){
+		for(Content content : mappedContent.keySet()){
+			content.setHistory(Boolean.TRUE);
+			for(User user : mappedContent.get(content)){
+				content.setUser(user);
+				contentDao.save(content);
+			}
+
+		}
+	}
 }

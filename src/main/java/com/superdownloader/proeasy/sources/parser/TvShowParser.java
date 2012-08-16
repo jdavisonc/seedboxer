@@ -39,9 +39,7 @@ public class TvShowParser extends ContentParser<TvShow>{
 	private final String QUALITY_HD = "720p";
 	private final String QUALITY_FULLHD = "1080p";
 	private final Pattern pattern = Pattern.compile(
-			"(.*?)[\\.\\s_-]+S?(\\d{1,2})[Ex]{1}(\\d{2})[\\.\\s_-]+(\\d{3,4}p)?(.*)[\\.\\s_-]+(.*)"
-
-			);
+			"(.*?)[\\.\\s_-]+S?(\\d{1,2})[Ex]{1}(\\d{2})[\\.\\s_-]+(\\d{3,4}p)?(.*)[\\.\\s_-]+(.*)" );
 
 	@Override
 	public TvShow parse(String input) {
@@ -60,11 +58,10 @@ public class TvShowParser extends ContentParser<TvShow>{
 					qualityEnum = Quality.FULLHD;
 			}
 
-
 			return new TvShow(name, season, episode, qualityEnum);
-		}
-		else
+		} else {
 			return null;
+		}
 	}
 
 }

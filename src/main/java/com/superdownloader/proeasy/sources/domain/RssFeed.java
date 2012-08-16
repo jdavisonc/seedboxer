@@ -34,7 +34,7 @@ import javax.persistence.Table;
 @Table(name= "feeds")
 public class RssFeed {
 	@Id
-        @Column(name = "id")
+	@Column(name = "id")
 	private Long id;
 
 	@Column(name="url")

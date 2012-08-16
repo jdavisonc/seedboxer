@@ -26,9 +26,5 @@ package com.superdownloader.proeasy.sources.type;
  * @author The-Sultan
  */
 public enum Quality {
-	STANDARD,
-	HD,
-	FULLHD;
-
-
+	STANDARD, HD, FULLHD;
 }

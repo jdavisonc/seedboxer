@@ -28,16 +28,15 @@ import java.util.Map;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.superdownloader.proeasy.core.domain.User;
-import com.superdownloader.proeasy.mule.processor.DownloadReceiver;
 import com.superdownloader.proeasy.sources.domain.Content;
 import com.superdownloader.proeasy.sources.filters.FilterManager;
 import com.superdownloader.proeasy.sources.type.DownloadableItem;
-
 
 /**
  *
@@ -49,8 +48,9 @@ public class FilterProcessor implements Processor{
 	@Autowired
 	FilterManager filterManager;
 
-	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(FilterProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FilterProcessor.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
@@ -58,8 +58,8 @@ public class FilterProcessor implements Processor{
 		Map<Content, List<User>> mappedContent = filterManager.filterContent(parsedContent);
 		List<DownloadableItem> downloadbleItems = new ArrayList<DownloadableItem>();
 		for(Content content : mappedContent.keySet()){
-			LOGGER.info(content + "-->"+mappedContent.get(content));
-			LOGGER.info(content.getMatchableItem().getUrl().toString());
+			LOGGER.debug("{} --> {}", content, mappedContent.get(content));
+			LOGGER.debug(content.getMatchableItem().getUrl().toString());
 			downloadbleItems.add(new DownloadableItem(content, mappedContent.get(content)));
 		}
 		exchange.getOut().setBody(downloadbleItems);

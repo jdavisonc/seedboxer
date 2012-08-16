@@ -28,34 +28,34 @@
 	<name>SeedBoxer</name>
 	<description>SeedBoxer is a content distribution system based on users content queue</description>
 	<url>https://github.com/seedboxer/seedboxer</url>
-	
-    <scm>
-        <connection>scm:git:git@github.com:seedboxer/seedboxer.git</connection>
-        <developerConnection>scm:git:git@github.com:seedboxer/seedboxer.git</developerConnection>
-        <url>git@github.com:seedboxer/seedboxer.git</url>
-    </scm>
-    
+
+	<scm>
+		<connection>scm:git:git@github.com:seedboxer/seedboxer.git</connection>
+		<developerConnection>scm:git:git@github.com:seedboxer/seedboxer.git</developerConnection>
+		<url>git@github.com:seedboxer/seedboxer.git</url>
+	</scm>
+
 	<licenses>
 		<license>
 			<name>GNU General Public License (GPL) v3</name>
 			<url>http://www.gnu.org/licenses/gpl.txt</url>
 		</license>
 	</licenses>
-	
-    <developers>
-        <developer>
-            <id>jdavisonc</id>
-            <name>Jorge Davison</name>
-            <email>jdavisonc at gmail.com</email>
-            <timezone>-3</timezone>
-        </developer>
-        <developer>
-            <id>The-Sultan</id>
-            <name>Farid Elias</name>
-            <email>farid.elias at gmail.com</email>
-            <timezone>-3</timezone>
-        </developer>
-    </developers>
+
+	<developers>
+		<developer>
+			<id>jdavisonc</id>
+			<name>Jorge Davison</name>
+			<email>jdavisonc at gmail.com</email>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<id>The-Sultan</id>
+			<name>Farid Elias</name>
+			<email>farid.elias at gmail.com</email>
+			<timezone>-3</timezone>
+		</developer>
+	</developers>
 
 	<properties>
 		<camel.version>2.7.1</camel.version>
@@ -74,7 +74,7 @@
 		<jaxb.version>2.2.6-b35</jaxb.version>
 		<hibernate.version>4.1.5.SP1</hibernate.version>
 		<cglib.version>2.2.2</cglib.version>
-        <commons.httpclient.version>3.1</commons.httpclient.version>
+		<commons.httpclient.version>3.1</commons.httpclient.version>
 	</properties>
 
 	<dependencies>
@@ -239,26 +239,38 @@
 			<version>${jaxb.version}</version>
 		</dependency>
 		<dependency>
-		     <groupId>org.hibernate</groupId>
-		     <artifactId>hibernate-entitymanager</artifactId>
-		     <version>${hibernate.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
-		     <groupId>cglib</groupId>
-		     <artifactId>cglib</artifactId>
-		     <version>${cglib.version}</version>
-		     <scope>runtime</scope>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-             <groupId>org.apache.camel</groupId>
-             <artifactId>camel-rss</artifactId>
-             <version>${camel.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${commons.httpclient.version}</version>
-        </dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-rss</artifactId>
+			<version>${camel.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>${commons.httpclient.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -274,13 +286,13 @@
 				</configuration>
 			</plugin>
 			<plugin>
-		        <groupId>org.mortbay.jetty</groupId>
-		        <artifactId>jetty-maven-plugin</artifactId>
-		        <configuration>
-                	<scanIntervalSeconds>3</scanIntervalSeconds>
-                </configuration>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
