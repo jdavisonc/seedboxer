@@ -59,7 +59,6 @@ public class DownloadReceiver implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		LOGGER.debug("{}", msg.getHeaders());
 
 		DownloadQueueItem item = (DownloadQueueItem) msg.getBody();
 		User user = item.getUser();
@@ -72,9 +71,7 @@ public class DownloadReceiver implements Processor {
 		for (UserConfiguration conf : configs) {
 			msg.setHeader(conf.getName(), conf.getValue());
 		}
-		LOGGER.debug("USER_ID={}", user.getId());
-		LOGGER.debug("CONFIGS={}", configs);
-		LOGGER.debug("DOWNLOAD_ID={}", downloadId);
+		LOGGER.debug("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 
 		processDownload(msg, item);
 	}
@@ -99,8 +96,6 @@ public class DownloadReceiver implements Processor {
 		// Size in Mbs
 		totalSize = totalSize / MEGABYTE;
 		uploadSessionManager.setUserDownloadSize(item.getUser().getId(), item.getId(), totalSize);
-
-		LOGGER.debug("FILES_TO_UPLOAD={}", toUpload);
 	}
 
 	/**

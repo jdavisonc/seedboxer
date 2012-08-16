@@ -24,14 +24,12 @@
 	xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<import resource="classpath:proeasy-beans.xml"/>
+	<import resource="classpath:seedboxer-beans.xml"/>
 	
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-			    <value>file:${proeasy.config.path}/jdbc.properties</value>
-			    <value>file:${proeasy.config.path}/proeasy.properties</value>
-			    <value>file:${proeasy.config.path}/c3p0.properties</value>
+			    <value>file:${seedboxer.config.path}/seedboxer.properties</value>
 			</list>
 		</property>
 	</bean>

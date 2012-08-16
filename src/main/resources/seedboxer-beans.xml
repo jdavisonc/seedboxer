@@ -18,26 +18,29 @@
   You should have received a copy of the GNU General Public License
   along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" >
 	
 	<context:component-scan base-package="com.superdownloader.proeasy"/>
 
 	<!-- CAMEL -->
-	<import resource="classpath:camel-context.xml" />
-        
-    <!-- SOURCES CAMEL -->
-	<import resource="classpath:camel-context-sources.xml" />
+	<import resource="classpath:mule-camel-context.xml" />
+	<import resource="classpath:sources-camel-context.xml" />
 	
+	<!-- Filters -->
 	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processor.filter.FileFilter">
 		<property name="pattern" value="${proeasy.includePattern}" />
 	</bean>
+	
+	<!-- Aggretator for multiple feeds -->
+	<bean id="rssAggregationStrategy" class="org.apache.camel.component.rss.AggregateRssFeedStrategy"/>
+	
 	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
     	<property name="templateLoaderPath" value="/WEB-INF/templates/"/>
@@ -45,11 +48,11 @@
 	
 	<!-- ORM -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="proeasyDataSource" />
+		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
 				<value>com.superdownloader.proeasy.core.domain</value>
-                                <value>com.superdownloader.proeasy.sources.domain</value>
+				<value>com.superdownloader.proeasy.sources.domain</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -68,7 +71,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<!-- Data sources -->
-	<bean id="proeasyDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
@@ -84,12 +87,5 @@
 		<property name="maxConnectionAge" value="${c3p0.maxConnectionAge}" />
 		<property name="maxIdleTime" value="${c3p0.maxIdleTime}" />
 	</bean>
-        
-        <!-- Aggretator for multiple feeds -->
-        <bean id="rssAggregationStrategy" class="org.apache.camel.component.rss.AggregateRssFeedStrategy"/>
-
-
-
-        
 
 </beans>

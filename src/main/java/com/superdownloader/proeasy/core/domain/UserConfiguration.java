@@ -88,4 +88,10 @@ public class UserConfiguration {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "UserConfiguration [id=" + id + ", user=" + user + ", name="
+				+ name + ", value=" + value + "]";
+	}
+
 }
