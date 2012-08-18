@@ -35,7 +35,7 @@
 	
 	<!-- Filters -->
 	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processor.filter.FileFilter">
-		<property name="pattern" value="${proeasy.includePattern}" />
+		<property name="pattern" value="${includePattern}" />
 	</bean>
 	
 	<!-- Aggretator for multiple feeds -->
@@ -51,8 +51,8 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.superdownloader.proeasy.core.domain</value>
-				<value>com.superdownloader.proeasy.sources.domain</value>
+				<value>com.seedboxer.seedboxer.core.domain</value>
+				<value>com.seedboxer.seedboxer.sources.domain</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -72,10 +72,10 @@
 	
 	<!-- Data sources -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="driverClass" value="${jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="driverClass" value="${db.driverClassName}" />
+		<property name="jdbcUrl" value="${db.url}" />
+		<property name="user" value="${db.username}" />
+		<property name="password" value="${db.password}" />
 		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
 		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
 		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />

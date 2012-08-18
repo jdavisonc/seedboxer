@@ -42,14 +42,16 @@ Create a MySQL database with name *seedboxer* and create its schema with the fil
 ### Deploy
 
 SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder and set the variable *seedboxer.config.path=/etc/seedboxer* to the setup.sh inside Tomcat conf folder.
+
 Otherwise go to the project [SeedBoxer Standalone](https://github.com/seedboxer/seedboxer-standalone) to see further information.
 
 ## Configuration
 
 The configuration file of SeedBoxer is in */etc/seedboxer/seedboxer.properties*.
+
 The log file is in */var/log/seedboxer/seedboxer.log*.
 
-Currently, SeedBoxer only support user configuration via values in database.
+SeedBoxer only support user configuration via values in database.
 
 #### New user
 ```mysql
@@ -127,7 +129,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
 #### Torrents
 <table>
   <tr>
-    <th>Resource</th><th>Description</th>
+    <th>Resource</th><th>Params</th><th>Description</th>
   </tr>
   <tr>
     <td>GET torrents/add</td><td>username,file</td><td>Add a torrent to watch directory and enqueue the download for the user</td>

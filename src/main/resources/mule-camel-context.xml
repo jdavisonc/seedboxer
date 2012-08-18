@@ -29,16 +29,16 @@
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
-    		<redeliveryPolicy maximumRedeliveries="${proeasy.ftp.retries}" redeliveryDelay="${proeasy.ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
+    		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" logHandled="true" asyncDelayedRedelivery="true"/>
 		</errorHandler>
 		
-		<endpoint id="watchDogFileEndpoint" uri="file:${proeasy.basePath}?delay=${proeasy.fsPollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${proeasy.readLock}&amp;filter=#fileFilter"/>
+		<endpoint id="watchDogFileEndpoint" uri="file:${basePath}?delay=${fsPollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${readLock}&amp;filter=#fileFilter"/>
 		
-		<endpoint id="uploadEndpoint" uri="seda:processFile?concurrentConsumers=${proeasy.numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		<endpoint id="uploadEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${proeasy.smtp.host}:${proeasy.smtp.port}"/>
+		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}"/>
 		
-		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${proeasy.fsPollPeriod}" />
+		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${fsPollPeriod}" />
 		
 		<onException>
 	        <exception>java.lang.Exception</exception>
@@ -56,7 +56,7 @@
 		        <handled>
 		        	<constant>true</constant>
 		        </handled>
-		        <to uri="log:com.superdownloader.proeasy?level=ERROR"/>
+		        <to uri="log:com.seedboxer.seedboxer?level=ERROR"/>
 		    </onException>
 			<process ref="fileReceiver"/>
 		</route>
