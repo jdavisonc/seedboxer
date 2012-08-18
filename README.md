@@ -4,8 +4,15 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 
 ## How it works?
 
+SeedBoxer is based in two main features, the Mule which main purpose is distribute content to the user, and Sources which filter the user content from sources (RSSs), put them to download (download manager) and enqueue.
+
+The Mule is a process that basically copy the downloaded content in the Seed Box to an user transport account. When the download to an user transport account was finished, a set of post actions and notifications will be executed depending on user configuration. The Mule manage the user downloads with a queue, each user has a download queue (FIFO).
+
 ### Transport
 *   FTP
+*   Dropbox (comming)
+*   Google Drive (comming)
+*   Socket (SeedBoxer client)
 
 ### Post Actions
 *   SSH send command
@@ -13,6 +20,13 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 ### Notification
 *   Email
 *   C2DM (Android Push Notification)
+
+Sources is a process that periodically scan a set of sources (RSSs) and filter the entries depending on users filters. A user can configure its owm filters based on types of content: TVShows, Movies, XBOX Games, etc. Each content has its owm properties, like TVShow that can filter by name of TVShow, quality of the episode, a specific episode or season.
+
+### Type of Content
+*   TVShow
+*   Movie (comming)
+*   XBOX Game (comming)
 
 ## Requirements
 
@@ -30,7 +44,7 @@ Create a MySQL database with name *seedboxer* and create its schema with the fil
 SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder. Otherwise go to the project [SeedBoxer Standalone](https://github.com/seedboxer/seedboxer-standalone) to see further information.
 
 ## Configuration
-Currently, SeedBoxer only support user configuration via Database.
+Currently, SeedBoxer only support user configuration via values in database.
 
 #### New user
 ```mysql
@@ -72,7 +86,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
     <th>Resource</th><th>Description</th>
   </tr>
   <tr>
-    <td>GET webservices/status</td><td></td>
+    <td>GET status</td><td>Show the download status for the given user</td>
   </tr>
 </table>
 
@@ -82,16 +96,16 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
     <th>Resource</th><th>Description</th>
   </tr>
   <tr>
-    <td>GET downloads/list</td><td></td>
+    <td>GET downloads/list</td><td>List all available downloads on the server</td>
   </tr>
   <tr>
-    <td>GET downloads/put</td><td></td>
+    <td>GET downloads/put</td><td>Enqueue a download for the user</td>
   </tr>
   <tr>
-    <td>GET downloads/delete</td><td></td>
+    <td>GET downloads/delete</td><td>Delete a user download from the queue</td>
   </tr>
   <tr>
-    <td>GET downloads/queue</td><td></td>
+    <td>GET downloads/queue</td><td>Show the queue of the given user</td>
   </tr>
 </table>
 
@@ -101,7 +115,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
     <th>Resource</th><th>Description</th>
   </tr>
   <tr>
-    <td>GET registerDevice</td><td></td>
+    <td>GET registerDevice</td><td>Register a Android device to receive notifications</td>
   </tr>
 </table>
 
@@ -111,7 +125,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
     <th>Resource</th><th>Description</th>
   </tr>
   <tr>
-    <td>GET torrents/add</td><td></td>
+    <td>GET torrents/add</td><td>Add a torrent to watch directory and enqueue the download for the user</td>
   </tr>
 </table>
 
@@ -120,6 +134,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
 SeedBoxer is the work of:
 *   [Jorge Davison (jdavisonc)](http://github.com/jdavisonc)
 *   [Farid Elias (The-Sultan)](http://github.com/the-sultan)
+
 For full list of contributors see the [CONTRIBUTORS]  (https://github.com/seedboxer/seedboxer/blob/master/CONTRIBUTORS) file.
 
 ## Support or Contact
