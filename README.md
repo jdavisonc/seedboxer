@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## What is SeedBoxer?
 SeedBoxer is a distribution content system based on users queues and filters. It was designed to be hosted inside a Seed Box, a remote server used to download and share content through the Internet. 
 SeedBoxer was created to work with downloads managers like rtorrent, utorrent, trasmission. This managers need to be configured to use watch, in progress and complete folders.
@@ -43,56 +42,6 @@ INSERT INTO `users` (`username`, `password`) VALUES ('username', MD5('password')
 INSERT INTO `configurations` (`user_id`, `name`, `value`) VALUES ('id_user', 'prop_name', 'prop_value');
 ```
 
-=======
-SeedBoxer
-=========
-
-## What is SeedBoxer?
-SeedBoxer is a distribution content system based on users queues and filters. It was designed to be hosted inside a Seed Box, a remote server used to download and share content through the Internet. 
-SeedBoxer was created to work with downloads managers like rtorrent, utorrent, trasmission. This managers need to be configured to use watch, in progress and complete folders.
-
-## How it works?
-
-### Transport
-*   FTP
-
-### Post Actions
-*   SSH send command
-
-### Notification
-*   Email
-*   C2DM (Android Push Notification)
-
-## Requirements
-
-*   Java version 1.6+
-*   MySQL Server version 5.1+
-
-## Installation
-
-### Create Database
-```bash
-$ cd your_repo_root/repo_name
-```
-
-### Install daemon
-```bash
-$ cd your_repo_root/repo_name
-```
-
-## Configuration
-
-### New user
-```mysql
-INSERT INTO `users` (`username`, `password`) VALUES ('username', MD5('password'));
-```
-
-### User properties
-```mysql
-INSERT INTO `configurations` (`user_id`, `name`, `value`) VALUES ('id_user', 'prop_name', 'prop_value'),
-```
-
->>>>>>> a5668ed3a486b753867a145e9cbaec83a997c17a
 Properties names:
 *   proeasy_ftp_username
 *   proeasy_ftp_password
@@ -106,7 +55,6 @@ Properties names:
 *   proeasy_notification_email
 *   proeasy_notification_c2dm
 
-<<<<<<< HEAD
 #### New Feed
 ```mysql
 INSERT INTO `feeds` (`url`) VALUES ('http://feedserver/feed.xml');
@@ -124,7 +72,7 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
     <th>Resource</th><th>Description</th>
   </tr>
   <tr>
-    <td>GET webservices/status</td><td></td>
+    <td>GET status</td><td></td>
   </tr>
 </table>
 
@@ -172,15 +120,8 @@ SeedBoxer expose its APIs via RESTful services, each API is accesible under the 
 SeedBoxer is the work of:
 *   [Jorge Davison (jdavisonc)](http://github.com/jdavisonc)
 *   [Farid Elias (The-Sultan)](http://github.com/the-sultan)
-For full list of contributors see the [CONTRIBUTORS]  (https://github.com/seedboxer/seedboxer/blob/master/CONTRIBUTORS) file.
-=======
-### Content filter
 
-## Authors and Contributors
-SeedBoxer is the work of [Jorge Davison (jdavisonc)]((http://github.com/jdavisonc)) and [Farid Elias (The-Sultan)]((http://github.com/the-sultan)), for full list
-of contributors see the
-[CONTRIBUTORS](https://github.com/seedboxer/seedboxer/blob/master/CONTRIBUTORS) file.
->>>>>>> a5668ed3a486b753867a145e9cbaec83a997c17a
+For full list of contributors see the [CONTRIBUTORS]  (https://github.com/seedboxer/seedboxer/blob/master/CONTRIBUTORS) file.
 
 ## Support or Contact
 
