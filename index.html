@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Seedboxer by seedboxer</title>
+    <title>SeedBoxer by seedboxer</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -31,7 +31,7 @@
 
       <section>
         <div id="title">
-          <h1>Seedboxer</h1>
+          <h1>SeedBoxer</h1>
           <p>The ultimate distribution content system for your Seed Box</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/seedboxer">seedboxer</a></span>
@@ -45,10 +45,17 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 
 <h2>How it works?</h2>
 
+<p>SeedBoxer is based in two main features, the Mule which main purpose is distribute content to the user, and Sources which filter the user content from sources (RSSs), put them to download (download manager) and enqueue.</p>
+
+<p>The Mule is a process that basically copy the downloaded content in the Seed Box to an user transport account. When the download to an user transport account was finished, a set of post actions and notifications will be executed depending on user configuration. The Mule manage the user downloads with a queue, each user has a download queue (FIFO).</p>
+
 <h3>Transport</h3>
 
 <ul>
 <li>  FTP</li>
+<li>  Dropbox (comming)</li>
+<li>  Google Drive (comming)</li>
+<li>  Socket (SeedBoxer client) (comming)</li>
 </ul><h3>Post Actions</h3>
 
 <ul>
@@ -58,6 +65,14 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 <ul>
 <li>  Email</li>
 <li>  C2DM (Android Push Notification)</li>
+</ul><p>Sources is a process that periodically scan a set of sources (RSSs) and filter the entries depending on users filters. A user can configure its owm filters based on types of content: TVShows, Movies, XBOX Games, etc. Each content has its owm properties, like TVShow that can filter by name of TVShow, quality of the episode, a specific episode or season.</p>
+
+<h3>Type of Content</h3>
+
+<ul>
+<li>  TVShow</li>
+<li>  Movie (comming)</li>
+<li>  XBOX Game (comming)</li>
 </ul><h2>Requirements</h2>
 
 <ul>
@@ -71,11 +86,17 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 
 <h3>Deploy</h3>
 
-<p>SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder. Otherwise go to the project <a href="https://github.com/seedboxer/seedboxer-standalone">SeedBoxer Standalone</a> to see further information.</p>
+<p>SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder and set the variable <em>seedboxer.config.path=/etc/seedboxer</em> to the setup.sh inside Tomcat conf folder.</p>
+
+<p>Otherwise go to the project <a href="https://github.com/seedboxer/seedboxer-standalone">SeedBoxer Standalone</a> to see further information.</p>
 
 <h2>Configuration</h2>
 
-<p>Currently, SeedBoxer only support user configuration via Database.</p>
+<p>The configuration file of SeedBoxer is in <em>/etc/seedboxer/seedboxer.properties</em>.</p>
+
+<p>The log file is in <em>/var/log/seedboxer/seedboxer.log</em>.</p>
+
+<p>SeedBoxer only support user configuration via values in database.</p>
 
 <h4>New user</h4>
 
@@ -117,56 +138,67 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 <table>
 <tr>
 <th>Resource</th>
+<th>Params</th>
 <th>Description</th>
   </tr>
 <tr>
 <td>GET status</td>
-<td></td>
+<td>username</td>
+<td>Show the download status for the given user</td>
   </tr>
 </table><h4>Downloads</h4>
 
 <table>
 <tr>
 <th>Resource</th>
+<th>Params</th>
 <th>Description</th>
   </tr>
 <tr>
 <td>GET downloads/list</td>
-<td></td>
+<td>username</td>
+<td>List all available downloads on the server</td>
   </tr>
 <tr>
 <td>GET downloads/put</td>
-<td></td>
+<td>username,downloadName</td>
+<td>Enqueue a download for the user</td>
   </tr>
 <tr>
 <td>GET downloads/delete</td>
-<td></td>
+<td>username,downloadId</td>
+<td>Delete a user download from the queue</td>
   </tr>
 <tr>
 <td>GET downloads/queue</td>
-<td></td>
+<td>username</td>
+<td>Show the queue of the given user</td>
   </tr>
 </table><h4>C2DM</h4>
 
 <table>
 <tr>
 <th>Resource</th>
+<th>Params</th>
 <th>Description</th>
   </tr>
 <tr>
 <td>GET registerDevice</td>
-<td></td>
+<td>username,deviceId,registrationId</td>
+<td>Register a Android device to receive notifications</td>
   </tr>
 </table><h4>Torrents</h4>
 
 <table>
 <tr>
 <th>Resource</th>
+<th>Params</th>
 <th>Description</th>
   </tr>
 <tr>
 <td>GET torrents/add</td>
-<td></td>
+<td>username,file</td>
+<td>Add a torrent to watch directory and enqueue the download for the user</td>
   </tr>
 </table><h2>Authors and Contributors</h2>
 
