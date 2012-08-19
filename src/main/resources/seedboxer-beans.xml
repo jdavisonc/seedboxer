@@ -27,14 +27,14 @@
    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" >
 	
-	<context:component-scan base-package="com.superdownloader.proeasy"/>
+	<context:component-scan base-package="com.seedboxer"/>
 
 	<!-- CAMEL -->
 	<import resource="classpath:mule-camel-context.xml" />
 	<import resource="classpath:sources-camel-context.xml" />
 	
 	<!-- Filters -->
-	<bean id="fileFilter" class="com.superdownloader.proeasy.mule.processor.filter.FileFilter">
+	<bean id="fileFilter" class="com.seedboxer.seedboxer.mule.processor.filter.FileFilter">
 		<property name="pattern" value="${includePattern}" />
 	</bean>
 	

@@ -38,12 +38,19 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.seedboxer" level="DEBUG" />
 	<logger name="net.schmizz.sshj" level="OFF" />
 	<logger name="org.apache.camel.processor.DefaultErrorHandler" level="OFF" />
 
+	<if condition='isDefined("debug")'>
+	    <then>
+			<logger name="com.seedboxer" level="DEBUG" />
+	    </then>
+	    <else>
+			<logger name="com.seedboxer" level="INFO" />
+	    </else>    
+	</if>
+	
 	<root level="WARN">
-		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
 
