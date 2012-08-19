@@ -41,7 +41,7 @@ public class RouteBuilder extends SpringRouteBuilder {
 	@Autowired
 	private FeedsDao feedsDao;
 
-	@Value(value="${proeasy.rssPollPeriod}")
+	@Value(value="${rssPollPeriod}")
 	private String rssPollPeriod;
 
 	@Override

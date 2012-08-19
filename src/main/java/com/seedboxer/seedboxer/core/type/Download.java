@@ -38,8 +38,9 @@ public class Download implements Cloneable {
 
 	public Download() { }
 
-	public Download(String fileName) {
+	public Download(String fileName, long size) {
 		this.fileName = fileName;
+		this.size = size;
 	}
 
 	public String getFileName() {

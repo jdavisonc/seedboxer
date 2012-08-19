@@ -48,7 +48,7 @@ public class DownloadsQueueManager {
 	@Autowired
 	private DownloadsQueueDao queueDao;
 
-	@Value("${proeasy.simultaneousDownloadsPerUser}")
+	@Value("${simultaneousDownloadsPerUser}")
 	public void setMaxDownloadPerUser(Integer maxDownloadPerUser) {
 		this.maxDownloadPerUser = maxDownloadPerUser;
 	}

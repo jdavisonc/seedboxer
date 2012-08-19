@@ -43,10 +43,10 @@ public class C2DMNotification extends Notification {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(C2DMNotification.class);
 
-	@Value("${proeasy.c2dm.username}")
+	@Value("${c2dm.username}")
 	private String c2dmUsername;
 
-	@Value("${proeasy.c2dm.password}")
+	@Value("${c2dm.password}")
 	private String c2dmPassword;
 
 	private String authToken = null;

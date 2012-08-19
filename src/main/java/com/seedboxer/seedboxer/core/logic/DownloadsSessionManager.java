@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.type.Download;
 
 /**
@@ -44,7 +43,7 @@ public class DownloadsSessionManager {
 
 	private static final String FILE_EXTENSION = ".upl";
 
-	@Value("${proeasy.simultaneousDownloadsPerUser}")
+	@Value("${simultaneousDownloadsPerUser}")
 	private int simultaneousDownloadsPerUser;
 
 	@Autowired
@@ -59,12 +58,7 @@ public class DownloadsSessionManager {
 		lock = new Object();
 	}
 
-	public boolean addUserDownload(String username, int downloadId, String filename) {
-		User user = userController.getUser(username);
-		return addUserDownload(user.getId(), downloadId, filename);
-	}
-
-	public boolean addUserDownload(long userId, long downloadId, String filename) {
+	public boolean addUserDownload(long userId, long downloadId, String filename, long size) {
 		synchronized (lock) {
 			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads == null) {
@@ -73,22 +67,10 @@ public class DownloadsSessionManager {
 			}
 			String file = fixFilename(filename);
 			if (userUploads.size() < simultaneousDownloadsPerUser && !userUploads.containsKey(file)) {
-				userUploads.put(downloadId, new Download(file));
+				userUploads.put(downloadId, new Download(file, size));
 				return true;
 			} else {
 				return false;
-			}
-		}
-	}
-
-	public void setUserDownloadSize(long userId, long downloadId, long size) {
-		synchronized (lock) {
-			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
-			if (userUploads != null) {
-				Download upload = userUploads.get(downloadId);
-				if (upload != null) {
-					upload.setSize(size);
-				}
 			}
 		}
 	}

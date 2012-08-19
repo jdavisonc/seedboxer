@@ -54,13 +54,13 @@ public class DownloadsController {
 	@Autowired
 	private DownloadsSessionManager downloadSessionManager;
 
-	@Value(value="${proeasy.completePath}")
+	@Value(value="${completePath}")
 	private String completePath;
 
-	@Value(value="${proeasy.inProgressPath}")
+	@Value(value="${inProgressPath}")
 	private String inProgressPath;
 
-	@Value(value="${proeasy.watchDownloaderPath}")
+	@Value(value="${watchDownloaderPath}")
 	private String watchDownloaderPath;
 
 	public List<FileValue> getCompletedFiles() {

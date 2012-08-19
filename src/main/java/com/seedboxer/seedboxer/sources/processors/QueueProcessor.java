@@ -62,10 +62,10 @@ public class QueueProcessor implements Processor{
 	@Autowired
 	private DownloadsQueueManager queueManager;
 
-	@Value(value="${proeasy.watchDownloaderPath}")
+	@Value(value="${watchDownloaderPath}")
 	private String path;
 
-	@Value(value="${proeasy.completePath}")
+	@Value(value="${completePath}")
 	private String completePath;
 
 	@Override

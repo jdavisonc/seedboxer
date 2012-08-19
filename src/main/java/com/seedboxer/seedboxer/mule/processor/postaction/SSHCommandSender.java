@@ -54,10 +54,10 @@ public class SSHCommandSender implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SSHCommandSender.class);
 
-	@Value("${proeasy.ssh.timeToJoin}")
+	@Value("${ssh.timeToJoin}")
 	private int timeToJoin;
 
-	@Value("${proeasy.ssh.variableNameInCmd}")
+	@Value("${ssh.variableNameInCmd}")
 	private String variableNameInCmd;
 
 	@Override

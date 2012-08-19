@@ -59,7 +59,7 @@ public class FileReceiver implements Processor {
 
 	private Pattern pattern = null;
 
-	@Value("${proeasy.includePattern}")
+	@Value("${includePattern}")
 	public void setPattern(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}

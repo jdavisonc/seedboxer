@@ -95,7 +95,7 @@ public class DownloadReceiver implements Processor {
 
 		// Size in Mbs
 		totalSize = totalSize / MEGABYTE;
-		uploadSessionManager.setUserDownloadSize(item.getUser().getId(), item.getId(), totalSize);
+		uploadSessionManager.addUserDownload(item.getUser().getId(), item.getId(), fileName, totalSize);
 	}
 
 	/**
