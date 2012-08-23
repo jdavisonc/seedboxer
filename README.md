@@ -10,9 +10,9 @@ The Mule is a process that basically copy the downloaded content in the Seed Box
 
 ### Transport
 *   FTP
-*   Dropbox (comming)
-*   Google Drive (comming)
-*   Socket (SeedBoxer client) (comming)
+*   Dropbox (coming)
+*   Google Drive (coming)
+*   Socket (SeedBoxer client) (coming)
 
 ### Post Actions
 *   SSH send command
@@ -21,12 +21,17 @@ The Mule is a process that basically copy the downloaded content in the Seed Box
 *   Email
 *   C2DM (Android Push Notification)
 
-Sources is a process that periodically scan a set of sources (RSSs) and filter the entries depending on users filters. A user can configure its owm filters based on types of content: TVShows, Movies, XBOX Games, etc. Each content has its owm properties, like TVShow that can filter by name of TVShow, quality of the episode, a specific episode or season.
+Sources is a process that periodically scan a set of sources (RSSs) and filter the entries depending on users filters. A user can configure its owm filters based on types of content: TVShows, Movies, XBOX Games, etc. Each content has its owm properties, like TVShow that can be filtered by title, quality, episode or season.
 
 ### Type of Content
 *   TVShow
-*   Movie (comming)
-*   XBOX Game (comming)
+*   Movie (coming)
+*   XBOX Game (coming)
+
+### 3rd Party Integration
+*   IMDB - Personalized list (coming)
+*   The TVDB - Favourites TVShows (coming)
+
 
 ## Requirements
 
