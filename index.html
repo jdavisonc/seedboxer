@@ -83,129 +83,15 @@ SeedBoxer was created to work with downloads managers like rtorrent, utorrent, t
 <ul>
 <li>  Java version 1.6+</li>
 <li>  MySQL Server version 5.1+</li>
-</ul><h2>Installation</h2>
+</ul><h2>API</h2>
 
-<h3>Create Database</h3>
+<p>SeedBoxer offers access to that corpus of data, via APIs. Each API represents a facet of SeedBoxer, and allows developers to build upon and extend their applications in new and creative ways. It's important to note that the SeedBoxer APIs are constantly evolving. Read more in our <a href="https://github.com/seedboxer/seedboxer/wiki">Wiki</a>.</p>
 
-<p>Create a MySQL database with name <em>seedboxer</em> and create its schema with the file <a href="https://github.com/seedboxer/seedboxer/blob/master/sql/seedboxer_schema.sql">seedboxer_schema.sql</a></p>
+<h2>More info</h2>
 
-<h3>Deploy</h3>
+<p>To know more about how to install and configure SeedBoxer in your Seed Box, please go to our <a href="https://github.com/seedboxer/seedboxer/wiki">Wiki</a>.</p>
 
-<p>SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder and set the variable <em>seedboxer.config.path=/etc/seedboxer</em> to the setup.sh inside Tomcat conf folder.</p>
-
-<p>Otherwise go to the project <a href="https://github.com/seedboxer/seedboxer-standalone">SeedBoxer Standalone</a> to see further information.</p>
-
-<h2>Configuration</h2>
-
-<p>The configuration file of SeedBoxer is in <em>/etc/seedboxer/seedboxer.properties</em>.</p>
-
-<p>The log file is in <em>/var/log/seedboxer/seedboxer.log</em>.</p>
-
-<p>SeedBoxer only support user configuration via values in database.</p>
-
-<h4>New user</h4>
-
-<div class="highlight"><pre><span class="k">INSERT</span> <span class="k">INTO</span> <span class="ss">`users`</span> <span class="p">(</span><span class="ss">`username`</span><span class="p">,</span> <span class="ss">`password`</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nf">MD5</span><span class="p">(</span><span class="s1">'password'</span><span class="p">));</span>
-</pre></div>
-
-<h4>User properties</h4>
-
-<div class="highlight"><pre><span class="k">INSERT</span> <span class="k">INTO</span> <span class="ss">`configurations`</span> <span class="p">(</span><span class="ss">`user_id`</span><span class="p">,</span> <span class="ss">`name`</span><span class="p">,</span> <span class="ss">`value`</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'id_user'</span><span class="p">,</span> <span class="s1">'prop_name'</span><span class="p">,</span> <span class="s1">'prop_value'</span><span class="p">);</span>
-</pre></div>
-
-<p>Properties names:</p>
-
-<ul>
-<li>  proeasy_ftp_username</li>
-<li>  proeasy_ftp_password</li>
-<li>  proeasy_ftp_url</li>
-<li>  proeasy_ftp_remoteDir</li>
-<li>  proeasy_notification_email_email</li>
-<li>  proeasy_ssh_cmd</li>
-<li>  proeasy_ssh_url</li>
-<li>  proeasy_ssh_username</li>
-<li>  proeasy_ssh_password</li>
-<li>  proeasy_notification_email</li>
-<li>  proeasy_notification_c2dm</li>
-</ul><h4>New Feed</h4>
-
-<div class="highlight"><pre><span class="k">INSERT</span> <span class="k">INTO</span> <span class="ss">`feeds`</span> <span class="p">(</span><span class="ss">`url`</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'http://feedserver/feed.xml'</span><span class="p">);</span>
-</pre></div>
-
-<h2>API</h2>
-
-<p>SeedBoxer offers access to that corpus of data, via APIs. Each API represents a facet of SeedBoxer, and allows developers to build upon and extend their applications in new and creative ways. It's important to note that the SeedBoxer APIs are constantly evolving.</p>
-
-<p>SeedBoxer expose its APIs via RESTful services, each API is accesible under the url <em>http://host/webservices</em></p>
-
-<h4>Status</h4>
-
-<table>
-<tr>
-<th>Resource</th>
-<th>Params</th>
-<th>Description</th>
-  </tr>
-<tr>
-<td>GET status</td>
-<td>username</td>
-<td>Show the download status for the given user</td>
-  </tr>
-</table><h4>Downloads</h4>
-
-<table>
-<tr>
-<th>Resource</th>
-<th>Params</th>
-<th>Description</th>
-  </tr>
-<tr>
-<td>GET downloads/list</td>
-<td>username</td>
-<td>List all available downloads on the server</td>
-  </tr>
-<tr>
-<td>GET downloads/put</td>
-<td>username,downloadName</td>
-<td>Enqueue a download for the user</td>
-  </tr>
-<tr>
-<td>GET downloads/delete</td>
-<td>username,downloadId</td>
-<td>Delete a user download from the queue</td>
-  </tr>
-<tr>
-<td>GET downloads/queue</td>
-<td>username</td>
-<td>Show the queue of the given user</td>
-  </tr>
-</table><h4>C2DM</h4>
-
-<table>
-<tr>
-<th>Resource</th>
-<th>Params</th>
-<th>Description</th>
-  </tr>
-<tr>
-<td>GET registerDevice</td>
-<td>username,deviceId,registrationId</td>
-<td>Register a Android device to receive notifications</td>
-  </tr>
-</table><h4>Torrents</h4>
-
-<table>
-<tr>
-<th>Resource</th>
-<th>Params</th>
-<th>Description</th>
-  </tr>
-<tr>
-<td>GET torrents/add</td>
-<td>username,file</td>
-<td>Add a torrent to watch directory and enqueue the download for the user</td>
-  </tr>
-</table><h2>Authors and Contributors</h2>
+<h2>Authors and Contributors</h2>
 
 <p>SeedBoxer is the work of:</p>
 
