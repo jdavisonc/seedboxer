@@ -38,109 +38,13 @@ Sources is a process that periodically scan a set of sources (RSSs) and filter t
 *   Java version 1.6+
 *   MySQL Server version 5.1+
 
-## Installation
+## More info
 
-### Create Database
-
-Create a MySQL database with name *seedboxer* and create its schema with the file [seedboxer_schema.sql] (https://github.com/seedboxer/seedboxer/blob/master/sql/seedboxer_schema.sql)
-
-### Deploy
-
-SeedBoxer can be deploy as standalone or inside a Java web application container like Tomcat. If you want to deploy it as web application, simple copy the SeedBoxer WAR file to your Tomcat webapps folder and set the variable *seedboxer.config.path=/etc/seedboxer* to the setup.sh inside Tomcat conf folder.
-
-Otherwise go to the project [SeedBoxer Standalone](https://github.com/seedboxer/seedboxer-standalone) to see further information.
-
-## Configuration
-
-The configuration file of SeedBoxer is in */etc/seedboxer/seedboxer.properties*.
-
-The log file is in */var/log/seedboxer/seedboxer.log*.
-
-SeedBoxer only support user configuration via values in database.
-
-#### New user
-```mysql
-INSERT INTO `users` (`username`, `password`) VALUES ('username', MD5('password'));
-```
-
-#### User properties
-```mysql
-INSERT INTO `configurations` (`user_id`, `name`, `value`) VALUES ('id_user', 'prop_name', 'prop_value');
-```
-
-Properties names:
-*   proeasy_ftp_username
-*   proeasy_ftp_password
-*   proeasy_ftp_url
-*   proeasy_ftp_remoteDir
-*   proeasy_notification_email_email
-*   proeasy_ssh_cmd
-*   proeasy_ssh_url
-*   proeasy_ssh_username
-*   proeasy_ssh_password
-*   proeasy_notification_email
-*   proeasy_notification_c2dm
-
-#### New Feed
-```mysql
-INSERT INTO `feeds` (`url`) VALUES ('http://feedserver/feed.xml');
-```
+To know more about how to install and configure SeedBoxer in your Seed Box, please go to our [Wiki](https://github.com/seedboxer/seedboxer/wiki).
 
 ## API
 
-SeedBoxer offers access to that corpus of data, via APIs. Each API represents a facet of SeedBoxer, and allows developers to build upon and extend their applications in new and creative ways. It's important to note that the SeedBoxer APIs are constantly evolving.
-
-SeedBoxer expose its APIs via RESTful services, each API is accesible under the url *http://host/webservices*
-
-#### Status
-<table>
-  <tr>
-    <th>Resource</th><th>Params</th><th>Description</th>
-  </tr>
-  <tr>
-    <td>GET status</td><td>username</td><td>Show the download status for the given user</td>
-  </tr>
-</table>
-
-#### Downloads
-<table>
-  <tr>
-    <th>Resource</th><th>Params</th><th>Description</th>
-  </tr>
-  <tr>
-    <td>GET downloads/list</td><td>username</td><td>List all available downloads on the server</td>
-  </tr>
-  <tr>
-    <td>GET downloads/put</td><td>username,downloadName</td><td>Enqueue a download for the user</td>
-  </tr>
-  <tr>
-    <td>GET downloads/delete</td><td>username,downloadId</td><td>Delete a user download from the queue</td>
-  </tr>
-  <tr>
-    <td>GET downloads/queue</td><td>username</td><td>Show the queue of the given user</td>
-  </tr>
-</table>
-
-#### C2DM
-<table>
-  <tr>
-    <th>Resource</th><th>Params</th><th>Description</th>
-  </tr>
-  <tr>
-    <td>GET registerDevice</td><td>username,deviceId,registrationId</td><td>Register a Android device to receive notifications</td>
-  </tr>
-</table>
-
-#### Torrents
-<table>
-  <tr>
-    <th>Resource</th><th>Params</th><th>Description</th>
-  </tr>
-  <tr>
-    <td>GET torrents/add</td><td>username,file</td><td>Add a torrent to watch directory and enqueue the download for the user</td>
-  </tr>
-</table>
-
+SeedBoxer offers access to that corpus of data, via APIs. Each API represents a facet of SeedBoxer, and allows developers to build upon and extend their applications in new and creative ways. It's important to note that the SeedBoxer APIs are constantly evolving. Read more in our [Wiki](https://github.com/seedboxer/seedboxer/wiki).
 
 ## Authors and Contributors
 SeedBoxer is the work of:
