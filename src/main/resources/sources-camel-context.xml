@@ -64,5 +64,38 @@
                 </route>
                 
                 
+                <!-- 3rd Party integration -->
+                <route>
+                    <from ref="timer://thirdpartytimer?fixedRate=true&amp;period=600000" />
+                    <process ref="thirdPartyProcessor"/>
+		            <filter>
+						<simple>${in.body} != null</simple>
+						<split>
+							<simple>${body}</simple>
+							<to uri="direct:loadPropertiesThirdParty"/>
+						</split>
+					</filter>
+                </route>
+                
+                <route>
+                    <from uri="direct:loadPropertiesThirdParty"/>
+                    <process uri="thirdPartyLoaderProcessor"></process>
+					<routingSlip headerName="thirdParty" uriDelimeter="#" />
+                </route>
+                
+                <route>
+                    <from uri="direct:imdb"/>
+                    <process ref="imdbRequestProcessor"/>
+                    <to uri="http:www.imdb.com"/>
+                    <unmarshal><csv /></unmarshal>
+                    <process ref="imdbResponseProcessor"/>
+                    <to uri="direct:updateUserContent"/>
+                </route>
+                
+                <route>
+                    <from uri="direct:updateUserContent"/>
+                    <process ref="updateUserContentProcessor"/>
+                </route>
+                
 	</camelContext>
 </beans>
