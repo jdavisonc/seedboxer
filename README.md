@@ -38,13 +38,13 @@ Sources is a process that periodically scan a set of sources (RSSs) and filter t
 *   Java version 1.6+
 *   MySQL Server version 5.1+
 
-## More info
-
-To know more about how to install and configure SeedBoxer in your Seed Box, please go to our [Wiki](https://github.com/seedboxer/seedboxer/wiki).
-
 ## API
 
 SeedBoxer offers access to that corpus of data, via APIs. Each API represents a facet of SeedBoxer, and allows developers to build upon and extend their applications in new and creative ways. It's important to note that the SeedBoxer APIs are constantly evolving. Read more in our [Wiki](https://github.com/seedboxer/seedboxer/wiki).
+
+## More info
+
+To know more about how to install and configure SeedBoxer in your Seed Box, please go to our [Wiki](https://github.com/seedboxer/seedboxer/wiki).
 
 ## Authors and Contributors
 SeedBoxer is the work of:
