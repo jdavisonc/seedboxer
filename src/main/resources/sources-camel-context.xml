@@ -66,8 +66,8 @@
                 
                 <!-- 3rd Party integration -->
                 <route>
-                    <from ref="timer://thirdpartytimer?fixedRate=true&amp;period=600000" />
-                    <process ref="thirdPartyProcessor"/>
+                    <from uri="timer://thirdpartytimer?fixedRate=true&amp;period=600000" />
+                    <process ref="thirdPartyPoolerProcessor"/>
 		            <filter>
 						<simple>${in.body} != null</simple>
 						<split>
@@ -79,15 +79,19 @@
                 
                 <route>
                     <from uri="direct:loadPropertiesThirdParty"/>
-                    <process uri="thirdPartyLoaderProcessor"></process>
-					<routingSlip headerName="thirdParty" uriDelimeter="#" />
+                    <process ref="thirdPartyLoaderProcessor" />
+					<routingSlip>
+						<header>thirdParty</header>
+					</routingSlip>
                 </route>
                 
                 <route>
                     <from uri="direct:imdb"/>
                     <process ref="imdbRequestProcessor"/>
                     <to uri="http:www.imdb.com"/>
-                    <unmarshal><csv /></unmarshal>
+                    <unmarshal>
+                    	<csv skipFirstLine="true" />
+                    </unmarshal>
                     <process ref="imdbResponseProcessor"/>
                     <to uri="direct:updateUserContent"/>
                 </route>

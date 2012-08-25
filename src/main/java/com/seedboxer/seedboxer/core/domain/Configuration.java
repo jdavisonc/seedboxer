@@ -27,13 +27,12 @@ package com.seedboxer.seedboxer.core.domain;
  */
 public class Configuration {
 
-
-
-	public static final String THIRD_PARTY = "third_party";
+	public static final String THIRD_PARTY = "thirdParty";
 
 	public static final String IMDB = "imdb";
-	public static final String IMDB_LIST = "imdb_list";
-	public static final String IMDB_AUTHOR = "imdb_author";
-
+	public static final String IMDB_LIST = "imdbList";
+	public static final String IMDB_AUTHOR = "imdbAuthor";
+	public static final String IMDB_CONTENT_QUALITY = "imdbContentQuality";
+	public static final String IMDB_CONTENT_TYPE = "imdbContentType";
 
 }

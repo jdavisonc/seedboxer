@@ -39,4 +39,6 @@ public interface UsersDao {
 
 	List<UserConfiguration> getUserConfig(long userId);
 
+	List<User> getUserWithConfig(String configName);
+
 }

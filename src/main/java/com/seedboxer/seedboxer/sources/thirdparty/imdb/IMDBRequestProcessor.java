@@ -24,6 +24,7 @@ package com.seedboxer.seedboxer.sources.thirdparty.imdb;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.domain.Configuration;
 
@@ -32,21 +33,19 @@ import com.seedboxer.seedboxer.core.domain.Configuration;
  * @author harley
  *
  */
+@Component("imdbRequestProcessor")
 public class IMDBRequestProcessor implements Processor {
 
 	private String imdbUrl = "http://www.imdb.com/list/export?list_id=%s&amp;author_id=%s";
 
-	/* (non-Javadoc)
-	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Get IMDB configurations from exhcange and create URL for make the request
 		Message msg = exchange.getIn();
 		String author = (String) msg.getHeader(Configuration.IMDB_AUTHOR);
 		String list = (String) msg.getHeader(Configuration.IMDB_LIST);
 
 		msg.setHeader(Exchange.HTTP_URI, String.format(imdbUrl, list, author));
+		msg.setBody(null);
 	}
 
 }

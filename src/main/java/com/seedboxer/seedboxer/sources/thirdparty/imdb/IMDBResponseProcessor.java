@@ -21,21 +21,31 @@
 
 package com.seedboxer.seedboxer.sources.thirdparty.imdb;
 
+import java.util.List;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * @author harley
  *
  */
+@Component("imdbResponseProcessor")
 public class IMDBResponseProcessor implements Processor {
 
-	/* (non-Javadoc)
-	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(IMDBResponseProcessor.class);
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		// TODO Generate a list of Content with the result of calling IMDB and user configuration
+		List<List<String>> imdbResults = (List<List<String>>) exchange.getIn().getBody();
+
+		for (List<String> result : imdbResults) {
+			LOGGER.debug("IMDB Content {}", result.get(5));
+		}
 
 	}
 

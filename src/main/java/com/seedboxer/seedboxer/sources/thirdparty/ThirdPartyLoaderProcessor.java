@@ -21,22 +21,48 @@
 
 package com.seedboxer.seedboxer.sources.thirdparty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.google.common.base.Joiner;
+import com.seedboxer.seedboxer.core.domain.Configuration;
+import com.seedboxer.seedboxer.core.domain.User;
+import com.seedboxer.seedboxer.core.domain.UserConfiguration;
+import com.seedboxer.seedboxer.core.persistence.UsersDao;
+import com.seedboxer.seedboxer.core.util.ConfigurationUtils;
 
 /**
  * @author harley
  *
  */
+@Component
 public class ThirdPartyLoaderProcessor implements Processor {
 
-	/* (non-Javadoc)
-	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
+	@Autowired
+	private UsersDao usersDao;
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Load all user configuration in exchange
+		Message msg = exchange.getIn();
+		User user = (User) msg.getBody();
+		List<UserConfiguration> userConfig = usersDao.getUserConfig(user.getId());
 
+		// Load all user configuration in message
+		msg.setHeaders(ConfigurationUtils.toMap(userConfig));
+
+		// Set Third Party endpoint for routing slip
+		ArrayList<String> thirdPartyEndpoints = new ArrayList<String>();
+		String thirdParty = (String) msg.getHeader(Configuration.THIRD_PARTY);
+		for (String type : thirdParty.split(",")) {
+			thirdPartyEndpoints.add("direct:" + type);
+		}
+		msg.setHeader(Configuration.THIRD_PARTY, Joiner.on(',').join(thirdPartyEndpoints));
 	}
 
 }

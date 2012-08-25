@@ -23,16 +23,16 @@ package com.seedboxer.seedboxer.sources.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.springframework.stereotype.Component;
 
 /**
  * @author harley
  *
  */
+@Component
 public class UpdateUserContentProcessor implements Processor {
 
-	/* (non-Javadoc)
-	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		// TODO Update the user content with the list of Content that receives in body

@@ -36,6 +36,7 @@ import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
  *
  */
 @Repository
+@Transactional
 public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 
 	@Autowired
@@ -46,13 +47,11 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
-	@Transactional
 	public void push(DownloadQueueItem item) {
 		getCurrentSession().save(item);
 	}
 
 	@Override
-	@Transactional
 	public void repush(long downloadId) {
 		DownloadQueueItem itemdb = (DownloadQueueItem) getCurrentSession()
 				.get(DownloadQueueItem.class, downloadId);
@@ -62,7 +61,6 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional
 	public List<DownloadQueueItem> pop(long maxDownloadPerUser) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d where " +
 				"(select count(*) from DownloadQueueItem f where " +
@@ -72,7 +70,6 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
-	@Transactional
 	public void setInProgress(List<Long> idsToUpdate) {
 		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
 				"set inProgress = true where id in (:ids)");
@@ -81,7 +78,6 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
-	@Transactional
 	public void remove(long downloadId) {
 		Query query = getCurrentSession().createQuery("delete from DownloadQueueItem where id = :id");
 		query.setParameter("id", downloadId);
@@ -90,7 +86,6 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional
 	public List<DownloadQueueItem> queue(long userId) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
 				"where d.user.id = :userId and d.inProgress = false");
@@ -99,7 +94,6 @@ public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
 	}
 
 	@Override
-	@Transactional
 	public DownloadQueueItem get(long userId, long downloadId) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
 				"where d.id = :downloadId and d.user.id = :userId");

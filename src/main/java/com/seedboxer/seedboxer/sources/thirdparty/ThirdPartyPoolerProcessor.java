@@ -21,22 +21,31 @@
 
 package com.seedboxer.seedboxer.sources.thirdparty;
 
+import java.util.List;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.seedboxer.seedboxer.core.domain.Configuration;
+import com.seedboxer.seedboxer.core.domain.User;
+import com.seedboxer.seedboxer.core.persistence.UsersDao;
 
 /**
  * @author harley
  *
  */
+@Component
 public class ThirdPartyPoolerProcessor implements Processor {
 
-	/* (non-Javadoc)
-	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
+	@Autowired
+	private UsersDao usersDao;
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Pool database getting all users identifiers that has the configuration "thirdParty" enabled
-		//      Contruct a list of users ids
+		List<User> users = usersDao.getUserWithConfig(Configuration.THIRD_PARTY);
+		exchange.getIn().setBody(users);
 	}
 
 }

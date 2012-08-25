@@ -40,6 +40,7 @@ import com.seedboxer.seedboxer.core.domain.UserConfiguration;
  *
  */
 @Repository
+@Transactional
 public class HibernateUsersDao implements UsersDao {
 
 	@Autowired
@@ -50,7 +51,6 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
-	@Transactional
 	public boolean isValidUser(String username, String password) {
 		Query query = getCurrentSession().createQuery("select 1 from User where username = :username and password = MD5(:password)");
 		query.setParameter("username", username);
@@ -60,20 +60,17 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
-	@Transactional
 	public void save(User user) {
 		// TODO: make save again without session open
 		//getCurrentSession().save(user);
 	}
 
 	@Override
-	@Transactional
 	public User get(long userId) {
 		return (User) getCurrentSession().get(User.class, userId);
 	}
 
 	@Override
-	@Transactional
 	public User get(String username) {
 		Query query = getCurrentSession().createQuery("from User where username = :username");
 		query.setParameter("username", username);
@@ -81,7 +78,6 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
-	@Transactional
 	public void saveUserConfig(long userId, UserConfiguration config) {
 		User user = get(userId);
 		config.setUser(user);
@@ -105,10 +101,16 @@ public class HibernateUsersDao implements UsersDao {
 	}
 
 	@Override
-	@Transactional
 	public List<UserConfiguration> getUserConfig(long userId) {
 		Query query = getCurrentSession().createQuery("from UserConfiguration where user.id = :userId");
 		query.setParameter("userId", userId);
+		return query.list();
+	}
+
+	@Override
+	public List<User> getUserWithConfig(String configName) {
+		Query query = getCurrentSession().createQuery("select c.user from UserConfiguration c where c.name = :name");
+		query.setParameter("name", configName);
 		return query.list();
 	}
 
