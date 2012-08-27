@@ -21,13 +21,20 @@
 
 package com.seedboxer.seedboxer.sources.thirdparty.imdb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.seedboxer.seedboxer.core.domain.Configuration;
+import com.seedboxer.seedboxer.sources.domain.Content;
+import com.seedboxer.seedboxer.sources.domain.TvShow;
+import com.seedboxer.seedboxer.sources.type.Quality;
 
 /**
  * @author harley
@@ -38,15 +45,35 @@ public class IMDBResponseProcessor implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IMDBResponseProcessor.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		// TODO Generate a list of Content with the result of calling IMDB and user configuration
-		List<List<String>> imdbResults = (List<List<String>>) exchange.getIn().getBody();
+		Message msg = exchange.getIn();
+		List<List<String>> imdbResults = (List<List<String>>) msg.getBody();
+		List<Content> imdbContent = new ArrayList<Content>();
 
 		for (List<String> result : imdbResults) {
-			LOGGER.debug("IMDB Content {}", result.get(5));
+			String title = result.get(5);
+			LOGGER.debug("IMDB Content {}", title);
+
+			Content content = createContent(msg, title);
+			imdbContent.add(content);
+		}
+		msg.setBody(imdbContent);
+	}
+
+	private Content createContent(Message msg, String title) {
+		Content content = null;
+		String type = (String) msg.getHeader(Configuration.IMDB_CONTENT_TYPE);
+		String quality = (String) msg.getHeader(Configuration.IMDB_CONTENT_QUALITY);
+
+		if (TvShow.class.getSimpleName().equals(type)) {
+			content = new TvShow(title, null, null, Quality.valueOf(quality));
+		} else {
+			throw new IllegalArgumentException("Content not supported yet");
 		}
 
+		return content;
 	}
 
 }

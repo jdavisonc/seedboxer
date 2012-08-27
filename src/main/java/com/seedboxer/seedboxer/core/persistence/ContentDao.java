@@ -25,10 +25,8 @@
 package com.seedboxer.seedboxer.core.persistence;
 
 
-import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.sources.domain.Content;
-
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.seedboxer.seedboxer.core.domain.User;
+import com.seedboxer.seedboxer.sources.domain.Content;
+
 /**
  *
  * @author The-Sultan
@@ -46,35 +47,37 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Repository
 public class ContentDao {
-    
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    protected final Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
-    
-    public void save(Content content){
-        getCurrentSession().save(content);
-    }
-    
-    /*
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	protected final Session getCurrentSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
+	public void save(Content content){
+		getCurrentSession().save(content);
+	}
+
+	/*
    public <T extends Content> List<T> getFilters(Class<T> _type){
        //getCurrentSession().loa
    }*/
-    
-    public <T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory){
-        Criteria criteria = getCurrentSession().createCriteria(clazz);
-        criteria.add(Restrictions.eq("history", isHistory));
-        return criteria.list();
-    }
-    
-    public <T extends Content> List<T> getHistoryContentFilteredByNameAndUser(Class<T> clazz, String name,
-            User user){
-        Criteria criteria = getCurrentSession().createCriteria(clazz);
-        Criterion rest1 = Restrictions.and(Restrictions.eq("name", name),Restrictions.eq("history",true));
-        rest1 = Restrictions.and(rest1,Restrictions.eq("user",user));
-        criteria.add(rest1);
-        return criteria.list();
-    }
+
+	public <T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory){
+		Criteria criteria = getCurrentSession().createCriteria(clazz);
+		criteria.add(Restrictions.eq("history", isHistory));
+		return criteria.list();
+	}
+
+	public <T extends Content> List<T> getHistoryContentFilteredByNameAndUser(Class<T> clazz, String name,
+			User user){
+		Criteria criteria = getCurrentSession().createCriteria(clazz);
+		Criterion rest1 = Restrictions.and(Restrictions.eq("name", name),Restrictions.eq("history",true));
+		rest1 = Restrictions.and(rest1,Restrictions.eq("user",user));
+		criteria.add(rest1);
+		return criteria.list();
+	}
+
+
 }

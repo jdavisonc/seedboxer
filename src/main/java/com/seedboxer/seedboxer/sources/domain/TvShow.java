@@ -53,7 +53,7 @@ public class TvShow extends Content{
 
 	public TvShow() { }
 
-	public TvShow(String name, int season, int episode, Quality quality){
+	public TvShow(String name, Integer season, Integer episode, Quality quality){
 		super.setName(name);
 		this.quality = quality.name();
 		this.season = season;
