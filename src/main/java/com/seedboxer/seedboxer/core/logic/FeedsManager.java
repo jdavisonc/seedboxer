@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Quality.java
+ * FeedsManager.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -19,12 +19,12 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.sources.type;
+package com.seedboxer.seedboxer.core.logic;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-public enum Quality {
-	STANDARD, HD, FULLHD;
+public class FeedsManager {
+
 }

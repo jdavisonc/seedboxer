@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Configuration.java
+ * HibernateFeedsDao.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -19,22 +19,29 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.core.domain;
+package com.seedboxer.seedboxer.core.persistence.impl;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.seedboxer.seedboxer.core.persistence.FeedsDao;
 
 /**
+ * 
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class Configuration {
-
-	public static final String USER = "User";
-	
-	public static final String THIRD_PARTY = "thirdParty";
-
-	public static final String IMDB = "imdb";
-	public static final String IMDB_LIST = "imdbList";
-	public static final String IMDB_AUTHOR = "imdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "imdbContentQuality";
-	public static final String IMDB_CONTENT_TYPE = "imdbContentType";
+@Transactional
+@Repository
+public class HibernateFeedsDao extends HibernateDao implements FeedsDao {
+    
+    @Override
+	public <T> List<T> getAllFeeds(Class<T> clazz){
+        Criteria criteria = getCurrentSession().createCriteria(clazz);
+        return criteria.list();
+    }
 
 }

@@ -33,7 +33,7 @@ import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.persistence.UsersDao;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component

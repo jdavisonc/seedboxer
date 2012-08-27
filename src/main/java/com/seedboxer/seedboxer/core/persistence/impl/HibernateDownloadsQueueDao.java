@@ -18,33 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.core.persistence;
+package com.seedboxer.seedboxer.core.persistence.impl;
 
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+import com.seedboxer.seedboxer.core.persistence.DownloadsQueueDao;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Repository
 @Transactional
-public class HibernateDownloadsQueueDao implements DownloadsQueueDao {
-
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	protected final Session getCurrentSession() {
-		return sessionFactory.getCurrentSession();
-	}
+public class HibernateDownloadsQueueDao extends HibernateDao implements DownloadsQueueDao {
 
 	@Override
 	public void push(DownloadQueueItem item) {

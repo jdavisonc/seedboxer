@@ -32,12 +32,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.domain.Configuration;
-import com.seedboxer.seedboxer.sources.domain.Content;
-import com.seedboxer.seedboxer.sources.domain.TvShow;
-import com.seedboxer.seedboxer.sources.type.Quality;
+import com.seedboxer.seedboxer.core.domain.Content;
+import com.seedboxer.seedboxer.core.domain.TvShow;
+import com.seedboxer.seedboxer.core.type.Quality;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component("imdbResponseProcessor")

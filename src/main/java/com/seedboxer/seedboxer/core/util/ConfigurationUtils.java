@@ -27,7 +27,7 @@ import java.util.Map;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 public class ConfigurationUtils {

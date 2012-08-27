@@ -28,8 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.RssFeed;
 import com.seedboxer.seedboxer.core.persistence.FeedsDao;
-import com.seedboxer.seedboxer.sources.domain.RssFeed;
 
 /**
  *

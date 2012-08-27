@@ -40,7 +40,7 @@ import com.seedboxer.seedboxer.ws.controller.DownloadsController;
 
 /**
  * WebService to get the status of an upload
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Path("/status")

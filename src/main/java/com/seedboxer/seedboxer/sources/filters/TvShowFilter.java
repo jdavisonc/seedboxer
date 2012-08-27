@@ -24,7 +24,7 @@ package com.seedboxer.seedboxer.sources.filters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.sources.domain.TvShow;
+import com.seedboxer.seedboxer.core.domain.TvShow;
 
 /**
  *

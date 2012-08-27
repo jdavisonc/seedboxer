@@ -23,7 +23,7 @@ package com.seedboxer.seedboxer.core.type;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @XmlRootElement(name="download")

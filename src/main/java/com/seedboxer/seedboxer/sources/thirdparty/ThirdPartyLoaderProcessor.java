@@ -38,7 +38,7 @@ import com.seedboxer.seedboxer.core.persistence.UsersDao;
 import com.seedboxer.seedboxer.core.util.ConfigurationUtils;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component
@@ -55,6 +55,7 @@ public class ThirdPartyLoaderProcessor implements Processor {
 
 		// Load all user configuration in message
 		msg.setHeaders(ConfigurationUtils.toMap(userConfig));
+		msg.setHeader(Configuration.USER, user);
 
 		// Set Third Party endpoint for routing slip
 		ArrayList<String> thirdPartyEndpoints = new ArrayList<String>();

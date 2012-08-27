@@ -35,7 +35,7 @@ import com.seedboxer.seedboxer.mule.processor.Headers;
 import com.seedboxer.seedboxer.mule.util.C2DMUtils;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component(value = "c2dmNotification")

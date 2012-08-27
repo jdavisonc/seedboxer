@@ -31,7 +31,7 @@ import javax.persistence.Table;
 
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Entity

@@ -29,7 +29,7 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.sources.domain.Content;
+import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.sources.parser.ParserManager;
 import com.seedboxer.seedboxer.sources.type.MatchableItem;
 

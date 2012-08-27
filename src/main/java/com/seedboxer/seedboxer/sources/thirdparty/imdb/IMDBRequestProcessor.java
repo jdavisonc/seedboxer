@@ -30,7 +30,7 @@ import com.seedboxer.seedboxer.core.domain.Configuration;
 
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component("imdbRequestProcessor")

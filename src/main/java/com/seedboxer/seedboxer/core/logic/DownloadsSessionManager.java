@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 import com.seedboxer.seedboxer.core.type.Download;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Service

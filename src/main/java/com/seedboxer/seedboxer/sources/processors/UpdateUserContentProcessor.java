@@ -21,22 +21,36 @@
 
 package com.seedboxer.seedboxer.sources.processors;
 
+import java.util.List;
+
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Configuration;
+import com.seedboxer.seedboxer.core.domain.Content;
+import com.seedboxer.seedboxer.core.domain.User;
+import com.seedboxer.seedboxer.core.logic.ContentManager;
+
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component
 public class UpdateUserContentProcessor implements Processor {
 
+	@Autowired
+	private ContentManager manager;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void process(Exchange exchange) throws Exception {
-		// TODO Update the user content with the list of Content that receives in body
-
+		Message msg = exchange.getIn();
+		User user = (User) msg.getHeader(Configuration.USER);
+		List<Content> content = (List<Content>) msg.getBody();
+		manager.updateContents(user, content);
 	}
 
 }

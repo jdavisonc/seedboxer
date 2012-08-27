@@ -20,7 +20,7 @@
  ******************************************************************************/
 package com.seedboxer.seedboxer.sources.parser;
 
-import com.seedboxer.seedboxer.sources.domain.Content;
+import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.sources.type.MatchableItem;
 
 /**

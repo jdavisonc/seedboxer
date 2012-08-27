@@ -20,7 +20,7 @@
  ******************************************************************************/
 package com.seedboxer.seedboxer.sources.filters;
 
-import com.seedboxer.seedboxer.sources.domain.Content;
+import com.seedboxer.seedboxer.core.domain.Content;
 
 /**
  *

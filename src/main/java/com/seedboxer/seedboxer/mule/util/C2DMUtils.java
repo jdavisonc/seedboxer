@@ -33,7 +33,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 public class C2DMUtils {

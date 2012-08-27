@@ -26,7 +26,7 @@ import org.apache.camel.Processor;
 
 /**
  *
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 public abstract class Notification implements Processor {

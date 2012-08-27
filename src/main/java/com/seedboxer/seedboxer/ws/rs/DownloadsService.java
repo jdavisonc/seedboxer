@@ -40,7 +40,7 @@ import com.seedboxer.seedboxer.ws.type.Response;
 
 /**
  * WebService for handle downloads
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Path("/downloads")

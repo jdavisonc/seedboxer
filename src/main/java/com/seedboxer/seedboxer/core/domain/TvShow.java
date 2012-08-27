@@ -19,7 +19,7 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.sources.domain;
+package com.seedboxer.seedboxer.core.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +29,7 @@ import javax.persistence.Table;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.sources.type.Quality;
+import com.seedboxer.seedboxer.core.type.Quality;
 
 /**
  *

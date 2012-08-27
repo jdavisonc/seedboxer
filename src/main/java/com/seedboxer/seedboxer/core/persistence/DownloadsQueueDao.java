@@ -25,7 +25,7 @@ import java.util.List;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 public interface DownloadsQueueDao {

@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.sources.domain.Content;
 import com.seedboxer.seedboxer.sources.filters.FilterManager;
 import com.seedboxer.seedboxer.sources.type.DownloadableItem;
 

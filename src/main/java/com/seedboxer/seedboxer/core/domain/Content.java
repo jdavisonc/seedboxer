@@ -19,7 +19,7 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.sources.domain;
+package com.seedboxer.seedboxer.core.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.sources.type.MatchableItem;
 
 /**

@@ -43,9 +43,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
-import com.seedboxer.seedboxer.sources.domain.Content;
 import com.seedboxer.seedboxer.sources.type.DownloadableItem;
 
 
@@ -73,8 +73,8 @@ public class QueueProcessor implements Processor{
 		DownloadableItem downloadableItem = (DownloadableItem) exchange.getIn().getBody();
 		Content content = downloadableItem.getContent();
 		URL url = content.getMatchableItem().getUrl();
-		String fileName = url.getFile().substring(url.getFile().lastIndexOf("/"));
-		String filePath = path + "/" + fileName;
+		String fileName = url.getFile().substring(url.getFile().lastIndexOf(File.separator));
+		String filePath = path + File.separator + fileName;
 		LOGGER.debug("Filename: "+fileName);
 
 		try {
@@ -82,7 +82,7 @@ public class QueueProcessor implements Processor{
 			String dirName = getDirNameFromTorrentFile(filePath);
 			LOGGER.info("Downloaded torrent: "+path);
 			for(User user : downloadableItem.getUsers()){
-				String absoluteOutputDir = completePath + "/"+ dirName;
+				String absoluteOutputDir = completePath + File.separator + dirName;
 				queueManager.push(user, absoluteOutputDir);
 			}
 		} catch (IOException ex) {

@@ -31,7 +31,7 @@ import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
 import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component

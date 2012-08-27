@@ -41,7 +41,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 /**
  * WebService that expose method to work with torrent files
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Path("/torrents")

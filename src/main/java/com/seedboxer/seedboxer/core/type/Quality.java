@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Configuration.java
+ * Quality.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -19,22 +19,12 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.core.domain;
+package com.seedboxer.seedboxer.core.type;
 
 /**
- * @author Jorge Davison (jdavisonc)
  *
+ * @author The-Sultan
  */
-public class Configuration {
-
-	public static final String USER = "User";
-	
-	public static final String THIRD_PARTY = "thirdParty";
-
-	public static final String IMDB = "imdb";
-	public static final String IMDB_LIST = "imdbList";
-	public static final String IMDB_AUTHOR = "imdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "imdbContentQuality";
-	public static final String IMDB_CONTENT_TYPE = "imdbContentType";
-
+public enum Quality {
+	STANDARD, HD, FULLHD;
 }

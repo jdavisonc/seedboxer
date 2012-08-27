@@ -21,34 +21,25 @@
 /**
  * 
  */
-package com.seedboxer.seedboxer.core.persistence;
+package com.seedboxer.seedboxer.core.persistence.impl;
 
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
+import com.seedboxer.seedboxer.core.persistence.UsersDao;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Repository
 @Transactional
-public class HibernateUsersDao implements UsersDao {
-
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	protected final Session getCurrentSession() {
-		return sessionFactory.getCurrentSession();
-	}
+public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 	@Override
 	public boolean isValidUser(String username, String password) {

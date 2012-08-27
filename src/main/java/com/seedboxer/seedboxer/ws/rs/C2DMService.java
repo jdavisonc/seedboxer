@@ -36,7 +36,7 @@ import com.seedboxer.seedboxer.ws.type.Response;
 
 /**
  * WebService for list files
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Path("/registerDevice")

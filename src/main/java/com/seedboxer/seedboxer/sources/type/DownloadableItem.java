@@ -23,8 +23,8 @@ package com.seedboxer.seedboxer.sources.type;
 
 import java.util.List;
 
+import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.sources.domain.Content;
 
 /**
  *

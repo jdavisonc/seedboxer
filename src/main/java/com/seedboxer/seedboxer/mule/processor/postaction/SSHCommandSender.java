@@ -46,7 +46,7 @@ import com.seedboxer.seedboxer.mule.processor.Headers;
 import freemarker.template.TemplateException;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component(value = "sshCommandSender")

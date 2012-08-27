@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.sources.domain.TvShow;
-import com.seedboxer.seedboxer.sources.type.Quality;
+import com.seedboxer.seedboxer.core.domain.TvShow;
+import com.seedboxer.seedboxer.core.type.Quality;
 
 /**
  *

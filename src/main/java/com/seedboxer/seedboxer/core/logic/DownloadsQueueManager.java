@@ -35,7 +35,7 @@ import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.persistence.DownloadsQueueDao;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Service

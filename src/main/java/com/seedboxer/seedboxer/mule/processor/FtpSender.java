@@ -38,7 +38,7 @@ import com.superdownloader.common.ftp.FtpUploaderCommons;
 import com.superdownloader.common.ftp.FtpUploaderListener;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component

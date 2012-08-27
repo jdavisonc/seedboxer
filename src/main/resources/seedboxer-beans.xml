@@ -52,7 +52,6 @@
 		<property name="packagesToScan">
 			<list>
 				<value>com.seedboxer.seedboxer.core.domain</value>
-				<value>com.seedboxer.seedboxer.sources.domain</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

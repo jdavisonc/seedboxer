@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Configuration.java
+ * RssFeed.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -21,20 +21,39 @@
 
 package com.seedboxer.seedboxer.core.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
- * @author Jorge Davison (jdavisonc)
  *
+ * @author The-Sultan
  */
-public class Configuration {
+@Entity
+@Table(name= "feeds")
+public class RssFeed {
+	@Id
+	@Column(name = "id")
+	private Long id;
 
-	public static final String USER = "User";
-	
-	public static final String THIRD_PARTY = "thirdParty";
+	@Column(name="url")
+	private String url;
 
-	public static final String IMDB = "imdb";
-	public static final String IMDB_LIST = "imdbList";
-	public static final String IMDB_AUTHOR = "imdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "imdbContentQuality";
-	public static final String IMDB_CONTENT_TYPE = "imdbContentType";
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }

@@ -39,7 +39,7 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Component

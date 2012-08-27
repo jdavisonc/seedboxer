@@ -31,7 +31,7 @@ import com.seedboxer.seedboxer.core.persistence.UsersDao;
 import com.seedboxer.seedboxer.mule.processor.Headers;
 
 /**
- * @author harley
+ * @author Jorge Davison (jdavisonc)
  *
  */
 @Service

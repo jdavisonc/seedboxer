@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RssFeed.java
+ * ContentManager.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -19,41 +19,38 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.seedboxer.seedboxer.sources.domain;
+package com.seedboxer.seedboxer.core.logic;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.seedboxer.seedboxer.core.domain.Content;
+import com.seedboxer.seedboxer.core.domain.User;
+import com.seedboxer.seedboxer.core.persistence.ContentDao;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-@Entity
-@Table(name= "feeds")
-public class RssFeed {
-	@Id
-	@Column(name = "id")
-	private Long id;
+@Service
+public class ContentManager {
 
-	@Column(name="url")
-	private String url;
+	@Autowired
+	private ContentDao contentDao;
+	
+	public void updateContents(User user, List<Content> toUpdate) {
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+		List<Content> userContents = contentDao.getAllContent(user);
+		for (Content userContent : userContents) {
+			for (Content content : toUpdate) {
+				if (userContent.equals(content)) {
+					content.setUser(user);
+					contentDao.save(content);
+				}
+			}
+		}
 	}
 
 }
