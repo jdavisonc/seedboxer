@@ -22,7 +22,7 @@ package com.seedboxer.seedboxer.mule.processor;
 
 public class Headers {
 
-	public static final String SEPARATOR = "_";
+	/*public static final String SEPARATOR = "_";
 
 	public static final String PREFIX = "proeasy" + SEPARATOR;
 
@@ -56,6 +56,6 @@ public class Headers {
 
 	public static final String NOTIFICATION_C2DM = NOTIFICATION_PREFIX + "c2dm";
 	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_C2DM + SEPARATOR + "deviceId";
-	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM + SEPARATOR + "registrationId";
+	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM + SEPARATOR + "registrationId";*/
 
 }

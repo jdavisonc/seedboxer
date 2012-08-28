@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.mule.processor.Headers;
+import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.mule.util.C2DMUtils;
 
 /**
@@ -63,8 +63,8 @@ public class C2DMNotification extends Notification {
 
 	@SuppressWarnings("unchecked")
 	private void sendMessage(Message msg, String sucess) {
-		String registrationId = (String) msg.getHeader(Headers.NOTIFICATION_C2DM_REGISTRATIONID);
-		String name = ((List<String>) msg.getHeader(Headers.FILES_NAME)).get(0);
+		String registrationId = (String) msg.getHeader(Configuration.NOTIFICATION_C2DM_REGISTRATIONID);
+		String name = ((List<String>) msg.getHeader(Configuration.FILES_NAME)).get(0);
 		String message = sucess + ";Files " + name + "...";
 		try {
 			int responseCode = C2DMUtils.sendMessage(authToken, registrationId, message);

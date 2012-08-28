@@ -28,13 +28,44 @@ package com.seedboxer.seedboxer.core.domain;
 public class Configuration {
 
 	public static final String USER = "User";
-	
-	public static final String THIRD_PARTY = "thirdParty";
+	public static final String USER_ID = "UserId";
 
-	public static final String IMDB = "imdb";
-	public static final String IMDB_LIST = "imdbList";
-	public static final String IMDB_AUTHOR = "imdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "imdbContentQuality";
-	public static final String IMDB_CONTENT_TYPE = "imdbContentType";
+	public static final String DOWNLOAD_ID = "DownloadId";
+
+	public static final String FILES = "Files";
+	public static final String FILES_NAME = "FilesName";
+
+	public static final String START_TIME = "Start";
+	public static final String END_TIME = "End";
+
+	public static final String FTP_PREFIX = "Ftp";
+	public static final String FTP_USERNAME = FTP_PREFIX + "Username";
+	public static final String FTP_PASSWORD = FTP_PREFIX +"Password";
+	public static final String FTP_URL = FTP_PREFIX + "Url";
+	public static final String FTP_REMOTE_DIR = FTP_PREFIX + "RemoteDir";
+	public static final String FTP_SENT = FTP_PREFIX + "Sent";
+
+	public static final String SSH_PREFIX = "Ssh";
+	public static final String SSH_USERNAME = SSH_PREFIX + "Username";
+	public static final String SSH_PASSWORD = SSH_PREFIX + "Password";
+	public static final String SSH_URL = SSH_PREFIX + "Url";
+	public static final String SSH_CMD = SSH_PREFIX + "Cmd";
+
+	public static final String NOTIFICATION_PREFIX = "Notification";
+
+	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "Email";
+	public static final String NOTIFICATION_EMAIL_EMAIL = NOTIFICATION_EMAIL + "Email";
+
+	public static final String NOTIFICATION_C2DM = NOTIFICATION_PREFIX + "C2dm";
+	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_C2DM + "DeviceId";
+	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM + "RegistrationId";
+
+	public static final String THIRD_PARTY = "ThirdParty";
+
+	public static final String IMDB = "Imdb";
+	public static final String IMDB_LIST = "ImdbList";
+	public static final String IMDB_AUTHOR = "ImdbAuthor";
+	public static final String IMDB_CONTENT_QUALITY = "ImdbContentQuality";
+	public static final String IMDB_CONTENT_TYPE = "ImdbContentType";
 
 }

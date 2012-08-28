@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.seedboxer.seedboxer.mule.processor.Headers;
+import com.seedboxer.seedboxer.core.domain.Configuration;
 
 import freemarker.template.TemplateException;
 
@@ -63,10 +63,10 @@ public class SSHCommandSender implements Processor {
 	@Override
 	public void process(Exchange exchange) {
 		Message msg = exchange.getIn();
-		String url = (String) msg.getHeader(Headers.SSH_URL);
-		String username = (String) msg.getHeader(Headers.SSH_USERNAME);
-		String password = (String) msg.getHeader(Headers.SSH_PASSWORD);
-		String cmd = (String) msg.getHeader(Headers.SSH_CMD);
+		String url = (String) msg.getHeader(Configuration.SSH_URL);
+		String username = (String) msg.getHeader(Configuration.SSH_USERNAME);
+		String password = (String) msg.getHeader(Configuration.SSH_PASSWORD);
+		String cmd = (String) msg.getHeader(Configuration.SSH_CMD);
 
 		try {
 			String cmdProcessed = processTemplate(cmd, msg.getHeaders());
@@ -115,7 +115,7 @@ public class SSHCommandSender implements Processor {
 	private String processTemplate(String command, Map<String, Object> templateVars)
 			throws IOException, TemplateException {
 
-		List<String> files = (List<String>) templateVars.get(Headers.FILES);
+		List<String> files = (List<String>) templateVars.get(Configuration.FILES);
 		StringBuffer sb = new StringBuffer();
 		for (String file : files) {
 			sb.append(new File(file).getName());

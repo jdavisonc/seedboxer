@@ -32,8 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.seedboxer.seedboxer.mule.processor.Headers;
-
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
@@ -79,7 +77,7 @@ public class EmailNotification extends Notification {
 	private Map<String, Object> getParams(Message msg) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.putAll(msg.getHeaders());
-		params.put(Headers.END_TIME, new Date());
+		params.put(com.seedboxer.seedboxer.core.domain.Configuration.END_TIME, new Date());
 		return params;
 	}
 
@@ -91,7 +89,7 @@ public class EmailNotification extends Notification {
 	 * @param params
 	 */
 	private void setEmailProperties(Message msg, String subjectTpl, String bodyTpl, Map<String, Object> params) {
-		String email = (String) msg.getHeader(Headers.NOTIFICATION_EMAIL_EMAIL);
+		String email = (String) msg.getHeader(com.seedboxer.seedboxer.core.domain.Configuration.NOTIFICATION_EMAIL_EMAIL);
 		msg.setHeader(TO_HEADER, email);
 		msg.setHeader(SUBJECT_HEADER, getProcessedTemplate(subjectTpl, params));
 		msg.setBody(getProcessedTemplate(bodyTpl, params));

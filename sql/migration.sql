@@ -1,3 +1,13 @@
-insert into `proeasy`.`users_configs` (user_id, name, value) select user_id, name, value from configurations;
-
-update `proeasy`.`users_configs` set name = replace(name, ‘proEasy’, ‘proeasy’);
+update `proeasy`.`users_configs` set name = 'FtpUsername' where name = 'proeasy_ftp_username';
+update `proeasy`.`users_configs` set name = 'FtpPassword' where name = 'proeasy_ftp_password';
+update `proeasy`.`users_configs` set name = 'FtpUrl' where name = 'proeasy_ftp_url';
+update `proeasy`.`users_configs` set name = 'FtpRemoteDir' where name = 'proeasy_ftp_remoteDir';
+update `proeasy`.`users_configs` set name = 'NotificationEmailEmail' where name = 'proeasy_notification_email_email';
+update `proeasy`.`users_configs` set name = 'SshCmd' where name = 'proeasy_ssh_cmd';
+update `proeasy`.`users_configs` set name = 'SshUrl' where name = 'proeasy_ssh_url';
+update `proeasy`.`users_configs` set name = 'SshUsername' where name = 'proeasy_ssh_username';
+update `proeasy`.`users_configs` set name = 'SshPassword' where name = 'proeasy_ssh_password';
+update `proeasy`.`users_configs` set name = 'NotificationEmail' where name = 'proeasy_notification_email';
+update `proeasy`.`users_configs` set name = 'NotificationC2dm' where name = 'proeasy_notification_c2dm';
+update `proeasy`.`users_configs` set name = 'NotificationC2dmDeviceId' where name = 'proeasy_notification_c2dm_deviceId';
+update `proeasy`.`users_configs` set name = 'NotificationC2dmRegistrationId' where name = 'proeasy_notification_c2dm_registrationId';

@@ -27,6 +27,7 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
 import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 
@@ -45,8 +46,8 @@ public class DownloadRemover implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		Long downloadId = (Long) exchange.getIn().getHeader(Headers.DOWNLOAD_ID);
-		Long userId = (Long) exchange.getIn().getHeader(Headers.USER_ID);
+		Long downloadId = (Long) exchange.getIn().getHeader(Configuration.DOWNLOAD_ID);
+		Long userId = (Long) exchange.getIn().getHeader(Configuration.USER_ID);
 		Exception exception = (Exception) exchange.getProperty("CamelExceptionCaught");
 
 		if (exception != null && exception instanceof FileNotFoundException) {

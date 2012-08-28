@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 import com.seedboxer.seedboxer.mule.exception.TransportException;
 import com.superdownloader.common.ftp.FtpUploader;
@@ -54,18 +55,18 @@ public class FtpSender implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		final Long downloadId = (Long) msg.getHeader(Headers.DOWNLOAD_ID);
-		final Long userId = (Long) msg.getHeader(Headers.USER_ID);
+		final Long downloadId = (Long) msg.getHeader(Configuration.DOWNLOAD_ID);
+		final Long userId = (Long) msg.getHeader(Configuration.USER_ID);
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
-		String user = (String) msg.getHeader(Headers.FTP_USERNAME);
-		String pass = (String) msg.getHeader(Headers.FTP_PASSWORD);
-		String server = (String) msg.getHeader(Headers.FTP_URL);
-		String remoteDir = (String) msg.getHeader(Headers.FTP_REMOTE_DIR);
+		String user = (String) msg.getHeader(Configuration.FTP_USERNAME);
+		String pass = (String) msg.getHeader(Configuration.FTP_PASSWORD);
+		String server = (String) msg.getHeader(Configuration.FTP_URL);
+		String remoteDir = (String) msg.getHeader(Configuration.FTP_REMOTE_DIR);
 
 		@SuppressWarnings("unchecked")
-		List<String> filesToUpload = (List<String>) msg.getHeader(Headers.FILES);
+		List<String> filesToUpload = (List<String>) msg.getHeader(Configuration.FILES);
 
 		try {
 			ftpUploader.configure(server, user, pass, remoteDir);

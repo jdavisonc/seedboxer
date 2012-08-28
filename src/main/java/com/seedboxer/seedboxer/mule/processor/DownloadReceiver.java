@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
@@ -64,9 +65,9 @@ public class DownloadReceiver implements Processor {
 		User user = item.getUser();
 		long downloadId = item.getId();
 
-		msg.setHeader(Headers.USER_ID, user.getId());
-		msg.setHeader(Headers.DOWNLOAD_ID, item.getId());
-		msg.setHeader(Headers.START_TIME, new Date());
+		msg.setHeader(Configuration.USER_ID, user.getId());
+		msg.setHeader(Configuration.DOWNLOAD_ID, item.getId());
+		msg.setHeader(Configuration.START_TIME, new Date());
 		List<UserConfiguration> configs = usersController.getUserConfig(user.getId());
 		for (UserConfiguration conf : configs) {
 			msg.setHeader(conf.getName(), conf.getValue());
@@ -90,8 +91,8 @@ public class DownloadReceiver implements Processor {
 			throw new FileNotFoundException("File " + downloadPath + " doesn't exists.");
 		}
 
-		msg.setHeader(Headers.FILES, Collections.singletonList(downloadPath));
-		msg.setHeader(Headers.FILES_NAME, Collections.singletonList(fileName));
+		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
+		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
 
 		// Size in Mbs
 		totalSize = totalSize / MEGABYTE;

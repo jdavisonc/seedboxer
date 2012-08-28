@@ -25,10 +25,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
 import com.seedboxer.seedboxer.core.persistence.UsersDao;
-import com.seedboxer.seedboxer.mule.processor.Headers;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -43,8 +43,8 @@ public class UsersController {
 	public void registerDevice(String username, String registrationId, String deviceId) {
 		User user = usersDao.get(username);
 		if (user != null) {
-			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Headers.NOTIFICATION_C2DM_REGISTRATIONID, registrationId));
-			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Headers.NOTIFICATION_C2DM_DEVICEID, deviceId));
+			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_C2DM_REGISTRATIONID, registrationId));
+			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_C2DM_DEVICEID, deviceId));
 		} else {
 			throw new IllegalArgumentException("Username doesn't exist");
 		}
