@@ -21,10 +21,26 @@
 
 package com.seedboxer.seedboxer.core.logic;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.seedboxer.seedboxer.core.domain.RssFeed;
+import com.seedboxer.seedboxer.core.persistence.FeedsDao;
+
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
+@Service
 public class FeedsManager {
+
+	@Autowired
+	private FeedsDao feedsDao;
+
+	public List<RssFeed> getAllFeeds() {
+		return feedsDao.getAllFeeds();
+	}
 
 }

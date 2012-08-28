@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.domain.RssFeed;
-import com.seedboxer.seedboxer.core.persistence.FeedsDao;
+import com.seedboxer.seedboxer.core.logic.FeedsManager;
 
 /**
  *
@@ -39,14 +39,14 @@ import com.seedboxer.seedboxer.core.persistence.FeedsDao;
 public class RouteBuilder extends SpringRouteBuilder {
 
 	@Autowired
-	private FeedsDao feedsDao;
+	private FeedsManager feedsManager;
 
 	@Value(value="${rssPollPeriod}")
 	private String rssPollPeriod;
 
 	@Override
 	public void configure() throws Exception {
-		List<RssFeed> feeds = feedsDao.getAllFeeds(RssFeed.class);
+		List<RssFeed> feeds = feedsManager.getAllFeeds();
 		String inputTemplate = "rss:%s?consumer.delay=%s&splitEntries=true&throttleEntries=false";
 		for(RssFeed feed : feeds){
 			from(String.format(inputTemplate, feed.getUrl(),rssPollPeriod))

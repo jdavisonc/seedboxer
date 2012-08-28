@@ -27,6 +27,7 @@ import org.hibernate.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.seedboxer.seedboxer.core.domain.RssFeed;
 import com.seedboxer.seedboxer.core.persistence.FeedsDao;
 
 /**
@@ -37,11 +38,11 @@ import com.seedboxer.seedboxer.core.persistence.FeedsDao;
 @Transactional
 @Repository
 public class HibernateFeedsDao extends HibernateDao implements FeedsDao {
-    
-    @Override
-	public <T> List<T> getAllFeeds(Class<T> clazz){
-        Criteria criteria = getCurrentSession().createCriteria(clazz);
-        return criteria.list();
-    }
+
+	@Override
+	public List<RssFeed> getAllFeeds(){
+		Criteria criteria = getCurrentSession().createCriteria(RssFeed.class);
+		return criteria.list();
+	}
 
 }

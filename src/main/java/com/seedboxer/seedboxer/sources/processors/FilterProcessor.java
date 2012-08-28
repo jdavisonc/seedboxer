@@ -45,10 +45,10 @@ import com.seedboxer.seedboxer.sources.type.DownloadableItem;
 @Component
 public class FilterProcessor implements Processor{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(FilterProcessor.class);
+
 	@Autowired
 	FilterManager filterManager;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(FilterProcessor.class);
 
 	@SuppressWarnings("unchecked")
 	@Override

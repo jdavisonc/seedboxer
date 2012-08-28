@@ -24,12 +24,14 @@ package com.seedboxer.seedboxer.core.persistence;
 
 import java.util.List;
 
+import com.seedboxer.seedboxer.core.domain.RssFeed;
+
 /**
  *
  * @author The-Sultan
  */
 public interface FeedsDao {
-    
-    <T> List<T> getAllFeeds(Class<T> clazz);
-    
+
+	List<RssFeed> getAllFeeds();
+
 }

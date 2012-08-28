@@ -52,7 +52,7 @@ public abstract class Content {
 	private String name;
 
 	@Column(name="history")
-	private Boolean history;
+	private Boolean history = false;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -60,6 +60,12 @@ public abstract class Content {
 
 	@Transient
 	private MatchableItem matchableItem;
+
+	public Content() { }
+
+	public Content(String name) {
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

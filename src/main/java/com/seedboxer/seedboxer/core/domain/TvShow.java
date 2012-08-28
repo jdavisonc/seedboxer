@@ -40,7 +40,7 @@ import com.seedboxer.seedboxer.core.type.Quality;
 @PrimaryKeyJoinColumn(name="content_id")
 @Component
 @Scope("prototype")
-public class TvShow extends Content{
+public class TvShow extends Content {
 
 	@Column(name="quality")
 	private String quality;
@@ -54,7 +54,7 @@ public class TvShow extends Content{
 	public TvShow() { }
 
 	public TvShow(String name, Integer season, Integer episode, Quality quality){
-		super.setName(name);
+		super(name);
 		this.quality = quality.name();
 		this.season = season;
 		this.episode = episode;

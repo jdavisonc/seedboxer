@@ -21,8 +21,11 @@
 
 package com.seedboxer.seedboxer.core.logic;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +40,27 @@ import com.seedboxer.seedboxer.core.persistence.ContentDao;
 @Service
 public class ContentManager {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContentManager.class);
+
 	@Autowired
 	private ContentDao contentDao;
-	
-	public void updateContents(User user, List<Content> toUpdate) {
 
+	public void updateContents(User user, List<Content> toUpdate) {
+		LOGGER.debug("Updating content for user {}", user.getId());
 		List<Content> userContents = contentDao.getAllContent(user);
-		for (Content userContent : userContents) {
-			for (Content content : toUpdate) {
-				if (userContent.equals(content)) {
-					content.setUser(user);
-					contentDao.save(content);
-				}
+		for (Content content : toUpdate) {
+
+			Iterator<Content> it = userContents.iterator();
+			boolean found = false;
+			while (it.hasNext() && !found ) {
+				Content userContent = it.next();
+				found = userContent.equals(content);
+			}
+
+			if (!found) {
+				content.setUser(user);
+				contentDao.save(content);
+				LOGGER.debug("New content {} for user {}", content.getName(), user.getId());
 			}
 		}
 	}
