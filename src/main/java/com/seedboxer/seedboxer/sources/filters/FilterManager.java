@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.core.persistence.ContentDao;
+import com.seedboxer.seedboxer.core.logic.ContentManager;
 
 /**
  *
@@ -42,7 +42,7 @@ import com.seedboxer.seedboxer.core.persistence.ContentDao;
 public class FilterManager {
 
 	@Autowired
-	private ContentDao contentDao;
+	private ContentManager contentManager;
 
 	private List<ContentFilter> filters;
 
@@ -58,7 +58,8 @@ public class FilterManager {
 	private List<Content> getAllContent(boolean history){
 		List<Content> userContent = new ArrayList<Content>();
 		for(ContentFilter filter : filters){
-			List contentHistory = contentDao.getContentHistory(filter.getType(),history);
+			@SuppressWarnings("unchecked")
+			List<Content> contentHistory = contentManager.getAllContentOfType(filter.getType());
 			userContent.addAll(contentHistory);
 		}
 		return userContent;
@@ -118,10 +119,11 @@ public class FilterManager {
 			List<User> usersThatAlreadyHaveThisContent = new ArrayList<User>();
 			for(User user : mappedContent.get(alreadyMappedContent)){
 				List<Content> historyContent = new ArrayList<Content>();
-				historyContent.addAll(contentDao.
-						getHistoryContentFilteredByNameAndUser(alreadyMappedContent.getClass(),
-								alreadyMappedContent.getName(),
-								user));
+
+				List<Content> historyContentOfType = contentManager.getHistoryContentOfType(
+						alreadyMappedContent.getClass(), alreadyMappedContent.getName(), user);
+				historyContent.addAll(historyContentOfType);
+
 				for(Content content : historyContent){
 					if(alreadyMappedContent.equals(content)){
 						usersThatAlreadyHaveThisContent.add(user);
@@ -148,8 +150,7 @@ public class FilterManager {
 		for(Content content : mappedContent.keySet()){
 			content.setHistory(Boolean.TRUE);
 			for(User user : mappedContent.get(content)){
-				content.setUser(user);
-				contentDao.save(content);
+				contentManager.saveContent(content, user);
 			}
 
 		}

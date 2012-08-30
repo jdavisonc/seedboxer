@@ -43,6 +43,8 @@ import com.seedboxer.seedboxer.core.type.Quality;
 @Component("imdbResponseProcessor")
 public class IMDBResponseProcessor implements Processor {
 
+	private static final String IMDB_TVSHOW_TYPE = "TV Series";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(IMDBResponseProcessor.class);
 
 	@SuppressWarnings("unchecked")
@@ -54,25 +56,24 @@ public class IMDBResponseProcessor implements Processor {
 
 		for (List<String> result : imdbResults) {
 			String title = result.get(5);
+			String type = result.get(6);
 			LOGGER.debug("IMDB Content {}", title);
 
-			Content content = createContent(msg, title);
-			imdbContent.add(content);
+			Content content = createContent(msg, title, type);
+			if (content != null) {
+				imdbContent.add(content);
+			}
 		}
 		msg.setBody(imdbContent);
 	}
 
-	private Content createContent(Message msg, String title) {
+	private Content createContent(Message msg, String title, String type) {
 		Content content = null;
-		String type = (String) msg.getHeader(Configuration.IMDB_CONTENT_TYPE);
 		String quality = (String) msg.getHeader(Configuration.IMDB_CONTENT_QUALITY);
 
-		if (TvShow.class.getSimpleName().equals(type)) {
+		if (IMDB_TVSHOW_TYPE.equals(type)) {
 			content = new TvShow(title, null, null, Quality.valueOf(quality));
-		} else {
-			throw new IllegalArgumentException("Content not supported yet");
 		}
-
 		return content;
 	}
 

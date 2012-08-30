@@ -103,4 +103,8 @@ public class DownloadsQueueManager {
 		return queueDao.queue(user.getId());
 	}
 
+	public void resetQueue() {
+		queueDao.reset();
+	}
+
 }

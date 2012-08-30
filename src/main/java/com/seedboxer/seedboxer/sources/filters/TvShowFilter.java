@@ -21,7 +21,6 @@
 
 package com.seedboxer.seedboxer.sources.filters;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.domain.TvShow;
@@ -33,6 +32,10 @@ import com.seedboxer.seedboxer.core.domain.TvShow;
 @Component
 public class TvShowFilter extends ContentFilter<TvShow>{
 
+	@Override
+	public Class<TvShow> getType() {
+		return TvShow.class;
+	}
 
 	@Override
 	protected boolean applyFilter(TvShow userContent, TvShow parsedContent) {
@@ -50,11 +53,6 @@ public class TvShowFilter extends ContentFilter<TvShow>{
 
 		}
 		return false;
-	}
-
-	@Autowired
-	public void setType(TvShow tvshow){
-		super.setType(TvShow.class);
 	}
 
 }

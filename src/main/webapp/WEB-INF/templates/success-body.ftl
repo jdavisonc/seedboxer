@@ -1,12 +1,12 @@
-Transfer to server (${.vars["proeasy_ftp_url"]}) completed.
+Transfer to server (${.vars["FtpUrl"]}) completed.
 
 Files: 
-<#list .vars["proeasy_files"] as item>
+<#list .vars["Files"] as item>
 	* ${item}
 </#list>
 
-Start Date: ${.vars["proeasy_start"]?datetime}
-End Date: ${.vars["proeasy_end"]?datetime}
+Start Date: ${.vars["Start"]?datetime}
+End Date: ${.vars["End"]?datetime}
 
 --
 This is a automatic notification send by proeasy

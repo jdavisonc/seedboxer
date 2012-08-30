@@ -80,7 +80,7 @@ public class FileReceiver implements Processor {
 				queueManager.push(user, realPath);
 			}
 		} else {
-			throw new Exception("The file doesn't compile with the pattern.");
+			throw new Exception("The file doesn't compile with the pattern");
 		}
 	}
 

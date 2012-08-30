@@ -66,6 +66,5 @@ public class Configuration {
 	public static final String IMDB_LIST = "ImdbList";
 	public static final String IMDB_AUTHOR = "ImdbAuthor";
 	public static final String IMDB_CONTENT_QUALITY = "ImdbContentQuality";
-	public static final String IMDB_CONTENT_TYPE = "ImdbContentType";
 
 }

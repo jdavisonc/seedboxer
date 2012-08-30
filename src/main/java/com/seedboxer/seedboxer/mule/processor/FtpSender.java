@@ -82,7 +82,7 @@ public class FtpSender implements Processor {
 		} finally {
 			// Disconnect and Exit
 			ftpUploader.disconnect();
-			LOGGER.info("Disconnected");
+			LOGGER.info("Disconnected from {}", server);
 		}
 	}
 

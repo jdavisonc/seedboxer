@@ -33,11 +33,6 @@
 	<import resource="classpath:mule-camel-context.xml" />
 	<import resource="classpath:sources-camel-context.xml" />
 	
-	<!-- Filters -->
-	<bean id="fileFilter" class="com.seedboxer.seedboxer.mule.processor.filter.FileFilter">
-		<property name="pattern" value="${includePattern}" />
-	</bean>
-	
 	<!-- Aggretator for multiple feeds -->
 	<bean id="rssAggregationStrategy" class="org.apache.camel.component.rss.AggregateRssFeedStrategy"/>
 	

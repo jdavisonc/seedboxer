@@ -1,7 +1,7 @@
-Transfer to server (${.vars["proeasy_ftp_url"]}) fail.
+Transfer to server (${.vars["FtpUrl"]}) fail.
 
 Files: 
-<#list .vars["proeasy_files"] as item>
+<#list .vars["Files"] as item>
 	* ${item}
 </#list>
 

@@ -44,4 +44,6 @@ public interface DownloadsQueueDao {
 
 	List<DownloadQueueItem> queue(long userId);
 
+	void reset();
+
 }

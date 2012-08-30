@@ -22,6 +22,8 @@ package com.seedboxer.seedboxer.mule.processor;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,11 @@ public class QueuePooler implements Processor {
 
 	@Autowired
 	private DownloadsQueueManager queueManager;
+
+	@PostConstruct
+	public void init() {
+		queueManager.resetQueue();
+	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {

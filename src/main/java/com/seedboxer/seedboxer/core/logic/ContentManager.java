@@ -65,4 +65,19 @@ public class ContentManager {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Content> getAllContentOfType(Class<? extends Content> contentType) {
+		return (List<Content>) contentDao.getContentHistory(contentType, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Content> getHistoryContentOfType(Class<? extends Content> type, String name, User user) {
+		return (List<Content>) contentDao.getHistoryContentFilteredByNameAndUser(type, name, user);
+	}
+
+	public void saveContent(Content content, User user) {
+		content.setUser(user);
+		contentDao.save(content);
+	}
+
 }

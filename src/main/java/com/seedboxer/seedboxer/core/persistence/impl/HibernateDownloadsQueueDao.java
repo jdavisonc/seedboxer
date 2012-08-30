@@ -44,10 +44,9 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 
 	@Override
 	public void repush(long downloadId) {
-		DownloadQueueItem itemdb = (DownloadQueueItem) getCurrentSession()
-				.get(DownloadQueueItem.class, downloadId);
-		itemdb.setInProgress(false);
-		getCurrentSession().save(itemdb);
+		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = false where id = :id");
+		query.setParameter("id", downloadId);
+		query.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,6 +90,12 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 		query.setParameter("downloadId", downloadId);
 		query.setParameter("userId", userId);
 		return (DownloadQueueItem) query.uniqueResult();
+	}
+
+	@Override
+	public void reset() {
+		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = false");
+		query.executeUpdate();
 	}
 
 }
