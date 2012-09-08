@@ -26,14 +26,17 @@
 
 	<!-- Endpoints and routes -->
 	
+	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" errorHandlerRef="errorHandler">
+		
+		<jmxAgent id="agent" disabled="true"/>
+		
+		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:finale" />
 		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="true"/>
 		</errorHandler>
 		
-		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:finale">
-		</errorHandler>
 		
 		<endpoint id="watchDogFileEndpoint" uri="file:${basePath}?delay=${fsPollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${readLock}&amp;include=.*\.upl"/>
 		

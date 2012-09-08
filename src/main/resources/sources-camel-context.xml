@@ -29,78 +29,80 @@
 	<!-- Endpoints and routes -->
 	
 	<camelContext id="camel-sources" xmlns="http://camel.apache.org/schema/spring">
+	
+		<jmxAgent id="agent" disabled="true"/>
 
-                <contextScan/>
-				<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
+		<contextScan/>
+		<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
 		
-                <route>
-                        <from uri="direct:mergeFeeds"/>
-                        <aggregate strategyRef="rssAggregationStrategy" completionTimeout="5000">
-                            <correlationExpression>
-                                <constant>true</constant>
-                            </correlationExpression>
-                            <to uri="direct:prcocessEntries"/>
-                        </aggregate>
-                </route>
+		<route>
+			<from uri="direct:mergeFeeds"/>
+			<aggregate strategyRef="rssAggregationStrategy" completionTimeout="5000">
+			<correlationExpression>
+				<constant>true</constant>
+			</correlationExpression>
+			<to uri="direct:prcocessEntries"/>
+			</aggregate>
+		</route>
                 
-                <route>
-                    <from uri="direct:prcocessEntries"/>
-                    <process ref="rssConsumer"/>
-                    <process ref="parserProcessor"/>
-                    <process ref="filterProcessor"/>
-                    <to uri="direct:splitDownloads"/>
-                </route>
+		<route>
+		    <from uri="direct:prcocessEntries"/>
+		    <process ref="rssConsumer"/>
+		    <process ref="parserProcessor"/>
+		    <process ref="filterProcessor"/>
+		    <to uri="direct:splitDownloads"/>
+		</route>
                 
-                <route>
-                    <from uri="direct:splitDownloads"/>
-                    <split>
-                        <simple>body</simple>
-                        <to uri="direct:processDownload"/>
-                    </split>
-                </route>
+		<route>
+		    <from uri="direct:splitDownloads"/>
+		    <split>
+		        <simple>body</simple>
+		        <to uri="direct:processDownload"/>
+		    </split>
+		</route>
+		
+		<route>
+		    <from uri="direct:processDownload"/>
+		    <process ref="queueProcessor"/>
+		</route>
                 
-                <route>
-                    <from uri="direct:processDownload"/>
-                    <process ref="queueProcessor"/>
-                </route>
                 
+        <!-- 3rd Party integration -->
+		<route>
+			<from ref="thirdPartyTimer" />
+			<process ref="thirdPartyPoolerProcessor"/>
+			<filter>
+				<simple>${in.body} != null</simple>
+				<split>
+					<simple>${body}</simple>
+					<to uri="direct:loadPropertiesThirdParty"/>
+				</split>
+			</filter>
+		</route>
+	                
+		<route>
+			<from uri="direct:loadPropertiesThirdParty"/>
+			<process ref="thirdPartyLoaderProcessor" />
+			<routingSlip>
+				<header>thirdParty</header>
+			</routingSlip>
+		</route>
+	                
+		<route>
+		    <from uri="direct:imdb"/>
+		    <process ref="imdbRequestProcessor"/>
+		    <to uri="http:www.imdb.com"/>
+		    <unmarshal>
+		    	<csv skipFirstLine="true" />
+		    </unmarshal>
+		    <process ref="imdbResponseProcessor"/>
+		    <to uri="direct:updateUserContent"/>
+		</route>
                 
-                <!-- 3rd Party integration -->
-                <route>
-                    <from ref="thirdPartyTimer" />
-                    <process ref="thirdPartyPoolerProcessor"/>
-		            <filter>
-						<simple>${in.body} != null</simple>
-						<split>
-							<simple>${body}</simple>
-							<to uri="direct:loadPropertiesThirdParty"/>
-						</split>
-					</filter>
-                </route>
-                
-                <route>
-                    <from uri="direct:loadPropertiesThirdParty"/>
-                    <process ref="thirdPartyLoaderProcessor" />
-					<routingSlip>
-						<header>thirdParty</header>
-					</routingSlip>
-                </route>
-                
-                <route>
-                    <from uri="direct:imdb"/>
-                    <process ref="imdbRequestProcessor"/>
-                    <to uri="http:www.imdb.com"/>
-                    <unmarshal>
-                    	<csv skipFirstLine="true" />
-                    </unmarshal>
-                    <process ref="imdbResponseProcessor"/>
-                    <to uri="direct:updateUserContent"/>
-                </route>
-                
-                <route>
-                    <from uri="direct:updateUserContent"/>
-                    <process ref="updateUserContentProcessor"/>
-                </route>
+		<route>
+		    <from uri="direct:updateUserContent"/>
+		    <process ref="updateUserContentProcessor"/>
+		</route>
                 
 	</camelContext>
 </beans>
