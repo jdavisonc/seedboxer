@@ -1,8 +1,8 @@
-CREATE USER 'proeasy'@'%' IDENTIFIED BY  'proeasy';
+CREATE USER 'seedboxer'@'%' IDENTIFIED BY  'seedboxer';
 
-GRANT SELECT ON  `proeasy`.`users` TO  'proeasy'@'%';
-GRANT SELECT, INSERT, UPDATE ON  `proeasy`.`users_configs` TO  'proeasy'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`downloads_queue` TO  'proeasy'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`content` TO  'proeasy'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON  `proeasy`.`tv_show` TO  'proeasy'@'%';
-GRANT SELECT ON  `proeasy`.`feeds` TO  'proeasy'@'%';
+GRANT SELECT ON  `seedboxer`.`users` TO  'seedboxer'@'%';
+GRANT SELECT, INSERT, UPDATE ON  `seedboxer`.`users_configs` TO  'seedboxer'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON  `seedboxer`.`downloads_queue` TO  'seedboxer'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON  `seedboxer`.`content` TO  'seedboxer'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON  `seedboxer`.`tv_show` TO  'seedboxer'@'%';
+GRANT SELECT ON  `seedboxer`.`feeds` TO  'seedboxer'@'%';

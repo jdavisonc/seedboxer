@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Table structure for table `downloads_queue`
 --
 
-CREATE TABLE  `proeasy`.`downloads_queue` (
+CREATE TABLE IF NOT EXISTS `downloads_queue` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user_id` int NOT NULL ,
 `download` varchar( 200 ) NOT NULL ,
