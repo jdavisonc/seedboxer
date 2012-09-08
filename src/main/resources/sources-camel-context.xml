@@ -31,6 +31,7 @@
 	<camelContext id="camel-sources" xmlns="http://camel.apache.org/schema/spring">
 
                 <contextScan/>
+				<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
 		
                 <route>
                         <from uri="direct:mergeFeeds"/>
@@ -66,7 +67,7 @@
                 
                 <!-- 3rd Party integration -->
                 <route>
-                    <from uri="timer://thirdpartytimer?fixedRate=true&amp;period=600000" />
+                    <from ref="thirdPartyTimer" />
                     <process ref="thirdPartyPoolerProcessor"/>
 		            <filter>
 						<simple>${in.body} != null</simple>

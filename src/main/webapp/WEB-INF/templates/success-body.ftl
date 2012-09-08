@@ -9,4 +9,4 @@ Start Date: ${.vars["Start"]?datetime}
 End Date: ${.vars["End"]?datetime}
 
 --
-This is a automatic notification send by proeasy
+This is a automatic notification send by SeedBoxer

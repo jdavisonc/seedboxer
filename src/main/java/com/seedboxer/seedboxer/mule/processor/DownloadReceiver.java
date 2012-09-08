@@ -72,7 +72,7 @@ public class DownloadReceiver implements Processor {
 		for (UserConfiguration conf : configs) {
 			msg.setHeader(conf.getName(), conf.getValue());
 		}
-		LOGGER.debug("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
+		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 
 		processDownload(msg, item);
 	}

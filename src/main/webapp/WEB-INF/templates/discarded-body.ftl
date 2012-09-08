@@ -11,4 +11,4 @@ ${Cause}
 Caused by: ${Cause.cause}
 
 --
-This is a automatic notification send by proeasy
+This is a automatic notification send by SeedBoxer

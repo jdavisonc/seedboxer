@@ -46,7 +46,6 @@ public class ContentManager {
 	private ContentDao contentDao;
 
 	public void updateContents(User user, List<Content> toUpdate) {
-		LOGGER.debug("Updating content for user {}", user.getId());
 		List<Content> userContents = contentDao.getAllContent(user);
 		for (Content content : toUpdate) {
 

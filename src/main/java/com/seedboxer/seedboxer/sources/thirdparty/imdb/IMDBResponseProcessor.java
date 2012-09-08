@@ -57,13 +57,13 @@ public class IMDBResponseProcessor implements Processor {
 		for (List<String> result : imdbResults) {
 			String title = result.get(5);
 			String type = result.get(6);
-			LOGGER.debug("IMDB Content {}", title);
 
 			Content content = createContent(msg, title, type);
 			if (content != null) {
 				imdbContent.add(content);
 			}
 		}
+		LOGGER.debug("get {} IMDB contents of {}", imdbContent.size(), msg.getHeader(Configuration.USER));
 		msg.setBody(imdbContent);
 	}
 
