@@ -8,7 +8,7 @@ SeedBoxer is based in two main features, the Mule which main purpose is distribu
 
 The Mule is a process that basically copy the downloaded content in the Seed Box to an user transport account. When the download to an user transport account was finished, a set of post actions and notifications will be executed depending on user configuration. The Mule manage the user downloads with a queue, each user has a download queue (FIFO).
 
-### Transport
+### File Transfer
 *   FTP
 *   Dropbox (coming)
 *   Google Drive (coming)
@@ -29,13 +29,14 @@ Sources is a process that periodically scan a set of sources (RSSs) and filter t
 *   XBOX Game (coming)
 
 ### 3rd Party Integration
-*   IMDB - Personalized list (coming)
+*   IMDB - Personalized list
 *   The TVDB - Favourites TVShows (coming)
 
 
 ## Requirements
 
-*   Java version 1.6+
+*   Linux (Ubuntu/Debian)
+*   Java JDK 6 (OpenJDK or Oracle)
 *   MySQL Server version 5.1+
 
 ## API
