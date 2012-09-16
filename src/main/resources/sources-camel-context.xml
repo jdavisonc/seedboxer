@@ -30,9 +30,8 @@
 	
 	<camelContext id="camel-sources" xmlns="http://camel.apache.org/schema/spring">
 	
-		<jmxAgent id="agent" disabled="true"/>
-
 		<contextScan/>
+		<jmxAgent id="agent" disabled="true"/>
 		<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
 		
 		<route>
