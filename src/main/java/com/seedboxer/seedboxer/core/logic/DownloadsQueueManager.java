@@ -107,4 +107,8 @@ public class DownloadsQueueManager {
 		queueDao.reset();
 	}
 
+        public void updateQueueOrder(List<DownloadQueueItem> queueItems){
+            queueDao.updateQueueOrder(queueItems);
+        }
+
 }

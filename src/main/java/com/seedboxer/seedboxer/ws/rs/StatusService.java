@@ -54,7 +54,7 @@ public class StatusService {
 	private DownloadsController controller;
 
 	@GET
-	@Produces("text/xml")
+	@Produces({"application/xml", "application/json"})
 	public List<Download> status(@QueryParam("username") String username) {
 		try {
 			return controller.getUserDownloads(username);

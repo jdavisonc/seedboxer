@@ -45,5 +45,7 @@ public interface DownloadsQueueDao {
 	List<DownloadQueueItem> queue(long userId);
 
 	void reset();
+        
+        public void updateQueueOrder(List<DownloadQueueItem> queueItems);
 
 }

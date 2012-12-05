@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `downloads_queue` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user_id` int NOT NULL ,
+`queue_order` int NOT NULL ,
 `download` varchar( 200 ) NOT NULL ,
 `created_on` datetime NOT NULL ,
 `in_progress` boolean NOT NULL DEFAULT 0,

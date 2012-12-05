@@ -30,6 +30,16 @@ public class FileValue {
 	private Long queueId;
 
 	private boolean downloaded;
+        
+        private int order;
+
+        public int getOrder() {
+            return order;
+        }
+
+        public void setOrder(int order) {
+            this.order = order;
+        }
 
 	public FileValue() { }
 
@@ -38,9 +48,10 @@ public class FileValue {
 		this.downloaded = downloaded;
 	}
 
-	public FileValue(String name, long queueId) {
+	public FileValue(String name, long queueId, int order) {
 		this.name = name;
 		this.queueId = queueId;
+                this.order = order;
 	}
 
 	public String getName() {

@@ -52,7 +52,7 @@ public class RssConsumer implements Processor{
 		List<SyndEntry > entries = feed.getEntries();
 		List<MatchableItem> items = new ArrayList<MatchableItem>();
 
-		LOGGER.info("Incoming rss entries: {}", entries.size());
+		LOGGER.debug("Incoming rss entries: {}", entries.size());
 		for(SyndEntry  entry : entries){
 			items.add(new MatchableItem(entry.getTitle(),entry.getLink()));
 		}

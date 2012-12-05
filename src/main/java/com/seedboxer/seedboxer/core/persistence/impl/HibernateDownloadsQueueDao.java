@@ -39,6 +39,14 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 
 	@Override
 	public void push(DownloadQueueItem item) {
+                List<DownloadQueueItem> queue = queue(item.getUser().getId());
+                int minOrder = Integer.MAX_VALUE;
+                
+                for(DownloadQueueItem queueItem : queue){
+                    if(queueItem.getQueueOrder() < minOrder)
+                        minOrder = queueItem.getQueueOrder();
+                }
+                item.setQueueOrder(minOrder + 1);
 		getCurrentSession().save(item);
 	}
 
@@ -54,7 +62,11 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 	public List<DownloadQueueItem> pop(long maxDownloadPerUser) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d where " +
 				"(select count(*) from DownloadQueueItem f where " +
-				"f.user.id = d.user.id AND f.id < d.id) <= :maxDownloadPerUser");
+				"f.user.id = d.user.id AND f.id < d.id) <= :maxDownloadPerUser " +
+                        
+                        "AND d.queueOrder = " +
+                        "(SELECT MIN(queueOrder) from DownloadQueueItem d2 " +
+                        "WHERE d2.user.id = d.user.id)");
 		query.setParameter("maxDownloadPerUser", maxDownloadPerUser);
 		return query.list();
 	}
@@ -97,5 +109,13 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = false");
 		query.executeUpdate();
 	}
+
+        @Override
+        public void updateQueueOrder(List<DownloadQueueItem> queueItems) {
+            for(DownloadQueueItem queueItem : queueItems)
+                getCurrentSession().update(queueItem);
+        }
+        
+        
 
 }

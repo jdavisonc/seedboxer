@@ -80,7 +80,7 @@ public class QueueProcessor implements Processor{
 		try {
 			downloadFile(url,filePath);
 			String dirName = getDirNameFromTorrentFile(filePath);
-			LOGGER.info("Downloaded torrent: "+path);
+			LOGGER.debug("Downloaded torrent: "+path);
 			for(User user : downloadableItem.getUsers()){
 				String absoluteOutputDir = completePath + File.separator + dirName;
 				queueManager.push(user, absoluteOutputDir);

@@ -59,7 +59,7 @@ public class ContentManager {
 			if (!found) {
 				content.setUser(user);
 				contentDao.save(content);
-				LOGGER.info("New content {} for user {}", content.getName(), user.getId());
+				LOGGER.debug("New content {} for user {}", content.getName(), user.getId());
 			}
 		}
 	}

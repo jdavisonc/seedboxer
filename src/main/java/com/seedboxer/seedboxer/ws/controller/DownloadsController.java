@@ -41,6 +41,8 @@ import com.seedboxer.seedboxer.core.logic.UsersController;
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.core.type.FileValue;
 import com.seedboxer.seedboxer.core.util.TorrentUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class DownloadsController {
@@ -111,7 +113,7 @@ public class DownloadsController {
 		List<FileValue> queue = new ArrayList<FileValue>();
 		for (DownloadQueueItem inQueue : userQueue) {
 			String withoutPrefixPath = inQueue.getDownload().replace(completePath + File.separator, "");
-			queue.add(new FileValue(withoutPrefixPath, inQueue.getId()));
+			queue.add(new FileValue(withoutPrefixPath, inQueue.getId(),inQueue.getQueueOrder()));
 		}
 		return queue;
 	}
@@ -178,5 +180,19 @@ public class DownloadsController {
 		}
 		return files;
 	}
+        
+        public void updateQueue(List<FileValue> queueItems, String username){
+            List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(getUser(username));
+            Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
+            for(FileValue queueItem : queueItems){
+                queueItemsMap.put(queueItem.getQueueId(), queueItem);
+            }
+            for(DownloadQueueItem queueItemFromDB : queueItemsFromDB){
+                FileValue queueItem = queueItemsMap.get(queueItemFromDB.getId());
+                queueItemFromDB.setQueueOrder(queueItem.getOrder());
+            }
+            downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
+        }
+                
 
 }
