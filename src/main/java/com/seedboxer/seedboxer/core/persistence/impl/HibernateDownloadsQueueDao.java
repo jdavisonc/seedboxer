@@ -39,15 +39,15 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 
 	@Override
 	public void push(DownloadQueueItem item) {
-                List<DownloadQueueItem> queue = queue(item.getUser().getId());
-                int minOrder = Integer.MAX_VALUE;
-                
-                for(DownloadQueueItem queueItem : queue){
-                    if(queueItem.getQueueOrder() < minOrder)
-                        minOrder = queueItem.getQueueOrder();
-                }
-                item.setQueueOrder(minOrder + 1);
-		getCurrentSession().save(item);
+	    List<DownloadQueueItem> queue = queue(item.getUser().getId());
+	    int maxOrder = -1;
+
+	    for(DownloadQueueItem queueItem : queue){
+		if(queueItem.getQueueOrder() > maxOrder)
+		maxOrder = queueItem.getQueueOrder();
+	    }
+	    item.setQueueOrder(maxOrder + 1);
+	    getCurrentSession().save(item);
 	}
 
 	@Override
