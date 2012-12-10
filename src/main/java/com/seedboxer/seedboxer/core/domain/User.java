@@ -18,18 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-/**
- * 
- */
 package com.seedboxer.seedboxer.core.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 /**
  * @author Jorge Davison (jdavisonc)
+ *
+ */
+/**
+ * @author harley
  *
  */
 @Entity
@@ -42,6 +45,9 @@ public class User {
 	private String username;
 
 	private String password;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	public long getId() {
 		return id;
@@ -67,9 +73,17 @@ public class User {
 		this.password = password;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + "]";
+		return "User [id=" + id + ", username=" + username + ", status=" + status + "]";
 	}
 
 }

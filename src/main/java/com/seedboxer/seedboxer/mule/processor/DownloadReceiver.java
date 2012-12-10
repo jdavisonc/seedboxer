@@ -50,7 +50,6 @@ public class DownloadReceiver implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
 	private static final long  MEGABYTE = 1024L * 1024L;
-
 	@Autowired
 	private UsersController usersController;
 
@@ -77,25 +76,24 @@ public class DownloadReceiver implements Processor {
 		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 	}
 
+	/**
+	 * Calculate size of the upload and create a session
+	 * @param msg
+	 * @param item
+	 * @throws FileNotFoundException
+	 */
 	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
-		// Calculate size of the upload
-		String fileName;
-		long totalSize = 0;
-
 		String downloadPath = item.getDownload();
 		File toUpload = new File(downloadPath);
-		if (toUpload.exists()) {
-			totalSize += calculateSize(toUpload);
-			fileName = toUpload.getName();
-		} else {
+		if (!toUpload.exists()) {
 			throw new FileNotFoundException("File " + downloadPath + " doesn't exists.");
 		}
+		long totalSize = calculateSize(toUpload);
+		String fileName = toUpload.getName();
 
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
 
-		// Size in Mbs
-		totalSize = totalSize / MEGABYTE;
 		uploadSessionManager.addUserDownload(item.getUser().getId(), item.getId(), fileName, totalSize);
 	}
 
@@ -112,7 +110,7 @@ public class DownloadReceiver implements Processor {
 			}
 			return lengthDir;
 		} else {
-			return download.length();
+			return download.length() / MEGABYTE;
 		}
 	}
 

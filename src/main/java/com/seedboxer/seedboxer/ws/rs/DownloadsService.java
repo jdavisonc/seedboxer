@@ -23,7 +23,9 @@ package com.seedboxer.seedboxer.ws.rs;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -55,7 +57,7 @@ public class DownloadsService {
 
 	@GET
 	@Path("/list")
-	@Produces("text/xml")
+	@Produces({"application/xml", "application/json"})
 	public List<FileValue> list() {
 		try {
 			List<FileValue> files = controller.getCompletedFiles();
@@ -69,7 +71,7 @@ public class DownloadsService {
 
 	@GET
 	@Path("/put")
-	@Produces("text/xml")
+	@Produces({"application/xml", "application/json"})
 	public Response put(@QueryParam("username") String username,
 			@QueryParam("fileName") List<String> fileNames) {
 		try {
@@ -83,7 +85,7 @@ public class DownloadsService {
 
 	@GET
 	@Path("/delete")
-	@Produces("text/xml")
+	@Produces({"application/xml", "application/json"})
 	public Response delete(@QueryParam("username") String username,
 			@QueryParam("downloadId") Integer downloadId) {
 		try {
@@ -97,13 +99,30 @@ public class DownloadsService {
 
 	@GET
 	@Path("/queue")
-	@Produces("text/xml")
+	@Produces({"application/xml", "application/json"})
 	public List<FileValue> queue(@QueryParam("username") String username) {
 		try {
 			return controller.downloadsInQueue(username);
 		} catch (Exception e) {
 			LOGGER.error("Can not read queue", e);
 			return Collections.emptyList();
+		}
+	}
+
+
+	@POST
+	@Path("/update")
+	@Consumes({"application/xml", "application/json"})
+	@Produces({"application/xml", "application/json"})
+	public Response update(@QueryParam("username") String username,
+			List<FileValue> queueItems) {
+
+		try {
+			controller.updateQueue(queueItems, username);
+			return Response.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not update queue", e);
+			return Response.createErrorResponse("Can not update queue");
 		}
 	}
 

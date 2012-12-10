@@ -34,9 +34,9 @@ public interface DownloadsQueueDao {
 
 	void repush(long downloadId);
 
-	List<DownloadQueueItem> pop(long maxDownloadPerUser);
+	DownloadQueueItem head(long userId);
 
-	void setInProgress(List<Long> idsToUpdate);
+	void setInProgress(Long downloadId);
 
 	void remove(long downloadId);
 
@@ -44,6 +44,8 @@ public interface DownloadsQueueDao {
 
 	List<DownloadQueueItem> queue(long userId);
 
-	void reset();
+	void resetQueues();
+
+	void updateQueueOrder(List<DownloadQueueItem> queueItems);
 
 }

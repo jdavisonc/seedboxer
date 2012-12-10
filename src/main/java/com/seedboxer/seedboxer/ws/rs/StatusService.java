@@ -27,7 +27,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +36,12 @@ import org.springframework.stereotype.Component;
 
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.ws.controller.DownloadsController;
-
+import com.seedboxer.seedboxer.ws.type.Response;
 /**
  * WebService to get the status of an upload
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/status")
 @Component
 @Scope("request")
 public class StatusService {
@@ -54,13 +52,40 @@ public class StatusService {
 	private DownloadsController controller;
 
 	@GET
-	@Produces("text/xml")
+	@Path("/status")
+	@Produces({"application/xml", "application/json"})
 	public List<Download> status(@QueryParam("username") String username) {
 		try {
 			return controller.getUserDownloads(username);
 		} catch (Exception e) {
 			LOGGER.error("Wrong request", e);
-			throw new WebApplicationException(Response.Status.BAD_REQUEST);
+			throw new WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
+		}
+	}
+
+	@GET
+	@Path("/stop")
+	@Produces({"application/xml", "application/json"})
+	public Response stop(@QueryParam("username") String username) {
+		try {
+			controller.stopDownloads(username);
+			return Response.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not stop download in progress", e);
+			return Response.createErrorResponse("Can not stop downloads");
+		}
+	}
+
+	@GET
+	@Path("/start")
+	@Produces({"application/xml", "application/json"})
+	public Response start(@QueryParam("username") String username) {
+		try {
+			controller.startDownloads(username);
+			return Response.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not start downloads", e);
+			return Response.createErrorResponse("Can not start download");
 		}
 	}
 

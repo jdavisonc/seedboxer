@@ -44,7 +44,7 @@ public class QueuePooler implements Processor {
 
 	@PostConstruct
 	public void init() {
-		queueManager.resetQueue();
+		queueManager.resetQueues();
 	}
 
 	@Override

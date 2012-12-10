@@ -20,7 +20,6 @@
  ******************************************************************************/
 package com.seedboxer.seedboxer.core.logic;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.seedboxer.seedboxer.core.type.Download;
@@ -40,11 +38,6 @@ import com.seedboxer.seedboxer.core.type.Download;
  */
 @Service
 public class DownloadsSessionManager {
-
-	private static final String FILE_EXTENSION = ".upl";
-
-	@Value("${simultaneousDownloadsPerUser}")
-	private int simultaneousDownloadsPerUser;
 
 	@Autowired
 	private UsersController userController;
@@ -58,19 +51,17 @@ public class DownloadsSessionManager {
 		lock = new Object();
 	}
 
-	public boolean addUserDownload(long userId, long downloadId, String filename, long size) {
+	public void addUserDownload(long userId, long downloadId, String name, long size) {
 		synchronized (lock) {
 			Map<Long, Download> userUploads = downloadsPerUser.get(userId);
 			if (userUploads == null) {
 				userUploads = new HashMap<Long, Download>();
 				downloadsPerUser.put(userId, userUploads);
 			}
-			String file = fixFilename(filename);
-			if (userUploads.size() < simultaneousDownloadsPerUser && !userUploads.containsKey(file)) {
-				userUploads.put(downloadId, new Download(file, size));
-				return true;
+			if (!userUploads.containsKey(downloadId)) {
+				userUploads.put(downloadId, new Download(name, size));
 			} else {
-				return false;
+				throw new IllegalArgumentException("Download already downloading");
 			}
 		}
 	}
@@ -115,15 +106,6 @@ public class DownloadsSessionManager {
 			} else {
 				return null;
 			}
-		}
-	}
-
-	private static String fixFilename(String filename) {
-		String file = new File(filename).getName();
-		if (file.endsWith(FILE_EXTENSION)){
-			return file.substring(0, file.length() - 4);
-		} else {
-			return file;
 		}
 	}
 

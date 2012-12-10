@@ -25,8 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
 import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
@@ -44,6 +49,8 @@ import com.seedboxer.seedboxer.core.util.TorrentUtils;
 
 @Service
 public class DownloadsController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsController.class);
 
 	@Autowired
 	private UsersController usersController;
@@ -111,7 +118,7 @@ public class DownloadsController {
 		List<FileValue> queue = new ArrayList<FileValue>();
 		for (DownloadQueueItem inQueue : userQueue) {
 			String withoutPrefixPath = inQueue.getDownload().replace(completePath + File.separator, "");
-			queue.add(new FileValue(withoutPrefixPath, inQueue.getId()));
+			queue.add(new FileValue(withoutPrefixPath, inQueue.getId(),inQueue.getQueueOrder()));
 		}
 		return queue;
 	}
@@ -177,6 +184,38 @@ public class DownloadsController {
 			}
 		}
 		return files;
+	}
+
+	public void updateQueue(List<FileValue> queueItems, String username){
+		List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(getUser(username));
+		Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
+		for(FileValue queueItem : queueItems){
+			queueItemsMap.put(queueItem.getQueueId(), queueItem);
+		}
+		for(DownloadQueueItem queueItemFromDB : queueItemsFromDB){
+			FileValue queueItem = queueItemsMap.get(queueItemFromDB.getId());
+			queueItemFromDB.setQueueOrder(queueItem.getOrder());
+		}
+		downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
+	}
+
+	public void stopDownloads(String username) {
+		boolean success = usersController.setUserStatus(username, Status.STOPPED);
+		if (success) {
+			// stop downloads in progress if there is one
+			LOGGER.info("Download stopped for user {}", username);
+		} else {
+			LOGGER.info("Download already stopped for user {}", username);
+		}
+	}
+
+	public void startDownloads(String username) {
+		boolean success = usersController.setUserStatus(username, Status.STARTED);
+		if (success) {
+			LOGGER.info("Download started for user {}", username);
+		} else {
+			LOGGER.info("Download already started for user {}", username);
+		}
 	}
 
 }

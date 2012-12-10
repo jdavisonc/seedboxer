@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
+  `status` varchar(10) DEFAULT 'STARTED',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -60,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `downloads_queue` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user_id` int NOT NULL ,
+`queue_order` int NOT NULL ,
 `download` varchar( 200 ) NOT NULL ,
 `created_on` datetime NOT NULL ,
 `in_progress` boolean NOT NULL DEFAULT 0,

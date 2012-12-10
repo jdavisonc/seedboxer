@@ -21,18 +21,19 @@
 package com.seedboxer.seedboxer.core.logic;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.persistence.DownloadsQueueDao;
+import com.seedboxer.seedboxer.core.persistence.UsersDao;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -43,39 +44,28 @@ public class DownloadsQueueManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsQueueManager.class);
 
-	private Integer maxDownloadPerUser;
+	@Autowired
+	private UsersDao usersDao;
 
 	@Autowired
 	private DownloadsQueueDao queueDao;
 
-	@Value("${simultaneousDownloadsPerUser}")
-	public void setMaxDownloadPerUser(Integer maxDownloadPerUser) {
-		this.maxDownloadPerUser = maxDownloadPerUser;
-	}
-
 	public List<DownloadQueueItem> pop() {
 		try {
-			List<DownloadQueueItem> inQueue = queueDao.pop(maxDownloadPerUser);
+			List<DownloadQueueItem> newInQueue = new ArrayList<DownloadQueueItem>();
+			List<User> activeUsers = usersDao.getUsersByStatus(Status.STARTED);
+			for (User user : activeUsers) {
+				DownloadQueueItem inQueue = queueDao.head(user.getId());
 
-			// update to set in progress
-			List<Long> setInProgress = new ArrayList<Long>();
-			for (Iterator<DownloadQueueItem> iterator = inQueue.iterator(); iterator.hasNext();) {
-				DownloadQueueItem item = iterator.next();
-				if (item.isInProgress()) {
-					iterator.remove();
-				} else {
-					setInProgress.add(item.getId());
+				if (!inQueue.isInProgress()) {
+					queueDao.setInProgress(inQueue.getId());
+					newInQueue.add(inQueue);
 				}
 			}
-
-			if (!setInProgress.isEmpty()) {
-				queueDao.setInProgress(setInProgress);
-			}
-			return inQueue;
-
+			return newInQueue;
 		} catch (Exception e) {
 			LOGGER.warn("error making pooling", e);
-			return null;
+			return Collections.emptyList();
 		}
 	}
 
@@ -103,8 +93,12 @@ public class DownloadsQueueManager {
 		return queueDao.queue(user.getId());
 	}
 
-	public void resetQueue() {
-		queueDao.reset();
+	public void resetQueues() {
+		queueDao.resetQueues();
+	}
+
+	public void updateQueueOrder(List<DownloadQueueItem> queueItems){
+		queueDao.updateQueueOrder(queueItems);
 	}
 
 }

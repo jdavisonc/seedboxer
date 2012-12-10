@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.seedboxer.seedboxer.core.domain.Configuration;
+import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
 import com.seedboxer.seedboxer.core.persistence.UsersDao;
@@ -72,6 +73,17 @@ public class UsersController {
 
 	public List<UserConfiguration> getUserConfig(long userId) {
 		return usersDao.getUserConfig(userId);
+	}
+
+	public boolean setUserStatus(String username, Status newStatus) {
+		User user = getUser(username);
+		if (!newStatus.equals(user.getStatus())) {
+			user.setStatus(newStatus);
+			usersDao.save(user);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
