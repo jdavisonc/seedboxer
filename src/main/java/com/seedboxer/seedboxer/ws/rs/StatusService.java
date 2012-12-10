@@ -52,7 +52,6 @@ public class StatusService {
 	private DownloadsController controller;
 
 	@GET
-	@Path("/status")
 	@Produces({"application/xml", "application/json"})
 	public List<Download> status(@QueryParam("username") String username) {
 		try {
