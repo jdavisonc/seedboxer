@@ -39,16 +39,16 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 
 	@Override
 	public void push(DownloadQueueItem item) {
-	    List<DownloadQueueItem> queue = queue(item.getUser().getId());
-	    int maxOrder = -1;
+		List<DownloadQueueItem> queue = queue(item.getUser().getId());
+		int maxOrder = -1;
 
-	    for(DownloadQueueItem queueItem : queue){
+		for(DownloadQueueItem queueItem : queue){
 			if(queueItem.getQueueOrder() > maxOrder){
 				maxOrder = queueItem.getQueueOrder();
 			}
-	    }
-	    item.setQueueOrder(maxOrder + 1);
-	    getCurrentSession().save(item);
+		}
+		item.setQueueOrder(maxOrder + 1);
+		getCurrentSession().save(item);
 	}
 
 	@Override
@@ -105,23 +105,11 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 		query.executeUpdate();
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void updateQueueOrder(List<DownloadQueueItem> queueItems) {
 		for(DownloadQueueItem queueItem : queueItems) {
 			getCurrentSession().update(queueItem);
 		}
 	}
-
-
-=======
-        @Override
-        public void updateQueueOrder(List<DownloadQueueItem> queueItems) {
-            for(DownloadQueueItem queueItem : queueItems)
-                getCurrentSession().update(queueItem);
-        }
-        
-        
->>>>>>> branch 'master' of git@github.com:seedboxer/seedboxer.git
 
 }

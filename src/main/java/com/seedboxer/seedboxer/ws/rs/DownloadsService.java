@@ -39,7 +39,6 @@ import org.springframework.stereotype.Component;
 import com.seedboxer.seedboxer.core.type.FileValue;
 import com.seedboxer.seedboxer.ws.controller.DownloadsController;
 import com.seedboxer.seedboxer.ws.type.Response;
-import javax.ws.rs.*;
 
 /**
  * WebService for handle downloads
@@ -107,23 +106,6 @@ public class DownloadsService {
 		} catch (Exception e) {
 			LOGGER.error("Can not read queue", e);
 			return Collections.emptyList();
-		}
-	}
-        
-        
-	@POST
-	@Path("/update")
-	@Consumes({"application/xml", "application/json"})
-	@Produces({"application/xml", "application/json"})
-	public Response update(@QueryParam("username") String username,
-			List<FileValue> queueItems) {
-            
-		try {
-			controller.updateQueue(queueItems, username);
-			return Response.createSuccessfulResponse();
-		} catch (Exception e) {
-			LOGGER.error("Can not update queue", e);
-			return Response.createErrorResponse("Can not update queue");
 		}
 	}
 
