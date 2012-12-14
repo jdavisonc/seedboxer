@@ -1,25 +1,26 @@
 /*******************************************************************************
  * StatusService.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.seedboxer.seedboxer.ws.rs;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -37,8 +38,10 @@ import org.springframework.stereotype.Component;
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.ws.controller.DownloadsController;
 import com.seedboxer.seedboxer.ws.type.Response;
+
 /**
- * WebService to get the status of an upload
+ * WebService to get the status of an upload.
+ *
  * @author Jorge Davison (jdavisonc)
  *
  */
@@ -55,7 +58,8 @@ public class StatusService {
 	@Produces({"application/xml", "application/json"})
 	public List<Download> status(@QueryParam("username") String username) {
 		try {
-			return controller.getUserDownloads(username);
+			Download download = controller.getUserDownload(username);
+			return Collections.singletonList(download);
 		} catch (Exception e) {
 			LOGGER.error("Wrong request", e);
 			throw new WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
