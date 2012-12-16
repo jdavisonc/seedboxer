@@ -1,20 +1,20 @@
 /*******************************************************************************
  * DownloadReceiver.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -38,7 +38,6 @@ import com.seedboxer.seedboxer.core.domain.Configuration;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
-import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 import com.seedboxer.seedboxer.core.logic.UsersController;
 
 /**
@@ -49,12 +48,9 @@ import com.seedboxer.seedboxer.core.logic.UsersController;
 public class DownloadReceiver implements Processor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
-	private static final long  MEGABYTE = 1024L * 1024L;
-	@Autowired
-	private UsersController usersController;
 
 	@Autowired
-	private DownloadsSessionManager uploadSessionManager;
+	private UsersController usersController;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -76,42 +72,16 @@ public class DownloadReceiver implements Processor {
 		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 	}
 
-	/**
-	 * Calculate size of the upload and create a session
-	 * @param msg
-	 * @param item
-	 * @throws FileNotFoundException
-	 */
 	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
 		String downloadPath = item.getDownload();
 		File toUpload = new File(downloadPath);
 		if (!toUpload.exists()) {
 			throw new FileNotFoundException("File " + downloadPath + " doesn't exists.");
 		}
-		long totalSize = calculateSize(toUpload);
 		String fileName = toUpload.getName();
 
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
-
-		uploadSessionManager.addUserDownload(item.getUser().getId(), item.getId(), fileName, totalSize);
-	}
-
-	/**
-	 * Calculate the size of a file or directory
-	 * @param download
-	 * @return
-	 */
-	private long calculateSize(File download) {
-		if (download.isDirectory()) {
-			long lengthDir = 0L;
-			for (File fileInside : download.listFiles()) {
-				lengthDir += calculateSize(fileInside);
-			}
-			return lengthDir;
-		} else {
-			return download.length() / MEGABYTE;
-		}
 	}
 
 }

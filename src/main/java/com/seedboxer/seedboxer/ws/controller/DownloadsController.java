@@ -1,20 +1,20 @@
 /*******************************************************************************
  * DownloadsController.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -45,7 +45,9 @@ import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 import com.seedboxer.seedboxer.core.logic.UsersController;
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.core.type.FileValue;
+import com.seedboxer.seedboxer.core.util.FileUtils;
 import com.seedboxer.seedboxer.core.util.TorrentUtils;
+import com.seedboxer.seedboxer.ws.type.UserStatus;
 
 @Service
 public class DownloadsController {
@@ -71,16 +73,16 @@ public class DownloadsController {
 	private String watchDownloaderPath;
 
 	public List<FileValue> getCompletedFiles() {
-		return listFiles(completePath);
+		return FileUtils.listFiles(completePath);
 	}
 
 	public List<FileValue> getInProgressFiles() {
-		return listFiles(inProgressPath);
+		return FileUtils.listFiles(inProgressPath);
 	}
 
 	/**
 	 * Add a download to the user queue.
-	 * 
+	 *
 	 * @param username
 	 * @param fileNames
 	 * @throws Exception
@@ -92,8 +94,8 @@ public class DownloadsController {
 	private void putToDownload(User user, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
-			File inProgressFile = getFile(name, inProgressPath);
-			File completeFile = getFile(name, completePath);
+			File inProgressFile = FileUtils.getFile(name, inProgressPath);
+			File completeFile = FileUtils.getFile(name, completePath);
 
 			if (checkExistence && !(inProgressFile.exists() || completeFile.exists())) {
 				throw new IllegalArgumentException("The files not exist. Paths: "
@@ -107,7 +109,7 @@ public class DownloadsController {
 
 	/**
 	 * List all downloads in the user queue.
-	 * 
+	 *
 	 * @param username
 	 * @return
 	 * @throws Exception
@@ -130,7 +132,7 @@ public class DownloadsController {
 	/**
 	 * Save torrent file to watch-dog directory of downloader application (rTorrent or uTorrent) and
 	 * add the same torrent to the user queue.
-	 * 
+	 *
 	 * @param fileName
 	 * @param torrentFileInStream
 	 * @throws Exception
@@ -152,7 +154,7 @@ public class DownloadsController {
 
 	/**
 	 * Delete a download from the queue.
-	 * 
+	 *
 	 * @param username
 	 * @param fileName
 	 * @return
@@ -161,29 +163,10 @@ public class DownloadsController {
 		downloadsQueueManager.remove(getUser(username), downloadId);
 	}
 
-	public List<Download> getUserDownloads(String username) {
-		long userId = getUser(username).getId();
-		return downloadSessionManager.getUserDownloads(userId);
-	}
-
-	/*
-	 * Extra functions
-	 */
-
-	private File getFile(String name, String path) {
-		return new File(path + File.separator + name);
-	}
-
-	private List<FileValue> listFiles(String path) {
-		List<FileValue> files = new ArrayList<FileValue>();
-		File dir = new File(path);
-
-		for (String name : dir.list()) {
-			if (!name.startsWith(".")) {
-				files.add(new FileValue(name, false));
-			}
-		}
-		return files;
+	public UserStatus getUserStatus(String username) {
+		User user = getUser(username);
+		Download download = downloadSessionManager.getDownload(user.getId());
+		return new UserStatus(user.getStatus(), download);
 	}
 
 	public void updateQueue(List<FileValue> queueItems, String username){
@@ -202,8 +185,14 @@ public class DownloadsController {
 	public void stopDownloads(String username) {
 		boolean success = usersController.setUserStatus(username, Status.STOPPED);
 		if (success) {
-			// stop downloads in progress if there is one
-			LOGGER.info("Download stopped for user {}", username);
+			User user = usersController.getUser(username);
+			try {
+				downloadSessionManager.abortDownloadSession(user.getId());
+				downloadsQueueManager.resetQueue(user);
+				LOGGER.info("Download stopped for user {}", username);
+			} catch (Exception e) {
+				LOGGER.info("Download stopped for user {}, but cannot abort current download", username, e);
+			}
 		} else {
 			LOGGER.info("Download already stopped for user {}", username);
 		}

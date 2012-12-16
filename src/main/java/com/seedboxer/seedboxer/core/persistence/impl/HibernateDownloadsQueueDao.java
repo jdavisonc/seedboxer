@@ -61,9 +61,10 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 	@Override
 	public DownloadQueueItem head(long userId) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
-				"where d.user.id = :userId order by d.queueOrder desc limit 1");
+				"where d.user.id = :userId order by d.queueOrder");
 
 		query.setParameter("userId", userId);
+		query.setMaxResults(1);
 		return (DownloadQueueItem) query.uniqueResult();
 	}
 
@@ -110,6 +111,15 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 		for(DownloadQueueItem queueItem : queueItems) {
 			getCurrentSession().update(queueItem);
 		}
+	}
+
+	@Override
+	public void resetQueue(long userId) {
+		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
+				"set inProgress = false where user.id = :userId");
+
+		query.setParameter("userId", userId);
+		query.executeUpdate();
 	}
 
 }

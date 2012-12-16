@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadsQueueDao.java
+ * UserStatus.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,36 +18,48 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.core.persistence;
+package com.seedboxer.seedboxer.ws.type;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+import com.seedboxer.seedboxer.core.domain.Status;
+import com.seedboxer.seedboxer.core.type.Download;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-public interface DownloadsQueueDao {
+@XmlRootElement(name="user")
+public class UserStatus {
 
-	void push(DownloadQueueItem item);
+	private Status status;
 
-	void repush(long downloadId);
+	private Download download;
 
-	DownloadQueueItem head(long userId);
+	public UserStatus() {
+		status = Status.STARTED;
+		download = null;
+	}
 
-	void setInProgress(Long downloadId);
+	public UserStatus(Status status, Download download) {
+		this.status = status;
+		this.download = download;
+	}
 
-	void remove(long downloadId);
+	public Status getStatus() {
+		return status;
+	}
 
-	DownloadQueueItem get(long userId, long downloadId);
+	public Download getDownload() {
+		return download;
+	}
 
-	List<DownloadQueueItem> queue(long userId);
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
-	void resetQueues();
-
-	void resetQueue(long userId);
-
-	void updateQueueOrder(List<DownloadQueueItem> queueItems);
+	public void setDownload(Download download) {
+		this.download = download;
+	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadsQueueDao.java
+ * AbortedDownloadException.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,36 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.core.persistence;
-
-import java.util.List;
-
-import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+package com.seedboxer.seedboxer.mule.exception;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-public interface DownloadsQueueDao {
+public class AbortedDownloadException extends Exception {
 
-	void push(DownloadQueueItem item);
+	private static final long serialVersionUID = -239106731801150963L;
 
-	void repush(long downloadId);
+	public AbortedDownloadException(Throwable cause) {
+		super(cause);
+	}
 
-	DownloadQueueItem head(long userId);
-
-	void setInProgress(Long downloadId);
-
-	void remove(long downloadId);
-
-	DownloadQueueItem get(long userId, long downloadId);
-
-	List<DownloadQueueItem> queue(long userId);
-
-	void resetQueues();
-
-	void resetQueue(long userId);
-
-	void updateQueueOrder(List<DownloadQueueItem> queueItems);
+	@Override
+	public String getMessage() {
+		return "Download aborted";
+	}
 
 }

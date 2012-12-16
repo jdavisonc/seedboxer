@@ -76,7 +76,7 @@ public class FileReceiver implements Processor {
 
 			for (String path : getLines(filepath)) {
 				String realPath = path.replaceFirst("file://", ""); // Removes prefix of Flexget
-				LOGGER.info("Add file to queue. USER_ID={} FILE={}", user.getId(), realPath);
+				LOGGER.info("File added to queue. USER_ID={}, FILE={}", user.getId(), realPath);
 				queueManager.push(user, realPath);
 			}
 		} else {

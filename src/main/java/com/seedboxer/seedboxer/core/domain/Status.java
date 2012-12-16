@@ -20,12 +20,22 @@
  ******************************************************************************/
 package com.seedboxer.seedboxer.core.domain;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
+@XmlType(name = "status")
+@XmlEnum
 public enum Status {
 
-	STOPPED, STARTED;
+	@XmlEnumValue("STOPPED")
+	STOPPED,
+
+	@XmlEnumValue("STARTED")
+	STARTED;
 
 }

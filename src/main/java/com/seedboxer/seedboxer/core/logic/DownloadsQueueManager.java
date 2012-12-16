@@ -57,7 +57,7 @@ public class DownloadsQueueManager {
 			for (User user : activeUsers) {
 				DownloadQueueItem inQueue = queueDao.head(user.getId());
 
-				if (!inQueue.isInProgress()) {
+				if (inQueue!= null && !inQueue.isInProgress()) {
 					queueDao.setInProgress(inQueue.getId());
 					newInQueue.add(inQueue);
 				}
@@ -95,6 +95,10 @@ public class DownloadsQueueManager {
 
 	public void resetQueues() {
 		queueDao.resetQueues();
+	}
+
+	public void resetQueue(User user) {
+		queueDao.resetQueue(user.getId());
 	}
 
 	public void updateQueueOrder(List<DownloadQueueItem> queueItems){
