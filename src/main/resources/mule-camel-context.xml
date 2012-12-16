@@ -116,10 +116,10 @@
 	        	<to ref="emailEndpoint"/>
 	        </filter>
 	        
-	        <!-- C2DM notification -->
+	        <!-- GCM notification -->
 			<filter>
-	           <simple>${in.header.NotificationC2dm} != null</simple>
-	           <process ref="c2dmNotification" />
+	           <simple>${in.header.NotificationGCM} != null</simple>
+	           <process ref="gcmNotification" />
 	        </filter>
 	        
 	        <to uri="direct:finale" />

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.mule.processor;
+package com.seedboxer.seedboxer.mule.processor.transfer;
 
 import java.io.File;
 import java.io.IOException;

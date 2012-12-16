@@ -1,20 +1,20 @@
 /*******************************************************************************
  * UsersController.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -41,11 +41,10 @@ public class UsersController {
 	@Autowired
 	private UsersDao usersDao;
 
-	public void registerDevice(String username, String registrationId, String deviceId) {
+	public void registerDevice(String username, String registrationId) {
 		User user = usersDao.get(username);
 		if (user != null) {
-			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_C2DM_REGISTRATIONID, registrationId));
-			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_C2DM_DEVICEID, deviceId));
+			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
 		} else {
 			throw new IllegalArgumentException("Username doesn't exist");
 		}

@@ -56,6 +56,13 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
+	
+	<repositories>
+		<repository>
+		    <id>gcm-server-repository</id>
+		    <url>https://raw.github.com/slorber/gcm-server-repository/master/releases/</url>
+		</repository>
+	</repositories>
 
 	<properties>
 		<camel.version>2.10.0</camel.version>
@@ -76,6 +83,7 @@
 		<cglib.version>2.2.2</cglib.version>
 		<commons.httpclient.version>3.1</commons.httpclient.version>
 		<janino.version>2.5.10</janino.version>
+		<gcm.version>1.0.2</gcm.version>
 	</properties>
 
 	<dependencies>
@@ -296,6 +304,17 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.android.gcm</groupId>
+		    <artifactId>gcm-server</artifactId>
+		    <version>${gcm.version}</version>
+		    <exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
