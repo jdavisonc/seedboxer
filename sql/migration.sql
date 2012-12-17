@@ -1,2 +1,2 @@
-update `seedboxer`.`users_configs` set name = 'NotificationGCM' where name = 'NotificationEmail';
-update `seedboxer`.`users_configs` set name = 'NotificationGCMDeviceId' where name = 'NotificationC2dmDeviceId';
+update `proeasy`.`users_configs` set name = 'NotificationGCM' where name = 'NotificationC2dm';
+update `proeasy`.`users_configs` set name = 'NotificationGCMRegistrationId' where name = 'NotificationC2dmRegistrationId';
