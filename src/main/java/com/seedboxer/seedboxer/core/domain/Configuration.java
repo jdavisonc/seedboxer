@@ -62,9 +62,14 @@ public class Configuration {
 
 	public static final String THIRD_PARTY = "ThirdParty";
 
-	public static final String IMDB = "Imdb";
-	public static final String IMDB_LIST = "ImdbList";
-	public static final String IMDB_AUTHOR = "ImdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "ImdbContentQuality";
+	public static final String IMDB_PREFIX = "Imdb";
+	public static final String IMDB_LIST = IMDB_PREFIX + "List";
+	public static final String IMDB_AUTHOR = IMDB_PREFIX + "Author";
+	public static final String IMDB_CONTENT_QUALITY = IMDB_PREFIX + "ContentQuality";
+
+	public static final String TRAKT_PREFIX = "Trakt";
+	public static final String TRAKT_USERNAME = IMDB_PREFIX + "Username";
+	public static final String TRAKT_AUTH_KEY = IMDB_PREFIX + "AuthKey";
+	public static final String TRAKT_CONTENT_QUALITY = TRAKT_PREFIX + "ContentQuality";
 
 }

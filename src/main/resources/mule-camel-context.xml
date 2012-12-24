@@ -31,8 +31,6 @@
 		
 		<jmxAgent id="agent" disabled="true"/>
 		
-<!-- 		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:finale" /> -->
-		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
@@ -51,7 +49,7 @@
 	        <handled>
 	        	<constant>true</constant>
 	        </handled>
-	        <to uri="log:com.seedboxer.seedboxer.Camel?level=ERROR"/>
+	        <to uri="log:com.seedboxer.seedboxer.mule.Camel?level=ERROR"/>
 			<to uri="direct:finale"/>
 		</onException>
 		
