@@ -34,6 +34,14 @@
 		<jmxAgent id="agent" disabled="true"/>
 		<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
 		
+		<onException>
+		   <exception>java.lang.Exception</exception>
+	        <handled>
+	        	<constant>true</constant>
+	        </handled>
+	        <to uri="log:com.seedboxer.seedboxer.sources.Camel?level=ERROR"/>
+		</onException>
+		
 		<route>
 			<from uri="direct:mergeFeeds"/>
 			<aggregate strategyRef="rssAggregationStrategy" completionTimeout="5000">
@@ -78,7 +86,7 @@
 				</split>
 			</filter>
 		</route>
-	                
+
 		<route>
 			<from uri="direct:loadPropertiesThirdParty"/>
 			<process ref="thirdPartyLoaderProcessor" />
@@ -96,6 +104,12 @@
 		    </unmarshal>
 		    <process ref="imdbResponseProcessor"/>
 		    <to uri="direct:updateUserContent"/>
+		</route>
+		
+		<route>
+			<from uri="direct:trakt"/>
+			<process ref="traktProcessor" />
+			<to uri="direct:updateUserContent" />
 		</route>
                 
 		<route>

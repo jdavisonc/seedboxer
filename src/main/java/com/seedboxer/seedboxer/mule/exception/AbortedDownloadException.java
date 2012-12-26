@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersDao.java
+ * AbortedDownloadException.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,30 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.core.persistence;
+package com.seedboxer.seedboxer.mule.exception;
 
-import java.util.List;
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+public class AbortedDownloadException extends Exception {
 
-import com.seedboxer.seedboxer.core.domain.Status;
-import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.core.domain.UserConfiguration;
+	private static final long serialVersionUID = -239106731801150963L;
 
-public interface UsersDao {
+	public AbortedDownloadException(Throwable cause) {
+		super(cause);
+	}
 
-	boolean isValidUser(String username, String password);
-
-	User get(String username);
-
-	User get(long userId);
-
-	void save(User user);
-
-	void saveUserConfig(long userId, UserConfiguration config);
-
-	List<UserConfiguration> getUserConfig(long userId);
-
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	@Override
+	public String getMessage() {
+		return "Download aborted";
+	}
 
 }

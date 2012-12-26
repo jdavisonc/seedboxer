@@ -23,7 +23,9 @@ package com.seedboxer.seedboxer.ws.rs;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -37,7 +39,6 @@ import org.springframework.stereotype.Component;
 import com.seedboxer.seedboxer.core.type.FileValue;
 import com.seedboxer.seedboxer.ws.controller.DownloadsController;
 import com.seedboxer.seedboxer.ws.type.Response;
-import javax.ws.rs.*;
 
 /**
  * WebService for handle downloads
@@ -107,15 +108,15 @@ public class DownloadsService {
 			return Collections.emptyList();
 		}
 	}
-        
-        
+
+
 	@POST
 	@Path("/update")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
 	public Response update(@QueryParam("username") String username,
 			List<FileValue> queueItems) {
-            
+
 		try {
 			controller.updateQueue(queueItems, username);
 			return Response.createSuccessfulResponse();

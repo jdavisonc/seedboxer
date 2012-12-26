@@ -39,15 +39,16 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 
 	@Override
 	public void push(DownloadQueueItem item) {
-	    List<DownloadQueueItem> queue = queue(item.getUser().getId());
-	    int maxOrder = -1;
+		List<DownloadQueueItem> queue = queue(item.getUser().getId());
+		int maxOrder = -1;
 
-	    for(DownloadQueueItem queueItem : queue){
-		if(queueItem.getQueueOrder() > maxOrder)
-		maxOrder = queueItem.getQueueOrder();
-	    }
-	    item.setQueueOrder(maxOrder + 1);
-	    getCurrentSession().save(item);
+		for(DownloadQueueItem queueItem : queue){
+			if(queueItem.getQueueOrder() > maxOrder){
+				maxOrder = queueItem.getQueueOrder();
+			}
+		}
+		item.setQueueOrder(maxOrder + 1);
+		getCurrentSession().save(item);
 	}
 
 	@Override
@@ -57,25 +58,20 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 		query.executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<DownloadQueueItem> pop(long maxDownloadPerUser) {
-		Query query = getCurrentSession().createQuery("from DownloadQueueItem d where " +
-				"(select count(*) from DownloadQueueItem f where " +
-				"f.user.id = d.user.id AND f.id < d.id) <= :maxDownloadPerUser " +
-                        
-                        "AND d.queueOrder = " +
-                        "(SELECT MIN(queueOrder) from DownloadQueueItem d2 " +
-                        "WHERE d2.user.id = d.user.id)");
-		query.setParameter("maxDownloadPerUser", maxDownloadPerUser);
-		return query.list();
+	public DownloadQueueItem head(long userId) {
+		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
+				"where d.user.id = :userId order by d.queueOrder");
+
+		query.setParameter("userId", userId);
+		query.setMaxResults(1);
+		return (DownloadQueueItem) query.uniqueResult();
 	}
 
 	@Override
-	public void setInProgress(List<Long> idsToUpdate) {
-		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
-				"set inProgress = true where id in (:ids)");
-		query.setParameterList("ids", idsToUpdate);
+	public void setInProgress(Long downloadId) {
+		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = true where id = :id");
+		query.setParameter("id", downloadId);
 		query.executeUpdate();
 	}
 
@@ -105,17 +101,25 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 	}
 
 	@Override
-	public void reset() {
+	public void resetQueues() {
 		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = false");
 		query.executeUpdate();
 	}
 
-        @Override
-        public void updateQueueOrder(List<DownloadQueueItem> queueItems) {
-            for(DownloadQueueItem queueItem : queueItems)
-                getCurrentSession().update(queueItem);
-        }
-        
-        
+	@Override
+	public void updateQueueOrder(List<DownloadQueueItem> queueItems) {
+		for(DownloadQueueItem queueItem : queueItems) {
+			getCurrentSession().update(queueItem);
+		}
+	}
+
+	@Override
+	public void resetQueue(long userId) {
+		Query query = getCurrentSession().createQuery("update DownloadQueueItem " +
+				"set inProgress = false where user.id = :userId");
+
+		query.setParameter("userId", userId);
+		query.executeUpdate();
+	}
 
 }

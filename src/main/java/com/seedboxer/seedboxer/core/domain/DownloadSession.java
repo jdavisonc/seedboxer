@@ -1,47 +1,56 @@
 /*******************************************************************************
- * UsersDao.java
- * 
+ * DownloadsSession.java
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedboxer.core.persistence;
+package com.seedboxer.seedboxer.core.domain;
 
-import java.util.List;
+import com.seedboxer.seedboxer.core.type.Download;
 
-import com.seedboxer.seedboxer.core.domain.Status;
-import com.seedboxer.seedboxer.core.domain.User;
-import com.seedboxer.seedboxer.core.domain.UserConfiguration;
+/**
+ * 
+ * Class for represent a in-progress download.
+ * 
+ * @author Jorge Davison (jdavisonc)
+ */
+public abstract class DownloadSession {
 
-public interface UsersDao {
+	public static final long MEGABYTE = 1024L * 1024L;
 
-	boolean isValidUser(String username, String password);
+	protected double transferredInMbs = 0L;
 
-	User get(String username);
+	protected double totalSize = 0L;
 
-	User get(long userId);
+	private String fileName;
 
-	void save(User user);
+	public DownloadSession(String fileName, double totalSize) {
+		this.totalSize = totalSize;
+		this.fileName = fileName;
+	}
 
-	void saveUserConfig(long userId, UserConfiguration config);
+	public double getMbsTransferred() {
+		return transferredInMbs;
+	}
 
-	List<UserConfiguration> getUserConfig(long userId);
+	public abstract void abort();
 
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	public Download getDownloadType() {
+		return new Download(fileName, (long)totalSize, (long)transferredInMbs);
+	}
 
 }

@@ -1,20 +1,20 @@
 /*******************************************************************************
  * DownloadsController.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -25,8 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,18 +38,21 @@ import org.springframework.stereotype.Service;
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
+import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
 import com.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 import com.seedboxer.seedboxer.core.logic.UsersController;
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.core.type.FileValue;
+import com.seedboxer.seedboxer.core.util.FileUtils;
 import com.seedboxer.seedboxer.core.util.TorrentUtils;
-import java.util.HashMap;
-import java.util.Map;
+import com.seedboxer.seedboxer.ws.type.UserStatus;
 
 @Service
 public class DownloadsController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsController.class);
 
 	@Autowired
 	private UsersController usersController;
@@ -66,16 +73,16 @@ public class DownloadsController {
 	private String watchDownloaderPath;
 
 	public List<FileValue> getCompletedFiles() {
-		return listFiles(completePath);
+		return FileUtils.listFiles(completePath);
 	}
 
 	public List<FileValue> getInProgressFiles() {
-		return listFiles(inProgressPath);
+		return FileUtils.listFiles(inProgressPath);
 	}
 
 	/**
 	 * Add a download to the user queue.
-	 * 
+	 *
 	 * @param username
 	 * @param fileNames
 	 * @throws Exception
@@ -87,8 +94,8 @@ public class DownloadsController {
 	private void putToDownload(User user, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
-			File inProgressFile = getFile(name, inProgressPath);
-			File completeFile = getFile(name, completePath);
+			File inProgressFile = FileUtils.getFile(name, inProgressPath);
+			File completeFile = FileUtils.getFile(name, completePath);
 
 			if (checkExistence && !(inProgressFile.exists() || completeFile.exists())) {
 				throw new IllegalArgumentException("The files not exist. Paths: "
@@ -102,7 +109,7 @@ public class DownloadsController {
 
 	/**
 	 * List all downloads in the user queue.
-	 * 
+	 *
 	 * @param username
 	 * @return
 	 * @throws Exception
@@ -125,7 +132,7 @@ public class DownloadsController {
 	/**
 	 * Save torrent file to watch-dog directory of downloader application (rTorrent or uTorrent) and
 	 * add the same torrent to the user queue.
-	 * 
+	 *
 	 * @param fileName
 	 * @param torrentFileInStream
 	 * @throws Exception
@@ -147,7 +154,7 @@ public class DownloadsController {
 
 	/**
 	 * Delete a download from the queue.
-	 * 
+	 *
 	 * @param username
 	 * @param fileName
 	 * @return
@@ -156,43 +163,48 @@ public class DownloadsController {
 		downloadsQueueManager.remove(getUser(username), downloadId);
 	}
 
-	public List<Download> getUserDownloads(String username) {
-		long userId = getUser(username).getId();
-		return downloadSessionManager.getUserDownloads(userId);
+	public UserStatus getUserStatus(String username) {
+		User user = getUser(username);
+		Download download = downloadSessionManager.getDownload(user.getId());
+		return new UserStatus(user.getStatus(), download);
 	}
 
-	/*
-	 * Extra functions
-	 */
-
-	private File getFile(String name, String path) {
-		return new File(path + File.separator + name);
-	}
-
-	private List<FileValue> listFiles(String path) {
-		List<FileValue> files = new ArrayList<FileValue>();
-		File dir = new File(path);
-
-		for (String name : dir.list()) {
-			if (!name.startsWith(".")) {
-				files.add(new FileValue(name, false));
-			}
+	public void updateQueue(List<FileValue> queueItems, String username){
+		List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(getUser(username));
+		Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
+		for(FileValue queueItem : queueItems){
+			queueItemsMap.put(queueItem.getQueueId(), queueItem);
 		}
-		return files;
+		for(DownloadQueueItem queueItemFromDB : queueItemsFromDB){
+			FileValue queueItem = queueItemsMap.get(queueItemFromDB.getId());
+			queueItemFromDB.setQueueOrder(queueItem.getOrder());
+		}
+		downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
 	}
-        
-        public void updateQueue(List<FileValue> queueItems, String username){
-            List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(getUser(username));
-            Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
-            for(FileValue queueItem : queueItems){
-                queueItemsMap.put(queueItem.getQueueId(), queueItem);
-            }
-            for(DownloadQueueItem queueItemFromDB : queueItemsFromDB){
-                FileValue queueItem = queueItemsMap.get(queueItemFromDB.getId());
-                queueItemFromDB.setQueueOrder(queueItem.getOrder());
-            }
-            downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
-        }
-                
+
+	public void stopDownloads(String username) {
+		boolean success = usersController.setUserStatus(username, Status.STOPPED);
+		if (success) {
+			User user = usersController.getUser(username);
+			try {
+				downloadSessionManager.abortDownloadSession(user.getId());
+				downloadsQueueManager.resetQueue(user);
+				LOGGER.info("Download stopped for user {}", username);
+			} catch (Exception e) {
+				LOGGER.info("Download stopped for user {}, but cannot abort current download", username, e);
+			}
+		} else {
+			LOGGER.info("Download already stopped for user {}", username);
+		}
+	}
+
+	public void startDownloads(String username) {
+		boolean success = usersController.setUserStatus(username, Status.STARTED);
+		if (success) {
+			LOGGER.info("Download started for user {}", username);
+		} else {
+			LOGGER.info("Download already started for user {}", username);
+		}
+	}
 
 }

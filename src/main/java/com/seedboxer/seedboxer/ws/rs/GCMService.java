@@ -1,20 +1,20 @@
 /*******************************************************************************
  * C2DMService.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -42,9 +42,9 @@ import com.seedboxer.seedboxer.ws.type.Response;
 @Path("/registerDevice")
 @Component
 @Scope("request")
-public class C2DMService {
+public class GCMService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(C2DMService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GCMService.class);
 
 	@Autowired
 	private UsersController controller;
@@ -52,10 +52,9 @@ public class C2DMService {
 	@GET
 	@Produces("text/xml")
 	public Response registerDevice(@QueryParam("username") String username,
-			@QueryParam("registrationId") String registrationId,
-			@QueryParam("deviceId") String deviceId) {
+			@QueryParam("registrationId") String registrationId) {
 		try {
-			controller.registerDevice(username, registrationId, deviceId);
+			controller.registerDevice(username, registrationId);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Error registering device", e);

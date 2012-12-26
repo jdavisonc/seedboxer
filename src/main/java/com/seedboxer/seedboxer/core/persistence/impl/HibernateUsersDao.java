@@ -29,6 +29,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.domain.UserConfiguration;
 import com.seedboxer.seedboxer.core.persistence.UsersDao;
@@ -52,8 +53,7 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 	@Override
 	public void save(User user) {
-		// TODO: make save again without session open
-		//getCurrentSession().save(user);
+		getCurrentSession().update(user);
 	}
 
 	@Override
@@ -102,6 +102,13 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 	public List<User> getUserWithConfig(String configName) {
 		Query query = getCurrentSession().createQuery("select c.user from UserConfiguration c where c.name = :name");
 		query.setParameter("name", configName);
+		return query.list();
+	}
+
+	@Override
+	public List<User> getUsersByStatus(Status status) {
+		Query query = getCurrentSession().createQuery("from User where status = :status");
+		query.setParameter("status", status);
 		return query.list();
 	}
 

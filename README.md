@@ -19,7 +19,7 @@ The Mule is a process that basically copy the downloaded content in the Seed Box
 
 ### Notification
 *   Email
-*   C2DM (Android Push Notification)
+*   GCM (Android Push Notification)
 
 Sources is a process that periodically scan a set of sources (RSSs) and filter the entries depending on users filters. A user can configure its owm filters based on types of content: TVShows, Movies, XBOX Games, etc. Each content has its owm properties, like TVShow that can be filtered by title, quality, episode or season.
 

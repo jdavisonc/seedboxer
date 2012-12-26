@@ -52,19 +52,9 @@ public class DownloadQueueItem {
 	@Column(name="created_on")
 	private Date createdOn;
 
-        
-        @Column(name="queue_order")
-        private int queueOrder;
+	@Column(name="queue_order")
+	private int queueOrder;
 
-        
-        public int getQueueOrder() {
-            return queueOrder;
-        }
-
-        public void setQueueOrder(int queueOrder) {
-            this.queueOrder = queueOrder;
-        }
-        
 	public DownloadQueueItem() { }
 
 	public DownloadQueueItem(User user, String download) {
@@ -115,6 +105,14 @@ public class DownloadQueueItem {
 
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public int getQueueOrder() {
+		return queueOrder;
+	}
+
+	public void setQueueOrder(int queueOrder) {
+		this.queueOrder = queueOrder;
 	}
 
 	@Override

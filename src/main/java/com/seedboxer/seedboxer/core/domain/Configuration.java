@@ -1,20 +1,20 @@
 /*******************************************************************************
  * Configuration.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -56,15 +56,20 @@ public class Configuration {
 	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "Email";
 	public static final String NOTIFICATION_EMAIL_EMAIL = NOTIFICATION_EMAIL + "Email";
 
-	public static final String NOTIFICATION_C2DM = NOTIFICATION_PREFIX + "C2dm";
-	public static final String NOTIFICATION_C2DM_DEVICEID = NOTIFICATION_C2DM + "DeviceId";
-	public static final String NOTIFICATION_C2DM_REGISTRATIONID = NOTIFICATION_C2DM + "RegistrationId";
+	public static final String NOTIFICATION_GCM = NOTIFICATION_PREFIX + "GCM";
+	public static final String NOTIFICATION_GCM_DEVICEID = NOTIFICATION_GCM + "DeviceId";
+	public static final String NOTIFICATION_GCM_REGISTRATIONID = NOTIFICATION_GCM + "RegistrationId";
 
 	public static final String THIRD_PARTY = "ThirdParty";
 
-	public static final String IMDB = "Imdb";
-	public static final String IMDB_LIST = "ImdbList";
-	public static final String IMDB_AUTHOR = "ImdbAuthor";
-	public static final String IMDB_CONTENT_QUALITY = "ImdbContentQuality";
+	public static final String IMDB_PREFIX = "Imdb";
+	public static final String IMDB_LIST = IMDB_PREFIX + "List";
+	public static final String IMDB_AUTHOR = IMDB_PREFIX + "Author";
+	public static final String IMDB_CONTENT_QUALITY = IMDB_PREFIX + "ContentQuality";
+
+	public static final String TRAKT_PREFIX = "Trakt";
+	public static final String TRAKT_USERNAME = TRAKT_PREFIX + "Username";
+	public static final String TRAKT_AUTH_KEY = TRAKT_PREFIX + "AuthKey";
+	public static final String TRAKT_CONTENT_QUALITY = TRAKT_PREFIX + "ContentQuality";
 
 }

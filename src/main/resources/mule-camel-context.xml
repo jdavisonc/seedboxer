@@ -27,16 +27,13 @@
 	<!-- Endpoints and routes -->
 	
 	
-	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" errorHandlerRef="errorHandler">
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		
 		<jmxAgent id="agent" disabled="true"/>
 		
-		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:finale" />
-		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
-    		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="true"/>
+    		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
-		
 		
 		<endpoint id="watchDogFileEndpoint" uri="file:${basePath}?delay=${fsPollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${readLock}&amp;include=.*\.upl"/>
 		
@@ -46,17 +43,20 @@
 		
 		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${fsPollPeriod}" />
 		
+				
+		<onException>
+		   <exception>java.lang.Exception</exception>
+	        <handled>
+	        	<constant>true</constant>
+	        </handled>
+	        <to uri="log:com.seedboxer.seedboxer.mule.Camel?level=ERROR"/>
+			<to uri="direct:finale"/>
+		</onException>
+		
 	    
 	    <!-- Get download from file and push to the queue -->
 		<route>
 			<from uri="watchDogFileEndpoint" />
-			<onException>
-		        <exception>java.lang.Exception</exception>
-		        <handled>
-		        	<constant>true</constant>
-		        </handled>
-		        <to uri="log:com.seedboxer.seedboxer?level=ERROR"/>
-		    </onException>
 			<process ref="fileReceiver"/>
 		</route>
 
@@ -114,10 +114,10 @@
 	        	<to ref="emailEndpoint"/>
 	        </filter>
 	        
-	        <!-- C2DM notification -->
+	        <!-- GCM notification -->
 			<filter>
-	           <simple>${in.header.NotificationC2dm} != null</simple>
-	           <process ref="c2dmNotification" />
+	           <simple>${in.header.NotificationGCM} != null</simple>
+	           <process ref="gcmNotification" />
 	        </filter>
 	        
 	        <to uri="direct:finale" />
@@ -126,7 +126,10 @@
 		<!-- Finale -->
 		<route>
 			<from uri="direct:finale" />
-			<process ref="downloadRemover" />
+			<filter>
+	        	<simple>${in.header.DownloadId} != null</simple>
+				<process ref="downloadRemover" />
+	        </filter>
 		</route>
 		
 	</camelContext>
