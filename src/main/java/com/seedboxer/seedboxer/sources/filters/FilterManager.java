@@ -55,7 +55,7 @@ public class FilterManager {
 		this.filters = filters;
 	}
 
-	private List<Content> getAllContent(boolean history){
+	private List<Content> getAllContent(){
 		List<Content> userContent = new ArrayList<Content>();
 		for(ContentFilter filter : filters){
 			@SuppressWarnings("unchecked")
@@ -67,7 +67,7 @@ public class FilterManager {
 	}
 
 	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
-		List<Content> userContentList = getAllContent(false);
+		List<Content> userContentList = getAllContent();
 		Map<Content,List<User>> mappedContent = mapContentWithUsers(userContentList, parsedContentList);
 		mappedContent = filterContentWithHistory(mappedContent);
 		updateHistory(mappedContent);

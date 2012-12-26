@@ -48,6 +48,12 @@ public class ParserManager {
 		return parsers;
 	}
 
+	/**
+	 * Autowiring a list, means that any context bean with type 
+	 * ContentParser will be part of this list.
+	 * 
+	 * @param parsers 
+	 */
 	@Autowired
 	public void setParsers(List<ContentParser> parsers) {
 		this.parsers = parsers;
@@ -56,7 +62,6 @@ public class ParserManager {
 	public List<Content> parseMatchableItems(List<MatchableItem> items){
 		List<Content> parsedContentList = new ArrayList<Content>();
 		for(MatchableItem item : items){
-			int count = parsedContentList.size();
 			for(ContentParser parser : parsers){
 				Content parsedContent = parser.parse(item);
 				if(parsedContent != null){

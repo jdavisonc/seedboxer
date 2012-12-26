@@ -24,11 +24,20 @@ import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.sources.type.MatchableItem;
 
 /**
- *
+ * This class is the superclass for all specific content parsers.
+ * The parse method on the superclass is called for every parser
+ * on the context, and returns a specific content class.
+ * For instance, the TvShowParser will return a TvShowContent if
+ * Te item being parsed refers to a TvShow, null otherwise.
+ * This way, you can interact with all the parsers just by calling
+ * the method on the superclass, and will get in return the specific
+ * content.
+ * 
  * @author The-Sultan
  */
 
 public abstract class ContentParser<T extends Content> {
+    
     
     public T parse(MatchableItem item){
         T parsedContent = parse(item.getTitle());

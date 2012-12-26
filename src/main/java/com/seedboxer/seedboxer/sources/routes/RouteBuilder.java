@@ -47,9 +47,12 @@ public class RouteBuilder extends SpringRouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		List<RssFeed> feeds = feedsManager.getAllFeeds();
-		String inputTemplate = "rss:%s?consumer.delay=%s&splitEntries=true&throttleEntries=false";
 		for(RssFeed feed : feeds){
-			from(String.format(inputTemplate, feed.getUrl(),rssPollPeriod))
+			from(String.format("timer://%s?fixedRate=true&delay=0&period=%s",feed.getId(),rssPollPeriod))
+			.to(feed.getUrl())
+			.unmarshal()
+			.rss()
+			.split().body()
 			.to("direct:mergeFeeds");
 		}
 	}

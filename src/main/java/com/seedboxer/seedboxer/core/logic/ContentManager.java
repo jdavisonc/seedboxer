@@ -64,11 +64,23 @@ public class ContentManager {
 		}
 	}
 
+	/**
+	 * 
+	 * @param contentType
+	 * @return All contents for a certain content type.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Content> getAllContentOfType(Class<? extends Content> contentType) {
 		return (List<Content>) contentDao.getContentHistory(contentType, false);
 	}
 
+	/**
+	 * 
+	 * @param type Content type to be retrieved.
+	 * @param name Content name to be retrieved.
+	 * @param user User that has this content as history.
+	 * @return The user's history for a specific name and specific type.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Content> getHistoryContentOfType(Class<? extends Content> type, String name, User user) {
 		return (List<Content>) contentDao.getHistoryContentFilteredByNameAndUser(type, name, user);
