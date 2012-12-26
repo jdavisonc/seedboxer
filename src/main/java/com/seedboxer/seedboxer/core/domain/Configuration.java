@@ -68,8 +68,8 @@ public class Configuration {
 	public static final String IMDB_CONTENT_QUALITY = IMDB_PREFIX + "ContentQuality";
 
 	public static final String TRAKT_PREFIX = "Trakt";
-	public static final String TRAKT_USERNAME = IMDB_PREFIX + "Username";
-	public static final String TRAKT_AUTH_KEY = IMDB_PREFIX + "AuthKey";
+	public static final String TRAKT_USERNAME = TRAKT_PREFIX + "Username";
+	public static final String TRAKT_AUTH_KEY = TRAKT_PREFIX + "AuthKey";
 	public static final String TRAKT_CONTENT_QUALITY = TRAKT_PREFIX + "ContentQuality";
 
 }
