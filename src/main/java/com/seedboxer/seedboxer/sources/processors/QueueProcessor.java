@@ -73,13 +73,9 @@ public class QueueProcessor implements Processor{
 		DownloadableItem downloadableItem = (DownloadableItem) exchange.getIn().getBody();
 		Content content = downloadableItem.getContent();
 		URL url = content.getMatchableItem().getUrl();
-		String fileName = url.getFile().substring(url.getFile().lastIndexOf(File.separator));
-		String filePath = path + File.separator + fileName;
-		LOGGER.debug("Filename: "+fileName);
-
 		try {
-			downloadFile(url,filePath);
-			String dirName = getDirNameFromTorrentFile(filePath);
+			String fileName = downloadFile(url,path);
+			String dirName = getDirNameFromTorrentFile(path + File.separator + fileName);
 			LOGGER.debug("Downloaded torrent: "+path);
 			for(User user : downloadableItem.getUsers()){
 				String absoluteOutputDir = completePath + File.separator + dirName;
@@ -101,9 +97,14 @@ public class QueueProcessor implements Processor{
 
 	}
 
-	private File downloadFile(URL url, String path) throws IOException {
+	private String downloadFile(URL url, String path) throws IOException {
 		URLConnection conn =  url.openConnection();
 		InputStream in = conn.getInputStream();
+		String disposition = conn.getHeaderField("Content-Disposition");
+		String fileNameProperty = "filename=\"";
+		String fileName = disposition.substring(disposition.indexOf(fileNameProperty),disposition.lastIndexOf("\""));
+		fileName = fileName.substring(fileNameProperty.length(),fileName.length());
+		path += File.separator + fileName;
 		File file =   new File(path);
 		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 		byte[] bytes = new byte[1024];
@@ -113,6 +114,6 @@ public class QueueProcessor implements Processor{
 		}
 		in.close();
 		out.close();
-		return file;
+		return fileName;
 	}
 }
