@@ -49,7 +49,7 @@
 	        <handled>
 	        	<constant>true</constant>
 	        </handled>
-	        <to uri="log:com.seedboxer.seedboxer.mule.Camel?level=ERROR"/>
+	        <to uri="log:com.seedboxer.seedboxer.mule.Camel?level=ERROR&amp;showCaughtException=true&amp;showException=true&amp;showStackTrace=true"/>
 			<to uri="direct:finale"/>
 		</onException>
 		
