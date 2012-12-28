@@ -147,7 +147,7 @@ public class DownloadsController {
 				return torrentFileInStream;
 			}
 		}, torrent);
-
+		torrent.setReadable(true, false);
 		String name = TorrentUtils.getName(torrent);
 		putToDownload(user, Collections.singletonList(name), false);
 	}
