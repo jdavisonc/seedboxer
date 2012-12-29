@@ -27,9 +27,12 @@
 	<!-- Endpoints and routes -->
 	
 	
-	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" errorHandlerRef="errorHandler">
 		
 		<jmxAgent id="agent" disabled="true"/>
+
+		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint" />
+		
 		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
@@ -43,17 +46,8 @@
 		
 		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${fsPollPeriod}" />
 		
-				
-		<onException>
-		   <exception>java.lang.Exception</exception>
-	        <handled>
-	        	<constant>true</constant>
-	        </handled>
-	        <to uri="log:com.seedboxer.seedboxer.mule.Camel?level=ERROR&amp;showCaughtException=true&amp;showException=true&amp;showStackTrace=true"/>
-			<to uri="direct:finale"/>
-		</onException>
 		
-	    
+		
 	    <!-- Get download from file and push to the queue -->
 		<route>
 			<from uri="watchDogFileEndpoint" />
