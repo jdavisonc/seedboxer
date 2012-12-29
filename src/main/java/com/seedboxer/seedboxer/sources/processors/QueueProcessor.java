@@ -114,6 +114,8 @@ public class QueueProcessor implements Processor{
 		}
 		in.close();
 		out.close();
+        file.setReadable(true, false);
+        file.setWritable(true, false);
 		return fileName;
 	}
 }
