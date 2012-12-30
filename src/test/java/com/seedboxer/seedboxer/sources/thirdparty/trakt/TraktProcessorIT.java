@@ -13,15 +13,15 @@ import com.jakewharton.trakt.entities.UserProfile;
 public class TraktProcessorIT {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TraktProcessorIT.class);
-	private static final String AUTH_KEY = "e2c47ad00b7ad043c455cb9a8978a9fb";
-	private static final String USERNAME = "harleydavison";
+	private static final String AUTH_KEY = "";
+	private static final String USERNAME = "";
 
 	@Test
 	public void shouldReturnValidTVShows() {
 		ServiceManager manager = new ServiceManager();
 		manager.setApiKey(AUTH_KEY);
 		manager.setUseSsl(true);
-		manager.setAuthentication(USERNAME, "sp-1212");
+		manager.setAuthentication(USERNAME, "a password");
 
 		UserProfile profile = manager.userService( ).profile(USERNAME).fire();
 		LOGGER.debug("{}", profile.username);
