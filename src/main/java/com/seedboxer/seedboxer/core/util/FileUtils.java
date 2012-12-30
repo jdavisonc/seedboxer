@@ -21,9 +21,13 @@
 package com.seedboxer.seedboxer.core.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.io.Files;
+import com.google.common.io.InputSupplier;
 import com.seedboxer.seedboxer.core.type.FileValue;
 
 /**
@@ -66,6 +70,27 @@ public class FileUtils {
 			}
 		}
 		return files;
+	}
+
+	public static File copyFile(final InputStream in, String finalPath,
+			boolean readPermissions, boolean writePermissions) throws IOException {
+
+		File copyFile = new File(finalPath);
+		Files.copy(new InputSupplier<InputStream>() {
+			@Override
+			public InputStream getInput() throws IOException {
+				return in;
+			}
+		}, copyFile);
+
+		if (readPermissions) {
+			copyFile.setReadable(true, false);
+		}
+		if (writePermissions) {
+			copyFile.setWritable(true, false);
+		}
+
+		return copyFile;
 	}
 
 }

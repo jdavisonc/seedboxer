@@ -21,7 +21,6 @@
 package com.seedboxer.seedboxer.ws.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,8 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.google.common.io.Files;
-import com.google.common.io.InputSupplier;
 import com.seedboxer.seedboxer.core.domain.DownloadQueueItem;
 import com.seedboxer.seedboxer.core.domain.Status;
 import com.seedboxer.seedboxer.core.domain.User;
@@ -140,15 +137,9 @@ public class DownloadsController {
 	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
 		User user = getUser(username);
 
-		File torrent = new File(watchDownloaderPath + File.separator + fileName);
-		Files.copy(new InputSupplier<InputStream>() {
-			@Override
-			public InputStream getInput() throws IOException {
-				return torrentFileInStream;
-			}
-		}, torrent);
-		torrent.setReadable(true, false);
-        torrent.setWritable(true, false);
+		String finalPath = watchDownloaderPath + File.separator + fileName;
+		File torrent = FileUtils.copyFile(torrentFileInStream, finalPath, true, true);
+
 		String name = TorrentUtils.getName(torrent);
 		putToDownload(user, Collections.singletonList(name), false);
 	}

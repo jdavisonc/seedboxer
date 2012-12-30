@@ -51,13 +51,16 @@ public class TraktProcessor implements Processor {
 		Message msg = exchange.getIn();
 
 		String username = (String) msg.getHeader(Configuration.TRAKT_USERNAME);
+		String password = (String) msg.getHeader(Configuration.TRAKT_PASSWORD);
 		String authKey = (String) msg.getHeader(Configuration.TRAKT_AUTH_KEY);
 		String quality = (String) msg.getHeader(Configuration.TRAKT_CONTENT_QUALITY);
 
 
 		List<Content> traktContent = new ArrayList<Content>();
 		ServiceManager manager = new ServiceManager();
+		manager.setUseSsl(true);
 		manager.setApiKey(authKey);
+		manager.setAuthentication(username, password);
 
 		traktContent.addAll(getWatchlist(manager, username, quality));
 

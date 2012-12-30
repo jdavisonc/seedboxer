@@ -1,34 +1,30 @@
 /*******************************************************************************
  * QueueProcessor.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
 package com.seedboxer.seedboxer.sources.processors;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
@@ -46,6 +42,7 @@ import org.springframework.stereotype.Component;
 import com.seedboxer.seedboxer.core.domain.Content;
 import com.seedboxer.seedboxer.core.domain.User;
 import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
+import com.seedboxer.seedboxer.core.util.FileUtils;
 import com.seedboxer.seedboxer.sources.type.DownloadableItem;
 
 
@@ -98,24 +95,16 @@ public class QueueProcessor implements Processor{
 	}
 
 	private String downloadFile(URL url, String path) throws IOException {
-		URLConnection conn =  url.openConnection();
-		InputStream in = conn.getInputStream();
+		final URLConnection conn =  url.openConnection();
+
 		String disposition = conn.getHeaderField("Content-Disposition");
 		String fileNameProperty = "filename=\"";
 		String fileName = disposition.substring(disposition.indexOf(fileNameProperty),disposition.lastIndexOf("\""));
 		fileName = fileName.substring(fileNameProperty.length(),fileName.length());
 		path += File.separator + fileName;
-		File file =   new File(path);
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-		byte[] bytes = new byte[1024];
-		int read;
-		while ((read = in.read(bytes)) != -1) {
-			out.write(bytes, 0, read);
-		}
-		in.close();
-		out.close();
-                file.setReadable(true, false);
-                file.setWritable(true, false);
+
+		FileUtils.copyFile(conn.getInputStream(), path, true, true);
+
 		return fileName;
 	}
 }
