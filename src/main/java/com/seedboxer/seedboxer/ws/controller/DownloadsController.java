@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.seedboxer.bencode.TorrentUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,6 @@ import com.seedboxer.seedboxer.core.logic.UsersController;
 import com.seedboxer.seedboxer.core.type.Download;
 import com.seedboxer.seedboxer.core.type.FileValue;
 import com.seedboxer.seedboxer.core.util.FileUtils;
-import com.seedboxer.seedboxer.core.util.TorrentUtils;
 import com.seedboxer.seedboxer.ws.type.UserStatus;
 
 @Service
@@ -140,7 +141,7 @@ public class DownloadsController {
 		String finalPath = watchDownloaderPath + File.separator + fileName;
 		File torrent = FileUtils.copyFile(torrentFileInStream, finalPath, true, true);
 
-		String name = TorrentUtils.getName(torrent);
+		String name = TorrentUtils.getTorrentName(torrent);
 		putToDownload(user, Collections.singletonList(name), false);
 	}
 

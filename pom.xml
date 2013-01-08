@@ -273,7 +273,7 @@
 			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.klomp.snark</groupId>
+			<groupId>net.seedboxer</groupId>
 			<artifactId>bencode</artifactId>
 			<version>${bencode.version}</version>
 		</dependency>

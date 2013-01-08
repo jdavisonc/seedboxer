@@ -22,17 +22,14 @@
 package com.seedboxer.seedboxer.sources.processors;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
+
+import net.seedboxer.bencode.TorrentUtils;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.klomp.snark.bencode.BDecoder;
-import org.klomp.snark.bencode.BEValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +69,7 @@ public class QueueProcessor implements Processor{
 		URL url = content.getMatchableItem().getUrl();
 		try {
 			String fileName = downloadFile(url,path);
-			String dirName = getDirNameFromTorrentFile(path + File.separator + fileName);
+			String dirName = TorrentUtils.getTorrentName(new File(path + File.separator + fileName));
 			LOGGER.debug("Downloaded torrent: "+path);
 			for(User user : downloadableItem.getUsers()){
 				String absoluteOutputDir = completePath + File.separator + dirName;
@@ -81,17 +78,6 @@ public class QueueProcessor implements Processor{
 		} catch (IOException ex) {
 			LOGGER.error("Error downloading file: {}", url, ex);
 		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	private String getDirNameFromTorrentFile(String path) throws FileNotFoundException, IOException{
-		BDecoder decoder;
-		decoder = new BDecoder(new FileInputStream(path));
-		Map map = decoder.bdecode().getMap();
-		BEValue info = (BEValue) map.get("info");
-		Map mapInfo = info.getMap();
-		return ((BEValue)mapInfo.get("name")).getString();
-
 	}
 
 	private String downloadFile(URL url, String path) throws IOException {
