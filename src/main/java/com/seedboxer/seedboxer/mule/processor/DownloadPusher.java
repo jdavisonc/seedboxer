@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadRemover.java
+ * DownloadPusher.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -33,7 +33,7 @@ import com.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
  *
  */
 @Component
-public class DownloadRemover implements Processor {
+public class DownloadPusher implements Processor {
 
 	@Autowired
 	private DownloadsQueueManager queueManager;
@@ -41,7 +41,7 @@ public class DownloadRemover implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Long downloadId = (Long) exchange.getIn().getHeader(Configuration.DOWNLOAD_ID);
-		queueManager.remove(downloadId);
+		queueManager.repush(downloadId);
 	}
 
 }

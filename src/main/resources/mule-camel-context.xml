@@ -33,7 +33,6 @@
 
 		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint" />
 		
-		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
@@ -46,7 +45,13 @@
 		
 		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${fsPollPeriod}" />
 		
-		
+	    <onException>
+	        <exception>java.io.FileNotFoundException</exception>
+			<handled>
+				<constant>true</constant>
+			</handled>
+        	<to ref="downloadPusher"/>
+	    </onException>
 		
 	    <!-- Get download from file and push to the queue -->
 		<route>
