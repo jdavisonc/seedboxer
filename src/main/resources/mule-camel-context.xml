@@ -50,19 +50,19 @@
 			<handled>
 				<constant>true</constant>
 			</handled>
-        	<to ref="downloadPusher"/>
+        	<to uri="bean:downloadPusher"/>
 	    </onException>
 		
 	    <!-- Get download from file and push to the queue -->
 		<route>
 			<from uri="watchDogFileEndpoint" />
-			<process ref="fileReceiver"/>
+			<to uri="bean:fileReceiver"/>
 		</route>
 
 		<!-- Pooling queue for get new downloads -->
 		<route>
 			<from ref="pooling" />
-			<process ref="queuePooler" />
+			<to uri="bean:queuePooler" />
 			<filter>
 				<simple>${in.body} != null</simple>
 				<split>
@@ -75,7 +75,7 @@
 		<!-- Process download from queue -->
 		<route>
 			<from uri="direct:processDownload" />
-			<process ref="downloadReceiver"/>
+			<to uri="bean:downloadReceiver"/>
 			<to ref="uploadEndpoint" />
 		</route>
 		
@@ -84,7 +84,7 @@
 			<from ref="uploadEndpoint" />
 
 			<!-- Send to FTP via dynamic router -->
-			<process ref="ftpSender" />
+			<to uri="bean:ftpSender" />
 	        
 	        <to uri="direct:postActionsEndpoint" />
 		</route>
@@ -96,7 +96,7 @@
 			<!-- SSH command sender -->
 			<filter>
 	           <simple>${in.header.SshCmd} != null</simple>
-	           <process ref="sshCommandSender" />
+	           <to uri="bean:sshCommandSender" />
 	       </filter>
 	       
 	       <to uri="direct:notificationEndpoint" />
@@ -109,14 +109,14 @@
 			<!-- Email notifiction -->
 			<filter>
 	           <simple>${in.header.NotificationEmail} != null</simple>
-	           	<process ref="emailNotification" />
-	        	<to ref="emailEndpoint"/>
+	           	<to uri="bean:emailNotification" />
+	        	<to uri="bean:emailEndpoint"/>
 	        </filter>
 	        
 	        <!-- GCM notification -->
 			<filter>
 	           <simple>${in.header.NotificationGCM} != null</simple>
-	           <process ref="gcmNotification" />
+	           <to uri="bean:gcmNotification" />
 	        </filter>
 	        
 	        <to uri="direct:finale" />
@@ -127,7 +127,7 @@
 			<from uri="direct:finale" />
 			<filter>
 	        	<simple>${in.header.DownloadId} != null</simple>
-				<process ref="downloadRemover" />
+				<to uri="bean:downloadRemover" />
 	        </filter>
 		</route>
 		

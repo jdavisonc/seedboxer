@@ -39,7 +39,7 @@
 	        <handled>
 	        	<constant>true</constant>
 	        </handled>
-	        <to uri="log:com.seedboxer.seedboxer.sources.Camel?level=ERROR"/>
+	        <to uri="log:net.seedboxer.seedboxer.sources.Camel?level=ERROR"/>
 		</onException>
 		
 		<route>

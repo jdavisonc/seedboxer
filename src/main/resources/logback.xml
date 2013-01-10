@@ -43,10 +43,10 @@
 
 	<if condition='isDefined("debug")'>
 	    <then>
-			<logger name="com.seedboxer" level="DEBUG" />
+			<logger name="net.seedboxer" level="DEBUG" />
 	    </then>
 	    <else>
-			<logger name="com.seedboxer" level="INFO" />
+			<logger name="net.seedboxer" level="INFO" />
 	    </else>    
 	</if>
 	
