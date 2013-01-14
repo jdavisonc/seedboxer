@@ -18,10 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.sources.thirdparty.trakt;
+package net.seedboxer.seedboxer.mule;
 
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,19 +29,31 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class MuleCamelTest  extends CamelSpringTestSupport {
+public class MuleCamelTest extends CamelSpringTestSupport {
 
-    @Override
+	private static final String WATCHDOGFILE_ENDPOINT = "direct:watchDogFile";
+	private static final String UPLOAD_ENDPOINT = "direct:upload";
+
+	@Override
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("MuleCamelTest-context.xml");
     }
 
-    @Test @Ignore
+    @Test
     public void testAdvisedMockEndpoints() throws Exception {
-        getMockEndpoint("mock://file:/home/test/seedboxer").expectedBodiesReceived("Hello World");
         getMockEndpoint("mock://bean:fileReceiver").expectedBodiesReceived("Hello World");
 
-        template.sendBody("file:/home/test/seedboxer", "Hello World");
+        template.sendBody(WATCHDOGFILE_ENDPOINT, "Hello World");
+
+        assertMockEndpointsSatisfied();
+	}
+
+    @Test
+    public void testSendToTranfer() throws Exception {
+        getMockEndpoint("mock://bean:ftpSender").expectedBodiesReceived("Hello World");
+        getMockEndpoint("mock://direct:postActionsEndpoint").expectedBodiesReceived("Hello World");
+
+        template.sendBody(UPLOAD_ENDPOINT, "Hello World");
 
         assertMockEndpointsSatisfied();
 	}

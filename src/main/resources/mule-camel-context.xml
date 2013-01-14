@@ -37,13 +37,13 @@
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
 		
-		<endpoint id="watchDogFileEndpoint" uri="file:${basePath}?delay=${fsPollPeriod}&amp;recursive=true&amp;delete=true&amp;readLock=${readLock}&amp;include=.*\.upl"/>
+		<endpoint id="watchDogFileEndpoint" uri="${watchDogFileEndpoint.uri}"/>
 		
-		<endpoint id="uploadEndpoint" uri="seda:processFile?concurrentConsumers=${numThreads}&amp;waitForTaskToComplete=Never&amp;timeout=0"/>
+		<endpoint id="uploadEndpoint" uri="${uploadEndpoint.uri}"/>
 		
-		<endpoint id="emailEndpoint" uri="smtp://${smtp.host}:${smtp.port}"/>
+		<endpoint id="emailEndpoint" uri="${emailEndpoint.uri}"/>
 		
-		<endpoint id="pooling" uri="timer://pool?fixedRate=true&amp;period=${fsPollPeriod}" />
+		<endpoint id="pooling" uri="${pooling.uri}" />
 		
 	    <onException>
 	        <exception>java.io.FileNotFoundException</exception>
