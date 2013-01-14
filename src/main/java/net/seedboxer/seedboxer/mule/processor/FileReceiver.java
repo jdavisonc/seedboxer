@@ -1,29 +1,28 @@
 /*******************************************************************************
  * FileReceiver.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 package net.seedboxer.seedboxer.mule.processor;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +39,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.google.common.io.Files;
 
 
 
@@ -85,19 +86,8 @@ public class FileReceiver implements Processor {
 		}
 	}
 
-	private List<String> getLines(String filePath) {
-		List<String> lines = new ArrayList<String>();
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
-			String str;
-			while ((str = in.readLine()) != null) {
-				lines.add(str);
-			}
-			in.close();
-		} catch (IOException e) {
-			LOGGER.error("Cannot open file", e);
-		}
-		return lines;
+	private List<String> getLines(String filePath) throws IOException {
+		return Files.readLines(new File(filePath), Charset.forName("utf-8"));
 	}
 
 }
