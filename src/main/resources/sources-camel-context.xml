@@ -32,14 +32,17 @@
 	
 		<contextScan/>
 		<jmxAgent id="agent" disabled="true"/>
+		
 		<endpoint id="thirdPartyTimer" uri="timer://thirdpartytimer?fixedRate=true&amp;period=${thirdPartyPollPeriod}" />
+		
+		<endpoint id="sourceslog" uri="log:net.seedboxer.seedboxer.Sources?level=ERROR&amp;showHeaders=true&amp;showCaughtException=true&amp;showException=true&amp;showStackTrace=true&amp;showBody=false&amp;multiline=true" />
 		
 		<onException>
 		   <exception>java.lang.Exception</exception>
 	        <handled>
 	        	<constant>true</constant>
 	        </handled>
-	        <to uri="log:net.seedboxer.seedboxer.sources.Camel?level=ERROR"/>
+	        <to uri="sourceslog"/>
 		</onException>
 		
 		<route>

@@ -7,8 +7,12 @@ Files:
 
 The error was: 
 
-${Cause} 
-Caused by: ${Cause.cause}
+${Cause!}
+
+<#if Cause??>
+Caused by: 
+	${Cause.cause!} 
+</#if>
 
 --
 This is a automatic notification send by SeedBoxer

@@ -31,7 +31,7 @@
 		
 		<jmxAgent id="agent" disabled="true"/>
 
-		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint" />
+		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:unexpectedError" />
 		
 		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
@@ -44,6 +44,8 @@
 		<endpoint id="emailEndpoint" uri="${emailEndpoint.uri}"/>
 		
 		<endpoint id="pooling" uri="${pooling.uri}" />
+		
+		<endpoint id="mulelog" uri="log:net.seedboxer.seedboxer.Mule?level=ERROR&amp;showHeaders=true&amp;showCaughtException=true&amp;showException=true&amp;showStackTrace=true&amp;showBody=false&amp;multiline=true" />
 		
 	    <onException>
 	        <exception>java.io.FileNotFoundException</exception>
@@ -110,7 +112,7 @@
 			<filter>
 	           <simple>${in.header.NotificationEmail} != null</simple>
 	           	<to uri="bean:emailNotification" />
-	        	<to uri="bean:emailEndpoint"/>
+	        	<to uri="emailEndpoint"/>
 	        </filter>
 	        
 	        <!-- GCM notification -->
@@ -125,10 +127,29 @@
 		<!-- Finale -->
 		<route>
 			<from uri="direct:finale" />
+			
+			<!-- If it fail at removing the download, the exception will not arise -->
+			<onException>
+		        <exception>java.lang.Exception</exception>
+				<handled>
+					<constant>true</constant>
+				</handled>
+	        	<to uri="mulelog"/>
+		    </onException>
+			
 			<filter>
 	        	<simple>${in.header.DownloadId} != null</simple>
 				<to uri="bean:downloadRemover" />
 	        </filter>
+		</route>
+		
+		<!-- Unexpected Error -->
+		<route>
+			<from uri="direct:unexpectedError"/>
+			<!-- We need to remove the download to let the next start, if not 
+				the downloads for that user will be stucked for ever -->
+			<to uri="direct:finale" />
+			<to uri="mulelog"/>
 		</route>
 		
 	</camelContext>

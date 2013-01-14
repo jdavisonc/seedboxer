@@ -54,7 +54,6 @@ public class Configuration {
 	public static final String NOTIFICATION_PREFIX = "Notification";
 
 	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "Email";
-	public static final String NOTIFICATION_EMAIL_EMAIL = NOTIFICATION_EMAIL + "Email";
 
 	public static final String NOTIFICATION_GCM = NOTIFICATION_PREFIX + "GCM";
 	public static final String NOTIFICATION_GCM_DEVICEID = NOTIFICATION_GCM + "DeviceId";
