@@ -37,15 +37,15 @@
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
 		
-		<endpoint id="watchDogFileEndpoint" uri="${watchDogFileEndpoint.uri}"/>
+		<endpoint id="watchDogFileEndpoint" uri="${mule.watchDogFileEndpoint.uri}"/>
 		
-		<endpoint id="uploadEndpoint" uri="${uploadEndpoint.uri}"/>
+		<endpoint id="uploadEndpoint" uri="${mule.uploadEndpoint.uri}"/>
 		
-		<endpoint id="emailEndpoint" uri="${emailEndpoint.uri}"/>
+		<endpoint id="emailEndpoint" uri="${mule.emailEndpoint.uri}"/>
 		
-		<endpoint id="pooling" uri="${pooling.uri}" />
+		<endpoint id="pooling" uri="${mule.pooling.uri}" />
 		
-		<endpoint id="mulelog" uri="log:net.seedboxer.seedboxer.Mule?level=ERROR&amp;showHeaders=true&amp;showCaughtException=true&amp;showException=true&amp;showStackTrace=true&amp;showBody=false&amp;multiline=true" />
+		<endpoint id="mulelog" uri="${mule.log.uri}" />
 		
 	    <onException>
 	        <exception>java.io.FileNotFoundException</exception>

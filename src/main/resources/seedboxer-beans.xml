@@ -34,7 +34,7 @@
 	<import resource="classpath:sources-camel-context.xml" />
 	
 	<!-- Aggretator for multiple feeds -->
-	<bean id="rssAggregationStrategy" class="org.apache.camel.component.rss.AggregateRssFeedStrategy"/>
+	<bean id="rssAggregationStrategy" class="net.seedboxer.seedboxer.sources.processors.rss.aggregator.AggregateRssFeedEntryStrategy"/>
 	
 	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">

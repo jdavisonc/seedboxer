@@ -31,6 +31,7 @@
 			<list>
 			    <value>file:${seedboxer.config.path}/seedboxer.properties</value>
 			    <value>classpath:mule-camel.properties</value>
+			    <value>classpath:sources-camel.properties</value>
 			    <value>classpath:c3p0.properties</value>
 			</list>
 		</property>
