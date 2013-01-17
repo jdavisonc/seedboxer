@@ -56,6 +56,6 @@ public class RssConsumer implements Processor{
 			items.add(new MatchableItem(entry.getTitle(),entry.getLink()));
 		}
 
-		exchange.getOut().setBody(items, items.getClass());
+		exchange.getOut().setBody(items);
 	}
 }
