@@ -45,6 +45,10 @@ public class RouteBuilder extends SpringRouteBuilder {
 	@Autowired
 	private FeedsManager feedsManager;
 
+	public void setFeedsManager(FeedsManager feedsManager) {
+		this.feedsManager = feedsManager;
+	}
+
 	@Override
 	public void configure() throws Exception {
 		List<RssFeed> feeds = feedsManager.getAllFeeds();
