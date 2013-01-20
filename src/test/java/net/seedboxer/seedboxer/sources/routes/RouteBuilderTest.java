@@ -27,15 +27,12 @@ import java.util.Collections;
 import net.seedboxer.seedboxer.core.domain.RssFeed;
 import net.seedboxer.seedboxer.core.logic.FeedsManager;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.component.direct.DirectEndpoint;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -46,23 +43,20 @@ import org.mockito.MockitoAnnotations;
  */
 public class RouteBuilderTest extends CamelTestSupport {
 
+	private static final String RSS_TIMER_ENDPOINT = "direct:rss";
+
+	private static final String MERGE_FEEDS_ENDPOINT = "mock:direct:feeds";
+
 	private RouteBuilder routeBuilder;
 
 	@Mock
 	private FeedsManager feedsManager;
 
-    @EndpointInject(uri = "mock:direct:mergeFeeds")
+    @EndpointInject(uri = MERGE_FEEDS_ENDPOINT)
     protected MockEndpoint resultEndpoint;
 
-    @Produce(uri="rssTimer")
+    @Produce(uri=RSS_TIMER_ENDPOINT)
     protected ProducerTemplate template;
-
-    @Override
-    protected CamelContext createCamelContext() throws Exception {
-    	CamelContext context = super.createCamelContext();
-    	context.addEndpoint("rssTimer", new DirectEndpoint("direct:start", null));
-    	return context;
-    }
 
 	@Override
 	@Before
@@ -70,17 +64,27 @@ public class RouteBuilderTest extends CamelTestSupport {
 		MockitoAnnotations.initMocks(this);
 
 		RssFeed feed = new RssFeed();
-		feed.setUrl("file:" + getClass().getResource("feed.rss").getPath());
+		feed.setUrl("mock:direct:feed1");
 		when(feedsManager.getAllFeeds()).thenReturn(Collections.singletonList(feed));
 
 		super.setUp();
 	}
 
-    @Test @Ignore
-    public void testSendNotMatchingMessage() throws Exception {
+    @Test
+    public void shouldProcessAllFeedWhenItsFirstTime() throws Exception {
         resultEndpoint.expectedMessageCount(4);
 
         template.sendBody(getClass().getResource("feed.rss"));
+
+        resultEndpoint.assertIsSatisfied();
+    }
+
+    @Test
+    public void shouldProcessOnlyNewFeedWhenItsSecondTime() throws Exception {
+        resultEndpoint.expectedMessageCount(5);
+
+        template.sendBody(getClass().getResource("feed.rss"));
+        template.sendBody(getClass().getResource("feed2.rss"));
 
         resultEndpoint.assertIsSatisfied();
     }
@@ -89,6 +93,8 @@ public class RouteBuilderTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() {
         routeBuilder = new RouteBuilder();
         routeBuilder.setFeedsManager(feedsManager);
+        routeBuilder.setRssTimerEndpoint(RSS_TIMER_ENDPOINT);
+        routeBuilder.setMergeFeedsEndoint(MERGE_FEEDS_ENDPOINT);
         return routeBuilder;
     }
 

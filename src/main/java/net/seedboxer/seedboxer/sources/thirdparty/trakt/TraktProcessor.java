@@ -65,7 +65,7 @@ public class TraktProcessor implements Processor {
 
 		traktContent.addAll(getWatchlist(manager, username, quality));
 
-		LOGGER.debug("get {} Trakt contents of {}", traktContent.size(), msg.getHeader(Configuration.USER));
+		LOGGER.trace("get {} Trakt contents of {}", traktContent.size(), msg.getHeader(Configuration.USER));
 		msg.setBody(traktContent);
 	}
 

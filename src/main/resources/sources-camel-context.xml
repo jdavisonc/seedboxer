@@ -39,6 +39,8 @@
 		
 		<endpoint id="sourceslog" uri="${sources.log.uri}" />
 		
+		<endpoint id="mergeFeeds" uri="${sources.mergefeeds.uri}" />
+		
 		<onException>
 		   <exception>java.lang.Exception</exception>
 	        <handled>
@@ -48,7 +50,7 @@
 		</onException>
 		
 		<route>
-			<from uri="direct:mergeFeeds"/>
+			<from uri="mergeFeeds"/>
 			<aggregate strategyRef="rssAggregationStrategy" completionTimeout="5000">
 			<correlationExpression>
 				<constant>true</constant>

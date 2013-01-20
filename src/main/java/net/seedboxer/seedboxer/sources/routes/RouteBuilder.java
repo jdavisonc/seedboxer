@@ -26,9 +26,11 @@ import java.util.List;
 import net.seedboxer.seedboxer.core.domain.RssFeed;
 import net.seedboxer.seedboxer.core.logic.FeedsManager;
 import net.seedboxer.seedboxer.sources.processors.rss.filter.RssDateFilter;
+import net.seedboxer.seedboxer.sources.processors.rss.sorter.RssSortProcessor;
 
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
@@ -39,14 +41,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class RouteBuilder extends SpringRouteBuilder {
 
-	private static final String MERGE_FEEDS_ENDPOINT = "direct:mergeFeeds";
-	private static final String RSS_TIMER_ENDPOINT = "rssTimer";
+	@Value("${sources.rsstimer.uri}")
+	private String mergeFeedsEndoint;
+
+	@Value("${sources.mergefeeds.uri}")
+	private String rssTimerEndpoint;
 
 	@Autowired
 	private FeedsManager feedsManager;
 
 	public void setFeedsManager(FeedsManager feedsManager) {
 		this.feedsManager = feedsManager;
+	}
+
+	public void setMergeFeedsEndoint(String mergeFeedsEndoint) {
+		this.mergeFeedsEndoint = mergeFeedsEndoint;
+	}
+
+	public void setRssTimerEndpoint(String rssTimerEndpoint) {
+		this.rssTimerEndpoint = rssTimerEndpoint;
 	}
 
 	@Override
@@ -58,12 +71,13 @@ public class RouteBuilder extends SpringRouteBuilder {
 	}
 
 	private void configureFeedRoute(RssFeed feed) {
-		from(RSS_TIMER_ENDPOINT)
+		from(rssTimerEndpoint)
 			.to(feed.getUrl())
 			.unmarshal()
 			.rss()
+			.bean(RssSortProcessor.class)
 			.split().simple("body.entries")
 			.filter().method(RssDateFilter.class, "isValidEntry")
-		.to(MERGE_FEEDS_ENDPOINT);
+		.to(mergeFeedsEndoint);
 	}
 }
