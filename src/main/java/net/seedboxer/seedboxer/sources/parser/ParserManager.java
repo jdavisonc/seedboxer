@@ -28,8 +28,6 @@ import java.util.List;
 import net.seedboxer.seedboxer.core.domain.Content;
 import net.seedboxer.seedboxer.sources.type.MatchableItem;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,8 +39,6 @@ import org.springframework.stereotype.Component;
 @Component
 @SuppressWarnings("rawtypes")
 public class ParserManager {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParserManager.class);
 
 	private List<ContentParser> parsers = new ArrayList<ContentParser>();
 
