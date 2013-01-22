@@ -41,10 +41,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class RouteBuilder extends SpringRouteBuilder {
 
-	@Value("${sources.rsstimer.uri}")
+	@Value("${sources.mergefeeds.uri}")
 	private String mergeFeedsEndoint;
 
-	@Value("${sources.mergefeeds.uri}")
+	@Value("${sources.rsstimer.uri}")
 	private String rssTimerEndpoint;
 
 	@Autowired
