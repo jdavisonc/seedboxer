@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentDao.java
+ * SeedBoxerGrantedAuthority.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,29 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.seedboxer.ws.security;
 
-package net.seedboxer.seedboxer.core.persistence;
-
-import java.util.List;
-
-import net.seedboxer.seedboxer.core.domain.Content;
-import net.seedboxer.seedboxer.core.domain.User;
-
+import org.springframework.security.core.GrantedAuthority;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-public interface ContentDao {
+public class SeedBoxerGrantedAuthority implements GrantedAuthority {
 
-	void save(Content content);
+	private static final long serialVersionUID = 2939234974542921581L;
 
-	List<Content> getAllContent(User user);
+	private final SeedBoxerAuthority authority;
 
-	<T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory);
+	public enum SeedBoxerAuthority {
+		ADMIN, LEECHER;
+	}
 
-	<T extends Content> List<T> getHistoryContentFilteredByNameAndUser(Class<T> clazz, String name, User user);
+	public SeedBoxerGrantedAuthority(SeedBoxerAuthority authority) {
+		this.authority = authority;
+	}
 
-	<T extends Content> List<T> getAllContentWithName(String name, Class<? extends Content> contentType);
+	@Override
+	public String getAuthority() {
+		return authority.toString();
+	}
 
 }

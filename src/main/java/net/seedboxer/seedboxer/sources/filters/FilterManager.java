@@ -33,49 +33,36 @@ import net.seedboxer.seedboxer.core.logic.ContentManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-
 
 /**
  *
  * @author The-Sultan
+ * @author Jorge Davison (jdavisonc)
  */
 @Component
 @SuppressWarnings("rawtypes")
 public class FilterManager {
 
-	@Autowired
 	private ContentManager contentManager;
 
 	private List<ContentFilter> filters;
-
-	public List<ContentFilter> getFilters() {
-		return filters;
-	}
 
 	@Autowired
 	public void setFilters(List<ContentFilter> filters) {
 		this.filters = filters;
 	}
 
-	private List<Content> getAllContent(){
-		List<Content> userContent = new ArrayList<Content>();
-		for(ContentFilter filter : filters){
-			@SuppressWarnings("unchecked")
-			List<Content> contentHistory = contentManager.getAllContentOfType(filter.getType());
-			userContent.addAll(contentHistory);
-		}
-		return userContent;
-
+	@Autowired
+	public void setContentManager(ContentManager contentManager) {
+		this.contentManager = contentManager;
 	}
 
 	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
-		List<Content> allUsersContents = getAllContent();
-		Map<Content, List<User>> mappedContent = mapContentWithUsers(allUsersContents, parsedContentList);
+		Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
 		mappedContent = filterContentWithHistory(mappedContent);
-		updateHistory(mappedContent);
+		if (!mappedContent.isEmpty()) {
+			updateHistory(mappedContent);
+		}
 		return mappedContent;
 	}
 
@@ -87,14 +74,14 @@ public class FilterManager {
 	 * @param parsedContentList
 	 * @return
 	 */
-	private Map<Content,List<User>> mapContentWithUsers(List<Content> allUsersContents, List<Content> parsedContentList){
+	private Map<Content,List<User>> mapContentWithUsers(List<Content> parsedContentList){
 		Map<Content, List<User>> mappedContent = new HashMap<Content, List<User>>();
 		for(Content parsedContent : parsedContentList){
 			if(mappedContent.containsKey(parsedContent)) {
 				continue;
 			}
 
-			List<User> usersWantingThisContent = findUsersWantingThisContent(allUsersContents, parsedContent);
+			List<User> usersWantingThisContent = findUsersWantingThisContent(parsedContent);
 
 			if(!usersWantingThisContent.isEmpty()){
 				mappedContent.put(parsedContent, usersWantingThisContent);
@@ -103,17 +90,23 @@ public class FilterManager {
 		return mappedContent;
 	}
 
-	private List<User> findUsersWantingThisContent(List<Content> allUsersContents, Content parsedContent) {
-		List<User> usersWantingThisParsedContent = new ArrayList<User>();
-		for(Content userContent : allUsersContents){
-			for(ContentFilter filter : filters){
-				Boolean wantedContent = filter.filterIfPossible(userContent, parsedContent);
+	private List<User> findUsersWantingThisContent(Content parsedContent) {
+		List<User> usersWantingThisContent = new ArrayList<User>();
+
+		for(ContentFilter filter : filters){
+			for(Content content : getContentWithName(parsedContent.getName(), filter)){
+
+				Boolean wantedContent = filter.filterIfPossible(content, parsedContent);
 				if(wantedContent != null && wantedContent){
-					usersWantingThisParsedContent.add(userContent.getUser());
+					usersWantingThisContent.add(content.getUser());
 				}
 			}
 		}
-		return usersWantingThisParsedContent;
+		return usersWantingThisContent;
+	}
+
+	private List<Content> getContentWithName(String name, ContentFilter<?> filter) {
+		return contentManager.getAllContentOfTypeAndName(name, filter.getType());
 	}
 
 	/**
@@ -131,7 +124,7 @@ public class FilterManager {
 
 			Content content = entries.getKey();
 			List<User> users = entries.getValue();
-			List<User> usersThatAlreadyHaveThisContent = filterUserContentByHistory(content, users);
+			List<User> usersThatAlreadyHaveThisContent = contentManager.getUsersWithContentInHistory(content, users);
 
 			if (users.size() == usersThatAlreadyHaveThisContent.size()) {
 				toRemove.add(content);
@@ -144,26 +137,6 @@ public class FilterManager {
 			mappedContents.remove(content);
 		}
 		return mappedContents;
-	}
-
-	private List<User> filterUserContentByHistory(Content content, List<User> users) {
-		List<User> usersThatAlreadyHaveThisContent = new ArrayList<User>();
-		for(User user : users){
-
-			List<Content> historyContentOfType =
-					contentManager.getHistoryContentOfType(content.getClass(), content.getName(), user);
-
-			if (isContentIn(content, historyContentOfType)) {
-				usersThatAlreadyHaveThisContent.add(user);
-			}
-		}
-		return usersThatAlreadyHaveThisContent;
-	}
-
-	private boolean isContentIn(Content content,
-			List<Content> historyContentOfType) {
-		Optional<Content> find = Iterables.tryFind(historyContentOfType, Predicates.equalTo(content));
-		return find.isPresent();
 	}
 
 

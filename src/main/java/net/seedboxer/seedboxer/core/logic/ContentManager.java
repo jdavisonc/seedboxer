@@ -21,6 +21,7 @@
 
 package net.seedboxer.seedboxer.core.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.seedboxer.seedboxer.core.domain.Content;
@@ -53,7 +54,7 @@ public class ContentManager {
 		List<Content> userContents = contentDao.getAllContent(user);
 		for (Content content : toUpdate) {
 			Optional<Content> find = Iterables.tryFind(userContents, Predicates.equalTo(content));
-			if (find.isPresent()) {
+			if (!find.isPresent()) {
 				content.setUser(user);
 				contentDao.save(content);
 				LOGGER.debug("New content {} for user {}", content.getName(), user.getId());
@@ -66,9 +67,8 @@ public class ContentManager {
 	 * @param contentType
 	 * @return All contents for a certain content type.
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Content> getAllContentOfType(Class<? extends Content> contentType) {
-		return (List<Content>) contentDao.getContentHistory(contentType, false);
+	public List<Content> getAllContentOfTypeAndName(String name, Class<? extends Content> contentType) {
+		return contentDao.getAllContentWithName(name, contentType);
 	}
 
 	/**
@@ -86,6 +86,25 @@ public class ContentManager {
 	public void saveContent(Content content, User user) {
 		content.setUser(user);
 		contentDao.save(content);
+	}
+
+
+	public List<User> getUsersWithContentInHistory(Content content, List<User> users) {
+		List<User> usersWithContent = new ArrayList<User>();
+		for(User user : users){
+			List<Content> history = getHistoryContentOfType(content.getClass(), content.getName(), user);
+
+			if (isContentIn(content, history)) {
+				usersWithContent.add(user);
+			}
+		}
+		return usersWithContent;
+	}
+
+	private boolean isContentIn(Content content,
+			List<Content> historyContentOfType) {
+		Optional<Content> find = Iterables.tryFind(historyContentOfType, Predicates.equalTo(content));
+		return find.isPresent();
 	}
 
 }

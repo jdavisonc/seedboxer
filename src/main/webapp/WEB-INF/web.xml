@@ -17,7 +17,7 @@
 	</listener>
 	
 	<servlet>
-		<servlet-name>proeasy webservices</servlet-name>
+		<servlet-name>seedboxer webservices</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.feature.XmlRootElementProcessing</param-name>
@@ -30,8 +30,18 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>proeasy webservices</servlet-name>
+		<servlet-name>seedboxer webservices</servlet-name>
 		<url-pattern>/webservices/*</url-pattern>
 	</servlet-mapping>
+	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/webservices/*</url-pattern>
+	</filter-mapping>
 	
 </web-app>
