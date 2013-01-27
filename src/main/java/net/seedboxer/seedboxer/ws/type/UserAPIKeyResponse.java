@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersDao.java
+ * APIKey.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,33 +18,35 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.core.persistence;
+package net.seedboxer.seedboxer.ws.type;
 
-import java.util.List;
-
-import net.seedboxer.seedboxer.core.domain.Status;
-import net.seedboxer.seedboxer.core.domain.User;
-import net.seedboxer.seedboxer.core.domain.UserConfiguration;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
-public interface UsersDao {
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+@XmlRootElement(name="response")
+public class UserAPIKeyResponse extends Response {
 
-	boolean isValidUser(String username, String password);
+	private String apiKey;
 
-	User get(String username);
+	public UserAPIKeyResponse() {
+		super();
+	}
 
-	User get(long userId);
+	public UserAPIKeyResponse(String apiKey) {
+		super();
+		this.apiKey = apiKey;
+	}
 
-	User getFromAPIKey(String apikey);
+	public String getApiKey() {
+		return apiKey;
+	}
 
-	void save(User user);
-
-	void saveUserConfig(long userId, UserConfiguration config);
-
-	List<UserConfiguration> getUserConfig(long userId);
-
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 
 }

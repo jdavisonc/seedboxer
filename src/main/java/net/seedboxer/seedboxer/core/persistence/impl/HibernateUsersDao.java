@@ -1,25 +1,25 @@
 /*******************************************************************************
  * HibernateUsersDao.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
- * 
+ *
  */
 package net.seedboxer.seedboxer.core.persistence.impl;
 
@@ -46,8 +46,8 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 	@Override
 	public boolean isValidUser(String username, String password) {
 		Query query = getCurrentSession().createQuery("select 1 from User where username = :username and password = MD5(:password)");
-		query.setParameter("username", username);
-		query.setParameter("password", password);
+		query.setString("username", username);
+		query.setString("password", password);
 		Integer result = (Integer) query.uniqueResult();
 		return (result != null && result == 1);
 	}
@@ -65,7 +65,14 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 	@Override
 	public User get(String username) {
 		Query query = getCurrentSession().createQuery("from User where username = :username");
-		query.setParameter("username", username);
+		query.setString("username", username);
+		return (User) query.uniqueResult();
+	}
+
+	@Override
+	public User getFromAPIKey(String apikey) {
+		Query query = getCurrentSession().createQuery("from User where apikey is not null and apikey = :apikey");
+		query.setString("apikey", apikey);
 		return (User) query.uniqueResult();
 	}
 
@@ -102,7 +109,7 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 	@Override
 	public List<User> getUserWithConfig(String configName) {
 		Query query = getCurrentSession().createQuery("select c.user from UserConfiguration c where c.name = :name");
-		query.setParameter("name", configName);
+		query.setString("name", configName);
 		return query.list();
 	}
 

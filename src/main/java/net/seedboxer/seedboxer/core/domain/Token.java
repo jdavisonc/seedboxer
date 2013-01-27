@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersDao.java
+ * Token.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,33 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.core.persistence;
+package net.seedboxer.seedboxer.core.domain;
 
-import java.util.List;
+import org.apache.commons.lang.RandomStringUtils;
 
-import net.seedboxer.seedboxer.core.domain.Status;
-import net.seedboxer.seedboxer.core.domain.User;
-import net.seedboxer.seedboxer.core.domain.UserConfiguration;
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+public class Token {
 
+	public static final int TOKEN_LENGTH = 8;
 
-public interface UsersDao {
+	public static String generate() {
+		return RandomStringUtils.randomAlphanumeric(TOKEN_LENGTH);
+	}
 
-	boolean isValidUser(String username, String password);
-
-	User get(String username);
-
-	User get(long userId);
-
-	User getFromAPIKey(String apikey);
-
-	void save(User user);
-
-	void saveUserConfig(long userId, UserConfiguration config);
-
-	List<UserConfiguration> getUserConfig(long userId);
-
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	public static boolean validate(String token) {
+		return (token != null) && (token.length() == TOKEN_LENGTH);
+	}
 
 }

@@ -1,20 +1,20 @@
 /*******************************************************************************
  * DownloadsService.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component;
 @Path("/downloads")
 @Component
 @Scope("request")
-public class DownloadsService {
+public class DownloadsService extends SeedBoxerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
 
@@ -73,10 +73,9 @@ public class DownloadsService {
 	@GET
 	@Path("/put")
 	@Produces({"application/xml", "application/json"})
-	public Response put(@QueryParam("username") String username,
-			@QueryParam("fileName") List<String> fileNames) {
+	public Response put(@QueryParam("fileName") List<String> fileNames) {
 		try {
-			controller.putToDownload(username, fileNames);
+			controller.putToDownload(getUser(), fileNames, true);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not put to download", e);
@@ -87,10 +86,9 @@ public class DownloadsService {
 	@GET
 	@Path("/delete")
 	@Produces({"application/xml", "application/json"})
-	public Response delete(@QueryParam("username") String username,
-			@QueryParam("downloadId") Integer downloadId) {
+	public Response delete(@QueryParam("downloadId") Integer downloadId) {
 		try {
-			controller.deleteDownloadInQueue(username, downloadId);
+			controller.deleteDownloadInQueue(getUser(), downloadId);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not delete download", e);
@@ -101,9 +99,9 @@ public class DownloadsService {
 	@GET
 	@Path("/queue")
 	@Produces({"application/xml", "application/json"})
-	public List<FileValue> queue(@QueryParam("username") String username) {
+	public List<FileValue> queue() {
 		try {
-			return controller.downloadsInQueue(username);
+			return controller.downloadsInQueue(getUser());
 		} catch (Exception e) {
 			LOGGER.error("Can not read queue", e);
 			return Collections.emptyList();
@@ -115,11 +113,9 @@ public class DownloadsService {
 	@Path("/update")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	public Response update(@QueryParam("username") String username,
-			List<FileValue> queueItems) {
-
+	public Response update(List<FileValue> queueItems) {
 		try {
-			controller.updateQueue(queueItems, username);
+			controller.updateQueue(getUser(), queueItems);
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not update queue", e);

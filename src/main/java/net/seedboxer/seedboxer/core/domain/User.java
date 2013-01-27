@@ -51,6 +51,8 @@ public class User {
 
 	private boolean admin;
 
+	private String apiKey;
+
 	public long getId() {
 		return id;
 	}
@@ -91,9 +93,17 @@ public class User {
 		this.admin = admin;
 	}
 
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apikey) {
+		this.apiKey = apikey;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", status=" + status + "]";
+		return "User [id=" + id + ", username=" + username + ", status=" + status + ", admin=" + Boolean.toString(admin) + "]";
 	}
 
 }

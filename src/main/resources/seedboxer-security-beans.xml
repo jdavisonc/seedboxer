@@ -27,6 +27,7 @@
 <!-- 		<sec:intercept-url pattern="/webservices/timeoftheday/asxml/**" access="hasRole('admin')" /> -->
 <!-- 		<sec:intercept-url pattern="/webservices/timeoftheday/asjson/**" access="hasAnyRole('admin','customer')" /> -->
 		<sec:http-basic />
+		<sec:custom-filter ref="authenticationAPIKeyFilter" after="BASIC_AUTH_FILTER" />
 	</sec:http>
 
 </beans>

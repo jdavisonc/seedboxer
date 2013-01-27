@@ -20,15 +20,10 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import net.seedboxer.seedboxer.core.domain.User;
 import net.seedboxer.seedboxer.core.logic.UsersController;
-import net.seedboxer.seedboxer.ws.security.SeedBoxerGrantedAuthority.SeedBoxerAuthority;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,15 +47,18 @@ public class SeedBoxerUDS implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			User u = userController.getUser(username);
-			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			authorities.add(new SeedBoxerGrantedAuthority(SeedBoxerAuthority.LEECHER));
-			if (u.isAdmin()) {
-				authorities.add(new SeedBoxerGrantedAuthority(SeedBoxerAuthority.ADMIN));
-			}
-
-			return new org.springframework.security.core.userdetails.User(username, u.getPassword(), authorities);
+			return new SeedBoxerUserDetails(u);
 		} catch (IllegalArgumentException e) {
 			throw new UsernameNotFoundException("User "+username+" not found", e);
+		}
+	}
+
+	public UserDetails loadUserByAPIKey(String apikey) throws UsernameNotFoundException {
+		try {
+			User u = userController.getUserFromAPIKey(apikey);
+			return new SeedBoxerUserDetails(u);
+		} catch (IllegalArgumentException e) {
+			throw new UsernameNotFoundException("User with APIKey '"+apikey+"' not found", e);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersDao.java
+ * UserStatus.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,33 +18,49 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.core.persistence;
+package net.seedboxer.seedboxer.ws.type;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import net.seedboxer.seedboxer.core.domain.Status;
-import net.seedboxer.seedboxer.core.domain.User;
-import net.seedboxer.seedboxer.core.domain.UserConfiguration;
+import net.seedboxer.seedboxer.core.type.Download;
 
 
-public interface UsersDao {
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+@XmlRootElement(name="response")
+public class UserStatusResponse extends Response {
 
-	boolean isValidUser(String username, String password);
+	private Status downloadStatus;
 
-	User get(String username);
+	private Download download;
 
-	User get(long userId);
+	public UserStatusResponse() {
+		downloadStatus = Status.STARTED;
+		download = null;
+	}
 
-	User getFromAPIKey(String apikey);
+	public UserStatusResponse(Status status, Download download) {
+		downloadStatus = status;
+		this.download = download;
+	}
 
-	void save(User user);
+	public Status getDownloadStatus() {
+		return downloadStatus;
+	}
 
-	void saveUserConfig(long userId, UserConfiguration config);
+	public Download getDownload() {
+		return download;
+	}
 
-	List<UserConfiguration> getUserConfig(long userId);
+	public void setDownloadStatus(Status status) {
+		downloadStatus = status;
+	}
 
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	public void setDownload(Download download) {
+		this.download = download;
+	}
 
 }

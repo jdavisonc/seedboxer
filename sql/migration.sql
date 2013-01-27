@@ -3,3 +3,4 @@ update `seedboxer`.`users_configs` set name = 'NotificationEmail' where name = '
 
 
 ALTER TABLE  `seedboxer`.`users` ADD  `admin` BOOLEAN NOT NULL AFTER  `password`;
+ALTER TABLE  `seedboxer`.`users` ADD  `apikey` VARCHAR(15) NOT NULL AFTER `admin`;

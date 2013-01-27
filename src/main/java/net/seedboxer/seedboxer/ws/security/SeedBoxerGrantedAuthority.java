@@ -45,4 +45,27 @@ public class SeedBoxerGrantedAuthority implements GrantedAuthority {
 		return authority.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((authority == null) ? 0 : authority.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SeedBoxerGrantedAuthority other = (SeedBoxerGrantedAuthority) obj;
+		if (authority != other.authority)
+			return false;
+		return true;
+	}
+
 }

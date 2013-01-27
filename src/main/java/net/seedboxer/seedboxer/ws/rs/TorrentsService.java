@@ -1,20 +1,20 @@
 /*******************************************************************************
  * TorrentsService.java
- * 
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -48,7 +48,7 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/torrents")
 @Component
 @Scope("request")
-public class TorrentsService {
+public class TorrentsService extends SeedBoxerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsService.class);
 
@@ -60,11 +60,10 @@ public class TorrentsService {
 	@Produces("text/xml")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail,
-			@FormDataParam("username") String username) {
+			@FormDataParam("file") FormDataContentDisposition fileDetail) {
 		try {
 			if (fileDetail.getFileName().endsWith(".torrent")) {
-				controller.addTorrent(username, fileDetail.getFileName(), uploadedInputStream);
+				controller.addTorrent(getUser(), fileDetail.getFileName(), uploadedInputStream);
 				return Response.createSuccessfulResponse();
 			} else {
 				return Response.createErrorResponse("Wrong file type, only accept .torrent files");

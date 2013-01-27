@@ -1,66 +1,46 @@
 /*******************************************************************************
- * UserStatus.java
- * 
+ * AuthenticationAPIKeyEntryPoint.java
+ *
  * Copyright (c) 2012 SeedBoxer Team.
- * 
+ *
  * This file is part of SeedBoxer.
- * 
+ *
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.ws.type;
+package net.seedboxer.seedboxer.ws.security;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
 
-import net.seedboxer.seedboxer.core.domain.Status;
-import net.seedboxer.seedboxer.core.type.Download;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@XmlRootElement(name="user")
-public class UserStatus {
+@Component
+public class AuthenticationAPIKeyEntryPoint implements AuthenticationEntryPoint {
 
-	private Status status;
-
-	private Download download;
-
-	public UserStatus() {
-		status = Status.STARTED;
-		download = null;
-	}
-
-	public UserStatus(Status status, Download download) {
-		this.status = status;
-		this.download = download;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public Download getDownload() {
-		return download;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public void setDownload(Download download) {
-		this.download = download;
-	}
+	@Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+            AuthenticationException authException) throws IOException, ServletException {
+        response.sendError( HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+    }
 
 }

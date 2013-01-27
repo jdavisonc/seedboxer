@@ -25,6 +25,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import net.seedboxer.seedboxer.core.domain.Configuration;
+import net.seedboxer.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.seedboxer.core.logic.UsersController;
 import net.seedboxer.seedboxer.ws.type.Response;
 
@@ -43,7 +45,7 @@ import org.springframework.stereotype.Component;
 @Path("/registerDevice")
 @Component
 @Scope("request")
-public class GCMService {
+public class GCMService extends SeedBoxerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GCMService.class);
 
@@ -52,10 +54,9 @@ public class GCMService {
 
 	@GET
 	@Produces("text/xml")
-	public Response registerDevice(@QueryParam("username") String username,
-			@QueryParam("registrationId") String registrationId) {
+	public Response registerDevice(@QueryParam("registrationId") String registrationId) {
 		try {
-			controller.registerDevice(username, registrationId);
+			controller.saveUserConf(getUser(), new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
 			return Response.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Error registering device", e);

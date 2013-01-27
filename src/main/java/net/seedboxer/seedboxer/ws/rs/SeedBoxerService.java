@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersDao.java
+ * SeedBoxerService.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,33 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedboxer.core.persistence;
+package net.seedboxer.seedboxer.ws.rs;
 
-import java.util.List;
-
-import net.seedboxer.seedboxer.core.domain.Status;
 import net.seedboxer.seedboxer.core.domain.User;
-import net.seedboxer.seedboxer.core.domain.UserConfiguration;
+import net.seedboxer.seedboxer.ws.security.SeedBoxerUserDetails;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 
-public interface UsersDao {
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+public abstract class SeedBoxerService {
 
-	boolean isValidUser(String username, String password);
-
-	User get(String username);
-
-	User get(long userId);
-
-	User getFromAPIKey(String apikey);
-
-	void save(User user);
-
-	void saveUserConfig(long userId, UserConfiguration config);
-
-	List<UserConfiguration> getUserConfig(long userId);
-
-	List<User> getUserWithConfig(String configName);
-
-	List<User> getUsersByStatus(Status status);
+	protected User getUser() {
+		SeedBoxerUserDetails ud = (SeedBoxerUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ud.getUser();
+	}
 
 }

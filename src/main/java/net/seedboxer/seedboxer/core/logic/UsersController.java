@@ -22,8 +22,8 @@ package net.seedboxer.seedboxer.core.logic;
 
 import java.util.List;
 
-import net.seedboxer.seedboxer.core.domain.Configuration;
 import net.seedboxer.seedboxer.core.domain.Status;
+import net.seedboxer.seedboxer.core.domain.Token;
 import net.seedboxer.seedboxer.core.domain.User;
 import net.seedboxer.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.seedboxer.core.persistence.UsersDao;
@@ -42,13 +42,8 @@ public class UsersController {
 	@Autowired
 	private UsersDao usersDao;
 
-	public void registerDevice(String username, String registrationId) {
-		User user = usersDao.get(username);
-		if (user != null) {
-			usersDao.saveUserConfig(user.getId(), new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
-		} else {
-			throw new IllegalArgumentException("Username doesn't exist");
-		}
+	public void saveUserConf(User user, UserConfiguration userConf) {
+		usersDao.saveUserConfig(user.getId(), userConf);
 	}
 
 	public User getUser(String username) {
@@ -75,8 +70,7 @@ public class UsersController {
 		return usersDao.getUserConfig(userId);
 	}
 
-	public boolean setUserStatus(String username, Status newStatus) {
-		User user = getUser(username);
+	public boolean setUserStatus(User user, Status newStatus) {
 		if (!newStatus.equals(user.getStatus())) {
 			user.setStatus(newStatus);
 			usersDao.save(user);
@@ -84,6 +78,22 @@ public class UsersController {
 		} else {
 			return false;
 		}
+	}
+
+	public User getUserFromAPIKey(String apikey) {
+		User user = usersDao.getFromAPIKey(apikey);
+		if (user == null) {
+			throw new IllegalArgumentException("Username doesn't exist");
+		}
+		return user;
+	}
+
+	public User generateAPIKey(User user) {
+		if (user.getApiKey() == null) {
+			user.setApiKey(Token.generate());
+			usersDao.save(user);
+		}
+		return user;
 	}
 
 }

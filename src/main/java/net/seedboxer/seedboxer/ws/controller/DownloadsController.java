@@ -38,7 +38,7 @@ import net.seedboxer.seedboxer.core.logic.UsersController;
 import net.seedboxer.seedboxer.core.type.Download;
 import net.seedboxer.seedboxer.core.type.FileValue;
 import net.seedboxer.seedboxer.core.util.FileUtils;
-import net.seedboxer.seedboxer.ws.type.UserStatus;
+import net.seedboxer.seedboxer.ws.type.UserStatusResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,15 +81,11 @@ public class DownloadsController {
 	/**
 	 * Add a download to the user queue.
 	 *
-	 * @param username
+	 * @param user
 	 * @param fileNames
 	 * @throws Exception
 	 */
-	public void putToDownload(String username, List<String> fileNames) throws Exception {
-		putToDownload(getUser(username), fileNames, true);
-	}
-
-	private void putToDownload(User user, List<String> fileNames, boolean checkExistence) throws Exception {
+	public void putToDownload(User user, List<String> fileNames, boolean checkExistence) throws Exception {
 		for (String name : fileNames) {
 
 			File inProgressFile = FileUtils.getFile(name, inProgressPath);
@@ -112,8 +108,8 @@ public class DownloadsController {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<FileValue> downloadsInQueue(String username) throws Exception {
-		List<DownloadQueueItem> userQueue = downloadsQueueManager.userQueue(getUser(username));
+	public List<FileValue> downloadsInQueue(User user) throws Exception {
+		List<DownloadQueueItem> userQueue = downloadsQueueManager.userQueue(user);
 
 		List<FileValue> queue = new ArrayList<FileValue>();
 		for (DownloadQueueItem inQueue : userQueue) {
@@ -121,10 +117,6 @@ public class DownloadsController {
 			queue.add(new FileValue(withoutPrefixPath, inQueue.getId(),inQueue.getQueueOrder()));
 		}
 		return queue;
-	}
-
-	private User getUser(String username) {
-		return usersController.getUser(username);
 	}
 
 	/**
@@ -135,9 +127,7 @@ public class DownloadsController {
 	 * @param torrentFileInStream
 	 * @throws Exception
 	 */
-	public void addTorrent(String username, String fileName, final InputStream torrentFileInStream) throws Exception {
-		User user = getUser(username);
-
+	public void addTorrent(User user, String fileName, final InputStream torrentFileInStream) throws Exception {
 		String finalPath = watchDownloaderPath + File.separator + fileName;
 		File torrent = FileUtils.copyFile(torrentFileInStream, finalPath, true, true);
 
@@ -152,18 +142,17 @@ public class DownloadsController {
 	 * @param fileName
 	 * @return
 	 */
-	public void deleteDownloadInQueue(String username, long downloadId) {
-		downloadsQueueManager.remove(getUser(username), downloadId);
+	public void deleteDownloadInQueue(User user, long downloadId) {
+		downloadsQueueManager.remove(user, downloadId);
 	}
 
-	public UserStatus getUserStatus(String username) {
-		User user = getUser(username);
+	public UserStatusResponse getUserStatus(User user) {
 		Download download = downloadSessionManager.getDownload(user.getId());
-		return new UserStatus(user.getStatus(), download);
+		return new UserStatusResponse(user.getStatus(), download);
 	}
 
-	public void updateQueue(List<FileValue> queueItems, String username){
-		List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(getUser(username));
+	public void updateQueue(User user, List<FileValue> queueItems){
+		List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(user);
 		Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
 		for(FileValue queueItem : queueItems){
 			queueItemsMap.put(queueItem.getQueueId(), queueItem);
@@ -175,29 +164,32 @@ public class DownloadsController {
 		downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
 	}
 
-	public void stopDownloads(String username) {
-		boolean success = usersController.setUserStatus(username, Status.STOPPED);
+	public void stopDownloads(User user) {
+		boolean success = usersController.setUserStatus(user, Status.STOPPED);
 		if (success) {
-			User user = usersController.getUser(username);
 			try {
 				downloadSessionManager.abortDownloadSession(user.getId());
 				downloadsQueueManager.resetQueue(user);
-				LOGGER.info("Download stopped for user {}", username);
+				LOGGER.info("Download stopped for user {}", user.getUsername());
 			} catch (Exception e) {
-				LOGGER.info("Download stopped for user {}, but cannot abort current download", username, e);
+				LOGGER.info("Download stopped for user {}, but cannot abort current download", user.getUsername(), e);
 			}
 		} else {
-			LOGGER.info("Download already stopped for user {}", username);
+			LOGGER.info("Download already stopped for user {}", user.getUsername());
 		}
 	}
 
-	public void startDownloads(String username) {
-		boolean success = usersController.setUserStatus(username, Status.STARTED);
+	public void startDownloads(User user) {
+		boolean success = usersController.setUserStatus(user, Status.STARTED);
 		if (success) {
-			LOGGER.info("Download started for user {}", username);
+			LOGGER.info("Download started for user {}", user.getUsername());
 		} else {
-			LOGGER.info("Download already started for user {}", username);
+			LOGGER.info("Download already started for user {}", user.getUsername());
 		}
+	}
+
+	public User generateAPIKey(User user) {
+		return usersController.generateAPIKey(user);
 	}
 
 }
