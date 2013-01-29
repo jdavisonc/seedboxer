@@ -27,9 +27,9 @@ import javax.ws.rs.WebApplicationException;
 
 import net.seedboxer.seedboxer.core.domain.User;
 import net.seedboxer.seedboxer.ws.controller.DownloadsController;
-import net.seedboxer.seedboxer.ws.type.Response;
+import net.seedboxer.seedboxer.ws.type.APIResponse;
 import net.seedboxer.seedboxer.ws.type.UserAPIKeyResponse;
-import net.seedboxer.seedboxer.ws.type.UserStatusResponse;
+import net.seedboxer.seedboxer.ws.type.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +47,9 @@ import org.springframework.stereotype.Component;
 @Path("/")
 @Component
 @Scope("request")
-public class UserService extends SeedBoxerService {
+public class UsersAPI extends SeedBoxerAPI {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UsersAPI.class);
 
 	@Autowired
 	private DownloadsController controller;
@@ -57,51 +57,51 @@ public class UserService extends SeedBoxerService {
 	@GET
 	@Path("/status")
 	@Produces({"application/xml", "application/json"})
-	public Response status() {
+	public APIResponse status() {
 		try {
 			return controller.getUserStatus(getUser());
 		} catch (Exception e) {
 			LOGGER.error("Wrong request", e);
-			return Response.createErrorResponse("Can not stop downloads");
+			return APIResponse.createErrorResponse("Can not stop downloads");
 		}
 	}
 
 	@GET
 	@Path("/stop")
 	@Produces({"application/xml", "application/json"})
-	public Response stop() {
+	public APIResponse stop() {
 		try {
 			controller.stopDownloads(getUser());
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not stop download in progress", e);
-			return Response.createErrorResponse("Can not stop downloads");
+			return APIResponse.createErrorResponse("Can not stop downloads");
 		}
 	}
 
 	@GET
 	@Path("/start")
 	@Produces({"application/xml", "application/json"})
-	public Response start() {
+	public APIResponse start() {
 		try {
 			controller.startDownloads(getUser());
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
-			return Response.createErrorResponse("Can not start download");
+			return APIResponse.createErrorResponse("Can not start download");
 		}
 	}
 
 	@GET
 	@Path("/apikey")
 	@Produces({"application/xml", "application/json"})
-	public Response apikey() {
+	public APIResponse apikey() {
 		try {
 			User user = controller.generateAPIKey(getUser());
-			return new UserAPIKeyResponse(user.getApiKey());
+			return new UserAPIKeyResponse(user.getApikey());
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
-			return Response.createErrorResponse("Can not start download");
+			return APIResponse.createErrorResponse("Can not start download");
 		}
 	}
 

@@ -51,7 +51,7 @@ public class User {
 
 	private boolean admin;
 
-	private String apiKey;
+	private String apikey;
 
 	public long getId() {
 		return id;
@@ -93,12 +93,12 @@ public class User {
 		this.admin = admin;
 	}
 
-	public String getApiKey() {
-		return apiKey;
+	public String getApikey() {
+		return apikey;
 	}
 
-	public void setApiKey(String apikey) {
-		this.apiKey = apikey;
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
 	}
 
 	@Override

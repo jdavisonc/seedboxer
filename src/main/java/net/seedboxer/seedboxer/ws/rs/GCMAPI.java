@@ -28,7 +28,7 @@ import javax.ws.rs.QueryParam;
 import net.seedboxer.seedboxer.core.domain.Configuration;
 import net.seedboxer.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.seedboxer.core.logic.UsersController;
-import net.seedboxer.seedboxer.ws.type.Response;
+import net.seedboxer.seedboxer.ws.type.APIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,22 +45,22 @@ import org.springframework.stereotype.Component;
 @Path("/registerDevice")
 @Component
 @Scope("request")
-public class GCMService extends SeedBoxerService {
+public class GCMAPI extends SeedBoxerAPI {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GCMService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GCMAPI.class);
 
 	@Autowired
 	private UsersController controller;
 
 	@GET
 	@Produces("text/xml")
-	public Response registerDevice(@QueryParam("registrationId") String registrationId) {
+	public APIResponse registerDevice(@QueryParam("registrationId") String registrationId) {
 		try {
 			controller.saveUserConf(getUser(), new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Error registering device", e);
-			return Response.createErrorResponse("The device can not be registered");
+			return APIResponse.createErrorResponse("The device can not be registered");
 		}
 	}
 

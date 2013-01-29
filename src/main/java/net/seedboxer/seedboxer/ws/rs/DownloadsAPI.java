@@ -32,7 +32,7 @@ import javax.ws.rs.QueryParam;
 
 import net.seedboxer.seedboxer.core.type.FileValue;
 import net.seedboxer.seedboxer.ws.controller.DownloadsController;
-import net.seedboxer.seedboxer.ws.type.Response;
+import net.seedboxer.seedboxer.ws.type.APIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,9 +49,9 @@ import org.springframework.stereotype.Component;
 @Path("/downloads")
 @Component
 @Scope("request")
-public class DownloadsService extends SeedBoxerService {
+public class DownloadsAPI extends SeedBoxerAPI {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsAPI.class);
 
 	@Autowired
 	private DownloadsController controller;
@@ -73,26 +73,26 @@ public class DownloadsService extends SeedBoxerService {
 	@GET
 	@Path("/put")
 	@Produces({"application/xml", "application/json"})
-	public Response put(@QueryParam("fileName") List<String> fileNames) {
+	public APIResponse put(@QueryParam("fileName") List<String> fileNames) {
 		try {
 			controller.putToDownload(getUser(), fileNames, true);
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not put to download", e);
-			return Response.createErrorResponse("Can not put to download");
+			return APIResponse.createErrorResponse("Can not put to download");
 		}
 	}
 
 	@GET
 	@Path("/delete")
 	@Produces({"application/xml", "application/json"})
-	public Response delete(@QueryParam("downloadId") Integer downloadId) {
+	public APIResponse delete(@QueryParam("downloadId") Integer downloadId) {
 		try {
 			controller.deleteDownloadInQueue(getUser(), downloadId);
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not delete download", e);
-			return Response.createErrorResponse("Can not delete download from queue");
+			return APIResponse.createErrorResponse("Can not delete download from queue");
 		}
 	}
 
@@ -113,13 +113,13 @@ public class DownloadsService extends SeedBoxerService {
 	@Path("/update")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	public Response update(List<FileValue> queueItems) {
+	public APIResponse update(List<FileValue> queueItems) {
 		try {
 			controller.updateQueue(getUser(), queueItems);
-			return Response.createSuccessfulResponse();
+			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not update queue", e);
-			return Response.createErrorResponse("Can not update queue");
+			return APIResponse.createErrorResponse("Can not update queue");
 		}
 	}
 

@@ -29,7 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Jorge Davison (jdavisonc)
  *
  */
-public abstract class SeedBoxerService {
+public abstract class SeedBoxerAPI {
 
 	protected User getUser() {
 		SeedBoxerUserDetails ud = (SeedBoxerUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

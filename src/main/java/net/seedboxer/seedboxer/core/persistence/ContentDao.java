@@ -35,6 +35,11 @@ public interface ContentDao {
 
 	void save(Content content);
 
+	/**
+	 * Returns all the content of a user that <b>is not history</b>
+	 * @param user
+	 * @return
+	 */
 	List<Content> getAllContent(User user);
 
 	<T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory);

@@ -52,6 +52,7 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	@Override
 	public List<Content> getAllContent(User user) {
 		Criteria criteria = getCurrentSession().createCriteria(Content.class);
+		criteria.add(Restrictions.eq("history", false));
 		criteria.add(Restrictions.eq("user", user));
 		return criteria.list();
 	}

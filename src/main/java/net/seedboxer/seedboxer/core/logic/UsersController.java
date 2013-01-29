@@ -89,8 +89,8 @@ public class UsersController {
 	}
 
 	public User generateAPIKey(User user) {
-		if (user.getApiKey() == null) {
-			user.setApiKey(Token.generate());
+		if (user.getApikey() == null) {
+			user.setApikey(Token.generate());
 			usersDao.save(user);
 		}
 		return user;

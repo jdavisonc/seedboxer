@@ -28,25 +28,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name="response")
-public class UserAPIKeyResponse extends Response {
+public class UserAPIKeyResponse extends APIResponse {
 
-	private String apiKey;
+	private String apikey;
 
 	public UserAPIKeyResponse() {
 		super();
 	}
 
-	public UserAPIKeyResponse(String apiKey) {
+	public UserAPIKeyResponse(String apikey) {
 		super();
-		this.apiKey = apiKey;
+		this.apikey = apikey;
 	}
 
 	public String getApiKey() {
-		return apiKey;
+		return apikey;
 	}
 
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
+	public void setApiKey(String apikey) {
+		this.apikey = apikey;
 	}
 
 }

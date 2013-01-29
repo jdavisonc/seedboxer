@@ -31,18 +31,18 @@ import net.seedboxer.seedboxer.core.type.Download;
  *
  */
 @XmlRootElement(name="response")
-public class UserStatusResponse extends Response {
+public class UserStatusAPIResponse extends APIResponse {
 
 	private Status downloadStatus;
 
 	private Download download;
 
-	public UserStatusResponse() {
+	public UserStatusAPIResponse() {
 		downloadStatus = Status.STARTED;
 		download = null;
 	}
 
-	public UserStatusResponse(Status status, Download download) {
+	public UserStatusAPIResponse(Status status, Download download) {
 		downloadStatus = status;
 		this.download = download;
 	}

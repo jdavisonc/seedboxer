@@ -38,7 +38,7 @@ import net.seedboxer.seedboxer.core.logic.UsersController;
 import net.seedboxer.seedboxer.core.type.Download;
 import net.seedboxer.seedboxer.core.type.FileValue;
 import net.seedboxer.seedboxer.core.util.FileUtils;
-import net.seedboxer.seedboxer.ws.type.UserStatusResponse;
+import net.seedboxer.seedboxer.ws.type.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,9 +146,9 @@ public class DownloadsController {
 		downloadsQueueManager.remove(user, downloadId);
 	}
 
-	public UserStatusResponse getUserStatus(User user) {
+	public UserStatusAPIResponse getUserStatus(User user) {
 		Download download = downloadSessionManager.getDownload(user.getId());
-		return new UserStatusResponse(user.getStatus(), download);
+		return new UserStatusAPIResponse(user.getStatus(), download);
 	}
 
 	public void updateQueue(User user, List<FileValue> queueItems){

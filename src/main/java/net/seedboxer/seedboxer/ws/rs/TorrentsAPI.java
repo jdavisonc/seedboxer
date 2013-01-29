@@ -29,7 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import net.seedboxer.seedboxer.ws.controller.DownloadsController;
-import net.seedboxer.seedboxer.ws.type.Response;
+import net.seedboxer.seedboxer.ws.type.APIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,9 +48,9 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/torrents")
 @Component
 @Scope("request")
-public class TorrentsService extends SeedBoxerService {
+public class TorrentsAPI extends SeedBoxerAPI {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsAPI.class);
 
 	@Autowired
 	private DownloadsController controller;
@@ -59,18 +59,18 @@ public class TorrentsService extends SeedBoxerService {
 	@Path("/add")
 	@Produces("text/xml")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
+	public APIResponse addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDetail) {
 		try {
 			if (fileDetail.getFileName().endsWith(".torrent")) {
 				controller.addTorrent(getUser(), fileDetail.getFileName(), uploadedInputStream);
-				return Response.createSuccessfulResponse();
+				return APIResponse.createSuccessfulResponse();
 			} else {
-				return Response.createErrorResponse("Wrong file type, only accept .torrent files");
+				return APIResponse.createErrorResponse("Wrong file type, only accept .torrent files");
 			}
 		} catch (Exception e) {
 			LOGGER.error("Can not read list of downloads", e);
-			return Response.createErrorResponse("Can not put to download");
+			return APIResponse.createErrorResponse("Can not put to download");
 		}
 	}
 

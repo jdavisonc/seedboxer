@@ -23,17 +23,17 @@ package net.seedboxer.seedboxer.ws.type;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="response")
-public class Response {
+public class APIResponse {
 
-	public enum ResponseStatus { OK, ERROR; }
+	public enum ResponseStatus { SUCCESS, FAILURE; }
 
 	private String message;
 
 	private ResponseStatus status;
 
-	public Response() { }
+	public APIResponse() { }
 
-	public Response(String message, ResponseStatus status) {
+	public APIResponse(String message, ResponseStatus status) {
 		this.message = message;
 		this.status = status;
 	}
@@ -54,16 +54,16 @@ public class Response {
 		this.status = status;
 	}
 
-	public static Response createSuccessfulResponse(String message) {
-		return new Response(message, ResponseStatus.OK);
+	public static APIResponse createSuccessfulResponse(String message) {
+		return new APIResponse(message, ResponseStatus.SUCCESS);
 	}
 
-	public static Response createSuccessfulResponse() {
+	public static APIResponse createSuccessfulResponse() {
 		return createSuccessfulResponse(null);
 	}
 
-	public static Response createErrorResponse(String message) {
-		return new Response(message, ResponseStatus.ERROR);
+	public static APIResponse createErrorResponse(String message) {
+		return new APIResponse(message, ResponseStatus.FAILURE);
 	}
 
 }
