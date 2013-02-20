@@ -72,3 +72,62 @@ GET /downloads/list{?apikey}
         "downloaded": false
     }
 ]
+
+Enqueue a download for the user
+GET /downloads/put{?downloadName}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Delete a user download from the queue
+GET /downloads/delete{?downloadId}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Show the queue of the given user
+GET /downloads/queue
+< 200
+< Accept: application/json
+< Content-Type: application/json
+[
+    {
+        "name": "Black_Mirror.2x02.White_Bear.HDTV_x264-FoV",
+        "order": 1,
+        "queueId": 1858,
+        "downloaded": false
+    }
+]
+
+-- Torrents Resources --
+Add a torrent to watch directory and enqueue the download for the user
+POST /torrents/add
+{
+    file
+}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+-- GCM Resources --
+Register a Android device to receive notifications
+GET /registerDevice{?deviceId,registrationId}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
