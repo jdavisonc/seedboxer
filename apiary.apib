@@ -13,7 +13,7 @@ Users Resources
 The following is a section of resources related to the users
 --
 Show the download status for the given user
-GET /status{?apikey}
+GET /webservices/status{?apikey}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -29,7 +29,7 @@ GET /status{?apikey}
 }
 
 Start the downloads for the user
-GET /start{?apikey}
+GET /webservices/start{?apikey}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -39,7 +39,7 @@ GET /start{?apikey}
 }
 
 Stop the downloads for the user
-GET /stop{?apikey}
+GET /webservices/stop{?apikey}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -49,7 +49,7 @@ GET /stop{?apikey}
 }
 
 Returns the apikey for the user
-GET /apikey
+GET /webservices/apikey
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -62,7 +62,7 @@ GET /apikey
 
 -- Downloads Resources --
 List all available downloads on the server (complete and in progress folder)
-GET /downloads/list{?apikey}
+GET /webservices/downloads/list{?apikey}
 < 200
 [
     {
@@ -74,7 +74,7 @@ GET /downloads/list{?apikey}
 ]
 
 Enqueue a download for the user
-GET /downloads/put{?downloadName}
+GET /webservices/downloads/put{?downloadName}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -84,7 +84,7 @@ GET /downloads/put{?downloadName}
 }
 
 Delete a user download from the queue
-GET /downloads/delete{?downloadId}
+GET /webservices/downloads/delete{?downloadId}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -94,7 +94,7 @@ GET /downloads/delete{?downloadId}
 }
 
 Show the queue of the given user
-GET /downloads/queue
+GET /webservices/downloads/queue
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -109,7 +109,7 @@ GET /downloads/queue
 
 -- Torrents Resources --
 Add a torrent to watch directory and enqueue the download for the user
-POST /torrents/add
+POST /webservices/torrents/add
 {
     file
 }
@@ -123,7 +123,7 @@ POST /torrents/add
 
 -- GCM Resources --
 Register a Android device to receive notifications
-GET /registerDevice{?deviceId,registrationId}
+GET /webservices/registerDevice{?deviceId,registrationId}
 < 200
 < Accept: application/json
 < Content-Type: application/json
