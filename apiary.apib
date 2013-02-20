@@ -13,7 +13,7 @@ Users Resources
 The following is a section of resources related to the users
 --
 Show the download status for the given user
-GET /status?apikey={apikey}
+GET /status{?apikey}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -28,8 +28,8 @@ GET /status?apikey={apikey}
     "status": null
 }
 
-Save new products in your shopping cart
-GET /start?apikey={apikey}
+Start the downloads for the user
+GET /start{?apikey}
 < 200
 < Accept: application/json
 < Content-Type: application/json
@@ -38,10 +38,31 @@ GET /start?apikey={apikey}
     "status": "SUCCESS"
 }
 
+Stop the downloads for the user
+GET /stop{?apikey}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Returns the apikey for the user
+GET /apikey
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "apiKey": "hja123d",
+    "message": null,
+    "status": null
+}
+
 
 -- Downloads Resources --
 List all available downloads on the server (complete and in progress folder)
-GET /downloads/list?apikey={apikey}
+GET /downloads/list{?apikey}
 < 200
 [
     {
