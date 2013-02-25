@@ -18,7 +18,7 @@ public class GCMController {
 	@Value("${gcm.auth.key}")
 	private String gcmAuthKey;
 	
-	@Value("${gcm.project.id}")
+	@Value("${gcm.project}")
 	private String projectId;
 	
 	@Autowired
