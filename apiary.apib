@@ -1,0 +1,133 @@
+
+--- SeedBoxer API v2.1 ---
+---
+Welcome to the SeedBoxer API documentation.
+
+SeedBoxer is a distribution content system based on users queues and filters. It was designed to be hosted inside a Seed Box, a remote server used to download and share content through the Internet. SeedBoxer was created to work with downloads managers like rtorrent, utorrent, trasmission. This managers need to be configured to use watch, in progress and complete folders.
+
+Check our page http://seedboxer.net or the https://github.com/seedboxer/seedboxer/wiki.
+---
+
+--
+Users Resources
+The following is a section of resources related to the users
+--
+Show the download status for the given user
+GET /webservices/status{?apikey}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "download": {
+        "size": 15016,
+        "fileName": "Homeland.S01.720p.HDTV.x264",
+        "transferred": 9029
+    },
+    "downloadStatus": "STARTED",
+    "message": null,
+    "status": null
+}
+
+Start the downloads for the user
+GET /webservices/start{?apikey}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Stop the downloads for the user
+GET /webservices/stop{?apikey}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Returns the apikey for the user
+GET /webservices/apikey
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "apiKey": "hja123d",
+    "message": null,
+    "status": null
+}
+
+
+-- Downloads Resources --
+List all available downloads on the server (complete and in progress folder)
+GET /webservices/downloads/list{?apikey}
+< 200
+[
+    {
+        "name": "Go.On.S01E14.720p.HDTV.X264-DIMENSION",
+        "order": 0,
+        "queueId": null,
+        "downloaded": false
+    }
+]
+
+Enqueue a download for the user
+GET /webservices/downloads/put{?downloadName}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Delete a user download from the queue
+GET /webservices/downloads/delete{?downloadId}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+Show the queue of the given user
+GET /webservices/downloads/queue
+< 200
+< Accept: application/json
+< Content-Type: application/json
+[
+    {
+        "name": "Black_Mirror.2x02.White_Bear.HDTV_x264-FoV",
+        "order": 1,
+        "queueId": 1858,
+        "downloaded": false
+    }
+]
+
+-- Torrents Resources --
+Add a torrent to watch directory and enqueue the download for the user
+POST /webservices/torrents/add
+{
+    file
+}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
+
+-- GCM Resources --
+Register a Android device to receive notifications
+GET /webservices/registerDevice{?deviceId,registrationId}
+< 200
+< Accept: application/json
+< Content-Type: application/json
+{
+    "message": null,
+    "status": "SUCCESS"
+}
