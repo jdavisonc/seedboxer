@@ -23,13 +23,11 @@ package net.seedboxer.seedboxer.ws.rs;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 
 import net.seedboxer.seedboxer.core.domain.User;
 import net.seedboxer.seedboxer.ws.controller.DownloadsController;
 import net.seedboxer.seedboxer.ws.type.APIResponse;
 import net.seedboxer.seedboxer.ws.type.UserAPIKeyResponse;
-import net.seedboxer.seedboxer.ws.type.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +42,7 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/")
+@Path("/users")
 @Component
 @Scope("request")
 public class UsersAPI extends SeedBoxerAPI {

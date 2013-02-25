@@ -98,6 +98,16 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 		getCurrentSession().save(fromDb);
 	}
+	
+	@Override
+	public void deleteUserConfig(long userId, String name) {
+		Query query = getCurrentSession().createQuery("from UserConfiguration where user.id = :userId and name = :name");
+		query.setParameter("userId", userId);
+		query.setParameter("name", name);
+		if (query.uniqueResult() != null) {
+			getCurrentSession().delete(query.uniqueResult());
+		}
+	}
 
 	@Override
 	public List<UserConfiguration> getUserConfig(long userId) {
