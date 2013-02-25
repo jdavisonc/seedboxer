@@ -45,6 +45,10 @@ public class UsersController {
 	public void saveUserConf(User user, UserConfiguration userConf) {
 		usersDao.saveUserConfig(user.getId(), userConf);
 	}
+	
+	public void deleteUserConf(User user, String name) {
+		usersDao.deleteUserConfig(user.getId(), name);
+	}
 
 	public User getUser(String username) {
 		User user = usersDao.get(username);

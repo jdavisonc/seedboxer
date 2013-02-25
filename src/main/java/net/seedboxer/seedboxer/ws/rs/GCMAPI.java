@@ -25,9 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import net.seedboxer.seedboxer.core.domain.Configuration;
-import net.seedboxer.seedboxer.core.domain.UserConfiguration;
-import net.seedboxer.seedboxer.core.logic.UsersController;
+import net.seedboxer.seedboxer.core.logic.GCMController;
 import net.seedboxer.seedboxer.ws.type.APIResponse;
 
 import org.slf4j.Logger;
@@ -42,7 +40,7 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/registerDevice")
+@Path("/gcm")
 @Component
 @Scope("request")
 public class GCMAPI extends SeedBoxerAPI {
@@ -50,17 +48,44 @@ public class GCMAPI extends SeedBoxerAPI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GCMAPI.class);
 
 	@Autowired
-	private UsersController controller;
+	private GCMController controller;
 
 	@GET
-	@Produces("text/xml")
+	@Path("/registerDevice")
+	@Produces({"application/xml", "application/json" })
 	public APIResponse registerDevice(@QueryParam("registrationId") String registrationId) {
 		try {
-			controller.saveUserConf(getUser(), new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
+			controller.registerDevice(getUser(), registrationId);
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Error registering device", e);
 			return APIResponse.createErrorResponse("The device can not be registered");
+		}
+	}
+	
+	@GET
+	@Path("/unregisterDevice")
+	@Produces({"application/xml", "application/json" })
+	public APIResponse unregisterDevice(@QueryParam("registrationId") String registrationId) {
+		try {
+			controller.unregisterDevice(getUser(), registrationId);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Error registering device", e);
+			return APIResponse.createErrorResponse("The device can not be registered");
+		}
+	}
+	
+	@GET
+	@Path("/projectId")
+	@Produces({"application/xml", "application/json" })
+	public APIResponse projectId() {
+		try {
+			controller.getProjectId();
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Error returning GCM project identifier", e);
+			return APIResponse.createErrorResponse("The isnt a GCM project identifier configured");
 		}
 	}
 

@@ -47,4 +47,6 @@ public interface UsersDao {
 
 	List<User> getUsersByStatus(Status status);
 
+	void deleteUserConfig(long id, String userConf);
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UserAPIKeyResponse.java
+ * GCMProjectIdResponse.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -28,25 +28,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name="response")
-public class UserAPIKeyResponse extends APIResponse {
+public class GCMProjectIdResponse extends APIResponse {
 
-	private String apikey;
+	private String projectId;
 
-	public UserAPIKeyResponse() {
+	public GCMProjectIdResponse() {
 		super();
 	}
 
-	public UserAPIKeyResponse(String apikey) {
+	public GCMProjectIdResponse(String apikey) {
 		super();
-		this.apikey = apikey;
+		this.projectId = apikey;
 	}
 
-	public String getApiKey() {
-		return apikey;
+	public String getProjectId() {
+		return projectId;
 	}
 
-	public void setApiKey(String apikey) {
-		this.apikey = apikey;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 
 }

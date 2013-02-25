@@ -79,10 +79,6 @@
 		    <id>gcm-server-repository</id>
 		    <url>https://raw.github.com/slorber/gcm-server-repository/master/releases/</url>
 		</repository>
-		<repository>
-			<id>sonatype-nexus-group</id>
-			<url>https://oss.sonatype.org/content/groups/staging/</url>
-		</repository>
 	</repositories>
 
 	<properties>
@@ -566,6 +562,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-maven-plugin</artifactId>
+				<version>1.7</version>
 			</plugin>
 		</plugins>
 	</build>

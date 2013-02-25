@@ -26,11 +26,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import net.seedboxer.seedboxer.core.domain.Configuration;
+import net.seedboxer.seedboxer.core.logic.GCMController;
 
 import org.apache.camel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.android.gcm.server.Sender;
@@ -42,20 +43,16 @@ import com.google.android.gcm.server.Sender;
 @Component(value = "gcmNotification")
 public class GCMNotification extends Notification {
 
-	private static final int RETRIES = 5;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(GCMNotification.class);
 
-	@Value("${gcm.auth.key}")
-	private String gcmAuthKey;
+	@Autowired
+	private GCMController gcmController;
 
 	private Sender sender = null;
 
 	@PostConstruct
 	private void init() {
-		if (gcmAuthKey != null) {
-			sender = new Sender(gcmAuthKey);
-		}
+		sender = gcmController.createSender();
 	}
 
 	@Override
@@ -82,7 +79,7 @@ public class GCMNotification extends Notification {
 				LOGGER.error("GCM Notification failed, device not registered for the user");
 				return ;
 			}
-			sender.send(createPushNotification(success, name), registrationId, RETRIES);
+			sender.send(createPushNotification(success, name), registrationId, GCMController.RETRIES);
 		} catch (IOException e) {
 			LOGGER.error("Error sending notification to device", e);
 		}
