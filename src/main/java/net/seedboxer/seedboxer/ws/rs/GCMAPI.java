@@ -27,6 +27,7 @@ import javax.ws.rs.QueryParam;
 
 import net.seedboxer.seedboxer.core.logic.GCMController;
 import net.seedboxer.seedboxer.ws.type.APIResponse;
+import net.seedboxer.seedboxer.ws.type.GCMProjectIdResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,8 +82,8 @@ public class GCMAPI extends SeedBoxerAPI {
 	@Produces({"application/xml", "application/json" })
 	public APIResponse projectId() {
 		try {
-			controller.getProjectId();
-			return APIResponse.createSuccessfulResponse();
+			String projectId = controller.getProjectId();
+			return new GCMProjectIdResponse(projectId);
 		} catch (Exception e) {
 			LOGGER.error("Error returning GCM project identifier", e);
 			return APIResponse.createErrorResponse("The isnt a GCM project identifier configured");

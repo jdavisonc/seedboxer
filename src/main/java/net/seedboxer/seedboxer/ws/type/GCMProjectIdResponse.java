@@ -36,9 +36,9 @@ public class GCMProjectIdResponse extends APIResponse {
 		super();
 	}
 
-	public GCMProjectIdResponse(String apikey) {
+	public GCMProjectIdResponse(String projectId) {
 		super();
-		this.projectId = apikey;
+		this.projectId = projectId;
 	}
 
 	public String getProjectId() {

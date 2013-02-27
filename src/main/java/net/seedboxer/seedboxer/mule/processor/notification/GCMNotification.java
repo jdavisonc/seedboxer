@@ -23,8 +23,6 @@ package net.seedboxer.seedboxer.mule.processor.notification;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import net.seedboxer.seedboxer.core.domain.Configuration;
 import net.seedboxer.seedboxer.core.logic.GCMController;
 
@@ -33,8 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.android.gcm.server.Sender;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -48,13 +44,6 @@ public class GCMNotification extends Notification {
 	@Autowired
 	private GCMController gcmController;
 
-	private Sender sender = null;
-
-	@PostConstruct
-	private void init() {
-		sender = gcmController.createSender();
-	}
-
 	@Override
 	protected void processSuccessNotification(Message msg) {
 		sendMessage(msg, "OK");
@@ -67,11 +56,6 @@ public class GCMNotification extends Notification {
 
 	@SuppressWarnings("unchecked")
 	private void sendMessage(Message msg, String success) {
-		if (sender == null) {
-			LOGGER.error("GCM Notification failed, key doesn't provided");
-			return ;
-		}
-
 		String registrationId = (String) msg.getHeader(Configuration.NOTIFICATION_GCM_REGISTRATIONID);
 		String name = ((List<String>) msg.getHeader(Configuration.FILES_NAME)).get(0);
 		try {
@@ -79,7 +63,7 @@ public class GCMNotification extends Notification {
 				LOGGER.error("GCM Notification failed, device not registered for the user");
 				return ;
 			}
-			sender.send(createPushNotification(success, name), registrationId, GCMController.RETRIES);
+			gcmController.send(createPushNotification(success, name), registrationId);
 		} catch (IOException e) {
 			LOGGER.error("Error sending notification to device", e);
 		}
