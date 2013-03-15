@@ -79,6 +79,11 @@
 		    <id>gcm-server-repository</id>
 		    <url>https://raw.github.com/slorber/gcm-server-repository/master/releases/</url>
 		</repository>
+		<repository>
+		    <id>sonatype-server-repository</id>
+		    <url>https://oss.sonatype.org/content/groups/staging</url>
+		</repository>		
+		
 	</repositories>
 
 	<properties>
