@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/gcm")
+@Path("/notifications/gcm")
 @Component
 @Scope("request")
 public class GCMAPI extends SeedBoxerAPI {

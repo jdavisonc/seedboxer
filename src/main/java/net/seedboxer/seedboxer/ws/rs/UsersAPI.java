@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/users")
+@Path("/user")
 @Component
 @Scope("request")
 public class UsersAPI extends SeedBoxerAPI {
