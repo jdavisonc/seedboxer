@@ -32,12 +32,14 @@ import net.seedboxer.bencode.TorrentUtils;
 import net.seedboxer.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.seedboxer.core.domain.Status;
 import net.seedboxer.seedboxer.core.domain.User;
+import net.seedboxer.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.seedboxer.core.logic.DownloadsQueueManager;
 import net.seedboxer.seedboxer.core.logic.DownloadsSessionManager;
 import net.seedboxer.seedboxer.core.logic.UsersController;
 import net.seedboxer.seedboxer.core.type.Download;
 import net.seedboxer.seedboxer.core.type.FileValue;
 import net.seedboxer.seedboxer.core.util.FileUtils;
+import net.seedboxer.seedboxer.ws.type.UserConfig;
 import net.seedboxer.seedboxer.ws.type.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
@@ -146,11 +148,23 @@ public class DownloadsController {
 		downloadsQueueManager.remove(user, downloadId);
 	}
 
+	/**
+	 * Returns the downloads status for the user.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public UserStatusAPIResponse getUserStatus(User user) {
 		Download download = downloadSessionManager.getDownload(user.getId());
 		return new UserStatusAPIResponse(user.getStatus(), download);
 	}
 
+	/**
+	 * Reorder user queue.
+	 * 
+	 * @param user
+	 * @param queueItems
+	 */
 	public void updateQueue(User user, List<FileValue> queueItems){
 		List<DownloadQueueItem> queueItemsFromDB = downloadsQueueManager.userQueue(user);
 		Map<Long,FileValue> queueItemsMap = new HashMap<Long,FileValue>();
@@ -164,6 +178,11 @@ public class DownloadsController {
 		downloadsQueueManager.updateQueueOrder(queueItemsFromDB);
 	}
 
+	/**
+	 * Stop the downloads for the user.
+	 * 
+	 * @param user
+	 */
 	public void stopDownloads(User user) {
 		boolean success = usersController.setUserStatus(user, Status.STOPPED);
 		if (success) {
@@ -179,6 +198,11 @@ public class DownloadsController {
 		}
 	}
 
+	/**
+	 * Begin the downloads for the user.
+	 * 
+	 * @param user
+	 */
 	public void startDownloads(User user) {
 		boolean success = usersController.setUserStatus(user, Status.STARTED);
 		if (success) {
@@ -188,8 +212,52 @@ public class DownloadsController {
 		}
 	}
 
+	/**
+	 * Generate an APIKEY for the user.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public User generateAPIKey(User user) {
 		return usersController.generateAPIKey(user);
+	}
+
+	/**
+	 * Return all user configurations
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public List<UserConfig> getUserConfigs(User user) {
+		List<UserConfig> configs = new ArrayList<UserConfig>();
+		List<UserConfiguration> userConfig = usersController.getUserConfig(user.getId());
+		for (UserConfiguration userConfiguration : userConfig) {
+			configs.add(new UserConfig(userConfiguration.getName(), userConfiguration.getValue()));
+		}
+		return configs;
+	}
+
+	/**
+	 * Save user configurations, if the key not exists in user configurations set, then will be added.
+	 * If the key exists, then the configuration will be updated.
+	 * 
+	 * @param user
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public void saveUserConfigs(User user, String name, String value) {
+		usersController.saveUserConf(user, new UserConfiguration(name, value));
+	}
+
+	/**
+	 * Delete user configuration if exists.
+	 * 
+	 * @param user
+	 * @param name
+	 */
+	public void deleteUserConfigs(User user, String name) {
+		usersController.deleteUserConf(user, name);
 	}
 
 }

@@ -20,14 +20,19 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.rs;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import net.seedboxer.seedboxer.core.domain.User;
 import net.seedboxer.seedboxer.ws.controller.DownloadsController;
 import net.seedboxer.seedboxer.ws.type.APIResponse;
 import net.seedboxer.seedboxer.ws.type.UserAPIKeyResponse;
+import net.seedboxer.seedboxer.ws.type.UserConfig;
+import net.seedboxer.seedboxer.ws.type.UserConfigsAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +105,45 @@ public class UsersAPI extends SeedBoxerAPI {
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
 			return APIResponse.createErrorResponse("Can not start download");
+		}
+	}
+	
+	@GET
+	@Path("/configs/list")
+	@Produces({"application/xml", "application/json"})
+	public APIResponse listConfigurations() {
+		try {
+			List<UserConfig> configs = controller.getUserConfigs(getUser());
+			return new UserConfigsAPIResponse(configs);
+		} catch (Exception e) {
+			LOGGER.error("Can not list user configurations", e);
+			return APIResponse.createErrorResponse("Can not list user configurations");
+		}
+	}
+	
+	@GET
+	@Path("/configs/save")
+	@Produces({"application/xml", "application/json"})
+	public APIResponse saveConfigurations(@QueryParam("key") String key, @QueryParam("value") String value) {
+		try {
+			controller.saveUserConfigs(getUser(), key, value);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not save user configuration", e);
+			return APIResponse.createErrorResponse("Can not save user configuration");
+		}
+	}
+	
+	@GET
+	@Path("/configs/delete")
+	@Produces({"application/xml", "application/json"})
+	public APIResponse deleteConfigurations(@QueryParam("key") String key) {
+		try {
+			controller.deleteUserConfigs(getUser(), key);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not delete user configuration", e);
+			return APIResponse.createErrorResponse("Can not delete user configuration");
 		}
 	}
 

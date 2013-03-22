@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UserStatusAPIResponse.java
+ * UserConfig.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -22,45 +22,24 @@ package net.seedboxer.seedboxer.ws.type;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import net.seedboxer.seedboxer.core.domain.Status;
-import net.seedboxer.seedboxer.core.type.Download;
+@XmlRootElement(name="config")
+public class UserConfig {
 
+	private final String key;
+	
+	private final String value;
 
-/**
- * @author Jorge Davison (jdavisonc)
- *
- */
-@XmlRootElement(name="response")
-public class UserStatusAPIResponse extends APIResponse {
-
-	private Status downloadStatus;
-
-	private Download download;
-
-	public UserStatusAPIResponse() {
-		downloadStatus = Status.STARTED;
-		download = null;
+	public UserConfig(String key, String value) {
+		this.key = key;
+		this.value = value;
 	}
 
-	public UserStatusAPIResponse(Status status, Download download) {
-		downloadStatus = status;
-		this.download = download;
+	public String getKey() {
+		return key;
 	}
 
-	public Status getDownloadStatus() {
-		return downloadStatus;
+	public String getValue() {
+		return value;
 	}
-
-	public Download getDownload() {
-		return download;
-	}
-
-	public void setDownloadStatus(Status status) {
-		downloadStatus = status;
-	}
-
-	public void setDownload(Download download) {
-		this.download = download;
-	}
-
+	
 }
