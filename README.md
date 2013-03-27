@@ -6,6 +6,7 @@ Check our page [http://seedboxer.net](http://seedboxer.net) or the [Wiki](https:
 
 * Page: [http://seedboxer.net](http://seedboxer.net)
 * Documentation: [Wiki](https://github.com/seedboxer/seedboxer/wiki)
+* Changelog: https://github.com/seedboxer/seedboxer/wiki/Changelog
 * Continuous Integration: [![Build Status](https://seedboxer.ci.cloudbees.com/job/Seedboxer/badge/icon)](https://seedboxer.ci.cloudbees.com/job/Seedboxer/)
 
 ## Authors and Contributors
