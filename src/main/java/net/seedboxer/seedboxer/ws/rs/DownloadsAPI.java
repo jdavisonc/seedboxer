@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadsService.java
+ * DownloadsAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Response.java
+ * APIResponse.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *

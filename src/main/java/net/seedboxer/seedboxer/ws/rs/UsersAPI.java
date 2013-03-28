@@ -1,5 +1,5 @@
 /*******************************************************************************
- * StatusService.java
+ * UsersAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SeedBoxerService.java
+ * SeedBoxerAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
