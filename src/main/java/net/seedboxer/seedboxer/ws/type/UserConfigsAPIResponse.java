@@ -23,14 +23,11 @@ package net.seedboxer.seedboxer.ws.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@XmlRootElement(name="response")
 public class UserConfigsAPIResponse extends APIResponse {
 
 	private final List<UserConfig> configs;

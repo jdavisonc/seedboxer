@@ -57,7 +57,7 @@ public class TorrentsAPI extends SeedBoxerAPI {
 
 	@POST
 	@Path("/add")
-	@Produces({"application/xml", "application/json" })
+	@Produces("application/json")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public APIResponse addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDetail) {

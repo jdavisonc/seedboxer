@@ -53,7 +53,7 @@ public class GCMAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/registerDevice")
-	@Produces({"application/xml", "application/json" })
+	@Produces("application/json")
 	public APIResponse registerDevice(@QueryParam("registrationId") String registrationId) {
 		try {
 			controller.registerDevice(getUser(), registrationId);
@@ -66,7 +66,7 @@ public class GCMAPI extends SeedBoxerAPI {
 	
 	@GET
 	@Path("/unregisterDevice")
-	@Produces({"application/xml", "application/json" })
+	@Produces("application/json")
 	public APIResponse unregisterDevice(@QueryParam("registrationId") String registrationId) {
 		try {
 			controller.unregisterDevice(getUser(), registrationId);
@@ -79,7 +79,7 @@ public class GCMAPI extends SeedBoxerAPI {
 	
 	@GET
 	@Path("/projectId")
-	@Produces({"application/xml", "application/json" })
+	@Produces("application/json")
 	public APIResponse projectId() {
 		try {
 			String projectId = controller.getProjectId();

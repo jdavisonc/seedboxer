@@ -59,7 +59,7 @@ public class UsersAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/status")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse status() {
 		try {
 			return controller.getUserStatus(getUser());
@@ -71,7 +71,7 @@ public class UsersAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/stop")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse stop() {
 		try {
 			controller.stopDownloads(getUser());
@@ -84,7 +84,7 @@ public class UsersAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/start")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse start() {
 		try {
 			controller.startDownloads(getUser());
@@ -97,7 +97,7 @@ public class UsersAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/apikey")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse apikey() {
 		try {
 			User user = controller.generateAPIKey(getUser());
@@ -110,7 +110,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	
 	@GET
 	@Path("/configs/list")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse listConfigurations() {
 		try {
 			List<UserConfig> configs = controller.getUserConfigs(getUser());
@@ -123,7 +123,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	
 	@GET
 	@Path("/configs/save")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse saveConfigurations(@QueryParam("key") String key, @QueryParam("value") String value) {
 		try {
 			controller.saveUserConfigs(getUser(), key, value);
@@ -136,7 +136,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	
 	@GET
 	@Path("/configs/delete")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse deleteConfigurations(@QueryParam("key") String key) {
 		try {
 			controller.deleteUserConfigs(getUser(), key);

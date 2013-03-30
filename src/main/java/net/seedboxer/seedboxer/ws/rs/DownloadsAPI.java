@@ -58,7 +58,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/list")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public List<FileValue> list() {
 		try {
 			List<FileValue> files = controller.getCompletedFiles();
@@ -72,7 +72,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/put")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse put(@QueryParam("fileName") List<String> fileNames) {
 		try {
 			controller.putToDownload(getUser(), fileNames, true);
@@ -85,7 +85,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/delete")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public APIResponse delete(@QueryParam("downloadId") Integer downloadId) {
 		try {
 			controller.deleteDownloadInQueue(getUser(), downloadId);
@@ -98,7 +98,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 
 	@GET
 	@Path("/queue")
-	@Produces({"application/xml", "application/json"})
+	@Produces("application/json")
 	public List<FileValue> queue() {
 		try {
 			return controller.downloadsInQueue(getUser());
@@ -111,8 +111,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 
 	@POST
 	@Path("/update")
-	@Consumes({"application/xml", "application/json"})
-	@Produces({"application/xml", "application/json"})
+	@Consumes("application/json")
+	@Produces("application/json")
 	public APIResponse update(List<FileValue> queueItems) {
 		try {
 			controller.updateQueue(getUser(), queueItems);

@@ -20,9 +20,7 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.type;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="response")
 public class APIResponse {
 
 	public enum ResponseStatus { SUCCESS, FAILURE; }

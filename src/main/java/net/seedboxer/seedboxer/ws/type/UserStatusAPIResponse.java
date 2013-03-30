@@ -20,8 +20,6 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.type;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import net.seedboxer.seedboxer.core.domain.Status;
 import net.seedboxer.seedboxer.core.type.Download;
 
@@ -30,7 +28,6 @@ import net.seedboxer.seedboxer.core.type.Download;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@XmlRootElement(name="response")
 public class UserStatusAPIResponse extends APIResponse {
 
 	private Status downloadStatus;

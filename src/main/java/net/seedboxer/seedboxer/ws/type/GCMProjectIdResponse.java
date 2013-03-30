@@ -20,14 +20,12 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.type;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@XmlRootElement(name="response")
 public class GCMProjectIdResponse extends APIResponse {
 
 	private String projectId;

@@ -20,9 +20,7 @@
  ******************************************************************************/
 package net.seedboxer.seedboxer.ws.type;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="config")
 public class UserConfig {
 
 	private final String key;
