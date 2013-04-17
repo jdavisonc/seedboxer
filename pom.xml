@@ -30,7 +30,7 @@
 	<groupId>net.seedboxer</groupId>
 	<artifactId>seedboxer</artifactId>
 	<version>2.2-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<name>SeedBoxer</name>
 	<description>SeedBoxer is a content distribution system based on users content queue</description>
 	<url>https://github.com/seedboxer/seedboxer</url>
@@ -72,6 +72,11 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
+
+	<modules>
+		<module>seedboxer-standalone</module>
+		<module>seedboxer-core</module>
+	</modules>
 	
 	<repositories>
 		<repository>
@@ -82,7 +87,6 @@
 		    <id>sonatype-server-repository</id>
 		    <url>https://oss.sonatype.org/content/groups/staging</url>
 		</repository>		
-		
 	</repositories>
 
 	<properties>
@@ -546,14 +550,6 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<configuration>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
 				</configuration>
 			</plugin>
 			
