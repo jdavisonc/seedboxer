@@ -74,8 +74,8 @@
 	</developers>
 
 	<modules>
-		<module>seedboxer-standalone</module>
 		<module>seedboxer-core</module>
+		<module>seedboxer-standalone</module>
 	</modules>
 	
 	<repositories>
