@@ -1,0 +1,73 @@
+#!/bin/bash
+###############################################################################
+# seedboxer
+# 
+# Copyright (c) 2012 SeedBoxer Team.
+# 
+# This file is part of SeedBoxer.
+# 
+# SeedBoxer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# SeedBoxer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
+#
+#####
+#
+# seedboxer: Init-script for seedboxer-standalone
+# author: Jorge Davison
+#
+##############################################################################
+
+
+APP_NAME=seedboxer
+CONFIG_PATH_ARGS="-Dseedboxer.config.path=/etc/seedboxer"
+JETTY_ARGS="${JETTY_ARGS} ${CONFIG_PATH_ARGS}"
+GRACE=10 # 10 secs
+
+PREFIX=/usr/share/java
+PIDFILE=/var/run/${APP_NAME}/${APP_NAME}.pid
+
+CMD=$1
+
+
+if [[ ${CMD} == 'start' ]]; then
+
+    if [[ -f ${PIDFILE} ]]; then
+        echo "Already running"
+        exit 1
+    fi
+    
+    if [[ $2 == '--debug' ]]; then
+    	JETTY_ARGS="${JETTY_ARGS} -Ddebug=true"
+    fi
+
+    if [[ -f ${PREFIX}/${APP_NAME}.jar ]]; then
+        echo "Starting jetty"
+        java ${JETTY_ARGS} -jar ${PREFIX}/${APP_NAME}.jar &
+        PID=$!
+        echo "$PID" > ${PIDFILE}
+        echo "Started ${APP_NAME} with pid: ${PID}"
+    fi
+
+elif [[ ${CMD} == 'stop' ]]; then
+    if [[ -f ${PIDFILE} ]]; then
+        PID=`cat ${PIDFILE}`
+        test -z $PID || kill $PID
+        rm ${PIDFILE}
+        sleep 1
+        echo "Stopped ${APP_NAME} with pid: ${PID}"
+    fi
+else # Just let the other cmds through...
+    echo "Usage: /etc/init.d/${APP_NAME} {start|stop}"
+    exit 1
+fi
+
+exit 0

@@ -1,0 +1,17 @@
+#!/bin/sh
+# config maintainer script for seedboxer-standalone
+
+# source debconf stuff
+. /usr/share/debconf/confmodule
+if [ -f /usr/share/dbconfig-common/dpkg/config ]; then
+	# we support mysql
+	dbc_dbtypes="mysql"
+	dbc_dbuser="seedboxer"
+	dbc_dbname="seedboxer" 
+
+	# source dbconfig-common stuff
+	. /usr/share/dbconfig-common/dpkg/config
+	
+	dbc_go seedboxer-standalone $@
+fi
+

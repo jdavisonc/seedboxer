@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SeedBoxer</title>
+	            <link>http://www.seedboxer.net</link>
+	            <description>The latest torrents from SeedBoxer test</description>
+	            <language>en</language>
+				<ttl>5</ttl>
+				<atom:link href="http://rss.seedboxer.net/" rel="self" type="application/rss+xml" /><item>
+	                    <title><![CDATA[Life Of Pi 2012 DVDSCR XViD TiCKLE TiME]]></title>
+						<pubDate>Fri, 18 Jan 2013 22:52:15 +0000</pubDate>
+						<category>DVDRip/DVDScreener</category>
+						<guid>http://test</guid>
+						<comments><![CDATA[http://test]]></comments>
+	                    <link><![CDATA[http://www.seedboxer.net/rss/download/Life.Of.Pi.2012.DVDSCR.XViD.TiCKLE.TiME.torrent]]></link>
+	                    <description><![CDATA[Category: DVDRip/DVDScreener - Seeders: 0 - Leechers: 2]]></description>
+                     </item><item>
+	                    <title><![CDATA[Jock The Hero Dog 2011 DVDRip XviD-RedBlade]]></title>
+						<pubDate>Fri, 18 Jan 2013 22:49:51 +0000</pubDate>
+						<category>DVDRip/DVDScreener</category>
+						<guid>http://www.seedboxer.net/torrent/408775</guid>
+						<comments><![CDATA[http://www.seedboxer.net/torrent/408775#comments]]></comments>
+	                    <link><![CDATA[http://www.seedboxer.net/rss/download/Jock.The.Hero.Dog.2011.DVDRip.XviD-RedBlade.torrent]]></link>
+	                    <description><![CDATA[Category: DVDRip/DVDScreener - Seeders: 10 - Leechers: 8]]></description>
+                     </item><item>
+	                    <title><![CDATA[1600 Penn S01E03 720p HDTV X264-DIMENSION]]></title>
+						<pubDate>Fri, 18 Jan 2013 22:27:15 +0000</pubDate>
+						<category>Episodes HD</category>
+						<guid>http://www.seedboxer.net/torrent/408677</guid>
+						<comments><![CDATA[http://www.seedboxer.net/torrent/408677#comments]]></comments>
+	                    <link><![CDATA[http://www.seedboxer.net/rss/download/1600.Penn.S01E03.720p.HDTV.X264-DIMENSION.torrent]]></link>
+	                    <description><![CDATA[Category: Episodes HD - Seeders: 107 - Leechers: 2]]></description>
+                     </item><item>
+	                    <title><![CDATA[The Sweeney 2012 1080p BluRay DTS x264-LEGi0N]]></title>
+						<pubDate>Fri, 18 Jan 2013 22:44:32 +0000</pubDate>
+						<category>HD</category>
+						<guid>http://www.seedboxer.net/torrent/408774</guid>
+						<comments><![CDATA[http://www.seedboxer.net/torrent/408774#comments]]></comments>
+	                    <link><![CDATA[http://www.seedboxer.net/rss/download/The.Sweeney.2012.1080p.BluRay.DTS.x264-LEGi0N.torrent]]></link>
+	                    <description><![CDATA[Category: HD - Seeders: 1 - Leechers: 35]]></description>
+                     </item></channel></rss>

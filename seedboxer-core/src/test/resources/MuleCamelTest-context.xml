@@ -1,0 +1,74 @@
+<!--
+  MuleCamelTest-context.xml
+  
+  Copyright (c) 2012 SeedBoxer Team.
+  
+  This file is part of SeedBoxer.
+  
+  SeedBoxer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  SeedBoxer is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath:mule-camel-context.xml"/>
+	
+	<!-- bean which enables mocking all endpoints -->
+	<bean id="mockAllEndpoints" class="org.apache.camel.impl.InterceptSendToMockEndpointStrategy">
+		<constructor-arg value="*" />
+		<constructor-arg value="false" />  
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:mule-camel.properties</value>
+			    <value>classpath:seedboxer.properties</value>
+			    <value>classpath:c3p0.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Defines Mocks -->
+	<bean id="ftpSender" name="mockftpSender" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.transfer.FtpSender" />
+	</bean>
+	<bean id="fileReceiver" name="mockfileReceiver" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.FileReceiver" />
+	</bean>
+	<bean id="downloadPusher" name="mockdownloadPusher" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadPusher" />
+	</bean>
+	<bean id="downloadReceiver" name="mockdownloadReceiver" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadReceiver" />
+	</bean>
+	<bean id="downloadRemover" name="mockdownloadRemover" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadRemover" />
+	</bean>
+	<bean id="queuePooler" name="mockqueuePooler" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.QueuePooler" />
+	</bean>
+	<bean id="emailNotification" name="mockemailNotification" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.notification.EmailNotification" />
+	</bean>
+	<bean id="gcmNotification" name="mockgcmNotification" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.notification.GCMNotification" />
+	</bean>
+	<bean id="sshCommandSender" name="mocksshCommandSender" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.postaction.SSHCommandSender" />
+	</bean>
+
+</beans>

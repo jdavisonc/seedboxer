@@ -1,0 +1,96 @@
+#-------------------------------------------------------------------------------
+# seedboxer.properties
+# 
+# Copyright (c) 2012 SeedBoxer Team.
+# 
+# This file is part of SeedBoxer.
+# 
+# SeedBoxer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# SeedBoxer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+############################
+#      Web services
+############################
+ws.port=8080
+
+############################
+#        Database
+############################
+db.driverClassName=com.mysql.jdbc.Driver
+db.url=jdbc:mysql://_DBC_DBSERVER_/_DBC_DBNAME_
+db.username=_DBC_DBUSER_
+db.password=_DBC_DBPASS_
+
+############################
+#         Common
+############################
+
+#base path of users files
+basePath=/home/user/seedboxer
+#pattern to watch new files in base path
+includePattern=(.*)/to-home-server/(.*)\.upl
+#period in milliseconds between each poll to the file system to retrieve uploaded files
+fsPollPeriod=30000
+#period in milliseconds between each poll to fetch rss feeds
+rssPollPeriod=300000
+#period in milliseconds between each poll to fetch updates from third party systems
+thirdPartyPollPeriod=60000
+#lock strategy used to lock files
+readLock=fileLock
+#number of threads
+numThreads=5
+
+############################
+#    Downloader Manager
+############################
+
+#completed files directory
+completePath=/home/downloads/complete
+#in progress files directory
+inProgressPath=/home/downloads/inprogress
+#watch directory of downloader
+watchDownloaderPath=/home/downloads/watch
+
+############################
+#      File Transfer
+############################
+
+#number of ftp retry
+ftp.retries=3
+#ftp retries delay in milliseconds
+ftp.retriesDelay=2000
+
+############################
+#      Post Actions
+############################
+
+#SSH properties
+# time in seconds
+ssh.timeToJoin=15
+# variable name to replace in place of file names, separated by ','
+ssh.variableNameInCmd=#uploaded
+
+############################
+#      Notifications
+############################
+
+#SMTP configuration
+smtp.host=localhost
+smtp.port=25
+smtp.user=
+smtp.password=
+
+# GCM
+gcm.auth.key=AIzaSyC6CEkrMqtQK21DCoYAwl7W85WPZ6yV40s
+gcm.projectId=98662658193

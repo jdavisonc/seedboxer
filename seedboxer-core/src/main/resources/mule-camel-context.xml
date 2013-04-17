@@ -1,0 +1,157 @@
+<!--
+  mule-camel-context.xml
+  
+  Copyright (c) 2012 SeedBoxer Team.
+  
+  This file is part of SeedBoxer.
+  
+  SeedBoxer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  SeedBoxer is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- Endpoints and routes -->
+	
+	
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" errorHandlerRef="errorHandler">
+		
+		<jmxAgent id="agent" disabled="true"/>
+
+		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:unexpectedError" />
+		
+		<errorHandler id="errorHandlerFTP" type="DeadLetterChannel" deadLetterUri="direct:notificationEndpoint">
+    		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
+		</errorHandler>
+		
+		<endpoint id="watchDogFileEndpoint" uri="${mule.watchDogFileEndpoint.uri}"/>
+		
+		<endpoint id="uploadEndpoint" uri="${mule.uploadEndpoint.uri}"/>
+		
+		<endpoint id="emailEndpoint" uri="${mule.emailEndpoint.uri}"/>
+		
+		<endpoint id="pooling" uri="${mule.pooling.uri}" />
+		
+		<endpoint id="mulelog" uri="${mule.log.uri}" />
+		
+	    <onException>
+	        <exception>java.io.FileNotFoundException</exception>
+			<handled>
+				<constant>true</constant>
+			</handled>
+        	<to uri="bean:downloadPusher"/>
+	    </onException>
+		
+	    <!-- Get download from file and push to the queue -->
+		<route>
+			<from uri="watchDogFileEndpoint" />
+			<to uri="bean:fileReceiver"/>
+		</route>
+
+		<!-- Pooling queue for get new downloads -->
+		<route>
+			<from ref="pooling" />
+			<to uri="bean:queuePooler" />
+			<filter>
+				<simple>${in.body} != null</simple>
+				<split>
+					<simple>${body}</simple>
+					<to uri="direct:processDownload" />
+				</split>
+			</filter>
+		</route>
+		
+		<!-- Process download from queue -->
+		<route>
+			<from uri="direct:processDownload" />
+			<to uri="bean:downloadReceiver"/>
+			<to ref="uploadEndpoint" />
+		</route>
+		
+		<!-- FTP Sender -->
+		<route errorHandlerRef="errorHandlerFTP">
+			<from ref="uploadEndpoint" />
+
+			<!-- Send to FTP via dynamic router -->
+			<to uri="bean:ftpSender" />
+	        
+	        <to uri="direct:postActionsEndpoint" />
+		</route>
+		
+		<!-- Post Actions -->
+		<route>
+			<from uri="direct:postActionsEndpoint"/>
+			
+			<!-- SSH command sender -->
+			<filter>
+	           <simple>${in.header.SshCmd} != null</simple>
+	           <to uri="bean:sshCommandSender" />
+	       </filter>
+	       
+	       <to uri="direct:notificationEndpoint" />
+		</route>
+		
+		<!-- Notifications -->
+		<route>
+			<from uri="direct:notificationEndpoint"/>
+			
+			<!-- Email notifiction -->
+			<filter>
+	           <simple>${in.header.NotificationEmail} != null</simple>
+	           	<to uri="bean:emailNotification" />
+	        	<to uri="emailEndpoint"/>
+	        </filter>
+	        
+	        <!-- GCM notification -->
+			<filter>
+	           <simple>${in.header.NotificationGCM} != null</simple>
+	           <to uri="bean:gcmNotification" />
+	        </filter>
+	        
+	        <to uri="direct:finale" />
+		</route>
+		
+		<!-- Finale -->
+		<route>
+			<from uri="direct:finale" />
+			
+			<!-- If it fail at removing the download, the exception will not arise -->
+			<onException>
+		        <exception>java.lang.Exception</exception>
+				<handled>
+					<constant>true</constant>
+				</handled>
+	        	<to uri="mulelog"/>
+		    </onException>
+			
+			<filter>
+	        	<simple>${in.header.DownloadId} != null</simple>
+				<to uri="bean:downloadRemover" />
+	        </filter>
+		</route>
+		
+		<!-- Unexpected Error -->
+		<route>
+			<from uri="direct:unexpectedError"/>
+			<!-- We need to remove the download to let the next start, if not 
+				the downloads for that user will be stucked for ever -->
+			<to uri="direct:finale" />
+			<to uri="mulelog"/>
+		</route>
+		
+	</camelContext>
+	
+</beans>
