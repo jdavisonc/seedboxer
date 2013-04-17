@@ -60,7 +60,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.seedboxer</groupId>
-			<artifactId>seedboxer</artifactId>
+			<artifactId>seedboxer-web</artifactId>
 			<version>${parent.version}</version>
 			<type>war</type>
 		</dependency>
