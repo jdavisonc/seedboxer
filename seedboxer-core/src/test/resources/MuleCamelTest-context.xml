@@ -44,31 +44,31 @@
 	
 	<!-- Defines Mocks -->
 	<bean id="ftpSender" name="mockftpSender" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.transfer.FtpSender" />
+		<constructor-arg value="net.seedboxer.mule.processor.transfer.FtpSender" />
 	</bean>
 	<bean id="fileReceiver" name="mockfileReceiver" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.FileReceiver" />
+		<constructor-arg value="net.seedboxer.mule.processor.FileReceiver" />
 	</bean>
 	<bean id="downloadPusher" name="mockdownloadPusher" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadPusher" />
+		<constructor-arg value="net.seedboxer.mule.processor.DownloadPusher" />
 	</bean>
 	<bean id="downloadReceiver" name="mockdownloadReceiver" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadReceiver" />
+		<constructor-arg value="net.seedboxer.mule.processor.DownloadReceiver" />
 	</bean>
 	<bean id="downloadRemover" name="mockdownloadRemover" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.DownloadRemover" />
+		<constructor-arg value="net.seedboxer.mule.processor.DownloadRemover" />
 	</bean>
 	<bean id="queuePooler" name="mockqueuePooler" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.QueuePooler" />
+		<constructor-arg value="net.seedboxer.mule.processor.QueuePooler" />
 	</bean>
 	<bean id="emailNotification" name="mockemailNotification" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.notification.EmailNotification" />
+		<constructor-arg value="net.seedboxer.mule.processor.notification.EmailNotification" />
 	</bean>
 	<bean id="gcmNotification" name="mockgcmNotification" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.notification.GCMNotification" />
+		<constructor-arg value="net.seedboxer.mule.processor.notification.GCMNotification" />
 	</bean>
 	<bean id="sshCommandSender" name="mocksshCommandSender" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.seedboxer.mule.processor.postaction.SSHCommandSender" />
+		<constructor-arg value="net.seedboxer.mule.processor.postaction.SSHCommandSender" />
 	</bean>
 
 </beans>

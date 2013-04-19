@@ -19,16 +19,13 @@
   along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses />.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.seedboxer</groupId>
 		<artifactId>seedboxer</artifactId>
 		<version>2.2-SNAPSHOT</version>
 	</parent>
-	
-	<modelVersion>4.0.0</modelVersion>
 	<artifactId>seedboxer-core</artifactId>
-	<packaging>war</packaging>
 
 	<licenses>
 		<license>
@@ -51,17 +48,5 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<configuration>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
