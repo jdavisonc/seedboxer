@@ -66,7 +66,7 @@ public class FileUtils {
 		File dir = new File(path);
 
 		for (String name : dir.list()) {
-			if (!name.startsWith(".")) {
+			if (name != null && !name.startsWith(".")) {
 				files.add(new FileValue(name, false));
 			}
 		}

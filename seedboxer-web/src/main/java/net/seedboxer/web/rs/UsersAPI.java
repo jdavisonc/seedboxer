@@ -22,11 +22,6 @@ package net.seedboxer.web.rs;
 
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
 import net.seedboxer.core.domain.User;
 import net.seedboxer.web.controller.DownloadsController;
 import net.seedboxer.web.type.APIResponse;
@@ -37,8 +32,10 @@ import net.seedboxer.web.type.UserConfigsAPIResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
@@ -47,9 +44,8 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/user")
-@Component
-@Scope("request")
+@Controller
+@RequestMapping("/webservices/user")
 public class UsersAPI extends SeedBoxerAPI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersAPI.class);
@@ -57,10 +53,8 @@ public class UsersAPI extends SeedBoxerAPI {
 	@Autowired
 	private DownloadsController controller;
 
-	@GET
-	@Path("/status")
-	@Produces("application/json")
-	public APIResponse status() {
+	@RequestMapping(value="status", method = RequestMethod.GET)
+	public @ResponseBody APIResponse status() {
 		try {
 			return controller.getUserStatus(getUser());
 		} catch (Exception e) {
@@ -69,10 +63,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/stop")
-	@Produces("application/json")
-	public APIResponse stop() {
+	@RequestMapping(value="stop", method = RequestMethod.GET)
+	public @ResponseBody APIResponse stop() {
 		try {
 			controller.stopDownloads(getUser());
 			return APIResponse.createSuccessfulResponse();
@@ -82,10 +74,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/start")
-	@Produces("application/json")
-	public APIResponse start() {
+	@RequestMapping(value="start", method = RequestMethod.GET)
+	public @ResponseBody APIResponse start() {
 		try {
 			controller.startDownloads(getUser());
 			return APIResponse.createSuccessfulResponse();
@@ -95,10 +85,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/apikey")
-	@Produces("application/json")
-	public APIResponse apikey() {
+	@RequestMapping(value="apikey", method = RequestMethod.GET)
+	public @ResponseBody APIResponse apikey() {
 		try {
 			User user = controller.generateAPIKey(getUser());
 			return new UserAPIKeyResponse(user.getApikey());
@@ -108,10 +96,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@GET
-	@Path("/configs/list")
-	@Produces("application/json")
-	public APIResponse listConfigurations() {
+	@RequestMapping(value="configs/list", method = RequestMethod.GET)
+	public @ResponseBody APIResponse listConfigurations() {
 		try {
 			List<UserConfig> configs = controller.getUserConfigs(getUser());
 			return new UserConfigsAPIResponse(configs);
@@ -121,10 +107,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@GET
-	@Path("/configs/save")
-	@Produces("application/json")
-	public APIResponse saveConfigurations(@QueryParam("key") String key, @QueryParam("value") String value) {
+	@RequestMapping(value="configs/save", method = RequestMethod.GET)
+	public @ResponseBody APIResponse saveConfigurations(String key, String value) {
 		try {
 			controller.saveUserConfigs(getUser(), key, value);
 			return APIResponse.createSuccessfulResponse();
@@ -134,10 +118,8 @@ public class UsersAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@GET
-	@Path("/configs/delete")
-	@Produces("application/json")
-	public APIResponse deleteConfigurations(@QueryParam("key") String key) {
+	@RequestMapping(value="configs/delete", method = RequestMethod.GET)
+	public @ResponseBody APIResponse deleteConfigurations(String key) {
 		try {
 			controller.deleteUserConfigs(getUser(), key);
 			return APIResponse.createSuccessfulResponse();

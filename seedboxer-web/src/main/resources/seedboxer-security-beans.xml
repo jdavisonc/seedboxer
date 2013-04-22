@@ -1,5 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+  seedboxer-security-beans.xml
+  
+  Copyright (c) 2012 SeedBoxer Team.
+  
+  This file is part of SeedBoxer.
+  
+  SeedBoxer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  SeedBoxer is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
+-->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:aop="http://www.springframework.org/schema/aop" 
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -24,8 +42,6 @@
 
 	<sec:http create-session="stateless" use-expressions="true">
 		<sec:intercept-url pattern="/webservices/**" access="hasAnyRole('ADMIN','LEECHER')" />
-<!-- 		<sec:intercept-url pattern="/webservices/timeoftheday/asxml/**" access="hasRole('admin')" /> -->
-<!-- 		<sec:intercept-url pattern="/webservices/timeoftheday/asjson/**" access="hasAnyRole('admin','customer')" /> -->
 		<sec:http-basic />
 		<sec:custom-filter ref="authenticationAPIKeyFilter" after="BASIC_AUTH_FILTER" />
 	</sec:http>

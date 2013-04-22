@@ -23,13 +23,6 @@ package net.seedboxer.web.rs;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.web.controller.DownloadsController;
 import net.seedboxer.web.type.APIResponse;
@@ -37,8 +30,11 @@ import net.seedboxer.web.type.APIResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
@@ -46,9 +42,8 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/downloads")
-@Component
-@Scope("request")
+@Controller
+@RequestMapping("/webservices/downloads")
 public class DownloadsAPI extends SeedBoxerAPI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsAPI.class);
@@ -56,10 +51,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 	@Autowired
 	private DownloadsController controller;
 
-	@GET
-	@Path("/list")
-	@Produces("application/json")
-	public List<FileValue> list() {
+	@RequestMapping(value="list", method = RequestMethod.GET)
+	public @ResponseBody List<FileValue> list() {
 		try {
 			List<FileValue> files = controller.getCompletedFiles();
 			files.addAll(controller.getInProgressFiles());
@@ -70,10 +63,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/put")
-	@Produces("application/json")
-	public APIResponse put(@QueryParam("fileName") List<String> fileNames) {
+	@RequestMapping(value="put", method = RequestMethod.GET)
+	public @ResponseBody APIResponse put(List<String> fileNames) {
 		try {
 			controller.putToDownload(getUser(), fileNames, true);
 			return APIResponse.createSuccessfulResponse();
@@ -83,10 +74,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/delete")
-	@Produces("application/json")
-	public APIResponse delete(@QueryParam("downloadId") Integer downloadId) {
+	@RequestMapping(value="delete", method = RequestMethod.GET)
+	public @ResponseBody APIResponse delete(Integer downloadId) {
 		try {
 			controller.deleteDownloadInQueue(getUser(), downloadId);
 			return APIResponse.createSuccessfulResponse();
@@ -96,10 +85,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 		}
 	}
 
-	@GET
-	@Path("/queue")
-	@Produces("application/json")
-	public List<FileValue> queue() {
+	@RequestMapping(value="queue", method = RequestMethod.GET)
+	public @ResponseBody List<FileValue> queue() {
 		try {
 			return controller.downloadsInQueue(getUser());
 		} catch (Exception e) {
@@ -108,12 +95,8 @@ public class DownloadsAPI extends SeedBoxerAPI {
 		}
 	}
 
-
-	@POST
-	@Path("/update")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public APIResponse update(List<FileValue> queueItems) {
+	@RequestMapping(value="update", method = RequestMethod.POST)
+	public @ResponseBody APIResponse update(@RequestBody List<FileValue> queueItems) {
 		try {
 			controller.updateQueue(getUser(), queueItems);
 			return APIResponse.createSuccessfulResponse();

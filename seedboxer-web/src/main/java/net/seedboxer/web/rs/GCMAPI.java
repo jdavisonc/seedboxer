@@ -20,11 +20,6 @@
  ******************************************************************************/
 package net.seedboxer.web.rs;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
 import net.seedboxer.core.logic.GCMController;
 import net.seedboxer.web.type.APIResponse;
 import net.seedboxer.web.type.GCMProjectIdResponse;
@@ -32,8 +27,10 @@ import net.seedboxer.web.type.GCMProjectIdResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
@@ -41,9 +38,8 @@ import org.springframework.stereotype.Component;
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/notifications/gcm")
-@Component
-@Scope("request")
+@Controller
+@RequestMapping("/webservices/otifications/gcm")
 public class GCMAPI extends SeedBoxerAPI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GCMAPI.class);
@@ -51,10 +47,8 @@ public class GCMAPI extends SeedBoxerAPI {
 	@Autowired
 	private GCMController controller;
 
-	@GET
-	@Path("/registerDevice")
-	@Produces("application/json")
-	public APIResponse registerDevice(@QueryParam("registrationId") String registrationId) {
+	@RequestMapping(value="registerDevice", method = RequestMethod.GET)
+	public @ResponseBody APIResponse registerDevice(String registrationId) {
 		try {
 			controller.registerDevice(getUser(), registrationId);
 			return APIResponse.createSuccessfulResponse();
@@ -64,10 +58,8 @@ public class GCMAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@GET
-	@Path("/unregisterDevice")
-	@Produces("application/json")
-	public APIResponse unregisterDevice(@QueryParam("registrationId") String registrationId) {
+	@RequestMapping(value="unregisterDevice", method = RequestMethod.GET)
+	public @ResponseBody APIResponse unregisterDevice(String registrationId) {
 		try {
 			controller.unregisterDevice(getUser(), registrationId);
 			return APIResponse.createSuccessfulResponse();
@@ -77,10 +69,8 @@ public class GCMAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@GET
-	@Path("/projectId")
-	@Produces("application/json")
-	public APIResponse projectId() {
+	@RequestMapping(value="projectId", method = RequestMethod.GET)
+	public @ResponseBody APIResponse projectId() {
 		try {
 			String projectId = controller.getProjectId();
 			return new GCMProjectIdResponse(projectId);

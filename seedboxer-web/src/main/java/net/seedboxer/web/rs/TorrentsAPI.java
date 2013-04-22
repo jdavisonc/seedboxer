@@ -20,34 +20,26 @@
  ******************************************************************************/
 package net.seedboxer.web.rs;
 
-import java.io.InputStream;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import net.seedboxer.web.controller.DownloadsController;
 import net.seedboxer.web.type.APIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * WebService that expose method to work with torrent files
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Path("/torrents")
-@Component
-@Scope("request")
+@Controller
+@RequestMapping("/webservices/torrents")
 public class TorrentsAPI extends SeedBoxerAPI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsAPI.class);
@@ -55,15 +47,11 @@ public class TorrentsAPI extends SeedBoxerAPI {
 	@Autowired
 	private DownloadsController controller;
 
-	@POST
-	@Path("/add")
-	@Produces("application/json")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public APIResponse addTorrent(@FormDataParam("file") final InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
+	@RequestMapping(value="add", method = RequestMethod.POST)
+	public @ResponseBody APIResponse addTorrent(@RequestPart("file") MultipartFile file) {
 		try {
-			if (fileDetail.getFileName().endsWith(".torrent")) {
-				controller.addTorrent(getUser(), fileDetail.getFileName(), uploadedInputStream);
+			if (file.getName().endsWith(".torrent")) {
+				controller.addTorrent(getUser(), file.getName(), file.getInputStream());
 				return APIResponse.createSuccessfulResponse();
 			} else {
 				return APIResponse.createErrorResponse("Wrong file type, only accept .torrent files");

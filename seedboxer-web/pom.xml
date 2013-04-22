@@ -17,6 +17,19 @@
 	</parent>
 	<artifactId>seedboxer-web</artifactId>
 	<packaging>war</packaging>
+	
+	<properties>
+		<jackson.version>1.7.1</jackson.version>
+		
+		<!-- Java EE / Java SE dependencies -->
+		<jsp.version>2.2</jsp.version>
+		<jstl.version>1.2</jstl.version>
+		<servlet.version>2.5</servlet.version>
+		
+		<!-- Web dependencies -->
+		<webjars-bootstrap.version>2.3.1</webjars-bootstrap.version>
+		<webjars-jquery.version>2.0.0</webjars-jquery.version>
+	</properties>
 
 	<licenses>
 		<license>
@@ -45,6 +58,52 @@
 			<groupId>net.seedboxer</groupId>
 			<artifactId>seedboxer-core</artifactId>
 			<version>${parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Webjars (static dependencies distributed as JAR files) -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${webjars-bootstrap.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>${webjars-jquery.version}</version>
 		</dependency>
 	</dependencies>
 

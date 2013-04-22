@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.brand {
+	font-family: 'Denk One', sans-serif;
+}
