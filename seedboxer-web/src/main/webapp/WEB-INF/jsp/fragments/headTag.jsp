@@ -10,8 +10,14 @@
     <spring:url value="/webjars/jquery/2.0.0/jquery.js" var="jQuery"/>
     <script src="${jQuery}"></script>
     
+    <spring:url value="/webjars/bootstrap/2.3.1/js/bootstrap.js" var="bootstrapJs"/>
+    <script src="${bootstrapJs}"></script>
+    
     <spring:url value="/resources/css/seedboxer.css" var="seedboxerCss"/>
     <link href="${seedboxerCss}" rel="stylesheet"/>
+    
+    <spring:url value="/resources/css/dash.css" var="dashCss"/>
+    <link href="${dashCss}" rel="stylesheet"/>
 
 	<!-- Title Font -->
 	<link href='http://fonts.googleapis.com/css?family=Denk+One' rel='stylesheet' type='text/css'>
