@@ -27,6 +27,8 @@
 		<servlet.version>2.5</servlet.version>
 		
 		<!-- Web dependencies -->
+		<webjars-angular-ui.version>0.4.0-1</webjars-angular-ui.version>
+		<webjars-angular.version>1.1.4</webjars-angular.version>
 		<webjars-bootstrap.version>2.3.1</webjars-bootstrap.version>
 		<webjars-jquery.version>2.0.0</webjars-jquery.version>
 	</properties>
@@ -95,6 +97,16 @@
 		</dependency>
 		
 		<!-- Webjars (static dependencies distributed as JAR files) -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angularjs</artifactId>
+			<version>${webjars-angular.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angular-ui</artifactId>
+			<version>${webjars-angular-ui.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
