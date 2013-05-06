@@ -27,9 +27,15 @@
     		<div ng-controller="StatusCtrl">
 	    		<h2>Downloading</h2>
 	    		
-	    		<h5>{{current.title}}</h5>
+	    		<h5>{{current.download.fileName}}</h5>
 	    		<div class="progress progress-striped active">
-				  <div class="bar" style="width: {{current.percentage}};"></div>
+				  <div class="bar" style="width: {{current.download.transferred * 100 / current.download.size}}%;"></div>
+				</div>
+				<div>
+					{{current.download.transferred}} of {{current.download.size}} Mb 
+				</div>
+				<div>
+					Status: {{current.downloadStatus}} 
 				</div>
 			</div>
 			
@@ -59,13 +65,33 @@
 <jsp:include page="fragments/footer.jsp"/>
 
 <script type="text/javascript">
-	var App = angular.module('seedboxer', ['ngResource']);
+
+	angular.module('statusServices', ['ngResource']).
+		factory('Status', function($resource){
+			return $resource('webservices/user/status?apikey=:apikey', {}, {
+				query: {method:'GET', params:{apikey:'Opu4uTgf'}, isArray:true}
+	  	});
+	});
+
+	var App = angular.module('seedboxer', ['statusServices']);
 	
 	 
 	 /* Controllers */
 
-	function StatusCtrl($scope) {
-		$scope.current = { title: 'Game.of.Thrones.S03E05.720p.HDTV.x264.DUAL-ANGELiC', percentage: '60%'};;
+	function StatusCtrl($scope, Status) {
+		
+		/** Response from SeedBoxer API **/	
+			$scope.current = {
+			    "download": {
+			        "size": 1152,
+			        "fileName": "The.Following.S01E01.720p.HDTV.X264-DIMENSION",
+			        "transferred": 654
+			    }, "downloadStatus": "STARTED", "message": null, "status": null 
+			};
+		
+		
+		// Uncomment this to make query 
+		//$scope.current = Status.query();
 	}
 	
 	function QueueCtrl($scope) {

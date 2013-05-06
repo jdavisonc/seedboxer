@@ -27,7 +27,7 @@
 						</a>
 						
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;">Account Settings</a></li>
+							<li><a href="javascript:;">Server Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;">Help</a></li>
 						</ul>
@@ -44,6 +44,7 @@
 						
 						<ul class="dropdown-menu">
 							<li><a href="javascript:;">My Profile</a></li>
+							<li><a href="javascript:;">Account Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;">Logout</a></li>
 						</ul>
