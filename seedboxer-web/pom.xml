@@ -126,6 +126,12 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<configuration>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<systemProperties> 
+						    <systemProperty> 
+							<name>seedboxer.config.path</name> 
+							<value>${seedboxer.config.path}</value> 
+						    </systemProperty> 
+					</systemProperties> 
 				</configuration>
 			</plugin>
 		</plugins>

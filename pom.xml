@@ -120,6 +120,7 @@
 		<mockito.version>1.9.0</mockito.version>
 		<common-lang.version>2.6</common-lang.version>
 		<junit-addons.version>1.4</junit-addons.version>
+		<seedboxer.config.path>${basedir}/../etc</seedboxer.config.path>
 	</properties>
 
 	<dependencies>
@@ -519,6 +520,24 @@
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-maven-plugin</artifactId>
 				<version>1.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<configuration>
+					<files>
+						<file>${seedboxer.config.path}/seedboxer.properties</file>
+					</files>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
