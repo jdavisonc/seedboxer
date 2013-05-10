@@ -22,17 +22,21 @@
     <spring:url value="/webjars/angularjs/1.1.4/angular-resource.min.js" var="angularResource"/>
     <script src="${angularResource}"></script>
 
-    <spring:url value="/webjars/angular-ui/0.4.0/angular-ui.min.css" var="angularUICss"/>
-    <link href="${angularUICss}" rel="stylesheet"/>
+    <!-- Title Font -->
+    <link href='http://fonts.googleapis.com/css?family=Arbutus|Telex' rel='stylesheet' type='text/css'>
     
-    <spring:url value="/webjars/angular-ui/0.4.0/angular-ui.min.js" var="angularUIJs"/>
-    <script src="${angularUIJs}"></script>
-    
+    <!-- SeedBoxer -->
     <spring:url value="/resources/css/seedboxer.css" var="seedboxerCss"/>
     <link href="${seedboxerCss}" rel="stylesheet"/>
 
-	<!-- Title Font -->
-	<link href='http://fonts.googleapis.com/css?family=Arbutus|Telex' rel='stylesheet' type='text/css'>
+    <spring:url value="/resources/js/services.js" var="seedboxerServicesJs"/>
+    <script src="${seedboxerServicesJs}"></script>
+
+    <spring:url value="/resources/js/app.js" var="seedboxerAppJs"/>
+    <script src="${seedboxerAppJs}"></script>
+
+    <spring:url value="/resources/js/controllers.js" var="seedboxerCtrlJs"/>
+    <script src="${seedboxerCtrlJs}"></script>
 
 </head>
 
