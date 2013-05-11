@@ -7,6 +7,6 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 	     
 	     <include file="DDL_seedboxer_squema_create.sql" relativeToChangelogFile="true"/>
-	     <include file="DDL_seedboxer_user_create.sql" relativeToChangelogFile="true"/>
+	     <include file="DML_seedboxer_default_user_create.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

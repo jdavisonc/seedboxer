@@ -48,18 +48,20 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
+	<properties>
+		<liquibase.version>2.0.5</liquibase.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>2.0.1</version>
+				<version>${liquibase.version}</version>
 				<configuration>
 					<driver>${db.driverClassName}</driver>
 					<url>${db.url}</url>
-					<username>${db.liquibase.rootusername}</username>
-					<password>${db.liquibase.rootpassword}</password>
 					<changeLogFile>src/main/resources/masterChangelog.xml</changeLogFile>
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 				</configuration>
 				<executions>
 				    <execution>
