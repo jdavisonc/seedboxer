@@ -131,6 +131,10 @@
 							<name>seedboxer.config.path</name> 
 							<value>${seedboxer.config.path}</value> 
 						    </systemProperty> 
+						    <systemProperty> 
+							<name>seedboxer.db.path</name> 
+							<value>${seedboxer.db.path}</value> 
+						    </systemProperty> 
 					</systemProperties> 
 				</configuration>
 			</plugin>

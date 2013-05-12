@@ -121,6 +121,7 @@
 		<common-lang.version>2.6</common-lang.version>
 		<junit-addons.version>1.4</junit-addons.version>
 		<seedboxer.config.path>${basedir}/../etc</seedboxer.config.path>
+		<seedboxer.db.path>${basedir}/../etc</seedboxer.db.path>
 	</properties>
 
 	<dependencies>
@@ -490,6 +491,12 @@
 			<version>${junit-addons.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>2.0.5</version>
+		</dependency>
+            
             
 	</dependencies>
 
