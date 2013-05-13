@@ -22,9 +22,9 @@
         </div>
     	
     	
-    	<div class="span9">
+    	<div class="span9" ng-controller="StatusCtrl">
     	
-    		<div ng-controller="StatusCtrl">
+    		<div>
 	    		<h2>Downloading</h2>
 	    		
 	    		<h5>{{current.download.fileName}}</h5>
@@ -41,7 +41,7 @@
 			
 			<h3>Queue</h3>
 			
-			<table class="table table-hover" ng-controller="QueueCtrl">
+			<table class="table table-hover">
               <thead>
                 <tr>
                   <th>#</th>
