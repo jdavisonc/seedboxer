@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.rs;
+package net.seedboxer.web.controller.rs;
 
-import net.seedboxer.web.controller.DownloadsController;
+import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.type.APIResponse;
 
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class TorrentsAPI extends SeedBoxerAPI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TorrentsAPI.class);
 
 	@Autowired
-	private DownloadsController controller;
+	private DownloadsService controller;
 
 	@RequestMapping(value="add", method = RequestMethod.POST)
 	public @ResponseBody APIResponse addTorrent(@RequestPart("file") MultipartFile file) {

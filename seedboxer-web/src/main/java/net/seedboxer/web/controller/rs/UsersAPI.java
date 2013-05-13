@@ -18,12 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.rs;
+package net.seedboxer.web.controller.rs;
 
 import java.util.List;
 
 import net.seedboxer.core.domain.User;
-import net.seedboxer.web.controller.DownloadsController;
+import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.type.APIResponse;
 import net.seedboxer.web.type.UserAPIKeyResponse;
 import net.seedboxer.web.type.UserConfig;
@@ -51,7 +51,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersAPI.class);
 
 	@Autowired
-	private DownloadsController controller;
+	private DownloadsService controller;
 
 	@RequestMapping(value="status", method = RequestMethod.GET)
 	public @ResponseBody APIResponse status() {

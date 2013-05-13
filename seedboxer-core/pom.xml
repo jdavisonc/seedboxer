@@ -51,27 +51,4 @@
 	<properties>
 		<liquibase.version>2.0.5</liquibase.version>
 	</properties>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>${liquibase.version}</version>
-				<configuration>
-					<driver>${db.driverClassName}</driver>
-					<url>${db.url}</url>
-					<changeLogFile>src/main/resources/masterChangelog.xml</changeLogFile>
-					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-				</configuration>
-				<executions>
-				    <execution>
-					    <phase>process-resources</phase>
-					    <goals>
-						    <goal>update</goal>
-					    </goals>
-				    </execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

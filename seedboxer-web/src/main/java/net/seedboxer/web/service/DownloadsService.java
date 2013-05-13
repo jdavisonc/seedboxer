@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.controller;
+package net.seedboxer.web.service;
 
 import java.io.File;
 import java.io.InputStream;
@@ -50,9 +50,9 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class DownloadsController {
+public class DownloadsService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
 
 	@Autowired
 	private UsersController usersController;

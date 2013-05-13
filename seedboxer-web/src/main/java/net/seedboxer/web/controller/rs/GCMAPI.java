@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.rs;
+package net.seedboxer.web.controller.rs;
 
 import net.seedboxer.core.logic.GCMController;
 import net.seedboxer.web.type.APIResponse;

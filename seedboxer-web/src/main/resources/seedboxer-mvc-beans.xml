@@ -61,5 +61,9 @@
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
     <mvc:view-controller path="/" view-name="welcome" />
+    <mvc:view-controller path="/login" view-name="login" />
+    <mvc:view-controller path="/logout" view-name="logout" />
+    <mvc:view-controller path="/loginfailed" view-name="loginfailed" />
+    
     
 </beans>

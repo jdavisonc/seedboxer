@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.rs;
+package net.seedboxer.web.controller.rs;
 
 import java.util.Collections;
 import java.util.List;
 
 import net.seedboxer.core.type.FileValue;
-import net.seedboxer.web.controller.DownloadsController;
+import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.type.APIResponse;
 
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsAPI.class);
 
 	@Autowired
-	private DownloadsController controller;
+	private DownloadsService controller;
 
 	@RequestMapping(value="list", method = RequestMethod.GET)
 	public @ResponseBody List<FileValue> list() {

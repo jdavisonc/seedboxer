@@ -46,7 +46,7 @@
 							<li><a href="javascript:;">My Profile</a></li>
 							<li><a href="javascript:;">Account Settings</a></li>
 							<li class="divider"></li>
-							<li><a href="javascript:;">Logout</a></li>
+							<li><a href="j_spring_security_logout">Logout</a></li>
 						</ul>
 						
 					</li>
