@@ -47,8 +47,8 @@
 	</sec:http>
 	
 	<sec:http use-expressions="true">
-		<sec:form-login login-page="/login" default-target-url="/" authentication-failure-url="/loginfailed"/>
-		<sec:logout logout-success-url="/logout" invalidate-session="true"/>
+		<sec:form-login login-page="/login" default-target-url="/" authentication-failure-url="/login?error=1"/>
+		<sec:logout logout-success-url="/login" invalidate-session="true"/>
 		<sec:intercept-url pattern="/j_spring_security_check" access="permitAll" />
 		<sec:intercept-url pattern="/webservices/user/apikey" access="hasAnyRole('ADMIN','LEECHER')" />
 		<sec:intercept-url pattern="/j_spring_security_logout" access="permitAll" />

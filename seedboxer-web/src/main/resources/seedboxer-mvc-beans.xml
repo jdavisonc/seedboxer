@@ -56,14 +56,11 @@
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
         (see header.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/ui/**" location="/resources/views/"/>
 
     <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
     <mvc:view-controller path="/" view-name="welcome" />
-    <mvc:view-controller path="/login" view-name="login" />
-    <mvc:view-controller path="/logout" view-name="logout" />
-    <mvc:view-controller path="/loginfailed" view-name="loginfailed" />
-    
     
 </beans>

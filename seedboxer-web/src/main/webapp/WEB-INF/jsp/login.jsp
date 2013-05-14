@@ -53,6 +53,7 @@
       <div class="row">
         <div class="login-form">
           <h2>Login</h2>
+	  <span style="color:red"><%= request.getAttribute("errorMessage") %></span>
 	  <spring:url value="j_spring_security_check" var="springSecurityCheck"/>
           <form method="post" action="${springSecurityCheck}">
             <fieldset>

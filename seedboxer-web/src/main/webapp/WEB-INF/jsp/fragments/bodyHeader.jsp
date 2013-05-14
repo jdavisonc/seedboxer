@@ -27,7 +27,7 @@
 						</a>
 						
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;">Server Settings</a></li>
+							<li><a href="#server-settings">Server Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;">Help</a></li>
 						</ul>
@@ -43,8 +43,8 @@
 						</a>
 						
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;">My Profile</a></li>
-							<li><a href="javascript:;">Account Settings</a></li>
+							<li><a href="#my-profile">My Profile</a></li>
+							<li><a href="#account-settings">Account Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="j_spring_security_logout">Logout</a></li>
 						</ul>
