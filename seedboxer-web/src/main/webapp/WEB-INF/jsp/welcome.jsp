@@ -22,11 +22,13 @@
     	
     	
     	<div class="span9">
+
 	    <div ng-view></div>
     		
-    	</div>
-
+    		
 	</div>
+
+</div>
 </div>
 
 <jsp:include page="fragments/footer.jsp"/>

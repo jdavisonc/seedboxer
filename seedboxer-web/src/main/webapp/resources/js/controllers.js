@@ -27,9 +27,6 @@ function StatusCtrl($scope, $http) {
 	        "transferred": 654
 	    }, "downloadStatus": "STARTED", "message": null, "status": null 
 	};
-}
-
-function QueueCtrl($scope, $http) {
 
 	/* $http.get('webservices/downloads/queue', { params: { 'apikey' : 'Opu4uTgf' } })
 		.success(function(data) {
@@ -42,6 +39,7 @@ function QueueCtrl($scope, $http) {
 		{ order: 2, title: 'Game.of.Thrones.S03E05.720p.HDTV.x264-IMMERSE'},
 		{ order: 3, title: 'The.Big.Bang.Theory.S06E22.720p.HDTV.X264-DIMENSION'},
 	];
+
 }
 
 
