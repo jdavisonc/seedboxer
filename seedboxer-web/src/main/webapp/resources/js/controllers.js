@@ -42,32 +42,6 @@ function StatusCtrl($scope, $http) {
 
 }
 
-
-// Set up our mappings between URLs, templates, and controllers
-function routeConfig($routeProvider) {
-$routeProvider.
-when('/account-settings', {
-    templateUrl: '/ui/account-settings.html'
-}).
-when('/', {
-    templateUrl: '/ui/home.html'
-}).
-when('/my-profile', {
-    templateUrl: '/ui/my-profile.html'
-}).
-when('/server-settings', {
-    templateUrl: '/ui/server-settings.html'
-}).
-when('/tv-shows', {
-    templateUrl: '/ui/tv-shows.html'
-}).
-    otherwise({
-    redirectTo: '/'});
-}
-
-// Set up our route so the AMail service can find it
-seedboxerui.config(routeConfig);
-
 function NavController($scope, $location){
    $scope.navClass = function (page) {
         var currentRoute = $location.path().substring(1) || 'home';
