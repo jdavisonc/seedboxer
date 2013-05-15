@@ -3,7 +3,7 @@
 /* App Module */
 
 var seedboxerui = angular
-	.module('seedboxerui', ['httpBasicService'])
+	.module('seedboxerui', ['userServices'])
 	.config(['$routeProvider', function($routeProvider) {
 		
 		//Set up our mappings between URLs, templates, and controllers

@@ -2,22 +2,15 @@
 
  /* Controllers */
 
-function LoginCtrl($scope, $http) {
-	var encoded = Base64.encode(username + ':' + password);
-	/* $http.get('webservices/user/apikey', { params: { 'apikey' : 'Opu4uTgf'}, headers: {'Authorization': 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='}})
-		.success(function(data) {
-			$scope.queue = data;
-		}
-	); */
-}
-
-function StatusCtrl($scope, $http) {
+function StatusCtrl($scope, $http, User) {
 	
 	/*$http.get('webservices/user/status', { params: { 'apikey' : 'Opu4uTgf' } })
 		.success(function(data) {
 			$scope.current = data;
 		}
 	); */
+	var apikey = User.apikey();
+	console.log(  User.apikey() );
 
 	/** Response from SeedBoxer API **/	
 	$scope.current = {
