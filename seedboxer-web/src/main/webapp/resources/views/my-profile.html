@@ -1,1 +1,26 @@
-<div>My profile</div>
+<div ng-controller="ProfileCtrl">
+
+<h2>Username</h2>
+
+<h3>Configurations</h3>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="conf in configs">
+			<td>{{conf.key}}</td>
+			<td>{{conf.value}}</td>
+			<td><a class="btn btn-small" href="#"><i class="icon-trash"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<a class="btn btn-primary" href="#"><i class="icon-cog icon-white"></i> Add</a>
+
+</div>

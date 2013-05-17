@@ -17,7 +17,7 @@ function StatusCtrl($scope, $http, User) {
 	    "download": {
 	        "size": 1152,
 	        "fileName": "The.Following.S01E01.720p.HDTV.X264-DIMENSION",
-	        "transferred": 654
+	        "transferred": 500
 	    }, "downloadStatus": "STARTED", "message": null, "status": null 
 	};
 
@@ -40,6 +40,27 @@ function NavController($scope, $location){
         var currentRoute = $location.path().substring(1) || 'home';
         return page === currentRoute ? 'active' : '';
     };   
+}
+
+function ProfileCtrl($scope, $http, User) {
+	$scope.configs = [
+                {
+                    "value": "boxerseed",
+                    "key": "FtpPassword"
+                },
+                {
+                    "value": "Downloads",
+                    "key": "FtpRemoteDir"
+                },
+                {
+                    "value": "ftp.personalserver.org",
+                    "key": "FtpUrl"
+                },
+                {
+                    "value": "seedboxer",
+                    "key": "FtpUsername"
+                }
+            ];
 }
 
 

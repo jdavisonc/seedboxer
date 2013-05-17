@@ -18,21 +18,6 @@
 			
 			<div class="nav-collapse collapse">
 				<ul class="nav pull-right">
-					<li class="dropdown">
-						
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-cog icon-white"></i>
-							Settings
-							<b class="caret"></b>
-						</a>
-						
-						<ul class="dropdown-menu">
-							<li><a href="#server-settings">Server Settings</a></li>
-							<li class="divider"></li>
-							<li><a href="javascript:;">Help</a></li>
-						</ul>
-						
-					</li>
 			
 					<li class="dropdown">
 						
@@ -44,7 +29,7 @@
 						
 						<ul class="dropdown-menu">
 							<li><a href="#my-profile">My Profile</a></li>
-							<li><a href="#account-settings">Account Settings</a></li>
+							<li><a href="#server-settings">Server Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="j_spring_security_logout">Logout</a></li>
 						</ul>
