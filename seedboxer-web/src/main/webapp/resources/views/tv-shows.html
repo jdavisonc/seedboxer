@@ -1,1 +1,32 @@
-<div>TvShows yeah!</div>
+<div ng-controller="ContentCtrl">
+
+	<h2>Contents</h2>
+
+	<div class="span6 offset6">
+		<form class="navbar-search pull-right">
+			<input type="text" class="search-query" placeholder="Search">
+		</form>
+	</div>
+	
+	<br/>
+	<br/>
+
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="content in contents">
+				<td>{{content.name}}</td>
+				<td><a class="btn btn-info" href="#"><i
+						class="icon-circle-arrow-down icon-white"></i></a></td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+</div>

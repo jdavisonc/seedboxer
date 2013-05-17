@@ -17,18 +17,13 @@
               <li ng-class="navClass('home')"><a href="#home"><i class="icon-home icon-white"></i>Home</a></li>
               <li ng-class="navClass('tv-shows')"><a href="#tv-shows">TVShows</a></li>
             </ul>
-          </div><!--/.well -->
+          </div>
         </div>
     	
-    	
     	<div class="span9">
-
-	    <div ng-view></div>
-    		
-    		
+	    	<div ng-view></div>
+		</div>
 	</div>
-
-</div>
 </div>
 
 <jsp:include page="fragments/footer.jsp"/>
