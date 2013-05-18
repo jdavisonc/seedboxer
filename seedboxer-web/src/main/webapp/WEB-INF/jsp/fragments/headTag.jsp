@@ -9,16 +9,16 @@
 
 	<!-- Bootstrap -->
 
-    <spring:url value="/webjars/bootstrap/2.3.1/js/bootstrap.js" var="bootstrapJs"/>
-    <script src="${bootstrapJs}"></script>
-
     <spring:url value="/webjars/bootstrap/2.3.1/css/bootstrap.min.css" var="bootstrapCss"/>
     <link href="${bootstrapCss}" rel="stylesheet"/>
 
 	<!-- AngularJS -->
     <spring:url value="/webjars/angularjs/1.1.4/angular.min.js" var="angular"/>
     <script src="${angular}"></script>
-    
+
+    <spring:url value="/webjars/angular-ui-bootstrap/0.3.0/ui-bootstrap-tpls.js" var="uiBootstrap"/>
+    <script src="${uiBootstrap}"></script>
+
     <spring:url value="/webjars/angularjs/1.1.4/angular-resource.min.js" var="angularResource"/>
     <script src="${angularResource}"></script>
 

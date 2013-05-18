@@ -28,6 +28,7 @@
 		
 		<!-- Web dependencies -->
 		<webjars-angular-ui.version>0.4.0-1</webjars-angular-ui.version>
+		<webjars-angular-ui-bootstrap.version>0.3.0</webjars-angular-ui-bootstrap.version>
 		<webjars-angular.version>1.1.4</webjars-angular.version>
 		<webjars-bootstrap.version>2.3.1</webjars-bootstrap.version>
 		<webjars-jquery.version>2.0.0</webjars-jquery.version>
@@ -111,6 +112,11 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>${webjars-bootstrap.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angular-ui-bootstrap</artifactId>
+			<version>${webjars-angular-ui-bootstrap.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
