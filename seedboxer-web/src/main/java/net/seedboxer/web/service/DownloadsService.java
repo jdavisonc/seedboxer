@@ -28,7 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import net.seedboxer.bencode.TorrentUtils;
+import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.core.domain.Status;
 import net.seedboxer.core.domain.User;
@@ -47,6 +50,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 
 @Service
@@ -235,6 +241,23 @@ public class DownloadsService {
 			configs.add(new UserConfig(userConfiguration.getName(), userConfiguration.getValue()));
 		}
 		return configs;
+	}
+	
+	/**
+	 * Return all types of user configurations
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public List<UserConfig> getUserConfigTypes() {
+		return Lists.transform(Configuration.values, new Function<String, UserConfig>() {
+
+			@Override
+			@Nullable
+			public UserConfig apply(@Nullable String type) {
+				return new UserConfig(type, null);
+			}
+		});
 	}
 
 	/**

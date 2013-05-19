@@ -21,6 +21,10 @@
 
 package net.seedboxer.core.domain;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableList.Builder;
+
 /**
  * @author Jorge Davison (jdavisonc)
  *
@@ -38,38 +42,61 @@ public class Configuration {
 	public static final String START_TIME = "Start";
 	public static final String END_TIME = "End";
 
-	public static final String FTP_PREFIX = "Ftp";
-	public static final String FTP_USERNAME = FTP_PREFIX + "Username";
-	public static final String FTP_PASSWORD = FTP_PREFIX +"Password";
-	public static final String FTP_URL = FTP_PREFIX + "Url";
-	public static final String FTP_REMOTE_DIR = FTP_PREFIX + "RemoteDir";
-	public static final String FTP_SENT = FTP_PREFIX + "Sent";
+	public static final String FTP_USERNAME = "FtpUsername";
+	public static final String FTP_PASSWORD = "FtpPassword";
+	public static final String FTP_URL = "FtpUrl";
+	public static final String FTP_REMOTE_DIR = "FtpRemoteDir";
+	public static final String FTP_SENT = "FtpSent";
 
-	public static final String SSH_PREFIX = "Ssh";
-	public static final String SSH_USERNAME = SSH_PREFIX + "Username";
-	public static final String SSH_PASSWORD = SSH_PREFIX + "Password";
-	public static final String SSH_URL = SSH_PREFIX + "Url";
-	public static final String SSH_CMD = SSH_PREFIX + "Cmd";
+	public static final String SSH_USERNAME = "SshUsername";
+	public static final String SSH_PASSWORD = "SshPassword";
+	public static final String SSH_URL = "SshUrl";
+	public static final String SSH_CMD = "SshCmd";
 
-	public static final String NOTIFICATION_PREFIX = "Notification";
+	public static final String NOTIFICATION_EMAIL = "NotificationEmail";
 
-	public static final String NOTIFICATION_EMAIL = NOTIFICATION_PREFIX + "Email";
-
-	public static final String NOTIFICATION_GCM = NOTIFICATION_PREFIX + "GCM";
-	public static final String NOTIFICATION_GCM_DEVICEID = NOTIFICATION_GCM + "DeviceId";
-	public static final String NOTIFICATION_GCM_REGISTRATIONID = NOTIFICATION_GCM + "RegistrationId";
+	public static final String NOTIFICATION_GCM_DEVICEID = "NotificationGCMDeviceId";
+	public static final String NOTIFICATION_GCM_REGISTRATIONID = "NotificationGCMRegistrationId";
 
 	public static final String THIRD_PARTY = "ThirdParty";
 
-	public static final String IMDB_PREFIX = "Imdb";
-	public static final String IMDB_LIST = IMDB_PREFIX + "List";
-	public static final String IMDB_AUTHOR = IMDB_PREFIX + "Author";
-	public static final String IMDB_CONTENT_QUALITY = IMDB_PREFIX + "ContentQuality";
+	public static final String IMDB_LIST = "ImdbList";
+	public static final String IMDB_AUTHOR = "ImdbAuthor";
+	public static final String IMDB_CONTENT_QUALITY = "ImdbContentQuality";
 
-	public static final String TRAKT_PREFIX = "Trakt";
-	public static final String TRAKT_USERNAME = TRAKT_PREFIX + "Username";
-	public static final String TRAKT_PASSWORD = TRAKT_PREFIX + "Password";
-	public static final String TRAKT_AUTH_KEY = TRAKT_PREFIX + "AuthKey";
-	public static final String TRAKT_CONTENT_QUALITY = TRAKT_PREFIX + "ContentQuality";
+	public static final String TRAKT_USERNAME = "TraktUsername";
+	public static final String TRAKT_PASSWORD = "TraktPassword";
+	public static final String TRAKT_AUTH_KEY = "TraktAuthKey";
+	public static final String TRAKT_CONTENT_QUALITY = "TraktContentQuality";
+	
+	public static final List<String> values = new Builder<String>()
+			.add(USER)
+			.add(USER_ID)
+			.add(DOWNLOAD_ID)
+			.add(FILES)
+			.add(FILES_NAME)
+			.add(START_TIME)
+			.add(END_TIME)
+			.add(FTP_USERNAME)
+			.add(FTP_PASSWORD)
+			.add(FTP_URL)
+			.add(FTP_REMOTE_DIR)
+			.add(FTP_SENT)
+			.add(SSH_USERNAME)
+			.add(SSH_PASSWORD)
+			.add(SSH_URL)
+			.add(SSH_CMD)
+			.add(NOTIFICATION_EMAIL)
+			.add(NOTIFICATION_GCM_DEVICEID)
+			.add(NOTIFICATION_GCM_REGISTRATIONID)
+			.add(THIRD_PARTY)
+			.add(IMDB_LIST)
+			.add(IMDB_AUTHOR)
+			.add(IMDB_CONTENT_QUALITY)
+			.add(TRAKT_USERNAME)
+			.add(TRAKT_PASSWORD)
+			.add(TRAKT_AUTH_KEY)
+			.add(TRAKT_CONTENT_QUALITY)
+			.build();
 
 }

@@ -19,7 +19,8 @@
 	<packaging>war</packaging>
 	
 	<properties>
-		<jackson.version>1.7.1</jackson.version>
+		<jackson.version>1.9.12</jackson.version>
+		<jackson-annotations.version>2.2.0</jackson-annotations.version>
 		
 		<!-- Java EE / Java SE dependencies -->
 		<jsp.version>2.2</jsp.version>
@@ -77,6 +78,11 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson-annotations.version}</version>
 		</dependency>
 		
 		<dependency>

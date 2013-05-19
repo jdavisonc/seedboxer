@@ -128,5 +128,15 @@ public class UsersAPI extends SeedBoxerAPI {
 			return APIResponse.createErrorResponse("Can not delete user configuration");
 		}
 	}
+	
+	@RequestMapping(value="configs/types", method = RequestMethod.GET)
+	public @ResponseBody APIResponse typesOfConfigurations() {
+		try {
+			return new UserConfigsAPIResponse(controller.getUserConfigTypes());
+		} catch (Exception e) {
+			LOGGER.error("Can not delete user configuration", e);
+			return APIResponse.createErrorResponse("Can not delete user configuration");
+		}
+	}
 
 }
