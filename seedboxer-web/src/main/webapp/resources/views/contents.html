@@ -4,7 +4,7 @@
 
 	<div class="span6 offset6">
 		<form class="navbar-search pull-right">
-			<input type="text" class="search-query" placeholder="Search">
+			<input ng-model="query" type="text" class="search-query" placeholder="Search">
 		</form>
 	</div>
 	
@@ -19,9 +19,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="content in contents">
+			<tr ng-repeat="content in contents | filter:query">
 				<td>{{content.name}}</td>
-				<td><a class="btn btn-info" href="#"><i
+				<td><a class="btn btn-info" ng-click="putToDownload('{{content.name}}')"><i
 						class="icon-circle-arrow-down icon-white"></i></a></td>
 			</tr>
 		</tbody>

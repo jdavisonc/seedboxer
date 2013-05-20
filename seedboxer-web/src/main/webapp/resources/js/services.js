@@ -103,6 +103,17 @@ seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource)
 	    });
 
 	    return deferred.promise;
+	},
+	putToDownload :  function(fileNames){
+	    var deferred = $q.defer();
+
+	    $http.get('/webservices/downloads/put', {params : {apikey : apikeyResource.getApiKey(), fileNames: fileNames}}).success(function(data){
+	    	deferred.resolve(data);
+	    }).error(function(){
+	    	deferred.reject("An error occured while fetching contents");
+	    });
+
+	    return deferred.promise;
 	}
 
     };

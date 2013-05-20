@@ -118,30 +118,16 @@ function ContentsCtrl($scope, contentsService) {
 	
 	refreshContents();
 	
-	/*$scope.contents = [
-	    {
-		"name": "Go.On.S01E14.720p.HDTV.X264-DIMENSION",
-		"order": 0,
-		"queueId": null,
-		"downloaded": false
-	    },
-	    {
-		"name": "UK Top 40 Singles Chart Week 09 2013 OverDrive-RG",
-		"order": 0,
-		"queueId": null,
-		"downloaded": false
-	    },
-	    {
-		"name": "Prince_of_Persia_The_Forgotten_Sands_XBOX360-SPARE",
-		"order": 0,
-		"queueId": null,
-		"downloaded": false
-	    },
-	    {
-		"name": "Game.of.Thrones.S03E07.720p.HDTV.x264-EVOLVE",
-		"order": 0,
-		"queueId": null,
-		"downloaded": false
-	    }];*/
+	function putToDownload($name) {
+		contentsService.putToDownload($name)
+		  .then(function(data){
+		      // alert success
+			  $scope.error = data;
+		  },
+		  function(errorMessage){
+		      // alert error
+			  $scope.error = errorMessage;
+		  })
+	};
 }
 
