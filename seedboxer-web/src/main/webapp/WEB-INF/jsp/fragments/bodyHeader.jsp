@@ -43,4 +43,11 @@
 		
 	</div> <!-- /navbar-inner -->
 	
+	<div class="container" style="margin-top:5px">
+	    <div ng-controller="AlertCtrl" class="fade" ng-class="fadeIn()">
+		<alert  type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+	    </div>
+	    
+	</div>
+	
 </div>

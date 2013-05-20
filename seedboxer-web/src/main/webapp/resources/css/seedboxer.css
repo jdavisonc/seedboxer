@@ -12,3 +12,20 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+
+.fade {
+  -webkit-transition: opacity 0.6s linear !important;
+     -moz-transition: opacity 0.6s linear !important;
+      -ms-transition: opacity 0.6s linear !important;
+       -o-transition: opacity 0.6s linear !important;
+          transition: opacity 0.6s linear !important;
+   display: block;
+   width: 323px;
+   height: 100%;
+   margin: 0 auto;
+}
+
+.modal {
+    width : auto !important;
+    left : 57% !important;
+}

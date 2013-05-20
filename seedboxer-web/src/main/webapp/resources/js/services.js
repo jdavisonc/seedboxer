@@ -34,7 +34,7 @@ seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResourc
 	getUserStatusData :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userStatusService.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
 		deferred.resolve(data);
 	    }).error(function(){
 		deferred.reject("An error occured while fetching status");
@@ -50,12 +50,12 @@ seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResourc
 
 
 seedboxerUiServices.service('queueService',function($http,$q, apikeyResource){
-    var userStatusService = {
+    var queueService = {
 	apiPath : '/webservices/downloads/queue',
 	getQueue :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(queueService.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching the queue");
@@ -65,26 +65,79 @@ seedboxerUiServices.service('queueService',function($http,$q, apikeyResource){
 	}
 
     };
-    return userStatusService;
+    return queueService;
 	
 });
 
 
 seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResource){
     var userConfigService = {
-	apiPath : '/webservices/user/configs/list',
+	listPath : '/webservices/user/configs/list',
+	savePath: '/webservices/user/configs/save',
+	deletePath: '/webservices/user/configs/delete',
+	typesPath: '/webservices/user/configs/types',
 	getConfigList :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userConfigService.listPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
-	    	deferred.reject("An error occured while fetching the queue");
+	    	deferred.reject("An error occured while fetching the configurations list.");
+	    });
+
+	    return deferred.promise;
+	},
+	saveConfig :  function(key, value){
+
+	    var deferred = $q.defer();
+	    $http.get(userConfigService.savePath, 
+	    {
+		params : 
+		{
+		    apikey : apikeyResource.getApiKey(),
+		    key : key,
+		    value : value
+		}
+	    }).success(function(data){
+		if(data.status == "FAILURE")
+		    deferred.reject("An error occured while saving the configuration");
+		else
+		    deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while saving the configuration");
+	    });
+
+	    return deferred.promise;
+	},
+	deleteConfig :  function(key){
+
+	    var deferred = $q.defer();
+	    $http.get(userConfigService.deletePath, 
+	    {
+		params : 
+		{
+		    apikey : apikeyResource.getApiKey(),
+		    key : key
+		}
+	    }).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while deleting the configuration");
+	    });
+
+	    return deferred.promise;
+	},
+	getConfigTypes :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(userConfigService.typesPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching config types");
 	    });
 
 	    return deferred.promise;
 	}
-
     };
     return userConfigService;
 	
@@ -118,5 +171,44 @@ seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource)
 
     };
     return contentsService;
+	
+});
+
+
+seedboxerUiServices.service('alertService',function($rootScope, $timeout){
+   var alertService = {
+	alert : null,
+	counter : 0,
+	showWarning : function(alertMsg){
+	    alertService._addAlert({ type : "", msg : alertMsg})
+	},
+	showError : function(alertMsg){
+	    alertService._addAlert({ type : "error", msg : alertMsg})
+	},
+	showSuccess : function(alertMsg){
+	    alertService._addAlert({ type : "success", msg : alertMsg})
+	},
+	_addAlert : function(alert){
+	    alertService.alert = alert;
+	    alertService.counter++;
+	    if(!$rootScope.$$phase)
+		$rootScope.$digest();
+	    $timeout.cancel(alertService.timeout);
+	    
+	    alertService.timeout = $timeout(function(){
+		alertService.counter++;
+		alertService.alert = null;
+		
+	    },10000);
+	},
+	getAlert : function(){
+		return alertService.alert;
+	},
+	clearAlert : function(){
+	    alertService.pendingAlert = false;
+	}
+
+   };
+   return alertService;
 	
 });

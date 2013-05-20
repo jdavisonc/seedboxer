@@ -9,7 +9,7 @@ var seedboxerui = angular
 	    return $routeProvider;
 	});
     })
-    .run(function($routeProvider,apikeyResource,$route) {
+    .run(function($routeProvider,apikeyResource,$route, userStatusService, queueService, userConfigService) {
 	//get the apikey from the server before setting the route,
 	//this way we ensure nothing is done before having the apikey.
 
@@ -19,13 +19,29 @@ var seedboxerui = angular
 
 	    $routeProvider.
 		when('/', {
-			templateUrl: '/ui/home.html'
+			controller : function($scope, status, queue){
+			    $scope.current = status;
+			    $scope.queue = queue;
+			},
+			templateUrl: '/ui/home.html',
+			resolve    :{
+			    status : userStatusService.getUserStatusData,
+			    queue : queueService.getQueue
+			}
 		}).
 		when('/account-settings', {
 			templateUrl: '/ui/account-settings.html'
 		}).
 		when('/my-profile', {
-			templateUrl: '/ui/my-profile.html'
+			controller : function($scope, configData, configTypes){
+			    $scope.configs = configData.configs;
+			    $scope.types = configTypes;
+			},
+			templateUrl: '/ui/my-profile.html',
+			resolve : {
+			    configData : userConfigService.getConfigList,
+			    configTypes : userConfigService.getConfigTypes
+			}
 		}).
 		when('/server-settings', {
 			templateUrl: '/ui/server-settings.html'

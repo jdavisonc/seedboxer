@@ -17,13 +17,13 @@
 			<td>{{conf.key}}</td>
 			<td>{{conf.value}}</td>
 			<td>
-				<a class="btn btn-small" href="#"><i class="icon-trash"></i></a>
-				<a class="btn btn-small" href="#"><i class="icon-pencil"></i></a>
+				<a class="btn btn-small" ng-click="deleteConfig(conf)"><i class="icon-trash"></i></a>
+				<a class="btn btn-small" ng-click="editConfig(conf)"><i class="icon-pencil"></i></a>
 			</td>
 		</tr>
 	</tbody>
 </table>
 
-<a class="btn btn-primary" ng-click="openDialog()"><i class="icon-cog icon-white"></i> Add</a>
+<a class="btn btn-primary" ng-click="addNewConfig()"><i class="icon-cog icon-white"></i> Add</a>
 
 </div>

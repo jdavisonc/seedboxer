@@ -60,7 +60,7 @@
 		<property name="hibernateProperties">
 			<value>
 				hibernate.format_sql=true
-				hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+				hibernate.dialect=org.hibernate.dialect.SQLiteDialect
 			</value>
 		</property>
 	</bean>

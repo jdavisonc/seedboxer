@@ -2,43 +2,16 @@
 
  /* Controllers */
 
-function StatusCtrl($scope, userStatusService, queueService) {
+function StatusCtrl($scope, alertService) {
 
-	$scope.current = {};
-	
-	function refreshStatus(){
-	    userStatusService.getUserStatusData()
-	    .then(function(data){
-		$scope.current = data;
-	    },
-	    function(errorMessage){
-		$scope.error=errorMessage;
-	    });
-	};
-
-	refreshStatus();
-
-	$scope.queue = {};
-	
-	function refreshQueue(){
-	  queueService.getQueue()
-	  .then(function(data){
-	      $scope.queue = data;
-	  },
-	  function(errorMessage){
-	      $scope.error = errorMessage;
-	  })
-	};
-	
-	refreshQueue();
-	/*
-	$scope.queue = [
-		{ order: 1, title: 'Person.of.Interest.S02E21.720p.HDTV.X264-DIMENSION'},
-		{ order: 2, title: 'Game.of.Thrones.S03E05.720p.HDTV.x264-IMMERSE'},
-		{ order: 3, title: 'The.Big.Bang.Theory.S06E22.720p.HDTV.X264-DIMENSION'},
-	];
-	*/
-
+      
+      $scope.play = function(){
+	   alertService.addSuccess("Apretaste el play bluuuu");
+      }
+      
+      $scope.stop = function(){
+	   alertService.addError( "Apretaste el stop  aaaaa");
+      }
 }
 
 function NavController($scope, $location){
@@ -48,57 +21,96 @@ function NavController($scope, $location){
     };   
 }
 
-function ProfileCtrl($scope, userConfigService, $dialog) {
+function ProfileCtrl($scope, $dialog, alertService, userConfigService) {
    
-   $scope.configs = [];
-    var t = '<div class="modal-header">'+
-          '<h1>This is the title</h1>'+
-          '</div>'+
-          '<div class="modal-body">'+
-          '<p>Enter a value to pass to <code>close</code> as the result: <input ng-model="result" /></p>'+
-          '</div>'+
-          '<div class="modal-footer">'+
-          '<button ng-click="close(result)" class="btn btn-primary" >Close</button>'+
-          '</div>';
-   function refreshConfig(){
-       userConfigService.getConfigList()
-       .then(function(data){
-	   $scope.configs = data.configs;
-       },
-       function(errorMessage){
-	   $scope.error = errorMessage;
-       })
-   };
-   
-   refreshConfig();
-   
+   $scope.deleteConfig = function(item){
+   console.log(item);
+   var title = '';
+   var msg = 'Are you sure you want to delete this configuration?';
+   var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+
+   $dialog.messageBox(title, msg, btns)
+     .open()
+     .then(function(result){
+       if(result == 'ok'){
+	    userConfigService.deleteConfig(item.key)
+	    .then(function(){
+		alertService.showSuccess("Configuration deleted successfully");
+		$scope.refreshConfig();
+	    });
+	    
+	}
+   });
+};
+
     $scope.opts = {
     backdrop: true,
     keyboard: true,
     backdropClick: true,
     templateUrl: '/ui/add-config-dialog.html',
-    //template: t,
-    controller: 'AddConfigDialogController'
+    resolve: {
+	dialogType: function(){ return angular.copy($scope.dialogType);},
+	config : function(){ return angular.copy($scope.config);}
+   },
+   controller: 'ConfigDialogCtrl'
   };
 
     
 
-  $scope.openDialog = function(){
-    var d = $dialog.dialog($scope.opts);
-    d.open().then(function(result){
-      if(result)
-      {
-        alert('dialog closed with result: ' + result);
-      }
-    });
-  };
+  $scope.refreshConfig = function(){
+	userConfigService.getConfigList().
+	then(function(data){
+	    $scope.configs = data.configs;
+	}),function(errorMsg){
+	    alertService.showError("There was an error trying to fetch configurations");
+	}
+   }
 
+   $scope.addNewConfig = function(){
+	$scope.dialogType = 'add';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	if(result == 'ok')
+	    $scope.refreshConfig();
+	});
+   };
+   
+   $scope.editConfig = function(conf){
+	$scope.config = conf;
+	$scope.dialogType = 'edit';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	//if(result == 'ok')
+	    $scope.refreshConfig();
+	})
+   }
 }
+function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config){
+    if(dialogType == 'add'){
+	$scope.msg = 'Add a new configuration';
+	$scope.key = null;
+	$scope.value = null;
+    }
+    else if(dialogType == 'edit'){
+	$scope.msg = 'Edit configuration';
+	$scope.key = config.key;
+	$scope.value = config.value;
+    }
 
-// the dialog is injected in the specified controller
-function AddConfigDialogController($scope, dialog){
-    $scope.close = function(result){
-	dialog.close(result);
+    $scope.closeOk = function(){
+	userConfigService.saveConfig($scope.key, $scope.value)
+	    .then(function(){
+		alertService.showSuccess("Configuration saved successfully!");
+		dialog.close('ok');
+	    }
+	    ,function(errorMessage){
+		$scope.error = errorMessage;
+		alertService.showError("There was an when saving the configuration");
+		dialog.close('error');
+	    });
+    };
+    $scope.closeCancel = function(){
+	dialog.close();
     };
 }
 
@@ -131,3 +143,24 @@ function ContentsCtrl($scope, contentsService) {
 	};
 }
 
+function AlertCtrl($scope, alertService) {
+
+    $scope.showAlert = false;
+    $scope.alertService = alertService;
+    $scope.alert = alertService.alert;
+
+    $scope.$watch('alertService.counter',function(showAlert, oldVal, scope){
+	if(scope.showAlert = scope.alertService.getAlert() != null){
+		scope.alert = scope.alertService.getAlert();
+	}
+    },true);
+
+    $scope.fadeIn = function(){
+	return $scope.showAlert ? 'in' : '';
+    }
+
+    $scope.closeAlert = function() {
+	$scope.showAlert = false;
+    };
+
+}
