@@ -1,6 +1,9 @@
 <div class="modal-header">{{msg}}</div>
 <div class="modal-body">
-    <p>Name <input ng-model="key" /></p>
+    <p>Name <select ng-model="key">
+	    <option ng-repeat="type in configTypes">{{type.key}}</option>
+	</select></p>
+	
    <p>Value <input ng-model="value" /></p>
 </div>
 <div class="modal-footer">

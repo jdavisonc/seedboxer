@@ -50,7 +50,8 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService) {
     templateUrl: '/ui/add-config-dialog.html',
     resolve: {
 	dialogType: function(){ return angular.copy($scope.dialogType);},
-	config : function(){ return angular.copy($scope.config);}
+	config : function(){ return angular.copy($scope.config);},
+	configTypes : function(){ return angular.copy($scope.types);}
    },
    controller: 'ConfigDialogCtrl'
   };
@@ -85,7 +86,8 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService) {
 	})
    }
 }
-function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config){
+function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config, configTypes){
+    $scope.configTypes = configTypes.configs;
     if(dialogType == 'add'){
 	$scope.msg = 'Add a new configuration';
 	$scope.key = null;
