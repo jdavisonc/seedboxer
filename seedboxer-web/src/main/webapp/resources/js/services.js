@@ -193,13 +193,14 @@ seedboxerUiServices.service('alertService',function($rootScope, $timeout){
 	    alertService.counter++;
 	    if(!$rootScope.$$phase)
 		$rootScope.$digest();
+	    
 	    $timeout.cancel(alertService.timeout);
 	    
 	    alertService.timeout = $timeout(function(){
 		alertService.counter++;
 		alertService.alert = null;
 		
-	    },10000);
+	    },3000);
 	},
 	getAlert : function(){
 		return alertService.alert;

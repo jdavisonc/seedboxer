@@ -6,11 +6,11 @@ function StatusCtrl($scope, alertService) {
 
       
       $scope.play = function(){
-	   alertService.addSuccess("Apretaste el play bluuuu");
+	   alertService.showSuccess("Apretaste el play bluuuu");
       }
       
       $scope.stop = function(){
-	   alertService.addError( "Apretaste el stop  aaaaa");
+	   alertService.showError( "Apretaste el stop  aaaaa");
       }
 }
 
@@ -49,9 +49,9 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService) {
     backdropClick: true,
     templateUrl: '/ui/add-config-dialog.html',
     resolve: {
-	dialogType: function(){ return angular.copy($scope.dialogType);},
-	config : function(){ return angular.copy($scope.config);},
-	configTypes : function(){ return angular.copy($scope.types);}
+	dialogType: function(){return angular.copy($scope.dialogType);},
+	config : function(){return angular.copy($scope.config);},
+	configTypes : function(){return angular.copy($scope.types);}
    },
    controller: 'ConfigDialogCtrl'
   };
