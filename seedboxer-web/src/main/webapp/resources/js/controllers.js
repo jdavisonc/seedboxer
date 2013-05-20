@@ -101,8 +101,24 @@ function AddConfigDialogController($scope, dialog){
 	dialog.close(result);
     };
 }
-function ContentCtrl($scope) {
-	$scope.contents = [
+
+function ContentsCtrl($scope, contentsService) {
+	
+	$scope.contents = {};
+	
+	function refreshContents(){
+		contentsService.getContents()
+	  .then(function(data){
+	      $scope.contents = data;
+	  },
+	  function(errorMessage){
+	      $scope.error = errorMessage;
+	  })
+	};
+	
+	refreshContents();
+	
+	/*$scope.contents = [
 	    {
 		"name": "Go.On.S01E14.720p.HDTV.X264-DIMENSION",
 		"order": 0,
@@ -126,6 +142,6 @@ function ContentCtrl($scope) {
 		"order": 0,
 		"queueId": null,
 		"downloaded": false
-	    }];
+	    }];*/
 }
 

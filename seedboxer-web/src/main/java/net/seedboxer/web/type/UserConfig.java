@@ -20,15 +20,10 @@
  ******************************************************************************/
 package net.seedboxer.web.type;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-
 public class UserConfig {
 
 	private final String key;
 	
-	@JsonInclude(Include.NON_NULL)
 	private final String value;
 
 	public UserConfig(String key, String value) {

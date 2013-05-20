@@ -31,11 +31,17 @@
 	<mvc:annotation-driven />
 	
 	<context:component-scan base-package="net.seedboxer.web"/>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+			    <value>file:${seedboxer.config.path}/seedboxer.properties</value>
+			</list>
+		</property>
+	</bean>
 
 	<!-- Default viewClass: JSTL view (JSP with html output) -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	    <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
-<!-- 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /> -->
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>

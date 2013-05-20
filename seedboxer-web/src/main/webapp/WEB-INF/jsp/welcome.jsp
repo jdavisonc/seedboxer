@@ -14,8 +14,8 @@
 		<div class="span3">
           <div class="well sidebar-nav">
             <ul class="nav nav-list" ng-controller="NavController">
-              <li ng-class="navClass('home')"><a href="#home"><i class="icon-home icon-white"></i>Home</a></li>
-              <li ng-class="navClass('tv-shows')"><a href="#tv-shows">TVShows</a></li>
+              <li ng-class="navClass('home')"><a href="#home"><i class="icon-home"></i> Home</a></li>
+              <li ng-class="navClass('contents')"><a href="#contents"><i class="icon-fire"></i> Contents</a></li>
             </ul>
           </div>
         </div>

@@ -20,18 +20,12 @@
  ******************************************************************************/
 package net.seedboxer.web.type;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-
 public class APIResponse {
 
 	public enum ResponseStatus { SUCCESS, FAILURE; }
 
-	@JsonInclude(Include.NON_NULL)
 	private String message;
 
-	@JsonInclude(Include.NON_NULL)
 	private ResponseStatus status;
 
 	public APIResponse() { }

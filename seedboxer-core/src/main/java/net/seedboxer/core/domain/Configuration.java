@@ -54,6 +54,7 @@ public class Configuration {
 	public static final String SSH_CMD = "SshCmd";
 
 	public static final String NOTIFICATION_EMAIL = "NotificationEmail";
+	public static final String NOTIFICATION_GCM = "NotificationGCM";
 
 	public static final String NOTIFICATION_GCM_DEVICEID = "NotificationGCMDeviceId";
 	public static final String NOTIFICATION_GCM_REGISTRATIONID = "NotificationGCMRegistrationId";
@@ -87,6 +88,7 @@ public class Configuration {
 			.add(SSH_URL)
 			.add(SSH_CMD)
 			.add(NOTIFICATION_EMAIL)
+			.add(NOTIFICATION_GCM)
 			.add(NOTIFICATION_GCM_DEVICEID)
 			.add(NOTIFICATION_GCM_REGISTRATIONID)
 			.add(THIRD_PARTY)

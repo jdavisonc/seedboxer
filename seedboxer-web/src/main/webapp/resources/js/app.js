@@ -30,8 +30,8 @@ var seedboxerui = angular
 		when('/server-settings', {
 			templateUrl: '/ui/server-settings.html'
 		}).
-		when('/tv-shows', {
-			templateUrl: '/ui/tv-shows.html'
+		when('/contents', {
+			templateUrl: '/ui/contents.html'
 		}).
 		otherwise({ redirectTo: '/'});
 	    $route.reload();	

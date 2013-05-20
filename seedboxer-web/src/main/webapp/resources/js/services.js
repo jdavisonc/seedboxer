@@ -56,9 +56,9 @@ seedboxerUiServices.service('queueService',function($http,$q, apikeyResource){
 	    var deferred = $q.defer();
 
 	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
-		deferred.resolve(data);
+	    	deferred.resolve(data);
 	    }).error(function(){
-		deferred.reject("An error occured while fetching the queue");
+	    	deferred.reject("An error occured while fetching the queue");
 	    });
 
 	    return deferred.promise;
@@ -77,9 +77,9 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	    var deferred = $q.defer();
 
 	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
-		deferred.resolve(data);
+	    	deferred.resolve(data);
 	    }).error(function(){
-		deferred.reject("An error occured while fetching the queue");
+	    	deferred.reject("An error occured while fetching the queue");
 	    });
 
 	    return deferred.promise;
@@ -90,4 +90,22 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	
 });
 
+seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource){
+    var contentsService = {
+	apiPath : '/webservices/downloads/list',
+	getContents :  function(){
+	    var deferred = $q.defer();
 
+	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    	deferred.resolve(data);
+	    }).error(function(){
+	    	deferred.reject("An error occured while fetching contents");
+	    });
+
+	    return deferred.promise;
+	}
+
+    };
+    return contentsService;
+	
+});
