@@ -1,17 +1,18 @@
 /* Services */
 
 var seedboxerUiServices = angular.module('seedboxerui.services', []);
-seedboxerUiServices.service('apikeyResource',function($http,$q) {
+seedboxerUiServices.service('userDataResource',function($http,$q) {
 	
-    var apikeyResource = {};
+    var userDataResource = {};
 
-    apikeyResource.apiPath = '/apikey';
-    apikeyResource.getApiKeyFromServer = function(){
+    userDataResource.apiPath = '/userData';
+    userDataResource.getUserDataFromServer = function(){
 
 	var deferred = $q.defer();
 
-	$http.get(apikeyResource.apiPath).success(function(data){
-	    apikeyResource.apikey = data.apiKey;
+	$http.get(userDataResource.apiPath).success(function(data){
+	    userDataResource.apikey = data.apiKey;
+	    userDataResource.username = data.name;
 	    deferred.resolve(data);
 	}).error(function(){
 
@@ -20,15 +21,18 @@ seedboxerUiServices.service('apikeyResource',function($http,$q) {
 
 	return deferred.promise;
     }
-    apikeyResource.getApiKey = function(){
-	return apikeyResource.apikey;
+    userDataResource.getApiKey = function(){
+	return userDataResource.apikey;
     }
-    return apikeyResource;
+    userDataResource.getUserName= function(){
+	return userDataResource.username;
+    }
+    return userDataResource;
 	
 });
 
 
-seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResource){
+seedboxerUiServices.service('userStatusService',function($http,$q, userDataResource){
     var userStatusService = {
 	apiPath : '/webservices/user/status',
 	startApiPath : '/webservices/user/start',
@@ -36,7 +40,7 @@ seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResourc
 	getUserStatusData :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(userStatusService.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userStatusService.apiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 		deferred.resolve(data);
 	    }).error(function(){
 		deferred.reject("An error occured while fetching status");
@@ -73,13 +77,13 @@ seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResourc
 });
 
 
-seedboxerUiServices.service('queueService',function($http,$q, apikeyResource){
+seedboxerUiServices.service('queueService',function($http,$q, userDataResource){
     var queueService = {
 	apiPath : '/webservices/downloads/queue',
 	getQueue :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(queueService.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(queueService.apiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching the queue");
@@ -94,7 +98,7 @@ seedboxerUiServices.service('queueService',function($http,$q, apikeyResource){
 });
 
 
-seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResource){
+seedboxerUiServices.service('userConfigService',function($http,$q, userDataResource){
     var userConfigService = {
 	listPath : '/webservices/user/configs/list',
 	savePath: '/webservices/user/configs/save',
@@ -103,7 +107,7 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	getConfigList :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(userConfigService.listPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userConfigService.listPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching the configurations list.");
@@ -118,7 +122,7 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	    {
 		params : 
 		{
-		    apikey : apikeyResource.getApiKey(),
+		    apikey : userDataResource.getApiKey(),
 		    key : key,
 		    value : value
 		}
@@ -140,7 +144,7 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	    {
 		params : 
 		{
-		    apikey : apikeyResource.getApiKey(),
+		    apikey : userDataResource.getApiKey(),
 		    key : key
 		}
 	    }).success(function(data){
@@ -154,7 +158,7 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	getConfigTypes :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(userConfigService.typesPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userConfigService.typesPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 		deferred.resolve(data);
 	    }).error(function(){
 		deferred.reject("An error occured while fetching config types");
@@ -167,13 +171,13 @@ seedboxerUiServices.service('userConfigService',function($http,$q, apikeyResourc
 	
 });
 
-seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource){
+seedboxerUiServices.service('contentsService',function($http,$q, userDataResource){
     var contentsService = {
 	apiPath : '/webservices/downloads/list',
 	getContents :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(this.apiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(this.apiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching contents");
@@ -184,7 +188,7 @@ seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource)
 	putToDownload :  function(fileName){
 	    var deferred = $q.defer();
 
-	    $http.get('/webservices/downloads/put', {params : {apikey : apikeyResource.getApiKey(), fileName: fileName}}).success(function(data){
+	    $http.get('/webservices/downloads/put', {params : {apikey : userDataResource.getApiKey(), fileNames: fileNames}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching contents");

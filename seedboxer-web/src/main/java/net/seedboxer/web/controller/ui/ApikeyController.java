@@ -20,8 +20,11 @@
  ******************************************************************************/
 package net.seedboxer.web.controller.ui;
 
+import net.seedboxer.web.controller.rs.SeedBoxerAPI;
 import net.seedboxer.web.controller.rs.UsersAPI;
 import net.seedboxer.web.type.APIResponse;
+import net.seedboxer.web.type.UserAPIKeyResponse;
+import net.seedboxer.web.type.UserNameResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +36,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author The Sultan
  */
 @Controller
-public class ApikeyController {
+public class ApikeyController extends SeedBoxerAPI{
     
     @Autowired
     UsersAPI usersApi;
     
-    @RequestMapping(value="/apikey", method = RequestMethod.GET)
+    @RequestMapping(value="/userData", method = RequestMethod.GET)
     public @ResponseBody APIResponse apikey() {
-	return usersApi.apikey();
+	return new UserNameResponse(getUser().getUsername(),(UserAPIKeyResponse) usersApi.apikey());
     }
 }

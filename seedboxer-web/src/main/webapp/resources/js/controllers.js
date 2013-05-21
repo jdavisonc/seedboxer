@@ -33,27 +33,27 @@ function NavController($scope, $location){
     };   
 }
 
-function ProfileCtrl($scope, $dialog, alertService, userConfigService) {
-   
+function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataResource) {
+   $scope.username = userDataResource.getUserName();
    $scope.deleteConfig = function(item){
-   console.log(item);
-   var title = '';
-   var msg = 'Are you sure you want to delete this configuration?';
-   var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+   
+	var title = '';
+	var msg = 'Are you sure you want to delete this configuration?';
+	var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
 
-   $dialog.messageBox(title, msg, btns)
-     .open()
-     .then(function(result){
-       if(result == 'ok'){
-	    userConfigService.deleteConfig(item.key)
-	    .then(function(){
-		alertService.showSuccess("Configuration deleted successfully");
-		$scope.refreshConfig();
-	    });
-	    
-	}
-   });
-};
+	$dialog.messageBox(title, msg, btns)
+	    .open()
+	    .then(function(result){
+	    if(result == 'ok'){
+		userConfigService.deleteConfig(item.key)
+		.then(function(){
+		    alertService.showSuccess("Configuration deleted successfully");
+		    $scope.refreshConfig();
+		});
+
+	    }
+	});
+    };
 
     $scope.opts = {
     backdrop: true,
@@ -174,5 +174,27 @@ function AlertCtrl($scope, alertService) {
     $scope.closeAlert = function() {
 	$scope.showAlert = false;
     };
+
+}
+
+
+function HeaderCtrl($scope, userDataResource) {
+    
+    /*
+    We implemented the userData call to the server to be done 
+    before anything else. We achieve this result by calling the server
+    and after receiving the response, only then we define the routes and 
+    reload them.
+    This works nice for all the views, but the header is not part of any view
+    so it gets rendered before the result is back from the server and the route
+    reloading doesn't affect it.
+    That's why we have to use a watch here.
+    */
+    $scope.$watch(function(){
+	return userDataResource.getUserName()
+    },
+    function(newVal, oldVal, scope){
+	scope.username = newVal;
+    })
 
 }
