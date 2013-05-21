@@ -31,6 +31,8 @@ seedboxerUiServices.service('apikeyResource',function($http,$q) {
 seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResource){
     var userStatusService = {
 	apiPath : '/webservices/user/status',
+	startApiPath : '/webservices/user/start',
+	stopApiPath : '/webservices/user/stop',
 	getUserStatusData :  function(){
 	    var deferred = $q.defer();
 
@@ -38,6 +40,28 @@ seedboxerUiServices.service('userStatusService',function($http,$q, apikeyResourc
 		deferred.resolve(data);
 	    }).error(function(){
 		deferred.reject("An error occured while fetching status");
+	    });
+
+	    return deferred.promise;
+	},
+	start :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(userStatusService.startApiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    	deferred.resolve(data);
+	    }).error(function(){
+	    	deferred.reject("An error occured while starting");
+	    });
+
+	    return deferred.promise;
+	},
+	stop :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(userStatusService.stopApiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    	deferred.resolve(data);
+	    }).error(function(){
+	    	deferred.reject("An error occured while stopping");
 	    });
 
 	    return deferred.promise;
@@ -157,10 +181,10 @@ seedboxerUiServices.service('contentsService',function($http,$q, apikeyResource)
 
 	    return deferred.promise;
 	},
-	putToDownload :  function(fileNames){
+	putToDownload :  function(fileName){
 	    var deferred = $q.defer();
 
-	    $http.get('/webservices/downloads/put', {params : {apikey : apikeyResource.getApiKey(), fileNames: fileNames}}).success(function(data){
+	    $http.get('/webservices/downloads/put', {params : {apikey : apikeyResource.getApiKey(), fileName: fileName}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching contents");

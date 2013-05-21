@@ -2,16 +2,28 @@
 
  /* Controllers */
 
-function StatusCtrl($scope, alertService) {
+function StatusCtrl($scope, userStatusService, alertService) {
 
       
-      $scope.play = function(){
-	   alertService.showSuccess("Apretaste el play bluuuu");
-      }
+	$scope.play = function(){
+		userStatusService.start()
+		  .then(function(data){
+			  alertService.showSuccess("The downloads are starting rigth now!");
+		  },
+		  function(errorMessage){
+			  alertService.showError("There was an error when starting");
+		  })
+	};
       
-      $scope.stop = function(){
-	   alertService.showError( "Apretaste el stop  aaaaa");
-      }
+	$scope.stop = function(){
+		userStatusService.stop()
+		  .then(function(data){
+			  alertService.showSuccess("The downloads were stopped :(");
+		  },
+		  function(errorMessage){
+			  alertService.showError("There was an error when stopping");
+		  })
+	};
 }
 
 function NavController($scope, $location){
@@ -116,7 +128,7 @@ function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dial
     };
 }
 
-function ContentsCtrl($scope, contentsService) {
+function ContentsCtrl($scope, contentsService, alertService) {
 	
 	$scope.contents = {};
 	
@@ -126,21 +138,19 @@ function ContentsCtrl($scope, contentsService) {
 	      $scope.contents = data;
 	  },
 	  function(errorMessage){
-	      $scope.error = errorMessage;
+		  alertService.showError("There was an when getting contents");
 	  })
 	};
 	
 	refreshContents();
 	
-	function putToDownload($name) {
-		contentsService.putToDownload($name)
+	$scope.putToDownload = function(item) {
+		contentsService.putToDownload(item.name)
 		  .then(function(data){
-		      // alert success
-			  $scope.error = data;
+			  alertService.showSuccess("The content was in the queue!");
 		  },
 		  function(errorMessage){
-		      // alert error
-			  $scope.error = errorMessage;
+			  alertService.showError("There was an when sending contents to queue");
 		  })
 	};
 }
@@ -158,7 +168,7 @@ function AlertCtrl($scope, alertService) {
     },true);
 
     $scope.fadeIn = function(){
-	return $scope.showAlert ? 'in' : '';
+    	return $scope.showAlert ? 'in' : '';
     }
 
     $scope.closeAlert = function() {

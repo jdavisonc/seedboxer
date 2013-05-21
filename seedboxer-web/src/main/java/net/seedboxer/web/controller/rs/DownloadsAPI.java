@@ -34,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -64,7 +65,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 	}
 
 	@RequestMapping(value="put", method = RequestMethod.GET)
-	public @ResponseBody APIResponse put(List<String> fileNames) {
+	public @ResponseBody APIResponse put(@RequestParam(value="fileName") List<String> fileNames) {
 		try {
 			controller.putToDownload(getUser(), fileNames, true);
 			return APIResponse.createSuccessfulResponse();
