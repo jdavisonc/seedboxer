@@ -51,7 +51,7 @@ seedboxerUiServices.service('userStatusService',function($http,$q, userDataResou
 	start :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(userStatusService.startApiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userStatusService.startApiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while starting");
@@ -62,7 +62,7 @@ seedboxerUiServices.service('userStatusService',function($http,$q, userDataResou
 	stop :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(userStatusService.stopApiPath, {params : {apikey : apikeyResource.getApiKey()}}).success(function(data){
+	    $http.get(userStatusService.stopApiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while stopping");
