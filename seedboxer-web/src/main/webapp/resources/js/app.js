@@ -9,11 +9,11 @@ var seedboxerui = angular
 	    return $routeProvider;
 	});
     })
-    .run(function($routeProvider,apikeyResource,$route, userStatusService, queueService, userConfigService) {
+    .run(function($routeProvider,userDataResource,$route, userStatusService, queueService, userConfigService) {
 	//get the apikey from the server before setting the route,
 	//this way we ensure nothing is done before having the apikey.
 
-	apikeyResource.getApiKeyFromServer().then(function(){
+	userDataResource.getUserDataFromServer().then(function(){
 
 	//Set up the routes and reload so the proper view is fetched.
 

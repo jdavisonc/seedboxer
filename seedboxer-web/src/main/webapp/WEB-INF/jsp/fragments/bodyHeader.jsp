@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderCtrl">
 	
 	<div class="navbar-inner">
 		
@@ -23,7 +23,7 @@
 						
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="icon-user icon-white"></i> 
-							Username
+							{{username}}
 							<b class="caret"></b>
 						</a>
 						
