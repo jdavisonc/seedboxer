@@ -28,21 +28,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import net.seedboxer.bencode.TorrentUtils;
-import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.core.domain.Status;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.logic.DownloadsQueueManager;
 import net.seedboxer.core.logic.DownloadsSessionManager;
 import net.seedboxer.core.logic.UsersController;
 import net.seedboxer.core.type.Download;
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.core.util.FileUtils;
-import net.seedboxer.web.type.UserConfig;
 import net.seedboxer.web.type.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
@@ -50,9 +45,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 
 @Service
@@ -62,7 +54,7 @@ public class DownloadsService {
 
 	@Autowired
 	private UsersController usersController;
-
+	
 	@Autowired
 	private DownloadsQueueManager downloadsQueueManager;
 
@@ -216,71 +208,6 @@ public class DownloadsService {
 		} else {
 			LOGGER.info("Download already started for user {}", user.getUsername());
 		}
-	}
-
-	/**
-	 * Generate an APIKEY for the user.
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public User generateAPIKey(User user) {
-		return usersController.generateAPIKey(user);
-	}
-
-	/**
-	 * Return all user configurations
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public List<UserConfig> getUserConfigs(User user) {
-		List<UserConfig> configs = new ArrayList<UserConfig>();
-		List<UserConfiguration> userConfig = usersController.getUserConfig(user.getId());
-		for (UserConfiguration userConfiguration : userConfig) {
-			configs.add(new UserConfig(userConfiguration.getName(), userConfiguration.getValue()));
-		}
-		return configs;
-	}
-	
-	/**
-	 * Return all types of user configurations
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public List<UserConfig> getUserConfigTypes() {
-		return Lists.transform(Configuration.values, new Function<String, UserConfig>() {
-
-			@Override
-			@Nullable
-			public UserConfig apply(@Nullable String type) {
-				return new UserConfig(type, null);
-			}
-		});
-	}
-
-	/**
-	 * Save user configurations, if the key not exists in user configurations set, then will be added.
-	 * If the key exists, then the configuration will be updated.
-	 * 
-	 * @param user
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	public void saveUserConfigs(User user, String name, String value) {
-		usersController.saveUserConf(user, new UserConfiguration(name, value));
-	}
-
-	/**
-	 * Delete user configuration if exists.
-	 * 
-	 * @param user
-	 * @param name
-	 */
-	public void deleteUserConfigs(User user, String name) {
-		usersController.deleteUserConf(user, name);
 	}
 
 }

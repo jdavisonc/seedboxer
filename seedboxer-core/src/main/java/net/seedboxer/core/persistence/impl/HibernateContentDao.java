@@ -50,7 +50,7 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	}
 
 	@Override
-	public List<Content> getAllContent(User user) {
+	public List<Content> getAllContents(User user) {
 		Criteria criteria = getCurrentSession().createCriteria(Content.class);
 		criteria.add(Restrictions.eq("history", false));
 		criteria.add(Restrictions.eq("user", user));
@@ -65,7 +65,7 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	}
 
 	@Override
-	public <T extends Content> List<T> getHistoryContentFilteredByNameAndUser(Class<T> clazz, String name,
+	public <T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name,
 			User user){
 		Criteria criteria = getCurrentSession().createCriteria(clazz);
 		Criterion rest1 = Restrictions.and(Restrictions.eq("name", name),Restrictions.eq("history",true));
@@ -75,7 +75,7 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	}
 
 	@Override
-	public <T extends Content> List<T> getAllContentWithName(String name,
+	public <T extends Content> List<T> getAllContentsWithName(String name,
 			Class<? extends Content> clazz) {
 		Criteria criteria = getCurrentSession().createCriteria(clazz);
 		criteria.add(Restrictions.eq("name", name));

@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.seedboxer.core.domain.User;
 import net.seedboxer.web.service.DownloadsService;
+import net.seedboxer.web.service.UsersService;
 import net.seedboxer.web.type.APIResponse;
 import net.seedboxer.web.type.UserAPIKeyResponse;
 import net.seedboxer.web.type.UserConfig;
@@ -51,12 +52,15 @@ public class UsersAPI extends SeedBoxerAPI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersAPI.class);
 
 	@Autowired
-	private DownloadsService controller;
+	private DownloadsService downloadsService;
+	
+	@Autowired
+	private UsersService usersService;
 
 	@RequestMapping(value="status", method = RequestMethod.GET)
 	public @ResponseBody APIResponse status() {
 		try {
-			return controller.getUserStatus(getUser());
+			return downloadsService.getUserStatus(getUser());
 		} catch (Exception e) {
 			LOGGER.error("Wrong request", e);
 			return APIResponse.createErrorResponse("Can not stop downloads");
@@ -66,7 +70,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="stop", method = RequestMethod.GET)
 	public @ResponseBody APIResponse stop() {
 		try {
-			controller.stopDownloads(getUser());
+			downloadsService.stopDownloads(getUser());
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not stop download in progress", e);
@@ -77,7 +81,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="start", method = RequestMethod.GET)
 	public @ResponseBody APIResponse start() {
 		try {
-			controller.startDownloads(getUser());
+			downloadsService.startDownloads(getUser());
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
@@ -88,7 +92,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="apikey", method = RequestMethod.GET)
 	public @ResponseBody APIResponse apikey() {
 		try {
-			User user = controller.generateAPIKey(getUser());
+			User user = downloadsService.generateAPIKey(getUser());
 			return new UserAPIKeyResponse(user.getApikey());
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
@@ -99,7 +103,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/list", method = RequestMethod.GET)
 	public @ResponseBody APIResponse listConfigurations() {
 		try {
-			List<UserConfig> configs = controller.getUserConfigs(getUser());
+			List<UserConfig> configs = downloadsService.getUserConfigs(getUser());
 			return new UserConfigsAPIResponse(configs);
 		} catch (Exception e) {
 			LOGGER.error("Can not list user configurations", e);
@@ -110,7 +114,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/save", method = RequestMethod.GET)
 	public @ResponseBody APIResponse saveConfigurations(String key, String value) {
 		try {
-			controller.saveUserConfigs(getUser(), key, value);
+			downloadsService.saveUserConfigs(getUser(), key, value);
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not save user configuration", e);
@@ -121,7 +125,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/delete", method = RequestMethod.GET)
 	public @ResponseBody APIResponse deleteConfigurations(String key) {
 		try {
-			controller.deleteUserConfigs(getUser(), key);
+			downloadsService.deleteUserConfigs(getUser(), key);
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not delete user configuration", e);
@@ -132,7 +136,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/types", method = RequestMethod.GET)
 	public @ResponseBody APIResponse typesOfConfigurations() {
 		try {
-			return new UserConfigsAPIResponse(controller.getUserConfigTypes());
+			return new UserConfigsAPIResponse(downloadsService.getUserConfigTypes());
 		} catch (Exception e) {
 			LOGGER.error("Can not delete user configuration", e);
 			return APIResponse.createErrorResponse("Can not delete user configuration");

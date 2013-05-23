@@ -51,7 +51,7 @@ public class ContentManager {
 	private ContentDao contentDao;
 
 	public void updateContents(User user, List<Content> toUpdate) {
-		List<Content> userContents = contentDao.getAllContent(user);
+		List<Content> userContents = contentDao.getAllContents(user);
 		for (Content content : toUpdate) {
 			Optional<Content> find = Iterables.tryFind(userContents, Predicates.equalTo(content));
 			if (!find.isPresent()) {
@@ -61,14 +61,13 @@ public class ContentManager {
 			}
 		}
 	}
+	
+	public List<Content> getAllContents(User user) {
+		return contentDao.getAllContents(user);
+	}
 
-	/**
-	 *
-	 * @param contentType
-	 * @return All contents for a certain content type.
-	 */
 	public List<Content> getAllContentOfTypeAndName(String name, Class<? extends Content> contentType) {
-		return contentDao.getAllContentWithName(name, contentType);
+		return contentDao.getAllContentsWithName(name, contentType);
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class ContentManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Content> getHistoryContentOfType(Class<? extends Content> type, String name, User user) {
-		return (List<Content>) contentDao.getHistoryContentFilteredByNameAndUser(type, name, user);
+		return (List<Content>) contentDao.getHistoryContentsFilteredByNameAndUser(type, name, user);
 	}
 
 	public void saveContent(Content content, User user) {
