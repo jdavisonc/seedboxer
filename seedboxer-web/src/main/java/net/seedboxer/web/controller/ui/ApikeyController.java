@@ -22,9 +22,10 @@ package net.seedboxer.web.controller.ui;
 
 import net.seedboxer.web.controller.rs.SeedBoxerAPI;
 import net.seedboxer.web.controller.rs.UsersAPI;
-import net.seedboxer.web.type.APIResponse;
-import net.seedboxer.web.type.UserAPIKeyResponse;
 import net.seedboxer.web.type.UserNameResponse;
+import net.seedboxer.web.type.api.APIResponse;
+import net.seedboxer.web.type.api.UserAPIKeyResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

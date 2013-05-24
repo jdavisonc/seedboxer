@@ -22,12 +22,20 @@ package net.seedboxer.web.service;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.seedboxer.core.domain.Content;
+import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
+import net.seedboxer.web.type.UserContent;
+import net.seedboxer.web.type.UserContent.ContentType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -39,8 +47,18 @@ public class ContentsService {
 	@Autowired
 	private ContentManager contentManager;
 	
-	public void getContents(User user) {
+	public List<UserContent> getContents(User user) {
 		List<Content> allContents = contentManager.getAllContents(user);
+		
+		return Lists.transform(allContents, new Function<Content, UserContent>() {
+
+			@Override
+			@Nullable
+			public UserContent apply(@Nullable Content content) {
+				return createUserContentType(content);
+			}
+
+		});
 	}
 	
 	public void addContent(User user) {
@@ -51,4 +69,11 @@ public class ContentsService {
 		
 	}
 	
+	private UserContent createUserContentType(Content content) {
+		if (content instanceof TvShow) {
+			TvShow show = (TvShow) content;
+			return new UserContent(show.getName(), show.getSeason(), show.getEpisode(), show.getQuality().name(), ContentType.TV_SHOW);
+		}
+		return null;
+	}	
 }

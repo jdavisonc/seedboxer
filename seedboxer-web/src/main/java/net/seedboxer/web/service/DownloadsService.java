@@ -38,7 +38,7 @@ import net.seedboxer.core.logic.UsersController;
 import net.seedboxer.core.type.Download;
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.core.util.FileUtils;
-import net.seedboxer.web.type.UserStatusAPIResponse;
+import net.seedboxer.web.type.api.UserStatusAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

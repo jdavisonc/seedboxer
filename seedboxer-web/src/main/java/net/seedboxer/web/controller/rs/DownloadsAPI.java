@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.web.service.DownloadsService;
-import net.seedboxer.web.type.APIResponse;
+import net.seedboxer.web.type.api.APIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

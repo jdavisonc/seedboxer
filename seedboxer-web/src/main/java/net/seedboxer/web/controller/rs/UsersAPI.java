@@ -25,10 +25,10 @@ import java.util.List;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.service.UsersService;
-import net.seedboxer.web.type.APIResponse;
-import net.seedboxer.web.type.UserAPIKeyResponse;
 import net.seedboxer.web.type.UserConfig;
-import net.seedboxer.web.type.UserConfigsAPIResponse;
+import net.seedboxer.web.type.api.APIResponse;
+import net.seedboxer.web.type.api.UserAPIKeyResponse;
+import net.seedboxer.web.type.api.UserConfigsAPIResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +92,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="apikey", method = RequestMethod.GET)
 	public @ResponseBody APIResponse apikey() {
 		try {
-			User user = downloadsService.generateAPIKey(getUser());
+			User user = usersService.generateAPIKey(getUser());
 			return new UserAPIKeyResponse(user.getApikey());
 		} catch (Exception e) {
 			LOGGER.error("Can not start downloads", e);
@@ -103,7 +103,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/list", method = RequestMethod.GET)
 	public @ResponseBody APIResponse listConfigurations() {
 		try {
-			List<UserConfig> configs = downloadsService.getUserConfigs(getUser());
+			List<UserConfig> configs = usersService.getUserConfigs(getUser());
 			return new UserConfigsAPIResponse(configs);
 		} catch (Exception e) {
 			LOGGER.error("Can not list user configurations", e);
@@ -114,7 +114,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/save", method = RequestMethod.GET)
 	public @ResponseBody APIResponse saveConfigurations(String key, String value) {
 		try {
-			downloadsService.saveUserConfigs(getUser(), key, value);
+			usersService.saveUserConfigs(getUser(), key, value);
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not save user configuration", e);
@@ -125,7 +125,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/delete", method = RequestMethod.GET)
 	public @ResponseBody APIResponse deleteConfigurations(String key) {
 		try {
-			downloadsService.deleteUserConfigs(getUser(), key);
+			usersService.deleteUserConfigs(getUser(), key);
 			return APIResponse.createSuccessfulResponse();
 		} catch (Exception e) {
 			LOGGER.error("Can not delete user configuration", e);
@@ -136,7 +136,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/types", method = RequestMethod.GET)
 	public @ResponseBody APIResponse typesOfConfigurations() {
 		try {
-			return new UserConfigsAPIResponse(downloadsService.getUserConfigTypes());
+			return new UserConfigsAPIResponse(usersService.getUserConfigTypes());
 		} catch (Exception e) {
 			LOGGER.error("Can not delete user configuration", e);
 			return APIResponse.createErrorResponse("Can not delete user configuration");

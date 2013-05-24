@@ -1,5 +1,5 @@
 /*******************************************************************************
- * GCMProjectIdResponse.java
+ * UserStatusAPIResponse.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,35 +18,46 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type;
+package net.seedboxer.web.type.api;
 
-import net.seedboxer.web.type.api.APIResponse;
-
+import net.seedboxer.core.domain.Status;
+import net.seedboxer.core.type.Download;
 
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class GCMProjectIdResponse extends APIResponse {
+public class UserStatusAPIResponse extends APIResponse {
 
-	private String projectId;
+	private Status downloadStatus;
 
-	public GCMProjectIdResponse() {
-		super();
+	private Download download;
+
+	public UserStatusAPIResponse() {
+		downloadStatus = Status.STARTED;
+		download = null;
 	}
 
-	public GCMProjectIdResponse(String projectId) {
-		super();
-		this.projectId = projectId;
+	public UserStatusAPIResponse(Status status, Download download) {
+		downloadStatus = status;
+		this.download = download;
 	}
 
-	public String getProjectId() {
-		return projectId;
+	public Status getDownloadStatus() {
+		return downloadStatus;
 	}
 
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+	public Download getDownload() {
+		return download;
+	}
+
+	public void setDownloadStatus(Status status) {
+		downloadStatus = status;
+	}
+
+	public void setDownload(Download download) {
+		this.download = download;
 	}
 
 }

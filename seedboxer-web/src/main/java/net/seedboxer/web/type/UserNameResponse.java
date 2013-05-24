@@ -20,6 +20,8 @@
  ******************************************************************************/
 package net.seedboxer.web.type;
 
+import net.seedboxer.web.type.api.UserAPIKeyResponse;
+
 /**
  *
  * @author The Sultan

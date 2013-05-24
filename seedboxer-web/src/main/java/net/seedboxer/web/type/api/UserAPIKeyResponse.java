@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UserStatusAPIResponse.java
+ * UserAPIKeyResponse.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,46 +18,33 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type;
+package net.seedboxer.web.type.api;
 
-import net.seedboxer.core.domain.Status;
-import net.seedboxer.core.type.Download;
 
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class UserStatusAPIResponse extends APIResponse {
+public class UserAPIKeyResponse extends APIResponse {
 
-	private Status downloadStatus;
+	private String apikey;
 
-	private Download download;
-
-	public UserStatusAPIResponse() {
-		downloadStatus = Status.STARTED;
-		download = null;
+	public UserAPIKeyResponse() {
+		super();
 	}
 
-	public UserStatusAPIResponse(Status status, Download download) {
-		downloadStatus = status;
-		this.download = download;
+	public UserAPIKeyResponse(String apikey) {
+		super();
+		this.apikey = apikey;
 	}
 
-	public Status getDownloadStatus() {
-		return downloadStatus;
+	public String getApiKey() {
+		return apikey;
 	}
 
-	public Download getDownload() {
-		return download;
-	}
-
-	public void setDownloadStatus(Status status) {
-		downloadStatus = status;
-	}
-
-	public void setDownload(Download download) {
-		this.download = download;
+	public void setApiKey(String apikey) {
+		this.apikey = apikey;
 	}
 
 }
