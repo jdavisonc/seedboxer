@@ -28,8 +28,10 @@ import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
-import net.seedboxer.web.type.UserContent;
-import net.seedboxer.web.type.UserContent.ContentType;
+import net.seedboxer.core.type.Quality;
+import net.seedboxer.web.exceptions.UnkownContentType;
+import net.seedboxer.web.type.ContentInfo;
+import net.seedboxer.web.type.TvShowInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,33 +49,43 @@ public class ContentsService {
 	@Autowired
 	private ContentManager contentManager;
 	
-	public List<UserContent> getContents(User user) {
+	public List<ContentInfo> getUserContents(User user) {
 		List<Content> allContents = contentManager.getAllContents(user);
 		
-		return Lists.transform(allContents, new Function<Content, UserContent>() {
+		return Lists.transform(allContents, new Function<Content, ContentInfo>() {
 
 			@Override
 			@Nullable
-			public UserContent apply(@Nullable Content content) {
+			public ContentInfo apply(@Nullable Content content) {
 				return createUserContentType(content);
 			}
 
 		});
 	}
 	
-	public void addContent(User user) {
-		
+	public void saveUserContent(User user, ContentInfo contentInfo) {
+		Content content = createUserContent(contentInfo);
+		contentManager.saveContent(content, user);
+	}
+
+	public void deleteUserContent(User user, ContentInfo contentInfo) {
+		Content content = createUserContent(contentInfo);
+		contentManager.deleteContent(content, user);		
 	}
 	
-	public void deleteContent(User user) {
-		
-	}
-	
-	private UserContent createUserContentType(Content content) {
+	private ContentInfo createUserContentType(Content content) {
 		if (content instanceof TvShow) {
 			TvShow show = (TvShow) content;
-			return new UserContent(show.getName(), show.getSeason(), show.getEpisode(), show.getQuality().name(), ContentType.TV_SHOW);
+			return new TvShowInfo(show.getName(), show.getSeason(), show.getEpisode(), show.getQuality().name());
 		}
-		return null;
-	}	
+		throw new UnkownContentType();
+	}
+	
+	private Content createUserContent(ContentInfo contentInfo) {
+		if (contentInfo instanceof TvShowInfo) {
+			TvShowInfo show = (TvShowInfo) contentInfo;
+			return new TvShow(show.getName(), show.getSeason(), show.getEpisode(), Quality.valueOf(show.getQuality()));
+		}
+		throw new UnkownContentType();
+	}
 }

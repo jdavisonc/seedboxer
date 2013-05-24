@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UserContent.java
+ * ContentInfo.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -25,28 +25,18 @@ package net.seedboxer.web.type;
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class UserContent {
+public class ContentInfo {
 	
 	public enum ContentType {
 		TV_SHOW;
 	}
-	
-	public UserContent(String name, Integer season, Integer episode,
-			String quality, ContentType type) {
+
+	public ContentInfo(String name, ContentType type) {
 		this.name = name;
-		this.season = season;
-		this.episode = episode;
-		this.quality = quality;
 		this.type = type;
 	}
 
 	private String name;
-	
-	private Integer season;
-
-	private Integer episode;
-	
-	private String quality;
 	
 	private ContentType type;
 
@@ -56,30 +46,6 @@ public class UserContent {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getSeason() {
-		return season;
-	}
-
-	public void setSeason(Integer season) {
-		this.season = season;
-	}
-
-	public Integer getEpisode() {
-		return episode;
-	}
-
-	public void setEpisode(Integer episode) {
-		this.episode = episode;
-	}
-
-	public String getQuality() {
-		return quality;
-	}
-
-	public void setQuality(String quality) {
-		this.quality = quality;
 	}
 
 	public ContentType getType() {

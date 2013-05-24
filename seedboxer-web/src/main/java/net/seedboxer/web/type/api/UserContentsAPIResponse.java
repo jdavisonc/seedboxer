@@ -22,7 +22,7 @@ package net.seedboxer.web.type.api;
 
 import java.util.List;
 
-import net.seedboxer.web.type.UserContent;
+import net.seedboxer.web.type.ContentInfo;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -30,17 +30,17 @@ import net.seedboxer.web.type.UserContent;
  */
 public class UserContentsAPIResponse extends APIResponse {
 
-	private List<UserContent> contents;
+	private List<ContentInfo> contents;
 	
-	public UserContentsAPIResponse(List<UserContent> contents) {
+	public UserContentsAPIResponse(List<ContentInfo> contents) {
 		this.contents = contents;
 	}
 
-	public List<UserContent> getContents() {
+	public List<ContentInfo> getContents() {
 		return contents;
 	}
 
-	public void setContents(List<UserContent> contents) {
+	public void setContents(List<ContentInfo> contents) {
 		this.contents = contents;
 	}
 	

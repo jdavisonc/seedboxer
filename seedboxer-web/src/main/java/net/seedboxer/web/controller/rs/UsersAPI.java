@@ -25,7 +25,7 @@ import java.util.List;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.service.UsersService;
-import net.seedboxer.web.type.UserConfig;
+import net.seedboxer.web.type.UserConfigInfo;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.UserAPIKeyResponse;
 import net.seedboxer.web.type.api.UserConfigsAPIResponse;
@@ -103,7 +103,7 @@ public class UsersAPI extends SeedBoxerAPI {
 	@RequestMapping(value="configs/list", method = RequestMethod.GET)
 	public @ResponseBody APIResponse listConfigurations() {
 		try {
-			List<UserConfig> configs = usersService.getUserConfigs(getUser());
+			List<UserConfigInfo> configs = usersService.getUserConfigs(getUser());
 			return new UserConfigsAPIResponse(configs);
 		} catch (Exception e) {
 			LOGGER.error("Can not list user configurations", e);

@@ -83,5 +83,9 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 		return criteria.list();
 	}
 
+	@Override
+	public void delete(Content content) {
+		getCurrentSession().delete(content);
+	}
 
 }

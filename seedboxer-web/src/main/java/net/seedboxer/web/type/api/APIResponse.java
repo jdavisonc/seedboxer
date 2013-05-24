@@ -20,6 +20,7 @@
  ******************************************************************************/
 package net.seedboxer.web.type.api;
 
+
 public class APIResponse {
 
 	public enum ResponseStatus { SUCCESS, FAILURE; }

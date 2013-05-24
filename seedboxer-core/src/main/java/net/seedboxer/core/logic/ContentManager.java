@@ -70,13 +70,6 @@ public class ContentManager {
 		return contentDao.getAllContentsWithName(name, contentType);
 	}
 
-	/**
-	 *
-	 * @param type Content type to be retrieved.
-	 * @param name Content name to be retrieved.
-	 * @param user User that has this content as history.
-	 * @return The user's history for a specific name and specific type.
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Content> getHistoryContentOfType(Class<? extends Content> type, String name, User user) {
 		return (List<Content>) contentDao.getHistoryContentsFilteredByNameAndUser(type, name, user);
@@ -86,7 +79,6 @@ public class ContentManager {
 		content.setUser(user);
 		contentDao.save(content);
 	}
-
 
 	public List<User> getUsersWithContentInHistory(Content content, List<User> users) {
 		List<User> usersWithContent = new ArrayList<User>();
@@ -100,10 +92,14 @@ public class ContentManager {
 		return usersWithContent;
 	}
 
-	private boolean isContentIn(Content content,
-			List<Content> historyContentOfType) {
+	private boolean isContentIn(Content content, List<Content> historyContentOfType) {
 		Optional<Content> find = Iterables.tryFind(historyContentOfType, Predicates.equalTo(content));
 		return find.isPresent();
+	}
+
+	public void deleteContent(Content content, User user) {
+		content.setUser(user);
+		contentDao.delete(content);
 	}
 
 }

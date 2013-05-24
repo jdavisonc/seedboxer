@@ -23,7 +23,7 @@ package net.seedboxer.web.controller.rs;
 import java.util.List;
 
 import net.seedboxer.web.service.ContentsService;
-import net.seedboxer.web.type.UserContent;
+import net.seedboxer.web.type.ContentInfo;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.UserContentsAPIResponse;
 
@@ -51,11 +51,33 @@ public class ContentsAPI extends SeedBoxerAPI {
 	@RequestMapping(value="list", method = RequestMethod.GET)
 	public @ResponseBody APIResponse listContents() {
 		try {
-			List<UserContent> contents = contentsService.getContents(getUser());
+			List<ContentInfo> contents = contentsService.getUserContents(getUser());
 			return new UserContentsAPIResponse(contents);
 		} catch (Exception e) {
 			LOGGER.error("Can not list user contents", e);
 			return APIResponse.createErrorResponse("Can not list user contents");
+		}
+	}
+	
+	@RequestMapping(value="save", method = RequestMethod.GET)
+	public @ResponseBody APIResponse saveContents(ContentInfo contentInfo) {
+		try {
+			contentsService.saveUserContent(getUser(), contentInfo);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not save user content", e);
+			return APIResponse.createErrorResponse("Can not save user content");
+		}
+	}
+	
+	@RequestMapping(value="delete", method = RequestMethod.GET)
+	public @ResponseBody APIResponse deleteContents(ContentInfo contentInfo) {
+		try {
+			contentsService.deleteUserContent(getUser(), contentInfo);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not delete user content", e);
+			return APIResponse.createErrorResponse("Can not delete user content");
 		}
 	}
 	

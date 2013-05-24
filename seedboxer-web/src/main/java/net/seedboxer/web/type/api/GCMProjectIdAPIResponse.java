@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentDao.java
+ * GCMProjectIdAPIResponse.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,36 +18,34 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.web.type.api;
 
-package net.seedboxer.core.persistence;
 
-import java.util.List;
-
-import net.seedboxer.core.domain.Content;
-import net.seedboxer.core.domain.User;
 
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-public interface ContentDao {
+public class GCMProjectIdAPIResponse extends APIResponse {
 
-	void save(Content content);
+	private String projectId;
 
-	/**
-	 * Returns all the content of a user that <b>is not history</b>
-	 * @param user
-	 * @return
-	 */
-	List<Content> getAllContents(User user);
+	public GCMProjectIdAPIResponse() {
+		super();
+	}
 
-	<T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory);
+	public GCMProjectIdAPIResponse(String projectId) {
+		super();
+		this.projectId = projectId;
+	}
 
-	<T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name, User user);
+	public String getProjectId() {
+		return projectId;
+	}
 
-	<T extends Content> List<T> getAllContentsWithName(String name, Class<? extends Content> contentType);
-
-	void delete(Content content);
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
 
 }

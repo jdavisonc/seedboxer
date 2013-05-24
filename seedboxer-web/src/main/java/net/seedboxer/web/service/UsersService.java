@@ -29,7 +29,7 @@ import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.logic.UsersController;
-import net.seedboxer.web.type.UserConfig;
+import net.seedboxer.web.type.UserConfigInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,11 +63,11 @@ public class UsersService {
 	 * @param user
 	 * @return
 	 */
-	public List<UserConfig> getUserConfigs(User user) {
-		List<UserConfig> configs = new ArrayList<UserConfig>();
+	public List<UserConfigInfo> getUserConfigs(User user) {
+		List<UserConfigInfo> configs = new ArrayList<UserConfigInfo>();
 		List<UserConfiguration> userConfig = usersController.getUserConfig(user.getId());
 		for (UserConfiguration userConfiguration : userConfig) {
-			configs.add(new UserConfig(userConfiguration.getName(), userConfiguration.getValue()));
+			configs.add(new UserConfigInfo(userConfiguration.getName(), userConfiguration.getValue()));
 		}
 		return configs;
 	}
@@ -78,13 +78,13 @@ public class UsersService {
 	 * @param user
 	 * @return
 	 */
-	public List<UserConfig> getUserConfigTypes() {
-		return Lists.transform(Configuration.values, new Function<String, UserConfig>() {
+	public List<UserConfigInfo> getUserConfigTypes() {
+		return Lists.transform(Configuration.values, new Function<String, UserConfigInfo>() {
 
 			@Override
 			@Nullable
-			public UserConfig apply(@Nullable String type) {
-				return new UserConfig(type, null);
+			public UserConfigInfo apply(@Nullable String type) {
+				return new UserConfigInfo(type, null);
 			}
 		});
 	}

@@ -23,7 +23,7 @@ package net.seedboxer.web.type.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.seedboxer.web.type.UserConfig;
+import net.seedboxer.web.type.UserConfigInfo;
 
 
 /**
@@ -32,17 +32,17 @@ import net.seedboxer.web.type.UserConfig;
  */
 public class UserConfigsAPIResponse extends APIResponse {
 
-	private final List<UserConfig> configs;
+	private final List<UserConfigInfo> configs;
 
 	public UserConfigsAPIResponse() {
-		configs = new ArrayList<UserConfig>();
+		configs = new ArrayList<UserConfigInfo>();
 	}
 
-	public UserConfigsAPIResponse(List<UserConfig> configs) {
+	public UserConfigsAPIResponse(List<UserConfigInfo> configs) {
 		this.configs = configs;
 	}
 
-	public List<UserConfig> getConfigs() {
+	public List<UserConfigInfo> getConfigs() {
 		return configs;
 	}
 
