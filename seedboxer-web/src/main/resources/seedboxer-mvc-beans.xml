@@ -63,7 +63,7 @@
         (see header.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:resources mapping="/ui/**" location="/resources/views/"/>
-    <mvc:resources mapping="/img/**" location="/img/"/>
+    <mvc:resources mapping="/img/**" location="/resources/img/"/>
 
     <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>

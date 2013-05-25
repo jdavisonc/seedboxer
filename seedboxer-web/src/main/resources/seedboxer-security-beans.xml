@@ -34,11 +34,14 @@
 	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
 
+	
 	<sec:authentication-manager>
 		<sec:authentication-provider user-service-ref="seedBoxerUDS">
 			<sec:password-encoder hash="sha" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
+
+	<sec:http pattern="/favicon.ico" security="none" />
 
 	<sec:http create-session="stateless" use-expressions="true" pattern="/webservices/**">
 		<sec:intercept-url pattern="/webservices/**" access="hasAnyRole('ADMIN','LEECHER')" />
@@ -52,7 +55,6 @@
 		<sec:intercept-url pattern="/j_spring_security_check" access="permitAll" />
 		<sec:intercept-url pattern="/webservices/user/apikey" access="hasAnyRole('ADMIN','LEECHER')" />
 		<sec:intercept-url pattern="/j_spring_security_logout" access="permitAll" />
-		<sec:intercept-url pattern="/loginfailed" access="permitAll" />
 		<sec:intercept-url pattern="/logout" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
 		<sec:intercept-url pattern="/css/**" access="permitAll" />
