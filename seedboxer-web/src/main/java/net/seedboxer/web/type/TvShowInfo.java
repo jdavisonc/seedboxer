@@ -33,9 +33,12 @@ public class TvShowInfo extends ContentInfo {
 	
 	private String quality;
 
+	public TvShowInfo(){
+	}
+	
 	public TvShowInfo(String name, Integer season,
 			Integer episode, String quality) {
-		super(name, ContentType.TV_SHOW);
+		super(name);
 		this.season = season;
 		this.episode = episode;
 		this.quality = quality;

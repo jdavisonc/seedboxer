@@ -20,40 +20,39 @@
  ******************************************************************************/
 package net.seedboxer.web.type;
 
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonSubTypes.Type;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class ContentInfo {
+@JsonTypeInfo(  
+    use = JsonTypeInfo.Id.NAME,  
+    include = JsonTypeInfo.As.PROPERTY,  
+    property = "type")  
+@JsonSubTypes({  
+    @Type(value = TvShowInfo.class, name = "TV_SHOW")
+    })  
+public abstract class ContentInfo {
+
+    private String name;
+    
+    public ContentInfo(String name){
+	this.name = name;
+    }
+    
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+    
+    public ContentInfo(){
 	
-	public enum ContentType {
-		TV_SHOW;
-	}
-
-	public ContentInfo(String name, ContentType type) {
-		this.name = name;
-		this.type = type;
-	}
-
-	private String name;
-	
-	private ContentType type;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public ContentType getType() {
-		return type;
-	}
-
-	public void setType(ContentType type) {
-		this.type = type;
-	}
-
+    }
 }
