@@ -13,7 +13,7 @@
 			</a>
 			
 			<a class="brand" href="./index.html">
-				SeedBoxer
+				<img src="/img/favicon.png" width="25" heigth="25" /> SeedBoxer
 			</a>		
 			
 			<div class="nav-collapse collapse">
