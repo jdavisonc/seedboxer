@@ -27,11 +27,6 @@
    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" >
 	
-	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-	    <property ref="dataSource" name="dataSource"></property>
-	    <property name="changeLog" value="classpath:masterChangelog.xml"></property>
-	</bean> 
-	
 	<context:component-scan base-package="net.seedboxer"/>
 
 	
@@ -40,9 +35,15 @@
 	<import resource="classpath:sources-camel-context.xml" />
 	
 	
+	<!-- Liquibase -->
+	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+	    <property ref="dataSource" name="dataSource"></property>
+	    <property name="changeLog" value="classpath:masterChangelog.xml"></property>
+	</bean> 
+	
 	 
 	<!-- Aggretator for multiple feeds -->
-	<bean id="rssAggregationStrategy" class="net.seedboxer.sources.processors.rss.aggregator.AggregateRssFeedEntryStrategy"/>
+	<bean id="rssAggregationStrategy" class="net.seedboxer.sources.processor.rss.aggregator.AggregateRssFeedEntryStrategy"/>
 	
 	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">

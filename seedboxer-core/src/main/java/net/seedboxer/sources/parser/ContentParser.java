@@ -47,5 +47,12 @@ public abstract class ContentParser<T extends Content> {
     }
     
     protected abstract T parse(String input);
-   
+
+	protected String getName(String group) {
+		String name = group;
+		if (name.indexOf('.') != -1) {
+			name = name.replace('.', ' ');
+		}
+		return name.trim();
+	}
 }

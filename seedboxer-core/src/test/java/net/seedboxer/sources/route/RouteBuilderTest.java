@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.sources.routes;
+package net.seedboxer.sources.route;
 
 import static org.mockito.Mockito.when;
 
@@ -26,7 +26,7 @@ import java.util.Collections;
 
 import net.seedboxer.core.domain.RssFeed;
 import net.seedboxer.core.logic.FeedsManager;
-import net.seedboxer.sources.routes.RouteBuilder;
+import net.seedboxer.sources.route.RouteBuilder;
 
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;

@@ -19,14 +19,14 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package net.seedboxer.sources.routes;
+package net.seedboxer.sources.route;
 
 import java.util.List;
 
 import net.seedboxer.core.domain.RssFeed;
 import net.seedboxer.core.logic.FeedsManager;
-import net.seedboxer.sources.processors.rss.filter.RssDateFilter;
-import net.seedboxer.sources.processors.rss.sorter.RssSortProcessor;
+import net.seedboxer.sources.processor.rss.filter.RssDateFilter;
+import net.seedboxer.sources.processor.rss.sorter.RssSortProcessor;
 
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

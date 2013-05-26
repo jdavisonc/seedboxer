@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RssSplitter.java
+ * ContentFilter.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,26 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.sources.processors.rss.splitter;
+package net.seedboxer.sources.filter;
 
-import java.util.List;
-
-import org.apache.camel.Body;
-import org.springframework.stereotype.Component;
-
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
+import net.seedboxer.core.domain.Content;
 
 /**
- * @author Jorge Davison (jdavisonc)
  *
+ * @author The-Sultan
  */
-@Component
-public class RssSplitter {
 
-	@SuppressWarnings("unchecked")
-	public List<SyndEntry> split(@Body SyndFeed feed) {
-		return feed.getEntries();
+public abstract class ContentFilter<T extends Content> {
+
+
+	public Boolean filterIfPossible(Content userContent, Content parsedContent){
+		Class<T> type = getType();
+		if(type.isInstance(userContent) && type.isInstance(parsedContent)) {
+			return applyFilter((type.cast(userContent)),type.cast(parsedContent));
+		} else {
+			return null;
+		}
 	}
+
+	public abstract Class<T> getType();
+
+	protected abstract boolean applyFilter(T content1, T content2);
 
 }
