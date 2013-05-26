@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentInfo.java
+ * TvShowInfo.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -20,41 +20,43 @@
  ******************************************************************************/
 package net.seedboxer.web.type;
 
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonSubTypes.Type;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 
 /**
- * @author Jorge Davison (jdavisonc)
  * @author The-Sultan
  *
  */
-@JsonTypeInfo(  
-    use = JsonTypeInfo.Id.NAME,  
-    include = JsonTypeInfo.As.PROPERTY,  
-    property = "type")  
-@JsonSubTypes({  
-    @Type(value = TvShowInfo.class, name = "TV_SHOW"),
-    @Type(value = MovieInfo.class, name = "MOVIE")
-    })  
-public abstract class ContentInfo {
 
-    private String name;
-    
-    public ContentInfo(String name){
-	this.name = name;
-    }
-    
-    public String getName() {
-	return name;
-    }
+public class MovieInfo extends ContentInfo {
 
-    public void setName(String name) {
-	this.name = name;
-    }
-    
-    public ContentInfo(){
+	private Integer year;
 	
-    }
+	private String quality;
+
+	public MovieInfo(){
+	}
+	
+	public MovieInfo(String name, Integer year, String quality) {
+		super(name);
+		this.year = year;
+		this.quality = quality;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public String getQuality() {
+		return quality;
+	}
+
+	public void setQuality(String quality) {
+		this.quality = quality;
+	}
+	
 }

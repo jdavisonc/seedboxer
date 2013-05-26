@@ -71,8 +71,8 @@ public class ContentsAPI extends SeedBoxerAPI {
 		}
 	}
 	
-	@RequestMapping(value="delete", method = RequestMethod.GET)
-	public @ResponseBody APIResponse deleteContents(ContentInfo contentInfo) {
+	@RequestMapping(value="delete", method = RequestMethod.DELETE)
+	public @ResponseBody APIResponse deleteContents(@RequestBody ContentInfo contentInfo) {
 		try {
 			contentsService.deleteUserContent(getUser(), contentInfo);
 			return APIResponse.createSuccessfulResponse();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TvShowParser.java
+ * MovieParser.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -23,35 +23,32 @@ package net.seedboxer.sources.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.seedboxer.core.domain.TvShow;
+import net.seedboxer.core.domain.Movie;
 import net.seedboxer.core.type.Quality;
-
 import org.springframework.stereotype.Component;
-
 
 /**
  *
  * @author The-Sultan
  */
 @Component
-public class TvShowParser extends ContentParser<TvShow>{
+public class MovieParser extends ContentParser<Movie>{
 
 	private final String QUALITY_HD = "720p";
 	private final String QUALITY_FULLHD = "1080p";
 	private final Pattern mainPattern = Pattern.compile(
-			"(.*?)[\\.\\s_-]+S?(\\d{1,2})[Ex]{1}(\\d{2})(.*)" );
-	
-	private final Pattern qualityPattern = Pattern.compile("\\d{3,4}p");
+		"(.+?)(\\d{4})(.*)"
+	);
+	private final Pattern qualityPattern = Pattern.compile(
+		"\\d{3,4}p"
+		);
 
 	@Override
-	public TvShow parse(String input) {
+	public Movie parse(String input) {
 		Matcher matcher = mainPattern.matcher(input);
 		if(matcher.matches()){
 			String name = matcher.group(1).trim();
-			Integer season = Integer.valueOf(matcher.group(2));
-			Integer episode = Integer.valueOf(matcher.group(3));
-
+			Integer year = Integer.valueOf(matcher.group(2));
 			Quality qualityEnum = Quality.STANDARD;
 			matcher = qualityPattern.matcher(input);
 			if(matcher.find()){
@@ -62,10 +59,11 @@ public class TvShowParser extends ContentParser<TvShow>{
 				    qualityEnum = Quality.FULLHD;
 			}
 
-			return new TvShow(name, season, episode, qualityEnum);
+			return new Movie(name, year, qualityEnum);
 		} else {
 			return null;
 		}
 	}
+
 
 }

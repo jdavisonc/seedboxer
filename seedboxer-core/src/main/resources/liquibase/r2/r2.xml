@@ -7,4 +7,5 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 	     
 
+    <include file="DDL_add_movie_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

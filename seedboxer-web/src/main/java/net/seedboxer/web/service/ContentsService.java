@@ -38,6 +38,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.seedboxer.core.domain.Movie;
+import net.seedboxer.web.type.MovieInfo;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -85,6 +87,10 @@ public class ContentsService {
 		if (contentInfo instanceof TvShowInfo) {
 			TvShowInfo show = (TvShowInfo) contentInfo;
 			return new TvShow(show.getName(), show.getSeason(), show.getEpisode(), Quality.valueOf(show.getQuality()));
+		}
+		else if (contentInfo instanceof MovieInfo) {
+		    MovieInfo show = (MovieInfo) contentInfo;
+		    return new Movie(show.getName(), show.getYear(),Quality.valueOf(show.getQuality()));
 		}
 		throw new UnkownContentType();
 	}

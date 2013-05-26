@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentInfo.java
+ * MovieFilter.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,43 +18,39 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type;
 
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonSubTypes.Type;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+package net.seedboxer.sources.filters;
+
+import net.seedboxer.core.domain.Movie;
+import org.springframework.stereotype.Component;
 
 
 /**
- * @author Jorge Davison (jdavisonc)
- * @author The-Sultan
  *
+ * @author The-Sultan
  */
-@JsonTypeInfo(  
-    use = JsonTypeInfo.Id.NAME,  
-    include = JsonTypeInfo.As.PROPERTY,  
-    property = "type")  
-@JsonSubTypes({  
-    @Type(value = TvShowInfo.class, name = "TV_SHOW"),
-    @Type(value = MovieInfo.class, name = "MOVIE")
-    })  
-public abstract class ContentInfo {
+@Component
+public class MovieFilter extends ContentFilter<Movie>{
 
-    private String name;
-    
-    public ContentInfo(String name){
-	this.name = name;
-    }
-    
-    public String getName() {
-	return name;
-    }
+	@Override
+	public Class<Movie> getType() {
+		return Movie.class;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
-    
-    public ContentInfo(){
-	
-    }
+	@Override
+	protected boolean applyFilter(Movie userContent, Movie parsedContent) {
+		if(userContent.getName().trim().equalsIgnoreCase(parsedContent.getName().trim())){
+			if((userContent.getYear() != null && userContent.getYear().equals(parsedContent.getYear()))
+					||
+					userContent.getYear() == null)
+				
+			    if((userContent.getQuality() != null && userContent.getQuality().equals(parsedContent.getQuality()))
+					    ||
+					    userContent.getQuality() == null)
+				return true;
+
+		}
+		return false;
+	}
+
 }

@@ -25,7 +25,6 @@ import net.seedboxer.core.domain.TvShow;
 
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author The-Sultan
