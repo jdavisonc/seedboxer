@@ -19,7 +19,7 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package net.seedboxer.sources.processors;
+package net.seedboxer.sources.processor;
 
 import java.io.File;
 import java.io.IOException;

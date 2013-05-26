@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.sources.processors.rss.aggregator;
+package net.seedboxer.sources.processor.rss.aggregator;
 
 import java.util.ArrayList;
 import java.util.List;

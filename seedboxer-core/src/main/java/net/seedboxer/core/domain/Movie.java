@@ -26,7 +26,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
 import net.seedboxer.core.type.Quality;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -71,8 +73,6 @@ public class Movie extends Content {
 	    this.year = year;
 	}
 
-	
-
 	@Override
 	public String toString(){
 		return this.getName()+ "|"+ getYear() + "|" + this.getQuality();
@@ -99,6 +99,5 @@ public class Movie extends Content {
 	    hash = 37 * hash + (this.year != null ? this.year.hashCode() : 0);
 	    return hash;
 	}
-
 
 }

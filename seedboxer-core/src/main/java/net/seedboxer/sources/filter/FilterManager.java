@@ -19,7 +19,7 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package net.seedboxer.sources.filters;
+package net.seedboxer.sources.filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.sources.filters;
+package net.seedboxer.sources.filter;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -35,9 +35,9 @@ import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
 import net.seedboxer.core.type.Quality;
-import net.seedboxer.sources.filters.ContentFilter;
-import net.seedboxer.sources.filters.FilterManager;
-import net.seedboxer.sources.filters.TvShowFilter;
+import net.seedboxer.sources.filter.ContentFilter;
+import net.seedboxer.sources.filter.FilterManager;
+import net.seedboxer.sources.filter.TvShowFilter;
 
 import org.junit.Before;
 import org.junit.Test;

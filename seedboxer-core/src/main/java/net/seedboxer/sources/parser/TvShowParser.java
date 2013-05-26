@@ -48,7 +48,7 @@ public class TvShowParser extends ContentParser<TvShow>{
 	public TvShow parse(String input) {
 		Matcher matcher = mainPattern.matcher(input);
 		if(matcher.matches()){
-			String name = matcher.group(1).trim();
+			String name = getName(matcher.group(1));
 			Integer season = Integer.valueOf(matcher.group(2));
 			Integer episode = Integer.valueOf(matcher.group(3));
 

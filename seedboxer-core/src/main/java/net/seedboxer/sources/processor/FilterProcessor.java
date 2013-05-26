@@ -19,7 +19,7 @@
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package net.seedboxer.sources.processors;
+package net.seedboxer.sources.processor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.sources.filters.FilterManager;
+import net.seedboxer.sources.filter.FilterManager;
 import net.seedboxer.sources.type.DownloadableItem;
 
 import org.apache.camel.Exchange;

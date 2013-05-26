@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RssConsumer.java
+ * RssDateFilter.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,44 +18,42 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.sources.processor.rss.filter;
 
-package net.seedboxer.sources.processors.rss;
+import java.util.Date;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.seedboxer.sources.type.MatchableItem;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
+import org.apache.camel.Body;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 
-/**
- *
- * @author The-Sultan
- */
 @Component
-public class RssConsumer implements Processor{
+public class RssDateFilter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RssConsumer.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(RssDateFilter.class);
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Message msg = exchange.getIn();
-		List<SyndEntry > entries = (List<SyndEntry>) msg.getBody();
-		List<MatchableItem> items = new ArrayList<MatchableItem>();
+    private Date lastUpdate;
 
-		LOGGER.debug("Incoming rss entries: {}", entries.size());
-		for(SyndEntry  entry : entries){
-			items.add(new MatchableItem(entry.getTitle(),entry.getLink()));
-		}
+    public boolean isValidEntry(@Body SyndEntry entry) {
+    	Date updated = entry.getUpdatedDate();
+        if (updated == null) {
+            // never been updated so get published date
+            updated = entry.getPublishedDate();
+        }
+        if (updated == null) {
+        	LOGGER.trace("No updated time for entry so assuming its valid: entry=[{}]", entry);
+            return true;
+        }
+        if (lastUpdate != null) {
+            if (lastUpdate.after(updated) || lastUpdate.equals(updated)) {
+                LOGGER.trace("Entry is older than lastupdate=[{}], no valid entry=[{}]", lastUpdate, entry);
+                return false;
+            }
+        }
+        lastUpdate = updated;
+        return true;
+    }
 
-		exchange.getOut().setBody(items);
-	}
 }

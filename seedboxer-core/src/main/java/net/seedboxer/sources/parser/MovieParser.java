@@ -23,8 +23,10 @@ package net.seedboxer.sources.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import net.seedboxer.core.domain.Movie;
 import net.seedboxer.core.type.Quality;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,7 +49,7 @@ public class MovieParser extends ContentParser<Movie>{
 	public Movie parse(String input) {
 		Matcher matcher = mainPattern.matcher(input);
 		if(matcher.matches()){
-			String name = matcher.group(1).trim();
+			String name = getName(matcher.group(1));
 			Integer year = Integer.valueOf(matcher.group(2));
 			Quality qualityEnum = Quality.STANDARD;
 			matcher = qualityPattern.matcher(input);
@@ -64,6 +66,5 @@ public class MovieParser extends ContentParser<Movie>{
 			return null;
 		}
 	}
-
 
 }
