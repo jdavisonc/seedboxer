@@ -80,6 +80,10 @@ public class ContentsService {
 			TvShow show = (TvShow) content;
 			return new TvShowInfo(show.getName(), show.getSeason(), show.getEpisode(), show.getQuality().name());
 		}
+		else if (content instanceof Movie) {
+		    Movie movie = (Movie) content;
+		    return new MovieInfo(movie.getName(), movie.getYear(), movie.getQuality().name());
+		}
 		throw new UnkownContentType();
 	}
 	
