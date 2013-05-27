@@ -128,10 +128,10 @@ function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dial
     };
 }
 
-function ContentsCtrl($scope, contentsService, alertService) {
+function DownloadsCtrl($scope, downloadsService, alertService) {
 	
-	$scope.contents = {};
-	
+	//$scope.contents = {};
+	/*
 	function refreshContents(){
 		contentsService.getContents()
 	  .then(function(data){
@@ -143,9 +143,9 @@ function ContentsCtrl($scope, contentsService, alertService) {
 	};
 	
 	refreshContents();
-	
+	*/
 	$scope.putToDownload = function(item) {
-		contentsService.putToDownload(item.name)
+		downloadsService.putToDownload(item.name)
 		  .then(function(data){
 			  alertService.showSuccess("The content was in the queue!");
 		  },
@@ -153,6 +153,8 @@ function ContentsCtrl($scope, contentsService, alertService) {
 			  alertService.showError("There was an when sending contents to queue");
 		  })
 	};
+	
+	
 }
 
 function AlertCtrl($scope, alertService) {
@@ -197,4 +199,8 @@ function HeaderCtrl($scope, userDataResource) {
 	scope.username = newVal;
     })
 
+}
+
+function ContentsCtrl(){
+    
 }

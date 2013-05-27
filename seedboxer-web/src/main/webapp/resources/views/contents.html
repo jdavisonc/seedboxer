@@ -11,21 +11,22 @@
 	<br/>
 	<br/>
 
-	<table class="table table-bordered table-striped">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
+			    <th style="width:35px">Type</th>
 				<th>Name</th>
-				<th></th>
+
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="content in contents | filter:query">
+			    <td><img ng-src="img/{{content.type}}.png" class="icon-white"></td>
 				<td>{{content.name}}</td>
-				<td><a class="btn btn-info" ng-click="putToDownload(content)"><i
-						class="icon-circle-arrow-down icon-white"></i></a></td>
 			</tr>
 		</tbody>
 	</table>
+	<a class="btn btn-primary" ng-click="addNewContent()"><i class="icon-cog icon-white"></i> Add</a>
 
 
 

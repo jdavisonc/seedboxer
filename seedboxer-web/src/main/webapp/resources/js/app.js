@@ -9,7 +9,8 @@ var seedboxerui = angular
 	    return $routeProvider;
 	});
     })
-    .run(function($routeProvider,userDataResource,$route, userStatusService, queueService, userConfigService) {
+    .run(function($routeProvider,userDataResource,$route, userStatusService, queueService, userConfigService,
+		userContentService, downloadsService) {
 	//get the apikey from the server before setting the route,
 	//this way we ensure nothing is done before having the apikey.
 
@@ -46,10 +47,26 @@ var seedboxerui = angular
 		when('/server-settings', {
 			templateUrl: '/ui/server-settings.html'
 		}).
-		when('/contents', {
-			templateUrl: '/ui/contents.html'
+		when('/downloads', {
+		
+			controller : function($scope, downloads){
+			    $scope.downloads = downloads;
+			},
+			templateUrl: '/ui/downloads.html',
+			resolve : {
+			    downloads : downloadsService.getDownloads
+			}
 		}).
-		otherwise({ redirectTo: '/'});
+		when('/contents', {
+			controller : function($scope, contents){
+			    $scope.contents = contents;
+			},
+			templateUrl: '/ui/contents.html',
+			resolve : {
+			    contents : userContentService.getContentList
+			}
+		}).
+		otherwise({redirectTo: '/'});
 	    $route.reload();	
 	});
     })    

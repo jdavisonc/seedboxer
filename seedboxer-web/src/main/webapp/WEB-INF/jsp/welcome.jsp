@@ -16,6 +16,7 @@
             <ul class="nav nav-list" ng-controller="NavController">
               <li ng-class="navClass('home')"><a href="#home"><i class="icon-home"></i> Home</a></li>
               <li ng-class="navClass('contents')"><a href="#contents"><i class="icon-fire"></i> Contents</a></li>
+	      <li ng-class="navClass('downloads')"><a href="#downloads"><i class="icon-circle-arrow-down"></i> Downloads</a></li>
             </ul>
           </div>
         </div>

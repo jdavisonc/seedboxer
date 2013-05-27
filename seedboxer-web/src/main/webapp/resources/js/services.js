@@ -171,13 +171,14 @@ seedboxerUiServices.service('userConfigService',function($http,$q, userDataResou
 	
 });
 
-seedboxerUiServices.service('contentsService',function($http,$q, userDataResource){
-    var contentsService = {
-	apiPath : '/webservices/downloads/list',
-	getContents :  function(){
+seedboxerUiServices.service('downloadsService',function($http,$q, userDataResource){
+    var downloadsService = {
+	downloadsPath : '/webservices/downloads/list',
+	putPath : '/webservices/downloads/put',
+	getDownloads :  function(){
 	    var deferred = $q.defer();
 
-	    $http.get(this.apiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+	    $http.get(downloadsService.downloadsPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching contents");
@@ -188,7 +189,7 @@ seedboxerUiServices.service('contentsService',function($http,$q, userDataResourc
 	putToDownload :  function(fileName){
 	    var deferred = $q.defer();
 
-	    $http.get('/webservices/downloads/put', {params : {apikey : userDataResource.getApiKey(), fileNames: fileNames}}).success(function(data){
+	    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileNames: fileNames}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching contents");
@@ -198,7 +199,7 @@ seedboxerUiServices.service('contentsService',function($http,$q, userDataResourc
 	}
 
     };
-    return contentsService;
+    return downloadsService;
 	
 });
 
@@ -239,5 +240,67 @@ seedboxerUiServices.service('alertService',function($rootScope, $timeout){
 
    };
    return alertService;
+	
+});
+
+
+seedboxerUiServices.service('userContentService',function($http,$q, userDataResource){
+    var userContentService = {
+	listPath : '/webservices/user/content/list',
+	savePath: '/webservices/user/content/save',
+	deletePath: '/webservices/user/content/delete',
+	getContentList :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(userContentService.listPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+	    	deferred.resolve(data.contents);
+	    }).error(function(){
+	    	deferred.reject("An error occured while fetching the configurations list.");
+	    });
+
+	    return deferred.promise;
+	},
+	saveContent :  function(key, value){
+
+	    var deferred = $q.defer();
+	    $http.get(userContentService.savePath, 
+	    {
+		params : 
+		{
+		    apikey : userDataResource.getApiKey(),
+		    key : key,
+		    value : value
+		}
+	    }).success(function(data){
+		if(data.status == "FAILURE")
+		    deferred.reject("An error occured while saving the configuration");
+		else
+		    deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while saving the configuration");
+	    });
+
+	    return deferred.promise;
+	},
+	deleteContent :  function(key){
+
+	    var deferred = $q.defer();
+	    $http.get(userContentService.deletePath, 
+	    {
+		params : 
+		{
+		    apikey : userDataResource.getApiKey(),
+		    key : key
+		}
+	    }).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while deleting the configuration");
+	    });
+
+	    return deferred.promise;
+	}
+    };
+    return userContentService;
 	
 });
