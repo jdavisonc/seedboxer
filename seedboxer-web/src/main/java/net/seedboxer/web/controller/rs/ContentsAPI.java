@@ -23,9 +23,9 @@ package net.seedboxer.web.controller.rs;
 import java.util.List;
 
 import net.seedboxer.web.service.ContentsService;
-import net.seedboxer.web.type.ContentInfo;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.UserContentsAPIResponse;
+import net.seedboxer.web.type.dto.ContentInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

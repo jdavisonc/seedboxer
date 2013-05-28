@@ -23,7 +23,7 @@ package net.seedboxer.web.type.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.seedboxer.web.type.UserConfigInfo;
+import net.seedboxer.web.type.dto.UserConfigInfo;
 
 
 /**

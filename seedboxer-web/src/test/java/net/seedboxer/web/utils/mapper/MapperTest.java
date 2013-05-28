@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TraktAPIResponse.java
+ * MapperTest.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,31 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type.api;
+package net.seedboxer.web.utils.mapper;
 
-import com.jakewharton.trakt.entities.MediaBase;
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.*;
 
-import net.seedboxer.web.type.dto.UserConfigInfo;
+import org.junit.Test;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The Sultan
  */
-public class TraktAPIResponse extends APIResponse {
-    
-	private final List<MediaBase> searchResult;
+public class MapperTest {
 
-	public TraktAPIResponse() {
-		searchResult = new ArrayList<MediaBase>();
+	@Test
+	public void test() {
+		fail("Not yet implemented");
 	}
 
-	public TraktAPIResponse(List<MediaBase> media) {
-		this.searchResult = media;
-	}
-
-	public List<MediaBase> getSearchResults() {
-		return searchResult;
-	}
 }

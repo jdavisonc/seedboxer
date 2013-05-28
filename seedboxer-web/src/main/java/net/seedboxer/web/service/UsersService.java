@@ -29,7 +29,7 @@ import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.logic.UsersController;
-import net.seedboxer.web.type.UserConfigInfo;
+import net.seedboxer.web.type.dto.UserConfigInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

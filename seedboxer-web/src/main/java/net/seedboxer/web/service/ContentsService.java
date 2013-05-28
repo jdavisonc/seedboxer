@@ -30,8 +30,6 @@ import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
 import net.seedboxer.core.type.Quality;
 import net.seedboxer.web.exceptions.UnkownContentType;
-import net.seedboxer.web.type.ContentInfo;
-import net.seedboxer.web.type.TvShowInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +37,9 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import net.seedboxer.core.domain.Movie;
-import net.seedboxer.web.type.MovieInfo;
+import net.seedboxer.web.type.dto.ContentInfo;
+import net.seedboxer.web.type.dto.MovieInfo;
+import net.seedboxer.web.type.dto.TvShowInfo;
 
 /**
  * @author Jorge Davison (jdavisonc)

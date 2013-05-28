@@ -25,10 +25,10 @@ import java.util.List;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.service.UsersService;
-import net.seedboxer.web.type.UserConfigInfo;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.UserAPIKeyResponse;
 import net.seedboxer.web.type.api.UserConfigsAPIResponse;
+import net.seedboxer.web.type.dto.UserConfigInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

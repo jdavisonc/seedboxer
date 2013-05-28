@@ -18,46 +18,38 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type;
+package net.seedboxer.web.type.dto;
+
+import net.seedboxer.core.domain.Movie;
+import net.seedboxer.web.utils.mapper.annotation.MapToObject;
 
 
 /**
- * @author Jorge Davison (jdavisonc)
+ * @author The-Sultan
  *
  */
-public class TvShowInfo extends ContentInfo {
+@MapToObject(Movie.class)
+public class MovieInfo extends ContentInfo {
 
-	private Integer season;
-
-	private Integer episode;
+	private Integer year;
 	
 	private String quality;
 
-	public TvShowInfo(){
+	public MovieInfo(){
 	}
 	
-	public TvShowInfo(String name, Integer season,
-			Integer episode, String quality) {
+	public MovieInfo(String name, Integer year, String quality) {
 		super(name);
-		this.season = season;
-		this.episode = episode;
+		this.year = year;
 		this.quality = quality;
 	}
 
-	public Integer getSeason() {
-		return season;
+	public Integer getYear() {
+		return year;
 	}
 
-	public void setSeason(Integer season) {
-		this.season = season;
-	}
-
-	public Integer getEpisode() {
-		return episode;
-	}
-
-	public void setEpisode(Integer episode) {
-		this.episode = episode;
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 
 	public String getQuality() {

@@ -22,7 +22,7 @@ package net.seedboxer.web.type.api;
 
 import java.util.List;
 
-import net.seedboxer.web.type.ContentInfo;
+import net.seedboxer.web.type.dto.ContentInfo;
 
 /**
  * @author Jorge Davison (jdavisonc)

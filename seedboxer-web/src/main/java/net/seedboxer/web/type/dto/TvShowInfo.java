@@ -18,37 +18,46 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.web.type;
-
-import org.codehaus.jackson.annotate.JsonTypeName;
+package net.seedboxer.web.type.dto;
 
 
 /**
- * @author The-Sultan
+ * @author Jorge Davison (jdavisonc)
  *
  */
+public class TvShowInfo extends ContentInfo {
 
-public class MovieInfo extends ContentInfo {
+	private Integer season;
 
-	private Integer year;
+	private Integer episode;
 	
 	private String quality;
 
-	public MovieInfo(){
+	public TvShowInfo(){
 	}
 	
-	public MovieInfo(String name, Integer year, String quality) {
+	public TvShowInfo(String name, Integer season,
+			Integer episode, String quality) {
 		super(name);
-		this.year = year;
+		this.season = season;
+		this.episode = episode;
 		this.quality = quality;
 	}
 
-	public Integer getYear() {
-		return year;
+	public Integer getSeason() {
+		return season;
 	}
 
-	public void setYear(Integer year) {
-		this.year = year;
+	public void setSeason(Integer season) {
+		this.season = season;
+	}
+
+	public Integer getEpisode() {
+		return episode;
+	}
+
+	public void setEpisode(Integer episode) {
+		this.episode = episode;
 	}
 
 	public String getQuality() {

@@ -35,6 +35,8 @@
 		<webjars-angular.version>1.1.4</webjars-angular.version>
 		<webjars-bootstrap.version>2.3.1</webjars-bootstrap.version>
 		<webjars-jquery.version>2.0.0</webjars-jquery.version>
+		
+		<modelmapper.version>0.5.6</modelmapper.version>
 	</properties>
 
 	<licenses>
@@ -273,6 +275,11 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>${webjars-jquery.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 
