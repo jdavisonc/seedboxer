@@ -181,7 +181,7 @@ seedboxerUiServices.service('downloadsService',function($http,$q, userDataResour
 	    $http.get(downloadsService.downloadsPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
-	    	deferred.reject("An error occured while fetching contents");
+	    	deferred.reject("An error occured while fetching downloads");
 	    });
 
 	    return deferred.promise;
@@ -192,7 +192,7 @@ seedboxerUiServices.service('downloadsService',function($http,$q, userDataResour
 	    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileNames: fileNames}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
-	    	deferred.reject("An error occured while fetching contents");
+	    	deferred.reject("An error occured while fetching downloads");
 	    });
 
 	    return deferred.promise;
@@ -260,26 +260,21 @@ seedboxerUiServices.service('userContentService',function($http,$q, userDataReso
 
 	    return deferred.promise;
 	},
-	saveContent :  function(key, value){
+	saveContent :  function(content){
 
 	    var deferred = $q.defer();
-	    $http.get(userContentService.savePath, 
-	    {
-		params : 
-		{
-		    apikey : userDataResource.getApiKey(),
-		    key : key,
-		    value : value
-		}
+	    var finalUrl = userContentService.savePath + "?apikey=" + userDataResource.getApiKey()
+	    var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'POST',
+		data : data
 	    }).success(function(data){
-		if(data.status == "FAILURE")
-		    deferred.reject("An error occured while saving the configuration");
-		else
-		    deferred.resolve(data);
+	    	deferred.resolve(data.contents);
 	    }).error(function(){
-		deferred.reject("An error occured while saving the configuration");
+	    	deferred.reject("An error occured while fetching the contents list.");
 	    });
-
+		
 	    return deferred.promise;
 	},
 	deleteContent :  function(key){

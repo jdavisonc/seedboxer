@@ -12,13 +12,25 @@
 
     <spring:url value="/webjars/bootstrap/2.3.1/css/bootstrap.min.css" var="bootstrapCss"/>
     <link href="${bootstrapCss}" rel="stylesheet"/>
+    
+    <spring:url value="/webjars/angular-ui/0.4.0/angular-ui.min.css" var="angularUiCss"/>
+    <link href="${angularUiCss}" rel="stylesheet"/>
+    
+    <spring:url value="/webjars/select2/3.3.1/select2.css" var="select2Css"/>
+    <link href="${select2Css}" rel="stylesheet"></script>
 
 	<!-- AngularJS -->
-    <spring:url value="/webjars/angularjs/1.1.4/angular.min.js" var="angular"/>
+    <spring:url value="/webjars/angularjs/1.1.4/angular.js" var="angular"/>
     <script src="${angular}"></script>
 
     <spring:url value="/webjars/angular-ui-bootstrap/0.3.0/ui-bootstrap-tpls.js" var="uiBootstrap"/>
     <script src="${uiBootstrap}"></script>
+    
+    <spring:url value="/webjars/angular-ui/0.4.0/angular-ui.js" var="angularUi"/>
+    <script src="${angularUi}"></script>
+
+    <spring:url value="/webjars/select2/3.3.1/select2.js" var="select2"/>
+    <script src="${select2}"></script>
 
     <spring:url value="/webjars/angularjs/1.1.4/angular-resource.min.js" var="angularResource"/>
     <script src="${angularResource}"></script>
@@ -38,7 +50,10 @@
 
     <spring:url value="/resources/js/controllers.js" var="seedboxerCtrlJs"/>
     <script src="${seedboxerCtrlJs}"></script>
+    
 
+    
+    
 </head>
 
 

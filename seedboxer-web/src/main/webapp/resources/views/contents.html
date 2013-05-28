@@ -11,7 +11,7 @@
 	<br/>
 	<br/>
 
-	<table class="table table-bordered">
+	<table id="contentTable" class="table table-bordered">
 		<thead>
 			<tr>
 			    <th style="width:35px">Type</th>
@@ -22,12 +22,13 @@
 		<tbody>
 			<tr ng-repeat="content in contents | filter:query">
 			    <td><img ng-src="img/{{content.type}}.png" class="icon-white"></td>
-				<td>{{content.name}}</td>
+				<td>{{content.name}} </td>
 			</tr>
 		</tbody>
 	</table>
-	<a class="btn btn-primary" ng-click="addNewContent()"><i class="icon-cog icon-white"></i> Add</a>
-
+	
+	<a class="btn right" ng-click="addContent()"><i class="icon-plus icon-green"/></a>
+	<input id=select2 type="hidden" style="width:450px">
 
 
 </div>

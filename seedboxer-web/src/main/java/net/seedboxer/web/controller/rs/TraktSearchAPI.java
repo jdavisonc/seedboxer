@@ -25,9 +25,9 @@ import com.jakewharton.trakt.entities.MediaBase;
 import com.jakewharton.trakt.services.SearchService.ShowsBuilder;
 import com.jakewharton.trakt.services.SearchService.MoviesBuilder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import net.seedboxer.core.domain.Configuration;
-import net.seedboxer.core.domain.Content;
+import javax.ws.rs.QueryParam;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.TraktAPIResponse;
 import org.springframework.stereotype.Controller;
@@ -56,20 +56,28 @@ public class TraktSearchAPI extends SeedBoxerAPI {
     }
     
     
-    @RequestMapping(value="movie", method = RequestMethod.GET)
-    public @ResponseBody APIResponse searchForMovies(String searchQuery){
-	MoviesBuilder moviesBuilder = manager.searchService().movies(searchQuery);
-	List<MediaBase> movies = new ArrayList();
-	movies.addAll(moviesBuilder.fire());
-	return new TraktAPIResponse(movies);
+    @RequestMapping(method = RequestMethod.GET)
+    public @ResponseBody APIResponse searchForMovies(String term){
+	MoviesBuilder moviesBuilder = manager.searchService().movies(term);
+	List<MediaBase> results = new ArrayList();
+	results.addAll(moviesBuilder.fire());
+	ShowsBuilder showsBuilder = manager.searchService().shows(term);
+	results.addAll(showsBuilder.fire());
+	results = filterResults(results);
+	return new TraktAPIResponse(results);
 	
     }
-    @RequestMapping(value="tvshow", method = RequestMethod.GET)
-    public @ResponseBody APIResponse searchForTvShows(String searchQuery){
-	ShowsBuilder showsBuilder = manager.searchService().shows(searchQuery);
-	List<MediaBase> tvShows = new ArrayList();
-	tvShows.addAll(showsBuilder.fire());
-	return new TraktAPIResponse(tvShows);
+    
+    List<MediaBase> filterResults(List<MediaBase> unfilteredResults){
+	List<MediaBase> filteredResults = new ArrayList();
+	Calendar now = Calendar.getInstance();
+	Integer currentYear = now.get(Calendar.YEAR);   
+	for(MediaBase media : unfilteredResults){
+	    if(media.year > currentYear - 10)
+		filteredResults.add(media);
+	}
 	
+	return filteredResults;
     }
+   
 }

@@ -1,12 +1,14 @@
+<div>
 <div class="modal-header">{{msg}}</div>
 <div class="modal-body">
-    <p>Name <select ng-model="key">
+    <p>Name  <select ui-select2="select2Options" ng-model="select2">
 	    <option ng-repeat="type in configTypes">{{type.key}}</option>
 	</select></p>
 	
-   <p>Value <input ng-model="value" /></p>
+   <p>Value <input type="text" ng-model="value" style="width:206px"/></p>
 </div>
 <div class="modal-footer">
    <button ng-click="closeCancel()" class="btn btn-primary" >Cancel</button>
    <button ng-click="closeOk()" class="btn btn-primary" >Ok</button>
+</div>
 </div>

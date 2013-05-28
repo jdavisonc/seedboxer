@@ -3,7 +3,7 @@
 /* App Module */
 
 var seedboxerui = angular
-    .module('seedboxerui', ['seedboxerui.services','ui.bootstrap'])
+    .module('seedboxerui', ['seedboxerui.services','ui.bootstrap','ui'])
     .config(function($provide, $routeProvider) {
 	$provide.factory('$routeProvider', function () {
 	    return $routeProvider;
