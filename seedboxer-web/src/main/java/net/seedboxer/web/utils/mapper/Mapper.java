@@ -26,16 +26,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import net.seedboxer.web.utils.mapper.annotation.MapToObject;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.SystemPropertyUtils;
 
@@ -43,21 +51,28 @@ import org.springframework.util.SystemPropertyUtils;
  * @author Jorge Davison (jdavisonc)
  *
  */
-public class Mapper {
+@Component
+public class Mapper implements ResourceLoaderAware {
 	
     private final Class<MapToObject> MAPPER_ANNOTATION = MapToObject.class;
     private static final String CLASS_RESOURCE_PATTERN = "**/*.class";
 
     private ResourcePatternResolver resourcePatternResolver;
-    private final MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
+    private MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
     private final TypeFilter annotationFilter = new AnnotationTypeFilter(MAPPER_ANNOTATION);
 	
+    @Value(value="${mapper.packages}")
 	private List<String> packages;
 	
 	private Map<Class<?>, Class<?>> mappings;
 	
 	private final ModelMapper modelMapper = new ModelMapper();
 	
+	public void setPackages(List<String> packages) {
+		this.packages = packages;
+	}
+	
+	@PostConstruct
 	public void init() throws ClassNotFoundException {
         if (packages != null) {
         	mappings = new HashMap<Class<?>, Class<?>>();
@@ -89,11 +104,24 @@ public class Mapper {
             for (Class<?> clazz : annotated) {
 				Class<?> toMap = clazz.getAnnotation(MAPPER_ANNOTATION).value();
 				
+				// Binding One-to-One
 				mappings.put(clazz, toMap);
+				mappings.put(toMap, clazz);
 			}
         }
 	}
 	
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+        this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
+    }
+	
+    /**
+     * Map Object-to-DTO and DTO-to-Object
+     * @param toMap
+     * @return
+     */
 	public Object map(Object toMap) {
 		
 		if (toMap == null) {

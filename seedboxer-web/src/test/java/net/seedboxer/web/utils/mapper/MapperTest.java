@@ -20,19 +20,47 @@
  ******************************************************************************/
 package net.seedboxer.web.utils.mapper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import net.seedboxer.core.domain.Movie;
+import net.seedboxer.core.type.Quality;
+import net.seedboxer.web.type.dto.MovieInfo;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"/application-context.xml"})
 public class MapperTest {
+	
+	@Autowired
+	private Mapper mapper;
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void shouldDetectAnnotationAndMapDTOToObject() {
+		Movie m = new Movie("Iron Man 3", 2013, Quality.HD);
+		Object dto = mapper.map(m);
+		assertTrue(dto instanceof MovieInfo);
+		assertEquals("Iron Man 3", ((MovieInfo)dto).getName());
+		assertEquals(new Integer(2013), ((MovieInfo)dto).getYear());
+		assertEquals("HD", ((MovieInfo)dto).getQuality());
+	}
+	
+	@Test
+	public void shouldDetectAnnotationAndMapObjectToDTO() {
+		MovieInfo m = new MovieInfo("Iron Man 3", 2013, "HD");
+		Object dto = mapper.map(m);
+		assertTrue(dto instanceof Movie);
+		assertEquals("Iron Man 3", ((Movie)dto).getName());
+		assertEquals(new Integer(2013), ((Movie)dto).getYear());
+		assertEquals(Quality.HD, ((Movie)dto).getQuality());
 	}
 
 }
