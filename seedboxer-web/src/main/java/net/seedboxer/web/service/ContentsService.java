@@ -25,21 +25,16 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.seedboxer.core.domain.Content;
-import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
-import net.seedboxer.core.type.Quality;
-import net.seedboxer.web.exceptions.UnkownContentType;
+import net.seedboxer.web.type.dto.ContentInfo;
+import net.seedboxer.web.utils.mapper.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import net.seedboxer.core.domain.Movie;
-import net.seedboxer.web.type.dto.ContentInfo;
-import net.seedboxer.web.type.dto.MovieInfo;
-import net.seedboxer.web.type.dto.TvShowInfo;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -50,6 +45,9 @@ public class ContentsService {
 	
 	@Autowired
 	private ContentManager contentManager;
+	
+	@Autowired
+	private Mapper mapper;
 	
 	public List<ContentInfo> getUserContents(User user) {
 		List<Content> allContents = contentManager.getAllContents(user);
@@ -76,26 +74,10 @@ public class ContentsService {
 	}
 	
 	private ContentInfo createUserContentType(Content content) {
-		if (content instanceof TvShow) {
-			TvShow show = (TvShow) content;
-			return new TvShowInfo(show.getName(), show.getSeason(), show.getEpisode(), show.getQuality().name());
-		}
-		else if (content instanceof Movie) {
-		    Movie movie = (Movie) content;
-		    return new MovieInfo(movie.getName(), movie.getYear(), movie.getQuality().name());
-		}
-		throw new UnkownContentType();
+		return (ContentInfo) mapper.map(content);
 	}
 	
 	private Content createUserContent(ContentInfo contentInfo) {
-		if (contentInfo instanceof TvShowInfo) {
-			TvShowInfo show = (TvShowInfo) contentInfo;
-			return new TvShow(show.getName(), show.getSeason(), show.getEpisode(), Quality.valueOf(show.getQuality()));
-		}
-		else if (contentInfo instanceof MovieInfo) {
-		    MovieInfo show = (MovieInfo) contentInfo;
-		    return new Movie(show.getName(), show.getYear(),Quality.valueOf(show.getQuality()));
-		}
-		throw new UnkownContentType();
+		return (Content) mapper.map(contentInfo);
 	}
 }

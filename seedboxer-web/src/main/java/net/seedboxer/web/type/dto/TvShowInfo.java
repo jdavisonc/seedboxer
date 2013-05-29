@@ -20,11 +20,15 @@
  ******************************************************************************/
 package net.seedboxer.web.type.dto;
 
+import net.seedboxer.core.domain.TvShow;
+import net.seedboxer.web.utils.mapper.annotation.MapToObject;
+
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
+@MapToObject(TvShow.class)
 public class TvShowInfo extends ContentInfo {
 
 	private Integer season;

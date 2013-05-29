@@ -36,9 +36,11 @@
 		<property name="locations">
 			<list>
 			    <value>file:${seedboxer.config.path}/seedboxer.properties</value>
+			    <value>classpath:seedboxer-web.properties</value>
 			</list>
 		</property>
 	</bean>
+
 
 	<!-- Default viewClass: JSTL view (JSP with html output) -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
