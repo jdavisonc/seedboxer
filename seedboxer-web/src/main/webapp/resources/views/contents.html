@@ -15,14 +15,16 @@
 		<thead>
 			<tr>
 			    <th style="width:35px">Type</th>
-				<th>Name</th>
-
+				<th style="width:90%">Name</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="content in contents | filter:query">
-			    <td><img ng-src="img/{{content.type}}.png" class="icon-white"></td>
+			<tr ng-repeat="content in contents | filter:query | orderBy:'type':!reverse">
+			    <td><img ng-src="img/{{content.type}}.png" width="25" heigth="25"></td>
 				<td>{{content.name}} </td>
+				<td><a class="btn btn-warning btn-small" ng-click="deleteContent(content)"><i
+						class="icon-trash icon-white"></i></a></td>
 			</tr>
 		</tbody>
 	</table>

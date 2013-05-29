@@ -277,20 +277,19 @@ seedboxerUiServices.service('userContentService',function($http,$q, userDataReso
 		
 	    return deferred.promise;
 	},
-	deleteContent :  function(key){
+	deleteContent :  function(content){
 
 	    var deferred = $q.defer();
-	    $http.get(userContentService.deletePath, 
-	    {
-		params : 
-		{
-		    apikey : userDataResource.getApiKey(),
-		    key : key
-		}
+	    var finalUrl = userContentService.deletePath + "?apikey=" + userDataResource.getApiKey()
+	    var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'DELETE',
+		data : data
 	    }).success(function(data){
-		deferred.resolve(data);
+	    	deferred.resolve(data);
 	    }).error(function(){
-		deferred.reject("An error occured while deleting the configuration");
+	    	deferred.reject("An error occured while fetching the contents list.");
 	    });
 
 	    return deferred.promise;

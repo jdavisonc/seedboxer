@@ -236,6 +236,13 @@ function ContentsCtrl($scope, userContentService, userDataResource){
 	    }
     };
     
+    $scope.deleteContent = function(content){
+	    userContentService.deleteContent(content).
+	    then(function(data){
+	    	alertService.showSuccess("Content deleted successfully!");
+	    });
+    };
+    
     $scope.addNewContent = function(){
 	var media = $scope.selectedContent;
 	var mediaInfo = {
