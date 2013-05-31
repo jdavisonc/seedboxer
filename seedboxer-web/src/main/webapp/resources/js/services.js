@@ -186,10 +186,10 @@ seedboxerUiServices.service('downloadsService',function($http,$q, userDataResour
 
 	    return deferred.promise;
 	},
-	putToDownload :  function(fileName){
+	putToDownload : function(fileName){
 	    var deferred = $q.defer();
 
-	    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileNames: fileNames}}).success(function(data){
+	    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileName: fileName}}).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching downloads");
@@ -281,11 +281,14 @@ seedboxerUiServices.service('userContentService',function($http,$q, userDataReso
 
 	    var deferred = $q.defer();
 	    var finalUrl = userContentService.deletePath + "?apikey=" + userDataResource.getApiKey()
-	    var data = JSON.stringify(content);
+	    //var data = JSON.stringify(content);
 	    $http({
 		url : finalUrl, 
 		method : 'DELETE',
-		data : data
+		data : content,
+	    headers: {
+	        "Content-Type": "application/json"
+	    }
 	    }).success(function(data){
 	    	deferred.resolve(data);
 	    }).error(function(){

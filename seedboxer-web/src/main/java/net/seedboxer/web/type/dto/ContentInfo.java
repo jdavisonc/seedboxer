@@ -32,7 +32,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
  */
 @JsonTypeInfo(  
     use = JsonTypeInfo.Id.NAME,  
-    include = JsonTypeInfo.As.PROPERTY,  
+    include = JsonTypeInfo.As.PROPERTY, 
     property = "type")  
 @JsonSubTypes({  
     @Type(value = TvShowInfo.class, name = "TV_SHOW"),

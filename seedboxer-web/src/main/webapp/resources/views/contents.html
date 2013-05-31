@@ -20,7 +20,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="content in contents | filter:query | orderBy:'type':!reverse">
+			<tr ng-repeat="content in contents | filter:query">
 			    <td><img ng-src="img/{{content.type}}.png" width="25" heigth="25"></td>
 				<td>{{content.name}} </td>
 				<td><a class="btn btn-warning btn-small" ng-click="deleteContent(content)"><i

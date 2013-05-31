@@ -21,8 +21,8 @@
 		<tbody>
 			<tr ng-repeat="download in downloads | filter:query">
 				<td>{{download.name}}</td>
-				<td><a class="btn btn-info btn-small" ng-click="putToDownload(content)"><i
-						class="icon-circle-arrow-down icon-white"></i></a></td>
+				<td><a class="btn btn-success btn-small" ng-click="putToDownload(download)"><i
+						class="icon-circle-arrow-down"></i></a></td>
 			</tr>
 		</tbody>
 	</table>

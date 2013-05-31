@@ -45,39 +45,39 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
 	    .open()
 	    .then(function(result){
 	    if(result == 'ok'){
-		userConfigService.deleteConfig(item.key)
-		.then(function(){
-		    alertService.showSuccess("Configuration deleted successfully");
-		    $scope.refreshConfig();
-		});
+			userConfigService.deleteConfig(item.key)
+			.then(function(){
+			    alertService.showSuccess("Configuration deleted successfully");
+			    $scope.refreshConfig();
+			});
 
 	    }
 	});
     };
 
     $scope.opts = {
-	backdrop: true,
-	keyboard: true,
-	backdropClick: true,
-	templateUrl: '/ui/add-config-dialog.html',
-	dialogClass : "add-config-dialog modal",
-	resolve: {
-	    dialogType: function(){return angular.copy($scope.dialogType);},
-	    config : function(){return angular.copy($scope.config);},
-	    configTypes : function(){return angular.copy($scope.types);}
-	},
-	controller: 'ConfigDialogCtrl'
+		backdrop: true,
+		keyboard: true,
+		backdropClick: true,
+		templateUrl: '/ui/add-config-dialog.html',
+		dialogClass : "add-config-dialog modal",
+		resolve: {
+		    dialogType: function(){return angular.copy($scope.dialogType);},
+		    config : function(){return angular.copy($scope.config);},
+		    configTypes : function(){return angular.copy($scope.types);}
+		},
+		controller: 'ConfigDialogCtrl'
     };
 
   
 
-  $scope.refreshConfig = function(){
-	userConfigService.getConfigList().
-	then(function(data){
-	    $scope.configs = data.configs;
-	}),function(errorMsg){
-	    alertService.showError("There was an error trying to fetch configurations");
-	}
+	$scope.refreshConfig = function(){
+		userConfigService.getConfigList().
+		then(function(data){
+		    $scope.configs = data.configs;
+		}),function(errorMsg){
+		    alertService.showError("There was an error trying to fetch configurations");
+		}
    }
 
    $scope.addNewConfig = function(){
@@ -103,34 +103,32 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
 function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config, configTypes){
     $scope.configTypes = configTypes.configs;
     if(dialogType == 'add'){
-	$scope.msg = 'Add a new configuration';
-	$scope.key = null;
-	$scope.value = null;
-    }
-    else if(dialogType == 'edit'){
-	$scope.msg = 'Edit configuration';
-	$scope.key = config.key;
-	$scope.value = config.value;
+		$scope.msg = 'Add a new configuration';
+		$scope.key = null;
+		$scope.value = null;
+    } else if(dialogType == 'edit'){
+		$scope.msg = 'Edit configuration';
+		$scope.key = config.key;
+		$scope.value = config.value;
     }
 
     $scope.closeOk = function(){
-	userConfigService.saveConfig($scope.key, $scope.value)
-	    .then(function(){
-		alertService.showSuccess("Configuration saved successfully!");
-		dialog.close('ok');
-	    }
-	    ,function(errorMessage){
-		$scope.error = errorMessage;
-		alertService.showError("There was an when saving the configuration");
-		dialog.close('error');
-	    });
-    };
-    $scope.closeCancel = function(){
-	dialog.close();
-    };
-    $scope.select2Options = {
-	minimumResultsForSearch : -1,
-	width : 'resolve'
+	    userConfigService.saveConfig($scope.key, $scope.value)
+		    	.then(function(){
+					alertService.showSuccess("Configuration saved successfully!");
+					dialog.close('ok');
+		    } ,function(errorMessage){
+				$scope.error = errorMessage;
+				alertService.showError("There was an when saving the configuration");
+				dialog.close('error');
+		    });
+	    };
+	    $scope.closeCancel = function(){
+	    	dialog.close();
+	    };
+	    $scope.select2Options = {
+		minimumResultsForSearch : -1,
+		width : 'resolve'
     }
     
 }
@@ -138,21 +136,7 @@ function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dial
 
 
 function DownloadsCtrl($scope, downloadsService, alertService) {
-	
-	//$scope.contents = {};
-	/*
-	function refreshContents(){
-		contentsService.getContents()
-	  .then(function(data){
-	      $scope.contents = data;
-	  },
-	  function(errorMessage){
-		  alertService.showError("There was an when getting contents");
-	  })
-	};
-	
-	refreshContents();
-	*/
+
 	$scope.putToDownload = function(item) {
 		downloadsService.putToDownload(item.name)
 		  .then(function(data){
@@ -210,29 +194,29 @@ function HeaderCtrl($scope, userDataResource) {
 
 }
 
-function ContentsCtrl($scope, userContentService, userDataResource){
+function ContentsCtrl($scope, userContentService, userDataResource, alertService){
     
     $scope.opts = {
-	backdrop: true,
-	keyboard: true,
-	backdropClick: true,
-	templateUrl: '/ui/add-content-dialog.html',
-	//dialogClass : "add-content-dialog",
-	/*
-	resolve: {
-	    dialogType: function(){return angular.copy($scope.dialogType);},
-	    config : function(){return angular.copy($scope.config);},
-	    configTypes : function(){return angular.copy($scope.types);}
-	},*/
-	controller: 'AddContentDialogCtrl'
+		backdrop: true,
+		keyboard: true,
+		backdropClick: true,
+		templateUrl: '/ui/add-content-dialog.html',
+		//dialogClass : "add-content-dialog",
+		/*
+		resolve: {
+		    dialogType: function(){return angular.copy($scope.dialogType);},
+		    config : function(){return angular.copy($scope.config);},
+		    configTypes : function(){return angular.copy($scope.types);}
+		},*/
+		controller: 'AddContentDialogCtrl'
     };    
     
     $scope.refreshContents = function(){
 	    userContentService.getContentList().
 	    then(function(data){
-		$scope.contents = data;
+	    	$scope.contents = data;
 	    }),function(errorMsg){
-		alertService.showError("There was an error trying to fetch configurations");
+	    	alertService.showError("There was an error trying to fetch configurations");
 	    }
     };
     
@@ -240,32 +224,32 @@ function ContentsCtrl($scope, userContentService, userDataResource){
 	    userContentService.deleteContent(content).
 	    then(function(data){
 	    	alertService.showSuccess("Content deleted successfully!");
+	    	$scope.refreshContents();
 	    });
     };
     
     $scope.addNewContent = function(){
-	var media = $scope.selectedContent;
-	var mediaInfo = {
-		"name" : media.title,
-		"quality" : "HD"
-	};
-	if(media.url.indexOf("/movie/") != -1){
-	    mediaInfo.type = "MOVIE";
-	    mediaInfo.year = media.year;
-	    
-	}
-	if(media.url.indexOf("/show/") != -1)
-	    mediaInfo.type = "TV_SHOW";
-	$scope.$apply(function(){
-	userContentService.saveContent(mediaInfo)
-	    .then($scope.refreshContents);
-	});
-			
+		var media = $scope.selectedContent;
+		var mediaInfo = {
+			"name" : media.title,
+			"quality" : "HD"
+		};
+		if(media.url.indexOf("/movie/") != -1){
+		    mediaInfo.type = "MOVIE";
+		    mediaInfo.year = media.year;
+		}
+		if(media.url.indexOf("/show/") != -1) {
+		    mediaInfo.type = "TV_SHOW";
+		}
+		$scope.$apply(function(){
+			userContentService.saveContent(mediaInfo)
+		    	.then($scope.refreshContents);
+		});
     }
     
     $scope.addContent = function(){
-	$(".select2-container").show();
-	$("#select2").select2("open");
+		$(".select2-container").show();
+		$("#select2").select2("open");
     };
     
     $scope.select2Options = {

@@ -4,6 +4,10 @@
 	font-family: 'Telex', sans-serif;
 }
 
+.navbar .brand {
+	padding: 10px 20px 5px;
+} 
+
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
