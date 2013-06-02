@@ -1,5 +1,5 @@
 /*******************************************************************************
- * FeedsManager.java
+ * AdminService.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,38 +18,53 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-package net.seedboxer.core.logic;
+package net.seedboxer.web.service;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.seedboxer.core.domain.RssFeed;
-import net.seedboxer.core.persistence.FeedsDao;
+import net.seedboxer.core.logic.FeedsManager;
+import net.seedboxer.web.type.dto.RssFeedInfo;
+import net.seedboxer.web.utils.mapper.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
 @Service
-public class FeedsManager {
+public class AdminService {
 
 	@Autowired
-	private FeedsDao feedsDao;
+	private FeedsManager feedsManager;
+	
+	@Autowired
+	private Mapper mapper;
+	
+	public List<RssFeedInfo> getAllRSSFeeds() {
+		return Lists.transform(feedsManager.getAllFeeds(), new Function<RssFeed, RssFeedInfo>() {
 
-	public List<RssFeed> getAllFeeds() {
-		return feedsDao.getAllFeeds();
+			@Override
+			@Nullable
+			public RssFeedInfo apply(@Nullable RssFeed rss) {
+				return (RssFeedInfo) mapper.map(rss);
+			}
+		});
 	}
-
-	public void save(RssFeed feed) {
-		feedsDao.save(feed);
+	
+	public void saveRssFeed(RssFeedInfo rssFeed) {
+		feedsManager.save((RssFeed) mapper.map(rssFeed));
 	}
-
-	public void delete(RssFeed feed) {
-		feedsDao.delete(feed);
+	
+	public void deleteRssFeed(RssFeedInfo rssFeed) {
+		feedsManager.delete((RssFeed) mapper.map(rssFeed));
 	}
-
+	
 }

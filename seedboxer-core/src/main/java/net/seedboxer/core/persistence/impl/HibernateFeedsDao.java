@@ -40,10 +40,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class HibernateFeedsDao extends HibernateDao implements FeedsDao {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<RssFeed> getAllFeeds(){
 		Criteria criteria = getCurrentSession().createCriteria(RssFeed.class);
 		return criteria.list();
+	}
+
+	@Override
+	public void save(RssFeed feed) {
+		getCurrentSession().save(feed);
+	}
+
+	@Override
+	public void delete(RssFeed feed) {
+		getCurrentSession().delete(feed);
 	}
 
 }

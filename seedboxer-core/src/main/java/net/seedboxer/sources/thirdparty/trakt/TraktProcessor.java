@@ -24,6 +24,8 @@ package net.seedboxer.sources.thirdparty.trakt;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.type.Quality;
@@ -35,7 +37,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.jakewharton.trakt.ServiceManager;
+import com.jakewharton.trakt.entities.Movie;
 import com.jakewharton.trakt.entities.TvShow;
 
 /**
@@ -71,16 +76,43 @@ public class TraktProcessor implements Processor {
 
 	private List<Content> getWatchlist(ServiceManager manager, String username, String quality) {
 		List<Content> watchlistContent = new ArrayList<Content>();
-
-		List<TvShow> watchlistShows = manager.userService().watchlistShows(username).fire();
-		for (TvShow tvShow : watchlistShows) {
-			watchlistContent.add(createTvShow(tvShow, quality));
-		}
+		watchlistContent.addAll(getWatchlistTvShows(manager, username, quality));
+		watchlistContent.addAll(getWatchlistMovies(manager, username, quality));
 		return watchlistContent;
+	}
+
+	private List<Content> getWatchlistTvShows(ServiceManager manager, String username, final String quality) {
+		List<TvShow> watchlistShows = manager.userService().watchlistShows(username).fire();
+		return Lists.transform(watchlistShows, new Function<TvShow, Content>() {
+
+			@Override
+			@Nullable
+			public Content apply(@Nullable TvShow tvShow) {
+				return createTvShow(tvShow, quality);
+			}
+			
+		});
+	}
+	
+	private List<Content> getWatchlistMovies(ServiceManager manager, String username, final String quality) {
+		List<Movie> watchlistMovies = manager.userService().watchlistMovies(username).fire();
+		return Lists.transform(watchlistMovies, new Function<Movie, Content>() {
+
+			@Override
+			@Nullable
+			public Content apply(@Nullable Movie movie) {
+				return createMovie(movie, quality);
+			}
+			
+		});
 	}
 
 	private net.seedboxer.core.domain.TvShow createTvShow(TvShow tvShow, String quality) {
 		return new net.seedboxer.core.domain.TvShow(tvShow.title, null, null, Quality.valueOf(quality));
+	}
+	
+	private net.seedboxer.core.domain.Movie createMovie(Movie movie, String quality) {
+		return new net.seedboxer.core.domain.Movie(movie.title, movie.year, Quality.valueOf(quality));
 	}
 
 }

@@ -35,4 +35,8 @@ public interface FeedsDao {
 
 	List<RssFeed> getAllFeeds();
 
+	void save(RssFeed feed);
+
+	void delete(RssFeed feed);
+
 }

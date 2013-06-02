@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RssFeed.java
+ * RssFeedInfo.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,38 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.web.type.dto;
 
-package net.seedboxer.core.domain;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import net.seedboxer.core.domain.RssFeed;
+import net.seedboxer.web.utils.mapper.annotation.MapToObject;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-@Entity
-@Table(name= "feeds")
-public class RssFeed {
+@MapToObject(RssFeed.class)
+public class RssFeedInfo {
 	
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
 	private Long id;
-
-	@Column(name="url")
+	
 	private String url;
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 
 	public Long getId() {
 		return id;
@@ -57,6 +40,14 @@ public class RssFeed {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

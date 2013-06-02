@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.Content;
+import net.seedboxer.core.domain.Movie;
 import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.type.Quality;
 
@@ -45,6 +46,7 @@ import org.springframework.stereotype.Component;
 public class IMDBResponseProcessor implements Processor {
 
 	private static final String IMDB_TVSHOW_TYPE = "TV Series";
+	private static final String IMDB_MOVIE_TYPE = "Feature Film";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IMDBResponseProcessor.class);
 
@@ -56,10 +58,11 @@ public class IMDBResponseProcessor implements Processor {
 		List<Content> imdbContent = new ArrayList<Content>();
 
 		for (List<String> result : imdbResults) {
-			String title = result.get(5);
-			String type = result.get(6);
+			String title = result.get(5); // 5 is the position in the CSV of the Title
+			String type = result.get(6); // 6 is the position in the CSV of the Type
+			Integer year = Integer.parseInt(result.get(11)); // 11 is the position in the CSV of the Year
 
-			Content content = createContent(msg, title, type);
+			Content content = createContent(msg, title, year, type);
 			if (content != null) {
 				imdbContent.add(content);
 			}
@@ -68,12 +71,14 @@ public class IMDBResponseProcessor implements Processor {
 		msg.setBody(imdbContent);
 	}
 
-	private Content createContent(Message msg, String title, String type) {
+	private Content createContent(Message msg, String title, Integer year, String type) {
 		Content content = null;
 		String quality = (String) msg.getHeader(Configuration.IMDB_CONTENT_QUALITY);
 
 		if (IMDB_TVSHOW_TYPE.equals(type)) {
 			content = new TvShow(title, null, null, Quality.valueOf(quality));
+		} else if (IMDB_MOVIE_TYPE.equals(type)) {
+			content = new Movie(title, year, Quality.valueOf(quality));
 		}
 		return content;
 	}

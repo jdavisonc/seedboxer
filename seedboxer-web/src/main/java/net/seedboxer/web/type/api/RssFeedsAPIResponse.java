@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RssFeed.java
+ * UserContentsAPIResponse.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,45 +18,26 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.web.type.api;
 
-package net.seedboxer.core.domain;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import net.seedboxer.web.type.dto.RssFeedInfo;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-@Entity
-@Table(name= "feeds")
-public class RssFeed {
+public class RssFeedsAPIResponse extends APIResponse {
+
+	private final List<RssFeedInfo> rssFeeds;
 	
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Long id;
-
-	@Column(name="url")
-	private String url;
-
-	public String getUrl() {
-		return url;
+	public RssFeedsAPIResponse(List<RssFeedInfo> contents) {
+		this.rssFeeds = contents;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public List<RssFeedInfo> getRssFeeds() {
+		return rssFeeds;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 }
