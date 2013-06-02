@@ -9,7 +9,7 @@ var seedboxerui = angular
 	    return $routeProvider;
 	});
     })
-    .run(function($routeProvider,userDataResource,$route, userStatusService, queueService, userConfigService,
+    .run(function($routeProvider,userDataResource,$route, userStatusService, userConfigService,
 		userContentService, downloadsService) {
 	//get the apikey from the server before setting the route,
 	//this way we ensure nothing is done before having the apikey.
@@ -27,7 +27,7 @@ var seedboxerui = angular
 			templateUrl: '/ui/home.html',
 			resolve    :{
 			    status : userStatusService.getUserStatusData,
-			    queue : queueService.getQueue
+			    queue : downloadsService.getQueue
 			}
 		}).
 		when('/account-settings', {

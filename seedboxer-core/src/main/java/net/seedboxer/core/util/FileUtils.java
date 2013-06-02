@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.seedboxer.core.type.FileValue;
@@ -56,7 +57,6 @@ public class FileUtils {
 		}
 	}
 
-
 	public static File getFile(String name, String path) {
 		return new File(path + File.separator + name);
 	}
@@ -67,7 +67,8 @@ public class FileUtils {
 
 		for (String name : dir.list()) {
 			if (name != null && !name.startsWith(".")) {
-				files.add(new FileValue(name, false));
+				File down = new File(name);
+				files.add(new FileValue(name, false, new Date(down.lastModified())));
 			}
 		}
 		return files;

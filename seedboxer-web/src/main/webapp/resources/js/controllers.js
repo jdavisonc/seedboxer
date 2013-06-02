@@ -1,10 +1,10 @@
 'use strict';
 
  /* Controllers */
+var refreshTime = 10000;
 
-function StatusCtrl($scope, userStatusService, alertService) {
+function StatusCtrl($scope, $timeout, userStatusService, downloadsService, alertService) {
 
-      
 	$scope.play = function(){
 		userStatusService.start()
 		  .then(function(data){
@@ -16,7 +16,7 @@ function StatusCtrl($scope, userStatusService, alertService) {
 	};
       
 	$scope.stop = function(){
-		userStatusService.stop()
+		downloadsService.stop()
 		  .then(function(data){
 			  alertService.showSuccess("The downloads were stopped :(");
 		  },
@@ -24,6 +24,28 @@ function StatusCtrl($scope, userStatusService, alertService) {
 			  alertService.showError("There was an error when stopping");
 		  })
 	};
+	
+	$scope.refresh = function() {
+	    $scope.current = userStatusService.getUserStatusData();
+	    $scope.queue = downloadsService.getQueue();
+	}
+	
+	$scope.onTimeout = function(){
+		$scope.refresh();
+		refreshTimeout = $timeout($scope.onTimeout, refreshTime);
+	}
+    var refreshTimeout = $timeout($scope.onTimeout, refreshTime);
+    
+    $scope.deleteFromQueue = function(download) {
+		downloadsService.deleteFromQueue(download.id)
+		  .then(function(data){
+			  alertService.showSuccess("The download was deleted!");
+			  $scope.refresh();
+		  },
+		  function(errorMessage){
+			  alertService.showError("There was an error when deleting download");
+		  })
+    }
 }
 
 function NavController($scope, $location){
@@ -100,6 +122,7 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
 	})
    }
 }
+
 function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config, configTypes){
     $scope.configTypes = configTypes.configs;
     if(dialogType == 'add'){

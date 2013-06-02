@@ -20,6 +20,8 @@
  ******************************************************************************/
 package net.seedboxer.core.type;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="file")
@@ -32,6 +34,8 @@ public class FileValue {
 	private boolean downloaded;
         
     private int order;
+    
+    private Date lastModified;
 
     public int getOrder() {
         return order;
@@ -43,9 +47,10 @@ public class FileValue {
 
 	public FileValue() { }
 
-	public FileValue(String name, boolean downloaded) {
+	public FileValue(String name, boolean downloaded, Date lastModified) {
 		this.name = name;
 		this.downloaded = downloaded;
+		this.lastModified = lastModified;
 	}
 
 	public FileValue(String name, long queueId, int order) {
@@ -76,6 +81,14 @@ public class FileValue {
 
 	public void setQueueId(Long queueId) {
 		this.queueId = queueId;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 
 }

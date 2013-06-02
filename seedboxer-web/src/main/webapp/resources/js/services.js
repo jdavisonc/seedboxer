@@ -77,27 +77,6 @@ seedboxerUiServices.service('userStatusService',function($http,$q, userDataResou
 });
 
 
-seedboxerUiServices.service('queueService',function($http,$q, userDataResource){
-    var queueService = {
-	apiPath : '/webservices/downloads/queue',
-	getQueue :  function(){
-	    var deferred = $q.defer();
-
-	    $http.get(queueService.apiPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
-	    	deferred.resolve(data);
-	    }).error(function(){
-	    	deferred.reject("An error occured while fetching the queue");
-	    });
-
-	    return deferred.promise;
-	}
-
-    };
-    return queueService;
-	
-});
-
-
 seedboxerUiServices.service('userConfigService',function($http,$q, userDataResource){
     var userConfigService = {
 	listPath : '/webservices/user/configs/list',
@@ -173,30 +152,54 @@ seedboxerUiServices.service('userConfigService',function($http,$q, userDataResou
 
 seedboxerUiServices.service('downloadsService',function($http,$q, userDataResource){
     var downloadsService = {
-	downloadsPath : '/webservices/downloads/list',
-	putPath : '/webservices/downloads/put',
-	getDownloads :  function(){
-	    var deferred = $q.defer();
-
-	    $http.get(downloadsService.downloadsPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
-	    	deferred.resolve(data);
-	    }).error(function(){
-	    	deferred.reject("An error occured while fetching downloads");
-	    });
-
-	    return deferred.promise;
-	},
-	putToDownload : function(fileName){
-	    var deferred = $q.defer();
-
-	    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileName: fileName}}).success(function(data){
-	    	deferred.resolve(data);
-	    }).error(function(){
-	    	deferred.reject("An error occured while fetching downloads");
-	    });
-
-	    return deferred.promise;
-	}
+		downloadsPath : '/webservices/downloads/list',
+		putPath : '/webservices/downloads/put',
+		queuePath : '/webservices/downloads/queue',
+		deletePath : '/webservices/downloads/delete',
+		getDownloads :  function(){
+		    var deferred = $q.defer();
+	
+		    $http.get(downloadsService.downloadsPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+		    	deferred.resolve(data);
+		    }).error(function(){
+		    	deferred.reject("An error occured while fetching downloads");
+		    });
+	
+		    return deferred.promise;
+		},
+		putToDownload : function(fileName){
+		    var deferred = $q.defer();
+	
+		    $http.get(downloadsService.putPath, {params : {apikey : userDataResource.getApiKey(), fileName: fileName}}).success(function(data){
+		    	deferred.resolve(data);
+		    }).error(function(){
+		    	deferred.reject("An error occured while fetching downloads");
+		    });
+	
+		    return deferred.promise;
+		},
+		getQueue :  function(){
+		    var deferred = $q.defer();
+	
+		    $http.get(downloadsService.queuePath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+		    	deferred.resolve(data);
+		    }).error(function(){
+		    	deferred.reject("An error occured while fetching the queue");
+		    });
+	
+		    return deferred.promise;
+		},
+		deleteFromQueue :  function(downloadId){
+		    var deferred = $q.defer();
+	
+		    $http.get(downloadsService.deletePath, {params : {apikey : userDataResource.getApiKey(), downloadId : downloadId}}).success(function(data){
+		    	deferred.resolve(data);
+		    }).error(function(){
+		    	deferred.reject("An error occured while deleting item from queue");
+		    });
+	
+		    return deferred.promise;
+		}
 
     };
     return downloadsService;
