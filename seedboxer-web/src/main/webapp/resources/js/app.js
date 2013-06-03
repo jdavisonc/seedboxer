@@ -67,6 +67,6 @@ var seedboxerui = angular
 			}
 		}).
 		otherwise({redirectTo: '/'});
-	    $route.reload();	
+	    $route.reload();
 	});
     })    

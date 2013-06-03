@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersController.java
+ * UsersManager.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -31,13 +31,15 @@ import net.seedboxer.core.persistence.UsersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.hash.Hashing;
+
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
 @Service
-public class UsersController {
+public class UsersManager {
 
 	@Autowired
 	private UsersDao usersDao;
@@ -98,6 +100,19 @@ public class UsersController {
 			usersDao.save(user);
 		}
 		return user;
+	}
+
+	public void saveUser(User user) {
+		user.setPassword(Hashing.md5().hashString(user.getPassword()).toString());
+		usersDao.save(user);
+	}
+
+	public void deleteUser(User user) {
+		usersDao.delete(user);
+	}
+
+	public List<User> getAllUsers() {
+		return usersDao.getAllUsers();
 	}
 
 }

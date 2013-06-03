@@ -21,7 +21,7 @@
 package net.seedboxer.web.security;
 
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,9 +37,9 @@ import org.springframework.stereotype.Component;
 public class SeedBoxerUDS implements UserDetailsService {
 
 	@Autowired
-	private UsersController userController;
+	private UsersManager userController;
 
-	public void setUserController(UsersController userController) {
+	public void setUserController(UsersManager userController) {
 		this.userController = userController;
 	}
 

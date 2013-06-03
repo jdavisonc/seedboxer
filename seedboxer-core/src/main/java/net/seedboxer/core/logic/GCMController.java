@@ -31,7 +31,7 @@ public class GCMController {
 	private String projectId;
 	
 	@Autowired
-	private UsersController usersController;
+	private UsersManager usersController;
 	
 	private Sender sender;
 		

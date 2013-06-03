@@ -1,59 +1,42 @@
 /*******************************************************************************
- * User.java
- *
+ * UserInfo.java
+ * 
  * Copyright (c) 2012 SeedBoxer Team.
- *
+ * 
  * This file is part of SeedBoxer.
- *
+ * 
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.core.domain;
+package net.seedboxer.web.type.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import net.seedboxer.core.domain.User;
+import net.seedboxer.web.utils.mapper.annotation.MapToObject;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-/**
- * @author harley
- *
- */
-@Entity
-@Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames={"username"})})
-public class User {
+@MapToObject(User.class)
+public class UserInfo {
 
-	@Id
-	@GeneratedValue
 	private long id;
 
 	private String username;
 
 	private String password;
 
-	@Enumerated(EnumType.STRING)
-	private Status status;
-
 	private boolean admin;
-
-	private String apikey;
 
 	public long getId() {
 		return id;
@@ -79,33 +62,12 @@ public class User {
 		this.password = password;
 	}
 
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
 	public boolean isAdmin() {
 		return admin;
 	}
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
-	}
-
-	public String getApikey() {
-		return apikey;
-	}
-
-	public void setApikey(String apikey) {
-		this.apikey = apikey;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", status=" + status + ", admin=" + Boolean.toString(admin) + "]";
 	}
 
 }

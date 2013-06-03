@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.domain.UserConfiguration;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.web.type.dto.UserConfigInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ import com.google.common.collect.Lists;
 public class UsersService {
 
 	@Autowired
-	private UsersController usersController;
+	private UsersManager usersController;
 
 	/**
 	 * Generate an APIKEY for the user.

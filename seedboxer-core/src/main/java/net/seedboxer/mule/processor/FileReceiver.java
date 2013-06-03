@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.DownloadsQueueManager;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -57,7 +57,7 @@ public class FileReceiver implements Processor {
 	private DownloadsQueueManager queueManager;
 
 	@Autowired
-	private UsersController usersController;
+	private UsersManager usersController;
 
 	private Pattern pattern = null;
 

@@ -54,7 +54,7 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 	@Override
 	public void save(User user) {
-		getCurrentSession().update(user);
+		getCurrentSession().save(user);
 	}
 
 	@Override
@@ -128,6 +128,19 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 		Query query = getCurrentSession().createQuery("from User where status = :status");
 		query.setParameter("status", status);
 		return query.list();
+	}
+
+	@Override
+	public void delete(User user) {
+		getCurrentSession().delete(user);
+		Query query = getCurrentSession().createQuery("delete from UserConfiguration where user.id = :userId");
+		query.setParameter("userId", user.getId());
+		query.executeUpdate();
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		return getCurrentSession().createCriteria(User.class).list();
 	}
 
 }

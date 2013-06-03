@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersAPI.java
+ * UserAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -47,9 +47,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/webservices/user")
-public class UsersAPI extends SeedBoxerAPI {
+public class UserAPI extends SeedBoxerAPI {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UsersAPI.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserAPI.class);
 
 	@Autowired
 	private DownloadsService downloadsService;

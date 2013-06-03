@@ -30,7 +30,7 @@ import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.domain.UserConfiguration;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -51,7 +51,7 @@ public class DownloadReceiver implements Processor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadReceiver.class);
 
 	@Autowired
-	private UsersController usersController;
+	private UsersManager usersController;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {

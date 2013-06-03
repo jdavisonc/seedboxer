@@ -25,8 +25,11 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.seedboxer.core.domain.RssFeed;
+import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.FeedsManager;
+import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.web.type.dto.RssFeedInfo;
+import net.seedboxer.web.type.dto.UserInfo;
 import net.seedboxer.web.utils.mapper.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,9 @@ public class AdminService {
 
 	@Autowired
 	private FeedsManager feedsManager;
+
+	@Autowired
+	private UsersManager usersManager;
 	
 	@Autowired
 	private Mapper mapper;
@@ -65,6 +71,25 @@ public class AdminService {
 	
 	public void deleteRssFeed(RssFeedInfo rssFeed) {
 		feedsManager.delete((RssFeed) mapper.map(rssFeed));
+	}
+
+	public List<UserInfo> getAllUsers() {
+		return Lists.transform(usersManager.getAllUsers(), new Function<User, UserInfo>() {
+
+			@Override
+			@Nullable
+			public UserInfo apply(@Nullable User user) {
+				return (UserInfo) mapper.map(user);
+			}
+		});
+	}
+
+	public void saveUser(UserInfo user) {
+		usersManager.saveUser((User) mapper.map(user));
+	}
+
+	public void deleteUser(UserInfo user) {
+		usersManager.deleteUser((User) mapper.map(user));
 	}
 	
 }

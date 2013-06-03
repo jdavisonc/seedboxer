@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersAPI.java
+ * UserAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -36,12 +36,12 @@ public class LoginController {
     
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView renderLogin(@RequestParam(value = "error", required = false ) String error){
-	ModelAndView mav = new ModelAndView();
-        mav.setViewName("login");
-	if(("1").equals(error))
-	    mav.addObject("errorMessage","Wrong username/password");
-	else
-	    mav.addObject("errorMessage","");
-	return mav;
+		ModelAndView mav = new ModelAndView();
+	        mav.setViewName("login");
+		if(("1").equals(error))
+		    mav.addObject("errorMessage","Wrong username/password");
+		else
+		    mav.addObject("errorMessage","");
+		return mav;
     }
 }

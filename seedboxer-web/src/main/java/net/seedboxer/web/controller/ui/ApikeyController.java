@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UsersAPI.java
+ * UserAPI.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -21,7 +21,7 @@
 package net.seedboxer.web.controller.ui;
 
 import net.seedboxer.web.controller.rs.SeedBoxerAPI;
-import net.seedboxer.web.controller.rs.UsersAPI;
+import net.seedboxer.web.controller.rs.UserAPI;
 import net.seedboxer.web.type.api.APIResponse;
 import net.seedboxer.web.type.api.UserAPIKeyResponse;
 import net.seedboxer.web.type.api.UserNameAPIResponse;
@@ -40,10 +40,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ApikeyController extends SeedBoxerAPI{
     
     @Autowired
-    UsersAPI usersApi;
+    UserAPI usersApi;
     
     @RequestMapping(value="/userData", method = RequestMethod.GET)
     public @ResponseBody APIResponse apikey() {
-	return new UserNameAPIResponse(getUser().getUsername(),(UserAPIKeyResponse) usersApi.apikey());
+    	return new UserNameAPIResponse(getUser().getUsername(),(UserAPIKeyResponse) usersApi.apikey());
     }
 }

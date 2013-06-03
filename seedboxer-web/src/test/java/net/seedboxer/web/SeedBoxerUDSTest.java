@@ -23,7 +23,7 @@ package net.seedboxer.web;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.web.security.SeedBoxerUDS;
 import net.seedboxer.web.security.SeedBoxerUserDetails;
 
@@ -45,7 +45,7 @@ public class SeedBoxerUDSTest {
 	private static final String PASSWORD = "seedboxer";
 
 	@Mock
-	private UsersController userController;
+	private UsersManager userController;
 
 	private SeedBoxerUDS seedBoxerUDS;
 

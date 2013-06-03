@@ -3,7 +3,7 @@
  /* Controllers */
 var refreshTime = 10000;
 
-function StatusCtrl($scope, $timeout, userStatusService, downloadsService, alertService) {
+function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsService, alertService) {
 
 	$scope.play = function(){
 		userStatusService.start()
@@ -32,9 +32,13 @@ function StatusCtrl($scope, $timeout, userStatusService, downloadsService, alert
 	
 	$scope.onTimeout = function(){
 		$scope.refresh();
-		refreshTimeout = $timeout($scope.onTimeout, refreshTime);
+		if ($route.current.templateUrl == '/ui/home.html') {
+			refreshTimer = $timeout($scope.onTimeout, refreshTime);
+		} else {
+			$timeout.cancel(refreshTimer);
+		}
 	}
-    var refreshTimeout = $timeout($scope.onTimeout, refreshTime);
+    var refreshTimer = $timeout($scope.onTimeout, refreshTime);
     
     $scope.deleteFromQueue = function(download) {
 		downloadsService.deleteFromQueue(download.id)

@@ -34,7 +34,7 @@ import net.seedboxer.core.domain.Status;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.DownloadsQueueManager;
 import net.seedboxer.core.logic.DownloadsSessionManager;
-import net.seedboxer.core.logic.UsersController;
+import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.core.type.Download;
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.core.util.FileUtils;
@@ -53,7 +53,7 @@ public class DownloadsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsService.class);
 
 	@Autowired
-	private UsersController usersController;
+	private UsersManager usersController;
 	
 	@Autowired
 	private DownloadsQueueManager downloadsQueueManager;
