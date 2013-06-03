@@ -32,10 +32,6 @@ import javax.persistence.UniqueConstraint;
  * @author Jorge Davison (jdavisonc)
  *
  */
-/**
- * @author harley
- *
- */
 @Entity
 @Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames={"username"})})
 public class User {
@@ -49,9 +45,9 @@ public class User {
 	private String password;
 
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private Status status = Status.STOPPED;
 
-	private boolean admin;
+	private boolean admin = false;
 
 	private String apikey;
 
