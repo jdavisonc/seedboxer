@@ -29,8 +29,6 @@ import net.seedboxer.core.domain.UserConfiguration;
 
 public interface UsersDao {
 
-	boolean isValidUser(String username, String password);
-
 	User get(String username);
 
 	User get(long userId);

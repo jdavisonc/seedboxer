@@ -28,10 +28,9 @@ import net.seedboxer.core.domain.User;
 import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.persistence.UsersDao;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.hash.Hashing;
 
 
 /**
@@ -47,7 +46,7 @@ public class UsersManager {
 	public void saveUserConf(User user, UserConfiguration userConf) {
 		usersDao.saveUserConfig(user.getId(), userConf);
 	}
-	
+
 	public void deleteUserConf(User user, String name) {
 		usersDao.deleteUserConfig(user.getId(), name);
 	}
@@ -103,7 +102,9 @@ public class UsersManager {
 	}
 
 	public void saveUser(User user) {
-		user.setPassword(Hashing.md5().hashString(user.getPassword()).toString());
+		if (user.getId() == 0) {
+			user.setPassword(DigestUtils.shaHex(user.getPassword()));
+		}
 		usersDao.save(user);
 	}
 
