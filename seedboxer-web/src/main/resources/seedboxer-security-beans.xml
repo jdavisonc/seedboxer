@@ -44,7 +44,8 @@
 	<sec:http pattern="/favicon.ico" security="none" />
 
 	<sec:http create-session="stateless" use-expressions="true" pattern="/webservices/**">
-		<sec:intercept-url pattern="/webservices/**" access="hasAnyRole('ADMIN','LEECHER')" />
+		<sec:intercept-url pattern="/webservices/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<sec:intercept-url pattern="/webservices/**" access="hasAnyRole('ROLE_ADMIN','ROLE_LEECHER')" />
 		<sec:http-basic />
 		<sec:custom-filter ref="authenticationAPIKeyFilter" after="BASIC_AUTH_FILTER" />
 	</sec:http>
@@ -53,7 +54,6 @@
 		<sec:form-login login-page="/login" default-target-url="/" authentication-failure-url="/login?error=1"/>
 		<sec:logout logout-success-url="/login" invalidate-session="true"/>
 		<sec:intercept-url pattern="/j_spring_security_check" access="permitAll" />
-		<sec:intercept-url pattern="/webservices/user/apikey" access="hasAnyRole('ADMIN','LEECHER')" />
 		<sec:intercept-url pattern="/j_spring_security_logout" access="permitAll" />
 		<sec:intercept-url pattern="/logout" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
@@ -61,7 +61,7 @@
 		<sec:intercept-url pattern="/js/**" access="permitAll" />
 		<sec:intercept-url pattern="/resources/**" access="permitAll" />
 		<sec:intercept-url pattern="/webjars/**" access="permitAll" />
-		<sec:intercept-url pattern="/**" access="hasAnyRole('ADMIN','LEECHER')"  />
+		<sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN','ROLE_LEECHER')"  />
 	</sec:http>
 
 </beans>

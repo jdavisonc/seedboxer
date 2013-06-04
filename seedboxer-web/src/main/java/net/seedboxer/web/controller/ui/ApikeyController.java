@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author The Sultan
  */
 @Controller
-public class ApikeyController extends SeedBoxerAPI{
+public class ApikeyController extends SeedBoxerAPI {
     
     @Autowired
     UserAPI usersApi;

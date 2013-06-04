@@ -44,15 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 	@Override
-	public boolean isValidUser(String username, String password) {
-		Query query = getCurrentSession().createQuery("select 1 from User where username = :username and password = MD5(:password)");
-		query.setString("username", username);
-		query.setString("password", password);
-		Integer result = (Integer) query.uniqueResult();
-		return (result != null && result == 1);
-	}
-
-	@Override
 	public void save(User user) {
 		getCurrentSession().saveOrUpdate(user);
 	}
@@ -98,7 +89,7 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 		getCurrentSession().save(fromDb);
 	}
-	
+
 	@Override
 	public void deleteUserConfig(long userId, String name) {
 		Query query = getCurrentSession().createQuery("from UserConfiguration where user.id = :userId and name = :name");
