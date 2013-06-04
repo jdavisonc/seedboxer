@@ -30,7 +30,10 @@ import net.seedboxer.web.utils.mapper.annotation.MapToObject;
 @MapToObject(RssFeed.class)
 public class RssFeedInfo {
 	
+
 	private Long id;
+	
+	private String name;
 	
 	private String url;
 
@@ -40,6 +43,14 @@ public class RssFeedInfo {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+	    return name;
+	}
+
+	public void setName(String name) {
+	    this.name = name;
 	}
 
 	public String getUrl() {

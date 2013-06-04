@@ -54,7 +54,7 @@ public class HibernateUsersDao extends HibernateDao implements UsersDao {
 
 	@Override
 	public void save(User user) {
-		getCurrentSession().save(user);
+		getCurrentSession().saveOrUpdate(user);
 	}
 
 	@Override

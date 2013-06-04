@@ -29,6 +29,16 @@ public class UserNameAPIResponse extends UserAPIKeyResponse {
     
     private String name;
 
+    public boolean isAdmin() {
+	return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+	this.admin = admin;
+    }
+
+    private boolean admin;
+    
     public String getName() {
 	return name;
     }
@@ -36,10 +46,13 @@ public class UserNameAPIResponse extends UserAPIKeyResponse {
     public void setName(String name) {
 	this.name = name;
     }
+    
+    
 
-    public UserNameAPIResponse(String name, UserAPIKeyResponse userAPIKeyResponse) {
+    public UserNameAPIResponse(String name, UserAPIKeyResponse userAPIKeyResponse, boolean admin) {
 	super(userAPIKeyResponse.getApiKey());
 	this.name = name;
+	this.admin = admin;
     }
     
     

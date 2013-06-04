@@ -49,7 +49,7 @@ public class HibernateFeedsDao extends HibernateDao implements FeedsDao {
 
 	@Override
 	public void save(RssFeed feed) {
-		getCurrentSession().save(feed);
+		getCurrentSession().saveOrUpdate(feed);
 	}
 
 	@Override

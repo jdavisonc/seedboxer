@@ -10,7 +10,7 @@ var seedboxerui = angular
 	});
     })
     .run(function($routeProvider,userDataResource,$route, userStatusService, userConfigService,
-		userContentService, downloadsService) {
+		userContentService, downloadsService, adminRssService, adminUsersService) {
 	//get the apikey from the server before setting the route,
 	//this way we ensure nothing is done before having the apikey.
 
@@ -33,6 +33,15 @@ var seedboxerui = angular
 		when('/account-settings', {
 			templateUrl: '/ui/account-settings.html'
 		}).
+		when('/users', {
+			controller : function($scope, usersData){
+			    $scope.users = usersData.users;
+			},
+			templateUrl: '/ui/users.html',
+			resolve : {
+			    usersData : adminUsersService.getUsersList,
+			}
+		}).
 		when('/my-profile', {
 			controller : function($scope, configData, configTypes){
 			    $scope.configs = configData.configs;
@@ -44,8 +53,14 @@ var seedboxerui = angular
 			    configTypes : userConfigService.getConfigTypes
 			}
 		}).
-		when('/server-settings', {
-			templateUrl: '/ui/server-settings.html'
+		when('/rss-feeds', {
+			controller  : function($scope, serverSettings){
+			    $scope.rssFeeds = serverSettings.rssFeeds
+			},
+			templateUrl: '/ui/server-settings.html',
+			resolve : {
+			    serverSettings : adminRssService.getRssList
+			}
 		}).
 		when('/downloads', {
 		
@@ -70,3 +85,4 @@ var seedboxerui = angular
 	    $route.reload();
 	});
     })    
+

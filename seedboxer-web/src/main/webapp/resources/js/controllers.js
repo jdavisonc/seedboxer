@@ -217,7 +217,10 @@ function HeaderCtrl($scope, userDataResource) {
     },
     function(newVal, oldVal, scope){
 	scope.username = newVal;
+	$scope.admin = userDataResource.isAdmin();
     })
+    
+    
 
 }
 
@@ -352,3 +355,234 @@ function mediaFormatResult(media) {
     function mediaFormatSelection(movie) {
         return movie.title;
     }
+    
+    
+function ServerSettingsCtrl($scope,$dialog, adminRssService, alertService){
+    
+   $scope.deleteRssFeed = function(feed){
+   
+	var title = '';
+	var msg = 'Are you sure you want to delete this feed?';
+	var btns = [{result:'cancel', label: 'Cancel', cssClass : 'btn-danger'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+
+	$dialog.messageBox(title, msg, btns)
+	    .open()
+	    .then(function(result){
+	    if(result == 'ok'){
+			adminRssService.deleteRssFeed(feed)
+			.then(function(){
+			    alertService.showSuccess("Rss deleted successfully");
+			    $scope.refreshRssFeeds();
+			});
+
+	    }
+	});
+    };
+
+    $scope.opts = {
+		backdrop: true,
+		keyboard: true,
+		backdropClick: true,
+		templateUrl: '/ui/rss-dialog.html',
+		dialogClass : "rss-dialog modal",
+		resolve: {
+		    dialogType: function(){return angular.copy($scope.dialogType);},
+		    rssFeed : function(){return angular.copy($scope.rssFeed);}
+		},
+		controller: 'RssDialogCtrl'
+    };
+
+  
+
+	$scope.refreshRssFeeds = function(){
+		adminRssService.getRssList().
+		then(function(data){
+		    $scope.rssFeeds = data.rssFeeds;
+		}),function(errorMsg){
+		    alertService.showError("There was an error trying to fetch feeds");
+		}
+   }
+
+   $scope.addNewRssFeed = function(){
+	$scope.dialogType = 'add';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	if(result == 'ok')
+	    $scope.refreshRssFeeds();
+	});
+	
+   };
+   
+   $scope.editRssFeed = function(feed){
+	$scope.rssFeed = feed;
+	$scope.dialogType = 'edit';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	//if(result == 'ok')
+	    $scope.refreshRssFeeds();
+	})
+   }
+}
+
+
+function RssDialogCtrl ($scope, dialog, adminRssService, alertService, dialogType, rssFeed){
+    
+    if(dialogType == 'add'){
+		$scope.msg = 'Add a new rss feed';
+		$scope.rssFeed = {"name" : "", "url" : ""};
+    } else if(dialogType == 'edit'){
+		$scope.msg = 'Edit rss feed';
+		$scope.rssFeed = rssFeed;
+    }
+
+    $scope.closeOk = function(){
+	    adminRssService.saveRssFeed({"name" : $scope.rssFeed.name, 
+	    "id" : $scope.rssFeed.id,
+	    "url" :$scope.rssFeed.url})
+		.then(function(){
+				alertService.showSuccess("Rss Feed saved successfully!");
+				dialog.close('ok');
+	    } ,function(errorMessage){
+			$scope.error = errorMessage;
+			alertService.showError("There was an when saving the Rss Feed");
+			dialog.close('error');
+	    });
+    };
+    $scope.closeCancel = function(){
+	dialog.close();
+    };
+    
+    $scope.checkUrl= function(){
+	$scope.urlOk = checkURL($scope.rssFeed.url);
+	return  $scope.urlOk ? 'success' : 'error';
+    };
+    
+    $scope.checkName = function(){
+	$scope.nameOk = $scope.rssFeed.name != "";
+	return $scope.nameOk ? 'success' : 'error';
+    }
+    
+    $scope.validate = function(){
+	return $scope.urlOk && $scope.nameOk;
+    }
+}
+   
+   
+function checkURL(value) {
+  return /^(ftp|https?):\/\/+(www\.)?([a-z0-9\-\.]{3,}\.[a-z]{3}|localhost)\/.*/.test(value);
+
+}
+
+
+function UsersCtrl($scope, adminUsersService, alertService, $dialog){
+ $scope.deleteUser = function(user){
+   
+	var title = '';
+	var msg = 'Are you sure you want to delete this user?';
+	var btns = [{result:'cancel', label: 'Cancel', cssClass : 'btn-danger'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+
+	$dialog.messageBox(title, msg, btns)
+	    .open()
+	    .then(function(result){
+	    if(result == 'ok'){
+			adminUsersService.deleteUser(user)
+			.then(function(){
+			    alertService.showSuccess("User deleted successfully");
+			    $scope.refreshUsers();
+			});
+
+	    }
+	});
+    };
+
+    $scope.opts = {
+		backdrop: true,
+		keyboard: true,
+		backdropClick: true,
+		templateUrl: '/ui/user-dialog.html',
+		dialogClass : "users-dialog modal",
+		resolve: {
+		    dialogType: function(){return angular.copy($scope.dialogType);},
+		    user : function(){return angular.copy($scope.user);}
+		},
+		controller: 'UserDialogCtrl'
+    };
+
+  
+
+	$scope.refreshUsers = function(){
+		adminUsersService.getUsersList().
+		then(function(data){
+		    $scope.users = data.users;
+		}),function(errorMsg){
+		    alertService.showError("There was an error trying to fetch feeds");
+		}
+   }
+
+   $scope.addNewUser = function(){
+	$scope.dialogType = 'add';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	if(result == 'ok')
+	    $scope.refreshUsers();
+	});
+	
+   };
+   
+   $scope.editUser = function(user){
+	$scope.user = user;
+	$scope.dialogType = 'edit';
+	var d = $dialog.dialog($scope.opts);
+	d.open().then(function(result){
+	//if(result == 'ok')
+	    $scope.refreshUsers();
+	})
+   }   
+}
+
+
+function UserDialogCtrl ($scope, dialog, adminUsersService, alertService, dialogType, user){
+    
+    if(dialogType == 'add'){
+		$scope.msg = 'Add a new user';
+		$scope.user = {"username" : "", "password" : "", "admin" : false};
+    } else if(dialogType == 'edit'){
+		$scope.msg = 'Edit user';
+		$scope.user= user;
+    }
+
+    $scope.closeOk = function(){
+	    adminUsersService.saveUser({"username" : $scope.user.username, 
+	    "id" : $scope.user.id,
+	    "password" :$scope.user.password,
+	    "admin" :$scope.user.admin})
+		.then(function(data){
+				if(data.status == "SUCCESS")
+				    alertService.showSuccess("User saved successfully!");
+				else
+				    alertService.showError(data.message);
+				dialog.close('ok');
+	    } ,function(errorMessage){
+			$scope.error = errorMessage;
+			alertService.showError("There was an when saving the User");
+			dialog.close('error');
+	    });
+    };
+    $scope.closeCancel = function(){
+	dialog.close();
+    };
+    
+    $scope.checkPassword= function(){
+	$scope.passwordOk = $scope.user.password != "";
+	return  $scope.passwordOk ? 'success' : 'error';
+    };
+    
+    $scope.checkName = function(){
+	$scope.nameOk = $scope.user.username != "";
+	return $scope.nameOk ? 'success' : 'error';
+    }
+    
+    $scope.validate = function(){
+	return $scope.passwordOk && $scope.nameOk;
+    }
+}

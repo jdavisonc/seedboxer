@@ -13,6 +13,7 @@ seedboxerUiServices.service('userDataResource',function($http,$q) {
 	$http.get(userDataResource.apiPath).success(function(data){
 	    userDataResource.apikey = data.apiKey;
 	    userDataResource.username = data.name;
+	    userDataResource.admin = data.admin;
 	    deferred.resolve(data);
 	}).error(function(){
 
@@ -26,6 +27,9 @@ seedboxerUiServices.service('userDataResource',function($http,$q) {
     }
     userDataResource.getUserName= function(){
 	return userDataResource.username;
+    }
+    userDataResource.isAdmin = function(){
+	return userDataResource.admin;
     }
     return userDataResource;
 	
@@ -303,4 +307,122 @@ seedboxerUiServices.service('userContentService',function($http,$q, userDataReso
     };
     return userContentService;
 	
+});
+
+
+
+seedboxerUiServices.service('adminRssService',function($http,$q, userDataResource){
+    var adminRssService = {
+	listPath : '/webservices/admin/rss/list',
+	savePath: '/webservices/admin/rss/save',
+	deletePath: '/webservices/admin/rss/delete',
+	getRssList :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(adminRssService.listPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the configurations list.");
+	    });
+
+	    return deferred.promise;
+	},
+	saveRssFeed :  function(content){
+
+	    var deferred = $q.defer();
+	    var finalUrl = adminRssService.savePath + "?apikey=" + userDataResource.getApiKey()
+	    var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'POST',
+		data : data
+	    }).success(function(data){
+		deferred.resolve(data.contents);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the contents list.");
+	    });
+
+	    return deferred.promise;
+	},
+	deleteRssFeed :  function(rssFeed){
+
+	    var deferred = $q.defer();
+	    var finalUrl = adminRssService.deletePath + "?apikey=" + userDataResource.getApiKey()
+	    //var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'DELETE',
+		data : rssFeed,
+	    headers: {
+		"Content-Type": "application/json"
+	    }
+	    }).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the contents list.");
+	    });
+
+	    return deferred.promise;
+	}
+    }
+    return adminRssService;
+   
+});
+
+seedboxerUiServices.service('adminUsersService',function($http,$q, userDataResource){
+    var adminUsersService = {
+	listPath : '/webservices/admin/users/list',
+	savePath: '/webservices/admin/users/save',
+	deletePath: '/webservices/admin/users/delete',
+	getUsersList :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(adminUsersService.listPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the configurations list.");
+	    });
+
+	    return deferred.promise;
+	},
+	saveUser:  function(content){
+
+	    var deferred = $q.defer();
+	    var finalUrl = adminUsersService.savePath + "?apikey=" + userDataResource.getApiKey()
+	    var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'POST',
+		data : data
+	    }).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the contents list.");
+	    });
+
+	    return deferred.promise;
+	},
+	deleteUser :  function(content){
+
+	    var deferred = $q.defer();
+	    var finalUrl = adminUsersService.deletePath + "?apikey=" + userDataResource.getApiKey()
+	    //var data = JSON.stringify(content);
+	    $http({
+		url : finalUrl, 
+		method : 'DELETE',
+		data : content,
+	    headers: {
+		"Content-Type": "application/json"
+	    }
+	    }).success(function(data){
+		deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while fetching the contents list.");
+	    });
+
+	    return deferred.promise;
+	}
+    }
+    return adminUsersService;
+   
 });

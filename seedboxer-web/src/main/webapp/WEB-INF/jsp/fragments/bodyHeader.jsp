@@ -29,7 +29,9 @@
 						
 						<ul class="dropdown-menu">
 							<li><a href="#my-profile">My Profile</a></li>
-							<li><a href="#server-settings">Server Settings</a></li>
+							<li ng-show="admin" class="divider"></li>
+							<li ng-show="admin"><a href="#rss-feeds">Rss Feeds</a></li>
+							<li ng-show="admin"><a href="#users">Users</a></li>
 							<li class="divider"></li>
 							<li><a href="j_spring_security_logout">Logout</a></li>
 						</ul>

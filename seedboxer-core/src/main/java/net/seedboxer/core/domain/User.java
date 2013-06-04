@@ -49,7 +49,7 @@ public class User {
 	private String password;
 
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private Status status = Status.STOPPED;
 
 	private boolean admin;
 

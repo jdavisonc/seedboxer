@@ -44,6 +44,6 @@ public class ApikeyController extends SeedBoxerAPI{
     
     @RequestMapping(value="/userData", method = RequestMethod.GET)
     public @ResponseBody APIResponse apikey() {
-    	return new UserNameAPIResponse(getUser().getUsername(),(UserAPIKeyResponse) usersApi.apikey());
+    	return new UserNameAPIResponse(getUser().getUsername(),(UserAPIKeyResponse) usersApi.apikey(), getUser().isAdmin());
     }
 }

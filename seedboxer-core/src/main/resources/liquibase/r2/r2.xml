@@ -8,4 +8,6 @@
 	     
 
     <include file="DDL_add_movie_table.sql" relativeToChangelogFile="true"/>
+    <include file="DDL_add_rss_name_column.sql" relativeToChangelogFile="true"/>
+    
 </databaseChangeLog>

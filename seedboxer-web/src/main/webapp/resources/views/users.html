@@ -1,0 +1,27 @@
+<div ng-controller="UsersCtrl" style="min-height: 500px">
+<h3>Users</h3>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Username</th>
+			<th>Admin?</th>
+			<th style="width:100px"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="user in users">
+			<td>{{user.username}}</td>
+			<td>{{user.admin}}</td>
+			<td>
+				<a class="btn btn-small" ng-click="deleteUser(user)"><i class="icon-trash"></i></a>
+				<a class="btn btn-small" ng-click="editUser(user)"><i class="icon-pencil"></i></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<a class="btn btn-primary" ng-click="addNewUser()"><i class="icon-cog icon-white"></i> Add</a>
+
+
+</div>

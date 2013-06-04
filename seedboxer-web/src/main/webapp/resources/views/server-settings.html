@@ -1,1 +1,27 @@
-<div>Server Settings!</div>
+<div ng-controller="ServerSettingsCtrl" style="min-height: 500px">
+<h3>Rss Feeds</h3>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Feed Name</th>
+			<th>Feed URL</th>
+			<th style="width:100px"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="feed in rssFeeds">
+			<td>{{feed.name}}</td>
+			<td>{{feed.url}}</td>
+			<td>
+				<a class="btn btn-small" ng-click="deleteRssFeed(feed)"><i class="icon-trash"></i></a>
+				<a class="btn btn-small" ng-click="editRssFeed(feed)"><i class="icon-pencil"></i></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<a class="btn btn-primary" ng-click="addNewRssFeed()"><i class="icon-cog icon-white"></i> Add</a>
+
+
+</div>
