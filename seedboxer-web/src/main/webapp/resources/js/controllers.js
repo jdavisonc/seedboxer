@@ -16,7 +16,7 @@ function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsServic
 	};
       
 	$scope.stop = function(){
-		downloadsService.stop()
+		userStatusService.stop()
 		  .then(function(data){
 			  alertService.showSuccess("The downloads were stopped :(");
 		  },

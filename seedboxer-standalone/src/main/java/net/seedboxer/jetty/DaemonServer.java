@@ -27,11 +27,7 @@ import java.io.IOException;
 import java.security.ProtectionDomain;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -74,24 +70,9 @@ public class DaemonServer {
 	private void start() {
 		// Start a Jetty server with some sensible(?) defaults
 		try {
-			Server srv = new Server();
+			
+			Server srv = new Server(port);
 			srv.setStopAtShutdown(true);
-
-			// Allow 5 seconds to complete.
-			// Adjust this to fit with your own webapp needs.
-			// Remove this if you wish to shut down immediately (i.e. kill <pid> or Ctrl+C).
-			srv.setGracefulShutdown(5000);
-
-			// Increase thread pool
-			QueuedThreadPool threadPool = new QueuedThreadPool();
-			threadPool.setMaxThreads(5);
-			srv.setThreadPool(threadPool);
-
-			// Ensure using the non-blocking connector (NIO)
-			Connector connector = new SelectChannelConnector();
-			connector.setPort(port);
-			connector.setMaxIdleTime(30000);
-			srv.setConnectors(new Connector[]{connector});
 
 			// Get the war-file
 			ProtectionDomain protectionDomain = this.getClass().getProtectionDomain();
@@ -101,15 +82,12 @@ public class DaemonServer {
 			// Handle signout/signin in BigIP-cluster
 
 			// Add the warFile (this jar)
-			// Add the warFile (this jar)
-			WebAppContext context = new WebAppContext(warFile, CONTEXT_PATH);
-			context.setServer(srv);
+			WebAppContext context = new WebAppContext();
+			context.setContextPath(CONTEXT_PATH);
+			context.setWar(warFile);
 			resetTempDirectory(context, currentDir);
-
-			// Add the handlers
-			HandlerList handlers = new HandlerList();
-			handlers.addHandler(context);
-			srv.setHandler(handlers);
+			
+			srv.setHandler(context);			
 
 			// Register shutdown hook
 			registerShutdownHook(srv, context);
