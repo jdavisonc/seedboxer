@@ -42,7 +42,7 @@ public class SeedBoxerGrantedAuthority implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {
-		return authority.toString();
+		return "ROLE_" + authority.toString();
 	}
 
 	@Override
