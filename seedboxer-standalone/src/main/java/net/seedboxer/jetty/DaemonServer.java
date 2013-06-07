@@ -79,8 +79,6 @@ public class DaemonServer {
 			String warFile = protectionDomain.getCodeSource().getLocation().toExternalForm();
 			String currentDir = new File(protectionDomain.getCodeSource().getLocation().getPath()).getParent();
 
-			// Handle signout/signin in BigIP-cluster
-
 			// Add the warFile (this jar)
 			WebAppContext context = new WebAppContext();
 			context.setContextPath(CONTEXT_PATH);
