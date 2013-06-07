@@ -102,9 +102,7 @@ public class UsersManager {
 	}
 
 	public void saveUser(User user) {
-		if (user.getId() == 0) {
-			user.setPassword(DigestUtils.shaHex(user.getPassword()));
-		}
+		user.setPassword(DigestUtils.shaHex(user.getPassword()));
 		usersDao.save(user);
 	}
 
