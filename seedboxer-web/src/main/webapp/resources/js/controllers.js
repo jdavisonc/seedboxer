@@ -62,71 +62,152 @@ function NavController($scope, $location){
 
 function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataResource) {
    $scope.username = userDataResource.getUserName();
-   $scope.deleteConfig = function(item){
    
-	var title = '';
-	var msg = 'Are you sure you want to delete this configuration?';
-	var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
-
-	$dialog.messageBox(title, msg, btns)
-	    .open()
-	    .then(function(result){
-	    if(result == 'ok'){
-			userConfigService.deleteConfig(item.key)
-			.then(function(){
-			    alertService.showSuccess("Configuration deleted successfully");
-			    $scope.refreshConfig();
-			});
-
-	    }
-	});
-    };
-
-    $scope.opts = {
-		backdrop: true,
-		keyboard: true,
-		backdropClick: true,
-		templateUrl: '/ui/add-config-dialog.html',
-		dialogClass : "add-config-dialog modal",
-		resolve: {
-		    dialogType: function(){return angular.copy($scope.dialogType);},
-		    config : function(){return angular.copy($scope.config);},
-		    configTypes : function(){return angular.copy($scope.types);}
-		},
-		controller: 'ConfigDialogCtrl'
-    };
-
-  
-
-	$scope.refreshConfig = function(){
-		userConfigService.getConfigList().
-		then(function(data){
-		    $scope.configs = data.configs;
-		}),function(errorMsg){
-		    alertService.showError("There was an error trying to fetch configurations");
-		}
+   $scope.validateRequired = function(v){
+       if(!v) return "Required Field";
    }
-
-   $scope.addNewConfig = function(){
-	$scope.dialogType = 'add';
-	var d = $dialog.dialog($scope.opts);
-	d.open().then(function(result){
-	if(result == 'ok')
-	    $scope.refreshConfig();
-	});
-	
+   $scope.qualities = [
+       {text : "Standard", id : "STANDARD"},
+       {text : "HD", id : "HD"},
+       {text : "Full HD", id : "FULLHD"}
+   ]
+   
+   var configsMap = {};
+   for(var i=0;i<$scope.configs.length;i++){
+       configsMap[$scope.configs[i].key] = $scope.configs[i].value;
+   }
+   
+   $scope.profileParams = 
+     {
+        account : [
+            {id : "password", value : "", title : "Password", type : "password"},
+        ],
+        homeServer : [
+            {id : "FtpUrl", value : "", title : "Ftp Url*", type : "url", required : true},
+            {id : "FtpUsername", value : "", title : "Ftp Username*", type : "text", required : true},
+            {id : "FtpPassword", value : "", title : "Ftp Password*", type : "text", required : true},
+            {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir*", type : "text", required : true}
+        ],
+        postActions : [
+            {id : "SshUrl", value : "", title : "Ssh Url", type : "url"},
+            {id : "SshUsername", value : "", title : "Ssh Username", type : "text"},
+            {id : "SshPassword", value : "", title : "Ssh Password", type : "password"},
+            {id : "SshCmd", value : "", title : "Ssh Command", type : "text"}
+        ],
+        thirdParty : [
+            {id : "ThirdParty", value : "", title : "Third Party Service", type : "select2"},
+            {id : "ImdbList", value : "", title : "Imdb List Id", type : "text"},
+            {id : "ImdbAuthor", value : "", title : "Imdb Author Id", type : "text"},
+            {id : "ImdbContentQuality", value : "", title : "Imdb Quality", type : "select2", source : "qualities"},
+            
+            {id : "TraktUsername", value : "", title : "Trakt Username", type : "text"},
+            {id : "TraktPassword", value : "", title : "Trakt Password", type : "password"},
+            {id : "TraktAuthKey", value : "", title : "Trakt Auth Key", type : "text"},
+            {id : "TraktContentQuality", value : "", title : "Trakt Quality", type : "select2", source : "qualities"}
+            
+        ],
+        notifications : [
+            {id : "NotificationEmail", value : "", title : "Notification Email*", type : "email", required : true},
+            {id : "NotificationGCM", value : "", title : "Notification GCM", type : "text"},
+            {id : "NotificationGCMDeviceId", value : "", title : "Notification DevId", type : "text"},
+            {id : "NotificationGCMRegistrationId", value : "", title : "Notification GCM RegId", type : "text"},
+        ]
+     };
+     
+     $scope.isVisible = function(option){
+         if($scope.thirdPartyService == "") 
+             return false;
+         else
+            return option.id.toLowerCase().indexOf($scope.thirdPartyService) != -1;
+     }
+     
+   for(var config in configsMap){
+       angular.forEach($scope.profileParams,function(value, key){
+           angular.forEach($scope.profileParams[key],function(value,key2){
+               var param = $scope.profileParams[key][key2].id;
+               if(param == config){
+                   $scope.profileParams[key][key2].value = configsMap[config];
+               }
+           });
+       });
+           
+   }
+    $scope.thirdPartyService = configsMap["ThirdParty"];
+    $scope.thirdPartyOpts = function(opt) {
+        var topts = {
+            select2 : {
+                minimumResultsForSearch : -1,
+                width : 'resolve'
+            },
+            type : "select2",
+            value : opt.value,
+            name : opt.id,
+            url : "/webservices/user/configs/save?apikey=" + userDataResource.getApiKey(),
+            send : "always",
+            source : [
+                {text : "IMDB", id : "imdb"}, 
+                {text : "Trakt", id:  "trakt"}
+            ]
+         
+        };
+        return topts;
+        
+    }
+   
+   $scope.thirdPartyChange = function(opt){
+       
+   }
+   $scope.getOpts = function(opt){
+     var opts = {
+         type : opt.type,
+         value : opt.value,
+         url : "/webservices/user/configs/save?apikey=" + userDataResource.getApiKey(),
+         name : opt.id,
+         send : "always"
+     };
+     if(opt.id == "password"){
+         opts.url =  "/webservices/user/password/?apikey=" + userDataResource.getApiKey();
+     }
+     if(opt.source != null){
+         opts.select2 = {
+                minimumResultsForSearch : -1,
+                width : 'resolve'
+         };
+         opts.source = $scope[opt.source];
+     }
+     if(opt.required){
+         opts.validate = $scope.validateRequired;
+     }
+     return opts;
+         
    };
    
-   $scope.editConfig = function(conf){
-	$scope.config = conf;
-	$scope.dialogType = 'edit';
-	var d = $dialog.dialog($scope.opts);
-	d.open().then(function(result){
-	//if(result == 'ok')
-	    $scope.refreshConfig();
-	})
-   }
+    jQuery.fn.editable.defaults.mode = 'inline';   
+    jQuery.fn.editable.defaults.params = function(param){
+        
+        if(param.name == "password")
+            return {password : param.value}
+        else
+            return {key : param.name, value : param.value};  
+    };
+    jQuery.fn.editable.defaults.ajaxOptions = {
+      method : 'GET'
+    };
+    
+    
+    $scope.thirdPartyList = [
+        {text : "IMDB", id : "imdb"}, 
+        {text : "Trakt", id:  "trakt"}
+    ]
+    
+    $scope.url = function(params){
+        $scope.thirdPartyService = params.value;
+        userConfigService.saveConfig(params.key, params.value)
+        $scope.$apply();
+    }
+    
 }
+
 
 function ConfigDialogCtrl ($scope, dialog, userConfigService, alertService, dialogType, config, configTypes){
     $scope.configTypes = configTypes.configs;
@@ -587,3 +668,4 @@ function UserDialogCtrl ($scope, dialog, adminUsersService, alertService, dialog
 	return $scope.passwordOk && $scope.nameOk;
     }
 }
+

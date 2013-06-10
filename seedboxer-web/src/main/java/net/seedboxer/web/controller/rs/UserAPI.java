@@ -23,6 +23,7 @@ package net.seedboxer.web.controller.rs;
 import java.util.List;
 
 import net.seedboxer.core.domain.User;
+import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.service.UsersService;
 import net.seedboxer.web.type.api.APIResponse;
@@ -75,6 +76,19 @@ public class UserAPI extends SeedBoxerAPI {
 		} catch (Exception e) {
 			LOGGER.error("Can not stop download in progress", e);
 			return APIResponse.createErrorResponse("Can not stop downloads");
+		}
+	}
+	
+	@RequestMapping(value="password", method = RequestMethod.GET)
+	public @ResponseBody APIResponse password(String password) {
+		try {
+			User user = getUser();
+			user.setPassword(password);
+			usersService.saveUser(user);
+			return APIResponse.createSuccessfulResponse();
+		} catch (Exception e) {
+			LOGGER.error("Can not stop download in progress", e);
+			return APIResponse.createErrorResponse("Can not save user");
 		}
 	}
 

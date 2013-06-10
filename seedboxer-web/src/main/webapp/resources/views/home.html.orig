@@ -35,10 +35,16 @@
 				<td>{{download.order}}</td>
 				<td>{{download.name}}</td>
 				<td>
+<<<<<<< Updated upstream
+					<a class="btn btn-warning btn-small" ng-click="deleteFromQueue(download)"><i
+						class="icon-trash icon-white"></i></a>
+				</td>
+=======
                     <a class="btn btn-warning btn-small" ng-click="deleteFromQueue(download)">
                         <i class="icon-trash icon-white"></i>
                     </a>
                 </td>
+>>>>>>> Stashed changes
 			</tr>
 		</tbody>
 	</table>

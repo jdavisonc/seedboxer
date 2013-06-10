@@ -112,4 +112,9 @@ public class UsersService {
 		usersController.deleteUserConf(user, name);
 	}
 	
+	public void saveUser(User user){
+	    usersController.saveUser(user);
+	}
+		
+	
 }

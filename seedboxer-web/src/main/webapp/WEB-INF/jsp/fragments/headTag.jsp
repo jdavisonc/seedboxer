@@ -19,9 +19,15 @@
     <spring:url value="/webjars/select2/3.3.1/select2.css" var="select2Css"/>
     <link href="${select2Css}" rel="stylesheet"></script>
 
+    <spring:url value="/resources/css/bootstrap-editable.css" var="xEditableCss"/>
+    <link href="${xEditableCss}" rel="stylesheet"></script>
+
 	<!-- AngularJS -->
     <spring:url value="/webjars/angularjs/1.1.4/angular.js" var="angular"/>
     <script src="${angular}"></script>
+    
+    <spring:url value="/webjars/angularjs/1.1.4/angular-resource.min.js" var="angularResource"/>
+    <script src="${angularResource}"></script>
 
     <spring:url value="/webjars/angular-ui-bootstrap/0.3.0/ui-bootstrap-tpls.js" var="uiBootstrap"/>
     <script src="${uiBootstrap}"></script>
@@ -31,9 +37,13 @@
 
     <spring:url value="/webjars/select2/3.3.1/select2.js" var="select2"/>
     <script src="${select2}"></script>
+    
+    <spring:url value="/resources/js/bootstrap-editable.min.js" var="xEditable"/>
+    <script src="${xEditable}"></script>
 
-    <spring:url value="/webjars/angularjs/1.1.4/angular-resource.min.js" var="angularResource"/>
-    <script src="${angularResource}"></script>
+
+
+    
 
     <!-- Title Font -->
     <link href='http://fonts.googleapis.com/css?family=Arbutus|Telex' rel='stylesheet' type='text/css'>

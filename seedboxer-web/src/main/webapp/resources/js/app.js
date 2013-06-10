@@ -85,4 +85,31 @@ var seedboxerui = angular
 	    $route.reload();
 	});
     })    
-
+    
+    
+seedboxerui.directive('xeditable', function($timeout) {
+    return {
+        restrict: 'A',
+        require: "ngModel",
+        link: function(scope, element, attrs, ngModel) {
+            scope.$watch(attrs.source, function(value) {
+                loadXeditable(value)
+            },true);
+            var loadXeditable = function(source) {
+                angular.element(element).editable({
+                    display: function(value, srcData) {
+                        ngModel.$setViewValue(value);
+                        element.html(value);
+                    },
+                    source : source,
+                    type : "select2",
+                    url : scope[attrs.url],
+                    value : scope[attrs.ngModel],
+                    select2 : {minimumResultsForSearch : -1}
+                });
+                jQuery(element).on("hidden",scope[attrs.ngHide]);
+            }
+          
+        }
+    };
+});
