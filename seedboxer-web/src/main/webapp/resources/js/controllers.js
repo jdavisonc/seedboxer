@@ -41,7 +41,7 @@ function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsServic
     var refreshTimer = $timeout($scope.onTimeout, refreshTime);
     
     $scope.deleteFromQueue = function(download) {
-		downloadsService.deleteFromQueue(download.id)
+		downloadsService.deleteFromQueue(download.queueId)
 		  .then(function(data){
 			  alertService.showSuccess("The download was deleted!");
 			  $scope.refresh();
@@ -50,6 +50,7 @@ function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsServic
 			  alertService.showError("There was an error when deleting download");
 		  })
     }
+    
 }
 
 function NavController($scope, $location){
