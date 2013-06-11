@@ -55,7 +55,7 @@
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<sqlite.version>3.7.2</sqlite.version>
 		<sshj.version>0.4.0</sshj.version>
-		<ftp-common.version>0.6</ftp-common.version>
+		<ftp-common.version>0.7-SNAPSHOT</ftp-common.version>
 		<freemarker.version>2.3.9</freemarker.version>
 		<hibernate.version>4.1.5.SP1</hibernate.version>
 		<cglib.version>2.2.2</cglib.version>

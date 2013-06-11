@@ -50,7 +50,7 @@ public class QueuePooler implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		List<DownloadQueueItem> items = queueManager.pop();
+		List<DownloadQueueItem> items = queueManager.getNexts();
 		if (!items.isEmpty()) {
 			exchange.getIn().setBody(items);
 		}

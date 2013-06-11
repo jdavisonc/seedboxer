@@ -72,7 +72,7 @@ public class FtpSender implements Processor {
 		List<String> filesToUpload = (List<String>) msg.getHeader(Configuration.FILES);
 
 		try {
-			ftpUploader.configure(server, user, pass, remoteDir);
+			ftpUploader.configure(server, user, pass, remoteDir, false);
 			// Connect and Upload
 			ftpUploader.connect();
 			LOGGER.info("Connected to {}", server);

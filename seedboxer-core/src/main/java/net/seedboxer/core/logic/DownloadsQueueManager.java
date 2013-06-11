@@ -51,7 +51,7 @@ public class DownloadsQueueManager {
 	@Autowired
 	private DownloadsQueueDao queueDao;
 
-	public List<DownloadQueueItem> pop() {
+	public List<DownloadQueueItem> getNexts() {
 		try {
 			List<DownloadQueueItem> newInQueue = new ArrayList<DownloadQueueItem>();
 			List<User> activeUsers = usersDao.getUsersByStatus(Status.STARTED);
