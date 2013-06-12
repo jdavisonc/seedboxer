@@ -63,10 +63,10 @@ public class FtpSender implements Processor {
 
 		FtpUploader ftpUploader = new FtpUploaderCommons();
 
-		String user = (String) msg.getHeader(Configuration.FTP_USERNAME);
-		String pass = (String) msg.getHeader(Configuration.FTP_PASSWORD);
-		String server = (String) msg.getHeader(Configuration.FTP_URL);
-		String remoteDir = (String) msg.getHeader(Configuration.FTP_REMOTE_DIR);
+		String user = (String) msg.getHeader(Configuration.TRANSFER_USERNAME);
+		String pass = (String) msg.getHeader(Configuration.TRANSFER_PASSWORD);
+		String server = (String) msg.getHeader(Configuration.TRANSFER_URL);
+		String remoteDir = (String) msg.getHeader(Configuration.TRANSFER_REMOTE_DIR);
 
 		@SuppressWarnings("unchecked")
 		List<String> filesToUpload = (List<String>) msg.getHeader(Configuration.FILES);
@@ -92,13 +92,13 @@ public class FtpSender implements Processor {
 
 	private void uploadToUser(final Long userId, FtpUploader ftpUploader, String toUpload) throws IOException {
 		try {
-			File fileToDownload = new File(toUpload);
-			long size = FileUtils.calculateSize(fileToDownload);
+			File fileToUpload = new File(toUpload);
+			long size = FileUtils.calculateSize(fileToUpload);
 			LOGGER.info("Uploading {}, size={} MBs", toUpload, size);
-			FtpSession ftpStatus = new FtpSession(fileToDownload.getName(), size, ftpUploader);
+			FtpSession ftpStatus = new FtpSession(fileToUpload.getName(), size, ftpUploader);
 
 			downloadSessionManager.addDownloadSession(userId, ftpStatus);
-			ftpUploader.upload(fileToDownload, ftpStatus);
+			ftpUploader.upload(fileToUpload, ftpStatus);
 		} finally {
 			downloadSessionManager.removeDownloadSession(userId);
 		}

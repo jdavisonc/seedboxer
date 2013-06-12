@@ -42,11 +42,11 @@ public class Configuration {
 	public static final String START_TIME = "Start";
 	public static final String END_TIME = "End";
 
-	public static final String FTP_USERNAME = "FtpUsername";
-	public static final String FTP_PASSWORD = "FtpPassword";
-	public static final String FTP_URL = "FtpUrl";
-	public static final String FTP_REMOTE_DIR = "FtpRemoteDir";
-	public static final String FTP_SENT = "FtpSent";
+	public static final String TRANSFER_USERNAME = "TransferUsername";
+	public static final String TRANSFER_PASSWORD = "TransferPassword";
+	public static final String TRANSFER_URL = "TransferUrl";
+	public static final String TRANSFER_REMOTE_DIR = "TransferRemoteDir";
+	public static final String TRANSFER_SENT = "TransferSent";
 
 	public static final String SSH_USERNAME = "SshUsername";
 	public static final String SSH_PASSWORD = "SshPassword";
@@ -78,11 +78,11 @@ public class Configuration {
 			.add(FILES_NAME)
 			.add(START_TIME)
 			.add(END_TIME)
-			.add(FTP_USERNAME)
-			.add(FTP_PASSWORD)
-			.add(FTP_URL)
-			.add(FTP_REMOTE_DIR)
-			.add(FTP_SENT)
+			.add(TRANSFER_USERNAME)
+			.add(TRANSFER_PASSWORD)
+			.add(TRANSFER_URL)
+			.add(TRANSFER_REMOTE_DIR)
+			.add(TRANSFER_SENT)
 			.add(SSH_USERNAME)
 			.add(SSH_PASSWORD)
 			.add(SSH_URL)
