@@ -83,10 +83,10 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
             {id : "password", value : "", title : "Password", type : "password"},
         ],
         homeServer : [
-            {id : "FtpUrl", value : "", title : "Ftp Url*", type : "url", required : true},
-            {id : "FtpUsername", value : "", title : "Ftp Username*", type : "text", required : true},
-            {id : "FtpPassword", value : "", title : "Ftp Password*", type : "text", required : true},
-            {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir*", type : "text", required : true}
+            {id : "TransferUrl", value : "", title : "Url*", type : "url", required : true},
+            {id : "TransferUsername", value : "", title : "Username*", type : "text", required : true},
+            {id : "TransferPassword", value : "", title : "Password*", type : "text", required : true},
+            {id : "TransferRemoteDir", value : "", title : "Remote Dir*", type : "text", required : true}
         ],
         postActions : [
             {id : "SshUrl", value : "", title : "Ssh Url", type : "url"},

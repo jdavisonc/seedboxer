@@ -84,9 +84,11 @@
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
-
-			<!-- Send to FTP via dynamic router -->
-			<to uri="bean:ftpSender" />
+			
+			<dynamicRouter>
+	            <!-- use a method call on a bean as dynamic router -->
+	            <method ref="transferSplipper" method="slip"/>
+	        </dynamicRouter>
 	        
 	        <to uri="direct:postActionsEndpoint" />
 		</route>

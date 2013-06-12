@@ -22,6 +22,7 @@ package net.seedboxer.mule.processor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.io.Files;
 
 
 /**
@@ -73,7 +76,7 @@ public class DownloadReceiver implements Processor {
 		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 	}
 
-	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
+	private void processDownload(Message msg, DownloadQueueItem item) throws IOException {
 		String downloadPath = item.getDownload();
 		File toUpload = new File(downloadPath);
 		if (!toUpload.exists()) {
@@ -83,6 +86,10 @@ public class DownloadReceiver implements Processor {
 
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
+		
+		msg.setHeader(Exchange.FILE_NAME, fileName);
+		msg.setBody(Files.newInputStreamSupplier(new File(downloadPath)).getInput());
+		
 	}
 
 }
