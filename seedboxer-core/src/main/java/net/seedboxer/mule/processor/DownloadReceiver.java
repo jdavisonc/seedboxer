@@ -41,8 +41,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.io.Files;
-
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -87,8 +85,8 @@ public class DownloadReceiver implements Processor {
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
 		
-		msg.setHeader(Exchange.FILE_NAME, fileName);
-		msg.setBody(Files.newInputStreamSupplier(new File(downloadPath)).getInput());
+		//msg.setHeader(Exchange.FILE_NAME, fileName);
+		//msg.setBody(Files.newInputStreamSupplier(new File(downloadPath)).getInput());
 		
 	}
 

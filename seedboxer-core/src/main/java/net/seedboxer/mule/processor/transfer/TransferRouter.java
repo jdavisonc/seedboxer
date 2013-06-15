@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TransferSplipper.java
+ * TransferRouter.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class TransferSplipper {
+public class TransferRouter {
 
 	private static final String COMPONENTS_CONF = "fileExist=Append&" +
 													 "binary=true&" +

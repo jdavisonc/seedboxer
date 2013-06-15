@@ -79,20 +79,24 @@
 			<from uri="direct:processDownload" />
 			<to uri="bean:downloadReceiver"/>
 			<to ref="uploadEndpoint" />
+	        <to uri="direct:postActionsEndpoint" />
 		</route>
 		
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
 			
-			<dynamicRouter>
-	            <!-- use a method call on a bean as dynamic router -->
-	            <method ref="transferSplipper" method="slip"/>
-	        </dynamicRouter>
+			<split>
+			    <method ref="transferSplitter" method="splitMessage"/>
+			
+				<dynamicRouter>
+		            <!-- use a method call on a bean as dynamic router -->
+		            <method ref="transferRouter" method="slip"/>
+		        </dynamicRouter>
+			</split>
 	        
-	        <to uri="direct:postActionsEndpoint" />
 		</route>
-		
+				
 		<!-- Post Actions -->
 		<route>
 			<from uri="direct:postActionsEndpoint"/>
