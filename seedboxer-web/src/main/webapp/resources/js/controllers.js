@@ -26,8 +26,8 @@ function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsServic
 	};
 	
 	$scope.refresh = function() {
-	    $scope.current = userStatusService.getUserStatusData();
-	    $scope.queue = downloadsService.getQueue();
+	    userStatusService.getUserStatusData().then(function(data){$scope.current = data});
+	    downloadsService.getQueue().then(function(data) {$scope.queue = data});
 	}
 	
 	$scope.onTimeout = function(){
