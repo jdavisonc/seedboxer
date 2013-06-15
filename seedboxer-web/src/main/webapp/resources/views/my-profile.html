@@ -1,79 +1,79 @@
 <div ng-controller="ProfileCtrl">
 
-<h2>{{username}}</h2>
+    <h2>{{username}}</h2>
 
-<h3>Configurations</h3>
+    <h3>Configurations</h3>
 
 
-<tabs>
+    <tabs>
         <pane heading="Account">
-	    <table class="table table-bordered table-striped">
-            <tbody>
-                <tr ng-repeat="option in profileParams['account']">
-                    <td style="width: 20%">{{option.title}}</td>
-                    <td>
-                        <a ui-jq="editable" ui-options="getOpts(option)"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-	</pane>
-	<pane heading="Home Server" >
-	    <table class="table table-bordered table-striped">
-            <tbody>
-                <tr ng-repeat="option in profileParams['homeServer']">
-                    <td style="width: 20%">{{option.title}}</td>
-                    <td>
-                        <a ui-jq="editable" ui-options="getOpts(option)"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-	</pane>
-    <pane heading="Notifications" > 
-	    <table class="table table-bordered table-striped">
-            <tbody>
-                <tr ng-repeat="option in profileParams['notifications']">
-                    <td style="width: 30%">{{option.title}}</td>
-                    <td>
-                        <a ui-jq="editable" ui-options="getOpts(option)"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-	</pane>
-	<pane heading="Third Party">
-        <table class="table table-bordered table-striped">
-            <tbody>
-                <tr>
-                    <td style="width: 20%">Third Party Service</td>
-                    <td>
-                        <!--<a  ui-jq="editable" ui-options="thirdPartyOpts(option)" id="thirdPartySelect">
-                        </a>-->
-                        <a xeditable ng-model="thirdPartyService" source="thirdPartyList" type="select2" ng-hide="esconder" id="ThirdParty" url="url"></a>
-                    </td>
-                </tr>
-                <tr ng-repeat="option in profileParams['thirdParty']" ng-show="isVisible(option)">
-                    <td style="width: 20%">{{option.title}}</td>
-                    <td>
-                        <a ui-jq="editable" ui-options="getOpts(option)"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-	</pane>
-    <pane heading="Post Actions">
-	    <table class="table table-bordered table-striped">
-            <tbody>
-                <tr ng-repeat="option in profileParams['postActions']">
-                    <td style="width: 20%">{{option.title}}</td>
-                    <td>
-                        <!--<a href="#" data-type="text" data-pk="1" data-url="/post" data-original-title="Enter password" class="profile-input">{{option.value}}</a>-->
-                        <a ui-jq="editable" ui-options="getOpts(option)"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-	</pane>
-</tabs>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr ng-repeat="option in profileParams['account']">
+                        <td style="width: 20%">{{option.title}}</td>
+                        <td>
+                            <a ui-jq="editable" ui-options="getOpts(option)"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </pane>
+        <pane heading="Home Server" >
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr ng-repeat="option in profileParams['homeServer']">
+                        <td style="width: 20%">{{option.title}}</td>
+                        <td>
+                            <a ui-jq="editable" ui-options="getOpts(option)"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </pane>
+        <pane heading="Notifications" > 
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr ng-repeat="option in profileParams['notifications']">
+                        <td style="width: 30%">{{option.title}}</td>
+                        <td>
+                            <a ui-jq="editable" ui-options="getOpts(option)"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </pane>
+        <pane heading="Third Party">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td style="width: 20%">Third Party Service</td>
+                        <td>
+                            <!--<a  ui-jq="editable" ui-options="thirdPartyOpts(option)" id="thirdPartySelect">
+                            </a>-->
+                            <a xeditable ng-model="thirdPartyService" source="thirdPartyList" type="select2" ng-hide="esconder" id="ThirdParty" url="url"></a>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="option in profileParams['thirdParty']" ng-show="isVisible(option)">
+                        <td style="width: 20%">{{option.title}}</td>
+                        <td>
+                            <a ui-jq="editable" ui-options="getOpts(option)"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </pane>
+        <pane heading="Post Actions">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr ng-repeat="option in profileParams['postActions']">
+                        <td style="width: 20%">{{option.title}}</td>
+                        <td>
+                            <!--<a href="#" data-type="text" data-pk="1" data-url="/post" data-original-title="Enter password" class="profile-input">{{option.value}}</a>-->
+                            <a ui-jq="editable" ui-options="getOpts(option)"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </pane>
+    </tabs>
 </div>

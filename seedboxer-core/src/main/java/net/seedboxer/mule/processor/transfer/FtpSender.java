@@ -22,6 +22,7 @@ package net.seedboxer.mule.processor.transfer;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import net.seedboxer.common.ftp.FtpUploader;
@@ -65,9 +66,9 @@ public class FtpSender implements Processor {
 
 		String user = (String) msg.getHeader(Configuration.FTP_USERNAME);
 		String pass = (String) msg.getHeader(Configuration.FTP_PASSWORD);
-		String server = (String) msg.getHeader(Configuration.FTP_URL);
+		URL serverURL = new URL((String) msg.getHeader(Configuration.FTP_URL));
 		String remoteDir = (String) msg.getHeader(Configuration.FTP_REMOTE_DIR);
-
+        String server = serverURL.getHost();
 		@SuppressWarnings("unchecked")
 		List<String> filesToUpload = (List<String>) msg.getHeader(Configuration.FILES);
 
