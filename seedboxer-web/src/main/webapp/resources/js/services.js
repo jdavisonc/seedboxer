@@ -85,6 +85,7 @@ seedboxerUiServices.service('userConfigService',function($http,$q, userDataResou
     var userConfigService = {
 	listPath : '/webservices/user/configs/list',
 	savePath: '/webservices/user/configs/save',
+    savePass: '/webservices/user/password',
 	deletePath: '/webservices/user/configs/delete',
 	typesPath: '/webservices/user/configs/types',
 	getConfigList :  function(){
@@ -116,6 +117,27 @@ seedboxerUiServices.service('userConfigService',function($http,$q, userDataResou
 		    deferred.resolve(data);
 	    }).error(function(){
 		deferred.reject("An error occured while saving the configuration");
+	    });
+
+	    return deferred.promise;
+	},
+    savePassword :  function(password){
+
+	    var deferred = $q.defer();
+	    $http.get(userConfigService.savePass, 
+	    {
+		params : 
+		{
+		    apikey : userDataResource.getApiKey(),
+		    password : password
+		}
+	    }).success(function(data){
+		if(data.status == "FAILURE")
+		    deferred.reject("An error occured while saving the password");
+		else
+		    deferred.resolve(data);
+	    }).error(function(){
+		deferred.reject("An error occured while saving the password");
 	    });
 
 	    return deferred.promise;

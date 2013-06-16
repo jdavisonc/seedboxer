@@ -4,7 +4,6 @@
 var refreshTime = 10000;
 
 function StatusCtrl($scope, $route, $timeout, userStatusService, downloadsService, alertService) {
-
 	$scope.play = function(){
 		userStatusService.start()
 		  .then(function(data){
@@ -61,150 +60,109 @@ function NavController($scope, $location){
 }
 
 function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataResource) {
-   $scope.username = userDataResource.getUserName();
+    $scope.username = userDataResource.getUserName();
+
+    $scope.validateRequired = function(v){
+        if(!v) return "Required Field";
+    }
+    $scope.qualities = [
+        {text : "Standard", id : "STANDARD"},
+        {text : "HD", id : "HD"},
+        {text : "Full HD", id : "FULLHD"}
+    ]
+
+    
+
+    $scope.configsMap = {};
+    for(var i=0;i<$scope.configs.length;i++){
+        $scope.configsMap[$scope.configs[i].key] = $scope.configs[i].value;
+    }
    
-   $scope.validateRequired = function(v){
-       if(!v) return "Required Field";
-   }
-   $scope.qualities = [
-       {text : "Standard", id : "STANDARD"},
-       {text : "HD", id : "HD"},
-       {text : "Full HD", id : "FULLHD"}
-   ]
-   
-   var configsMap = {};
-   for(var i=0;i<$scope.configs.length;i++){
-       configsMap[$scope.configs[i].key] = $scope.configs[i].value;
-   }
-   
-   $scope.profileParams = 
-     {
-        account : [
+    $scope.profileParams = 
+    {
+    
+        "Account" : [
             {id : "password", value : "", title : "Password", type : "password"},
         ],
-        homeServer : [
+        "Home Server" : [
             {id : "FtpUrl", value : "", title : "Ftp Url*", type : "url", required : true},
             {id : "FtpUsername", value : "", title : "Ftp Username*", type : "text", required : true},
             {id : "FtpPassword", value : "", title : "Ftp Password*", type : "text", required : true},
             {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir*", type : "text", required : true}
         ],
-        postActions : [
+        "Notifications" : [
+            {id : "NotificationEmail", value : "", title : "Notification Email*", type : "email", required : true},
+            {id : "NotificationGCM", value : "", title : "Notification GCM", type : "text"},
+            {id : "NotificationGCMDeviceId", value : "", title : "Notification DevId", type : "text"},
+            {id : "NotificationGCMRegistrationId", value : "", title : "Notification GCM RegId", type : "text"},
+        ],
+        "Post Actions" : [
             {id : "SshUrl", value : "", title : "Ssh Url", type : "url"},
             {id : "SshUsername", value : "", title : "Ssh Username", type : "text"},
             {id : "SshPassword", value : "", title : "Ssh Password", type : "password"},
             {id : "SshCmd", value : "", title : "Ssh Command", type : "text"}
         ],
-        thirdParty : [
-            {id : "ThirdParty", value : "", title : "Third Party Service", type : "select2"},
+        "Third Party" : [
+            {id : "ThirdParty", value : "", title : "Third Party Service", type : "select2", sources : [
+                {text : "IMDB", id : "imdb"}, 
+                {text : "Trakt", id:  "trakt"} 
+            ]},
             {id : "ImdbList", value : "", title : "Imdb List Id", type : "text"},
             {id : "ImdbAuthor", value : "", title : "Imdb Author Id", type : "text"},
-            {id : "ImdbContentQuality", value : "", title : "Imdb Quality", type : "select2", source : "qualities"},
-            
+            {id : "ImdbContentQuality", value : "", title : "Imdb Quality", type : "select2", sources : $scope.qualities},
+
             {id : "TraktUsername", value : "", title : "Trakt Username", type : "text"},
             {id : "TraktPassword", value : "", title : "Trakt Password", type : "password"},
             {id : "TraktAuthKey", value : "", title : "Trakt Auth Key", type : "text"},
-            {id : "TraktContentQuality", value : "", title : "Trakt Quality", type : "select2", source : "qualities"}
-            
-        ],
-        notifications : [
-            {id : "NotificationEmail", value : "", title : "Notification Email*", type : "email", required : true},
-            {id : "NotificationGCM", value : "", title : "Notification GCM", type : "text"},
-            {id : "NotificationGCMDeviceId", value : "", title : "Notification DevId", type : "text"},
-            {id : "NotificationGCMRegistrationId", value : "", title : "Notification GCM RegId", type : "text"},
+            {id : "TraktContentQuality", value : "", title : "Trakt Quality", type : "select2", sources : $scope.qualities}
+
         ]
-     };
-     
-     $scope.isVisible = function(option){
-         if($scope.thirdPartyService == "") 
-             return false;
-         else
-            return option.id.toLowerCase().indexOf($scope.thirdPartyService) != -1;
-     }
-     
-   for(var config in configsMap){
-       angular.forEach($scope.profileParams,function(value, key){
-           angular.forEach($scope.profileParams[key],function(value,key2){
-               var param = $scope.profileParams[key][key2].id;
-               if(param == config){
-                   $scope.profileParams[key][key2].value = configsMap[config];
-               }
-           });
-       });
-           
-   }
-    $scope.thirdPartyService = configsMap["ThirdParty"];
-    $scope.thirdPartyOpts = function(opt) {
-        var topts = {
-            select2 : {
-                minimumResultsForSearch : -1,
-                width : 'resolve'
-            },
-            type : "select2",
-            value : opt.value,
-            name : opt.id,
-            url : "/webservices/user/configs/save?apikey=" + userDataResource.getApiKey(),
-            send : "always",
-            source : [
-                {text : "IMDB", id : "imdb"}, 
-                {text : "Trakt", id:  "trakt"}
-            ]
-         
-        };
-        return topts;
         
-    }
-   
-   $scope.thirdPartyChange = function(opt){
-       
-   }
-   $scope.getOpts = function(opt){
-     var opts = {
-         type : opt.type,
-         value : opt.value,
-         url : "/webservices/user/configs/save?apikey=" + userDataResource.getApiKey(),
-         name : opt.id,
-         send : "always"
-     };
-     if(opt.id == "password"){
-         opts.url =  "/webservices/user/password/?apikey=" + userDataResource.getApiKey();
-     }
-     if(opt.source != null){
-         opts.select2 = {
-                minimumResultsForSearch : -1,
-                width : 'resolve'
-         };
-         opts.source = $scope[opt.source];
-     }
-     if(opt.required){
-         opts.validate = $scope.validateRequired;
-     }
-     return opts;
-         
-   };
-   
-    jQuery.fn.editable.defaults.mode = 'inline';   
-    jQuery.fn.editable.defaults.params = function(param){
-        
-        if(param.name == "password")
-            return {password : param.value}
-        else
-            return {key : param.name, value : param.value};  
     };
-    jQuery.fn.editable.defaults.ajaxOptions = {
-      method : 'GET'
-    };
-    
-    
-    $scope.thirdPartyList = [
-        {text : "IMDB", id : "imdb"}, 
-        {text : "Trakt", id:  "trakt"}
-    ]
-    
-    $scope.url = function(params){
-        $scope.thirdPartyService = params.value;
-        userConfigService.saveConfig(params.key, params.value)
+     
+    $scope.theclose = function(option){
+        if(option.id == "password"){
+            userConfigService.savePassword(option.value)
+        }
+        else{
+            userConfigService.saveConfig(option.id, option.value);
+        }
         $scope.$apply();
     }
+    $scope.isVisible = function(option){
+        if(option.id.indexOf("Imdb")== -1 && option.id.indexOf("Trakt")== -1)
+            return true;
+        var thirdPartyService = $scope.searchParam("ThirdParty").value;
+        if(thirdPartyService  == "") 
+            return false;
+        else
+        return option.id.toLowerCase().indexOf(thirdPartyService) != -1;
+    }
+
+    for(var config in $scope.configsMap){
+    angular.forEach($scope.profileParams,function(value, key){
+        angular.forEach($scope.profileParams[key],function(value,key2){
+            var param = $scope.profileParams[key][key2].id;
+            if(param == config){
+                $scope.profileParams[key][key2].value = $scope.configsMap[config];
+            }
+        });
+    });
+
+    }
+    
+    $scope.searchParam = function(id){
+        var returnVal;
+        angular.forEach($scope.profileParams,function(value, key){
+            angular.forEach($scope.profileParams[key],function(value,key2){
+                if($scope.profileParams[key][key2].id == id)
+                    returnVal =  $scope.profileParams[key][key2];
+            });
+        });
+        return returnVal;
+    };
+   
+   
     
 }
 
