@@ -85,13 +85,13 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
             {id : "password", value : "", title : "Password", type : "password"},
         ],
         "Home Server" : [
-            {id : "FtpUrl", value : "", title : "Ftp Url*", type : "url", required : true},
-            {id : "FtpUsername", value : "", title : "Ftp Username*", type : "text", required : true},
-            {id : "FtpPassword", value : "", title : "Ftp Password*", type : "text", required : true},
-            {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir*", type : "text", required : true}
+            {id : "FtpUrl", value : "", title : "Ftp Url", type : "url", required : true},
+            {id : "FtpUsername", value : "", title : "Ftp Username", type : "text", required : true},
+            {id : "FtpPassword", value : "", title : "Ftp Password", type : "text", required : true},
+            {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir", type : "text", required : true}
         ],
         "Notifications" : [
-            {id : "NotificationEmail", value : "", title : "Notification Email*", type : "email", required : true},
+            {id : "NotificationEmail", value : "", title : "Notification Email", type : "email", required : true},
             {id : "NotificationGCM", value : "", title : "Notification GCM", type : "text"},
             {id : "NotificationGCMDeviceId", value : "", title : "Notification DevId", type : "text"},
             {id : "NotificationGCMRegistrationId", value : "", title : "Notification GCM RegId", type : "text"},
@@ -120,12 +120,22 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
         
     };
      
-    $scope.theclose = function(option){
+    $scope.closeHandler = function(option){
         if(option.id == "password"){
-            userConfigService.savePassword(option.value)
+            userConfigService.savePassword(option.value).then(function(data){
+                if(data.status == "SUCCESS")
+                    alertService.showSuccess("Password saved successfully");
+                else
+                    alertService.showError("Error saving Password");
+            })
         }
         else{
-            userConfigService.saveConfig(option.id, option.value);
+            userConfigService.saveConfig(option.id, option.value).then(function(data){
+                if(data.status == "SUCCESS")
+                    alertService.showSuccess(option.title + " saved successfully");
+                else
+                    alertService.showError("Error saving " + option.title);
+            })
         }
         $scope.$apply();
     }
