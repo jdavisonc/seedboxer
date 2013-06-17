@@ -22,12 +22,12 @@ package net.seedboxer.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.logic.UsersManager;
 import net.seedboxer.web.type.dto.UserConfigInfo;
 
@@ -65,9 +65,9 @@ public class UsersService {
 	 */
 	public List<UserConfigInfo> getUserConfigs(User user) {
 		List<UserConfigInfo> configs = new ArrayList<UserConfigInfo>();
-		List<UserConfiguration> userConfig = usersController.getUserConfig(user.getId());
-		for (UserConfiguration userConfiguration : userConfig) {
-			configs.add(new UserConfigInfo(userConfiguration.getName(), userConfiguration.getValue()));
+		Map<String, String> userConfig = usersController.getUserConfig(user.getId());
+		for (Map.Entry<String, String> userConfiguration : userConfig.entrySet()) {
+			configs.add(new UserConfigInfo(userConfiguration.getKey(), userConfiguration.getValue()));
 		}
 		return configs;
 	}
@@ -99,7 +99,7 @@ public class UsersService {
 	 * @return
 	 */
 	public void saveUserConfigs(User user, String name, String value) {
-		usersController.saveUserConf(user, new UserConfiguration(name, value));
+		usersController.saveUserConf(user, name, value);
 	}
 
 	/**

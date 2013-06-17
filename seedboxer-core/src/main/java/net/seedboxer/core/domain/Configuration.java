@@ -35,6 +35,7 @@ public class Configuration {
 	public static final String USER_ID = "UserId";
 
 	public static final String DOWNLOAD_ID = "DownloadId";
+	public static final String DOWNLOAD_TOTAL_PIECES = "DownloadTotalPieces";
 
 	public static final String FILES = "Files";
 	public static final String FILES_NAME = "FilesName";

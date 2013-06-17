@@ -34,6 +34,9 @@ import net.seedboxer.core.domain.Configuration;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableList;
@@ -46,18 +49,26 @@ import com.google.common.io.Files;
 @Component
 public class TransferSplitter {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransferSplitter.class);
+	
 	private final FileFilter directoryFileFilter = new DirectoryFileFilter();
 
 	private final FileFilter normalFileFilter = new NormalFileFilter();
+	
+	@Value(value="${completePath}")
+	private String completePath;
 
     public List<Message> splitMessage(Exchange ex) throws IOException {
     	List<Message> files = new ArrayList<Message>();
     	
+    	Integer pieces = 0;
     	List<String> downloadParentFiles = (List<String>) ex.getIn().getHeader(Configuration.FILES);
         for (String downloadParentFile : downloadParentFiles) {
 			Collection<Message> copies = getFilesIS(ex.getIn(), new File(downloadParentFile));
 			files.addAll(copies);
+			pieces += copies.size();
 		}
+        //setHeaderInMessages(files, Configuration.DOWNLOAD_TOTAL_PIECES, pieces);
         return files;
     }
 
@@ -87,10 +98,18 @@ public class TransferSplitter {
 	private Message createCopyWithBody(Message msg, File file) throws IOException {
 		Message copy = msg.copy();
 		copy.setBody(getIS(file));
-		copy.setHeader(Exchange.FILE_NAME, file.getAbsolutePath());
-		copy.setHeader(Exchange.FILE_LOCAL_WORK_PATH, "/home/harley/torrents");
+		copy.setHeader(Exchange.FILE_NAME, pathWithoutWorkingDir(file));
 		return copy;
 	}
-	
-    
+
+	private String pathWithoutWorkingDir(File file) {
+		return file.getAbsolutePath().replace(completePath, "");
+	}
+
+	private void setHeaderInMessages(List<Message> files, String headerName,
+			Object headerValue) {
+		for (Message message : files) {
+			message.setHeader(headerName, headerValue);
+		}
+	}
 }

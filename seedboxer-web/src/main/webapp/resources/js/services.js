@@ -5,7 +5,7 @@ seedboxerUiServices.service('userDataResource',function($http,$q) {
 	
     var userDataResource = {};
 
-    userDataResource.apiPath = '/userData';
+    userDataResource.apiPath = 'userData';
     userDataResource.getUserDataFromServer = function(){
 
 	var deferred = $q.defer();
@@ -38,9 +38,9 @@ seedboxerUiServices.service('userDataResource',function($http,$q) {
 
 seedboxerUiServices.service('userStatusService',function($http,$q, userDataResource){
     var userStatusService = {
-	apiPath : '/webservices/user/status',
-	startApiPath : '/webservices/user/start',
-	stopApiPath : '/webservices/user/stop',
+	apiPath : 'webservices/user/status',
+	startApiPath : 'webservices/user/start',
+	stopApiPath : 'webservices/user/stop',
 	getUserStatusData :  function(){
 	    var deferred = $q.defer();
 
@@ -83,10 +83,10 @@ seedboxerUiServices.service('userStatusService',function($http,$q, userDataResou
 
 seedboxerUiServices.service('userConfigService',function($http,$q, userDataResource){
     var userConfigService = {
-	listPath : '/webservices/user/configs/list',
-	savePath: '/webservices/user/configs/save',
-	deletePath: '/webservices/user/configs/delete',
-	typesPath: '/webservices/user/configs/types',
+	listPath : 'webservices/user/configs/list',
+	savePath: 'webservices/user/configs/save',
+	deletePath: 'webservices/user/configs/delete',
+	typesPath: 'webservices/user/configs/types',
 	getConfigList :  function(){
 	    var deferred = $q.defer();
 
@@ -156,10 +156,10 @@ seedboxerUiServices.service('userConfigService',function($http,$q, userDataResou
 
 seedboxerUiServices.service('downloadsService',function($http,$q, userDataResource){
     var downloadsService = {
-		downloadsPath : '/webservices/downloads/list',
-		putPath : '/webservices/downloads/put',
-		queuePath : '/webservices/downloads/queue',
-		deletePath : '/webservices/downloads/delete',
+		downloadsPath : 'webservices/downloads/list',
+		putPath : 'webservices/downloads/put',
+		queuePath : 'webservices/downloads/queue',
+		deletePath : 'webservices/downloads/delete',
 		getDownloads :  function(){
 		    var deferred = $q.defer();
 	
@@ -253,9 +253,9 @@ seedboxerUiServices.service('alertService',function($rootScope, $timeout){
 
 seedboxerUiServices.service('userContentService',function($http,$q, userDataResource){
     var userContentService = {
-	listPath : '/webservices/user/content/list',
-	savePath: '/webservices/user/content/save',
-	deletePath: '/webservices/user/content/delete',
+	listPath : 'webservices/user/content/list',
+	savePath: 'webservices/user/content/save',
+	deletePath: 'webservices/user/content/delete',
 	getContentList :  function(){
 	    var deferred = $q.defer();
 
@@ -313,9 +313,9 @@ seedboxerUiServices.service('userContentService',function($http,$q, userDataReso
 
 seedboxerUiServices.service('adminRssService',function($http,$q, userDataResource){
     var adminRssService = {
-	listPath : '/webservices/admin/rss/list',
-	savePath: '/webservices/admin/rss/save',
-	deletePath: '/webservices/admin/rss/delete',
+	listPath : 'webservices/admin/rss/list',
+	savePath: 'webservices/admin/rss/save',
+	deletePath: 'webservices/admin/rss/delete',
 	getRssList :  function(){
 	    var deferred = $q.defer();
 
@@ -371,9 +371,9 @@ seedboxerUiServices.service('adminRssService',function($http,$q, userDataResourc
 
 seedboxerUiServices.service('adminUsersService',function($http,$q, userDataResource){
     var adminUsersService = {
-	listPath : '/webservices/admin/users/list',
-	savePath: '/webservices/admin/users/save',
-	deletePath: '/webservices/admin/users/delete',
+	listPath : 'webservices/admin/users/list',
+	savePath: 'webservices/admin/users/save',
+	deletePath: 'webservices/admin/users/delete',
 	getUsersList :  function(){
 	    var deferred = $q.defer();
 
