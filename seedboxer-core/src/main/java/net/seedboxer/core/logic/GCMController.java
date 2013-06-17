@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.domain.UserConfiguration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ public class GCMController {
 	}
 	
 	public void registerDevice(User user, String registrationId) {
-		usersController.saveUserConf(user, new UserConfiguration(Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId));
+		usersController.saveUserConf(user, Configuration.NOTIFICATION_GCM_REGISTRATIONID, registrationId);
 	}
 	
 	public void unregisterDevice(User user, String registrationId) {

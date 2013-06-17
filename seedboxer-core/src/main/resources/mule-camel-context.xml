@@ -79,22 +79,34 @@
 			<from uri="direct:processDownload" />
 			<to uri="bean:downloadReceiver"/>
 			<to ref="uploadEndpoint" />
-	        <to uri="direct:postActionsEndpoint" />
 		</route>
 		
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
 			
-			<split>
+			<split shareUnitOfWork="true">
 			    <method ref="transferSplitter" method="splitMessage"/>
 			
 				<dynamicRouter>
 		            <!-- use a method call on a bean as dynamic router -->
 		            <method ref="transferRouter" method="slip"/>
 		        </dynamicRouter>
+		        <to uri="direct:join" />
 			</split>
-	        
+		</route>
+		
+		<route>
+		    <from uri="direct:join" />
+			<aggregate strategyRef="arrayListAggregationStrategy">
+				<correlationExpression>
+					<simple>header.DownloadId</simple>
+				</correlationExpression>
+				<completionSize>
+                	<header>header.DownloadTotalPieces</header>
+            	</completionSize>
+			    <to uri="direct:postActionsEndpoint" />
+			</aggregate>
 		</route>
 				
 		<!-- Post Actions -->

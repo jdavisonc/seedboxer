@@ -20,7 +20,9 @@
  ******************************************************************************/
 package net.seedboxer.core.logic;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.seedboxer.core.domain.Status;
 import net.seedboxer.core.domain.Token;
@@ -43,8 +45,8 @@ public class UsersManager {
 	@Autowired
 	private UsersDao usersDao;
 
-	public void saveUserConf(User user, UserConfiguration userConf) {
-		usersDao.saveUserConfig(user.getId(), userConf);
+	public void saveUserConf(User user, String name, String value) {
+		usersDao.saveUserConfig(user.getId(), new UserConfiguration(name, value));
 	}
 
 	public void deleteUserConf(User user, String name) {
@@ -71,8 +73,12 @@ public class UsersManager {
 		return getUser(username).getId();
 	}
 
-	public List<UserConfiguration> getUserConfig(long userId) {
-		return usersDao.getUserConfig(userId);
+	public Map<String, String> getUserConfig(long userId) {
+		Map<String, String> configs = new HashMap<String, String>();
+		for (UserConfiguration uc : usersDao.getUserConfig(userId)) {
+			configs.put(uc.getName(), uc.getValue());
+		}
+		return configs;
 	}
 
 	public boolean setUserStatus(User user, Status newStatus) {
