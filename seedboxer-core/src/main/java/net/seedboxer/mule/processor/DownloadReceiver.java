@@ -67,13 +67,7 @@ public class DownloadReceiver implements Processor {
 		msg.setHeader(Configuration.USER_ID, user.getId());
 		msg.setHeader(Configuration.DOWNLOAD_ID, item.getId());
 		msg.setHeader(Configuration.START_TIME, new Date());
-<<<<<<< HEAD
-=======
 		
-		Map<String, String> configs = usersController.getUserConfig(user.getId());
-		msg.setHeaders(new HashMap<String, Object>(configs));
->>>>>>> branch 'multiple_transfer_types' of git@github.com:seedboxer/seedboxer.git
-
 		processDownload(msg, item);
 		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 	}

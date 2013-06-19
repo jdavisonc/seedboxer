@@ -84,13 +84,8 @@
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
-<<<<<<< HEAD
 			<to uri="log:net.seedboxer.SPLIT?level=DEBUG&amp;showAll=true"/>
 			<split>
-=======
-			
-			<split shareUnitOfWork="true">
->>>>>>> branch 'multiple_transfer_types' of git@github.com:seedboxer/seedboxer.git
 			    <method ref="transferSplitter" method="splitMessage"/>
 			
 				<dynamicRouter>
@@ -103,7 +98,6 @@
 		
 		<route>
 		    <from uri="direct:join" />
-<<<<<<< HEAD
 		    <to uri="log:net.seedboxer.AGGREGATE?level=DEBUG&amp;showAll=true"/>
 			<aggregate strategyRef="aggregatorStrategy">
 				<correlationExpression>
@@ -112,15 +106,6 @@
 				<completionSize>
 				    <simple>property.CamelSplitSize</simple>
 				</completionSize>
-=======
-			<aggregate strategyRef="arrayListAggregationStrategy">
-				<correlationExpression>
-					<simple>header.DownloadId</simple>
-				</correlationExpression>
-				<completionSize>
-                	<header>header.DownloadTotalPieces</header>
-            	</completionSize>
->>>>>>> branch 'multiple_transfer_types' of git@github.com:seedboxer/seedboxer.git
 			    <to uri="direct:postActionsEndpoint" />
 			</aggregate>
 		</route>
