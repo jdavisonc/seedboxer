@@ -68,7 +68,6 @@ public class TransferSplitter {
 			files.addAll(copies);
 			pieces += copies.size();
 		}
-        //setHeaderInMessages(files, Configuration.DOWNLOAD_TOTAL_PIECES, pieces);
         return files;
     }
 

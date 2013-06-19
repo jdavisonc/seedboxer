@@ -42,7 +42,11 @@
 	<!-- Aggretator for multiple feeds -->
 	<bean id="rssAggregationStrategy" class="net.seedboxer.sources.processor.rss.aggregator.AggregateRssFeedEntryStrategy"/>
 	
+<<<<<<< HEAD
 	<bean id="aggregatorStrategy" class="net.seedboxer.mule.aggregate.GroupedExchangeAggregationStrategy"/>
+=======
+	<bean id="aggregatorStrategy" class="org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy"/>
+>>>>>>> branch 'multiple_transfer_types' of git@github.com:seedboxer/seedboxer.git
 	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
     	<property name="templateLoaderPath" value="classpath:templates/"/>
