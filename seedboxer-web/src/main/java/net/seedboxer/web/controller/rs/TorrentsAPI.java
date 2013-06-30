@@ -50,8 +50,9 @@ public class TorrentsAPI extends SeedBoxerAPI {
 	@RequestMapping(value="add", method = RequestMethod.POST)
 	public @ResponseBody APIResponse addTorrent(@RequestPart("file") MultipartFile file) {
 		try {
-			if (file.getName().endsWith(".torrent")) {
-				controller.addTorrent(getUser(), file.getName(), file.getInputStream());
+			String filename = file.getOriginalFilename();
+			if (filename.endsWith(".torrent")) {
+				controller.addTorrent(getUser(), filename, file.getInputStream());
 				return APIResponse.createSuccessfulResponse();
 			} else {
 				return APIResponse.createErrorResponse("Wrong file type, only accept .torrent files");
