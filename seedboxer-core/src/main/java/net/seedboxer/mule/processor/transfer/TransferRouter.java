@@ -76,7 +76,7 @@ public class TransferRouter {
 	}
 
 	private String ftp(String user, String pass, String server, String remoteDir) {
-		return "ftp://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
+		return "ftp2://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
 	}
 	
 }

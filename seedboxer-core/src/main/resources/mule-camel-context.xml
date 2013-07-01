@@ -84,7 +84,7 @@
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
-			<to uri="log:net.seedboxer.SPLIT?level=DEBUG&amp;showAll=true"/>
+			<to uri="log:net.seedboxer.SPLIT?level=TRACE&amp;showAll=true"/>
 			<split>
 			    <method ref="transferSplitter" method="splitMessage"/>
 			
@@ -98,7 +98,7 @@
 		
 		<route>
 		    <from uri="direct:join" />
-		    <to uri="log:net.seedboxer.AGGREGATE?level=DEBUG&amp;showAll=true"/>
+		    <to uri="log:net.seedboxer.AGGREGATE?level=TRACE&amp;showAll=true"/>
 			<aggregate strategyRef="aggregatorStrategy">
 				<correlationExpression>
 					<simple>property.CamelCorrelationId</simple>

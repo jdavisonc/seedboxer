@@ -39,7 +39,7 @@
 	</appender>
 
 	<logger name="net.schmizz.sshj" level="OFF" />
-	<logger name="org.apache.camel" level="DEBUG" />
+	<logger name="org.apache.camel" level="INFO" />
 
 	<if condition='isDefined("debug")'>
 	    <then>

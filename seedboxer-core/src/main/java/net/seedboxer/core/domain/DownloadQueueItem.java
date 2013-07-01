@@ -41,8 +41,8 @@ import javax.persistence.Table;
 public class DownloadQueueItem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private User user;
@@ -66,11 +66,11 @@ public class DownloadQueueItem {
 		createdOn = new Date();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,10 +80,6 @@ public class DownloadQueueItem {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getDownload() {
