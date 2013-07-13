@@ -49,7 +49,7 @@ public class Ftp2Operations extends FtpOperations {
 			FTPClientConfig clientConfig) {
 		super(client, clientConfig);
 	}
-	
+
 
     @Override
 	public boolean storeFile(String name, Exchange exchange) throws GenericFileOperationFailedException {
@@ -109,7 +109,6 @@ public class Ftp2Operations extends FtpOperations {
                 // Append + Resume
             	log.trace("Client resumeFile: {}", targetName);
             	return resume(targetName, is);
-                //return client.appendFile(targetName, is);
             } else {
                 log.trace("Client storeFile: {}", targetName);
                 return client.storeFile(targetName, is);
