@@ -65,10 +65,10 @@ public class FileUtils {
 		List<FileValue> files = new ArrayList<FileValue>();
 		File dir = new File(path);
 
-		for (String name : dir.list()) {
+		for (File file : dir.listFiles()) {
+			String name = file.getName();
 			if (name != null && !name.startsWith(".")) {
-				File down = new File(name);
-				files.add(new FileValue(name, false, new Date(down.lastModified())));
+				files.add(new FileValue(name, false, new Date(file.lastModified())));
 			}
 		}
 		return files;
