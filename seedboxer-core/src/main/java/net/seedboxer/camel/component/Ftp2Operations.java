@@ -20,6 +20,8 @@
  ******************************************************************************/
 package net.seedboxer.camel.component;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,17 +41,22 @@ import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamException;
 import org.apache.commons.net.io.CopyStreamListener;
 
+import com.google.common.io.Files;
+
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
 public class Ftp2Operations extends FtpOperations {
 
+	private final FileFilter directoryFileFilter = new DirectoryFileFilter();
+
+	private final FileFilter normalFileFilter = new NormalFileFilter();
+
 	public Ftp2Operations(FTPClient client,
 			FTPClientConfig clientConfig) {
 		super(client, clientConfig);
 	}
-
 
     @Override
 	public boolean storeFile(String name, Exchange exchange) throws GenericFileOperationFailedException {
@@ -102,25 +109,39 @@ public class Ftp2Operations extends FtpOperations {
             }
         }
 
-        InputStream is = null;
         try {
-            is = exchange.getIn().getMandatoryBody(InputStream.class);
-            if (endpoint.getFileExist() == GenericFileExist.Append && existsFile(targetName)) {
-                // Append + Resume
-            	log.trace("Client resumeFile: {}", targetName);
-            	return resume(targetName, is);
-            } else {
-                log.trace("Client storeFile: {}", targetName);
-                return client.storeFile(targetName, is);
-            }
+        	
+        	Object body = exchange.getIn().getMandatoryBody();
+        	if (body instanceof InputStream) {
+        		return doStoreFileFromIS(name, targetName, (InputStream) body);
+        	} else if (body instanceof File) {
+        		return doStoreFileFromFile(name, targetName, (File) body);
+        	} else {
+        		throw new InvalidPayloadException(exchange, InputStream.class);
+        	}
+
         } catch (IOException e) {
             throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), e.getMessage(), e);
         } catch (InvalidPayloadException e) {
             throw new GenericFileOperationFailedException("Cannot store file: " + name, e);
-        } finally {
-            IOHelper.close(is, "store: " + name, log);
         }
     }
+
+	private boolean doStoreFileFromIS(String name, String targetName, InputStream is)
+			throws IOException {
+		try {
+			if (endpoint.getFileExist() == GenericFileExist.Append && existsFile(targetName)) {
+			    // Append + Resume
+				log.trace("Client resumeFile: {}", targetName);
+				return resume(targetName, is);
+			} else {
+			    log.trace("Client storeFile: {}", targetName);
+			    return client.storeFile(targetName, is);
+			}
+		} finally {
+			IOHelper.close(is, "store: " + name, log);
+		}
+	}
     
     private boolean resume(String targetName, InputStream is) throws IOException {
 		Long size = getSize(targetName);
@@ -194,4 +215,61 @@ public class Ftp2Operations extends FtpOperations {
         }
 	}
 
+	private boolean doStoreFileFromFile(String name, String targetName,
+			File file) throws IOException {
+		if (file.isDirectory()) {
+			return doStoreDirectory(file);
+		} else {
+			return doStoreFileFromIS(name, targetName, getIS(file));
+		}
+	}
+
+	private boolean doStoreDirectory(File file) throws IOException {
+		boolean result = true;
+		buildDirectory(file.getName(), false);
+		String currentDir = null;
+		try {
+		    currentDir = getCurrentDirectory();
+		    changeCurrentDirectory(file.getName());
+		    
+			// Upload all directories first
+			for (File childFile : file.listFiles(directoryFileFilter)){
+				result &= doStoreFileFromFile(childFile.getName(), childFile.getName(), childFile);
+			}
+			// Upload all files
+			for (File childFile : file.listFiles(normalFileFilter)){
+				result &= doStoreFileFromFile(childFile.getName(), childFile.getName(), childFile);
+			}
+		    
+			return result;
+		} finally {
+			// change back to current directory if we changed directory
+		    if (currentDir != null) {
+		        changeCurrentDirectory(currentDir);
+		    }
+		}
+	}
+	
+	private InputStream getIS(File file) throws IOException {
+		return Files.newInputStreamSupplier(file).getInput();
+	}
+	
+	private class NormalFileFilter implements FileFilter {
+
+		@Override
+		public boolean accept(File file) {
+			return file.isFile();
+		}
+
+	}
+	
+	private class DirectoryFileFilter implements FileFilter {
+
+		@Override
+		public boolean accept(File file) {
+			return file.isDirectory();
+		}
+
+	}
+	
 }

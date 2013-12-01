@@ -84,36 +84,19 @@
 		<!-- FTP Sender -->
 		<route errorHandlerRef="errorHandlerFTP">
 			<from ref="uploadEndpoint" />
-			<to uri="log:net.seedboxer.SPLIT?level=TRACE&amp;showAll=true"/>
-			<split>
-			    <method ref="transferSplitter" method="splitMessage"/>
+			<to uri="log:net.seedboxer.Transfer?level=TRACE&amp;showAll=true"/>
 			
-				<dynamicRouter>
-		            <!-- use a method call on a bean as dynamic router -->
-		            <method ref="transferRouter" method="slip"/>
-		        </dynamicRouter>
-		        <to uri="direct:join" />
-			</split>
-		</route>
-		
-		<route>
-		    <from uri="direct:join" />
-		    <to uri="log:net.seedboxer.AGGREGATE?level=TRACE&amp;showAll=true"/>
-			<aggregate strategyRef="aggregatorStrategy">
-				<correlationExpression>
-					<simple>property.CamelCorrelationId</simple>
-				</correlationExpression>
-				<completionSize>
-				    <simple>property.CamelSplitSize</simple>
-				</completionSize>
-			    <to uri="direct:postActionsEndpoint" />
-			</aggregate>
+			<dynamicRouter>
+	            <!-- use a method call on a bean as dynamic router -->
+	            <method ref="transferRouter" method="slip"/>
+	        </dynamicRouter>
+	        
+	        <to uri="direct:postActionsEndpoint" />
 		</route>
 				
 		<!-- Post Actions -->
 		<route>
 			<from uri="direct:postActionsEndpoint"/>
-			<process ref="ungroupExchange"/>
 			
 			<!-- SSH command sender -->
 			<filter>

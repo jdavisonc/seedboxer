@@ -40,7 +40,7 @@ public class TransferRouter {
 													 "disconnect=true&" +
 													 "fastExistsCheck=true&" +
 													 "throwExceptionOnConnectFailed=true&" +
-													 "copyStreamListener=";
+													 "recursive=true";
 
 	public String slip(Exchange ex) throws IOException {
 	    if (ex.getProperty("splitted") != null) {
