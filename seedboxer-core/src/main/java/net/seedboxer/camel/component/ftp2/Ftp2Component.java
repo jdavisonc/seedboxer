@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Ftp2Component.java
+ * Sftp2Component.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.camel.component;
+package net.seedboxer.camel.component.ftp2;
 
 import java.net.URI;
 import java.util.Map;
