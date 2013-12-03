@@ -755,8 +755,7 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         }
     }
 
-    @Override
-	protected boolean fastExistsFile(String name) throws GenericFileOperationFailedException {
+    protected boolean fastExistsFile(String name) throws GenericFileOperationFailedException {
         LOG.trace("fastExistsFile({})", name);
         try {
             @SuppressWarnings("rawtypes")

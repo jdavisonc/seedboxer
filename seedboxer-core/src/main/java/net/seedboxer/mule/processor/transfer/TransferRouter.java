@@ -57,8 +57,6 @@ public class TransferRouter {
 		
 	    if (server.startsWith("ftp://")) {
 	        return ftp(user, pass, server.substring(6), remoteDir);
-	    } else if (server.startsWith("ftps://")) {
-	        return ftps(user, pass, server.substring(7), remoteDir);
 	    } else if (server.startsWith("sftp://")) {
 	        return sftp(user, pass, server.substring(7), remoteDir);
 	    }
@@ -68,12 +66,7 @@ public class TransferRouter {
 
 	private String sftp(String user, String pass, String server,
 			String remoteDir) {
-		return "sftp://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
-	}
-
-	private String ftps(String user, String pass, String server,
-			String remoteDir) {
-		return "ftps://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
+		return "sftp2://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
 	}
 
 	private String ftp(String user, String pass, String server, String remoteDir) {
