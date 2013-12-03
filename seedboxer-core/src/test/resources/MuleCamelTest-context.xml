@@ -76,11 +76,5 @@
 	<bean id="transferSplitter" name="mocktransferSplitter" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.transfer.TransferSplitter" />
 	</bean>
-	<bean id="ungroupExchange" name="mocktungroupExchange" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.mule.processor.UngroupExchange" />
-	</bean>
-	<bean id="aggregatorStrategy" name="mockaggregatorStrategy" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.mule.aggregate.GroupedExchangeAggregationStrategy" />
-	</bean>	
 
 </beans>

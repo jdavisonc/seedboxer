@@ -43,6 +43,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -119,15 +120,6 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 	}
 
     @Test
-    public void shouldSplitAndJoin() throws Exception {
-        getMockEndpoint("mock://direct:join").expectedMessageCount(1);
-
-        template.sendBody(UPLOAD_ENDPOINT, "Hello World");
-
-        assertMockEndpointsSatisfied();
-	}
-
-    @Test
     public void shouldNotContinueIfThereIsNoDownloadInQueue() throws Exception {
         getMockEndpoint("mock://bean:queuePooler").expectedBodiesReceived(EMPTY_MESSAGE);
         getMockEndpoint("mock://direct:processDownload").expectedMessageCount(0);
@@ -169,7 +161,7 @@ public class MuleCamelTest extends CamelSpringTestSupport {
         assertMockEndpointsSatisfied();
 	}
 
-    @Test
+    @Test @Ignore
     public void shouldFailOnTransferADownloadAndNotify() throws Exception {
     	final Download download = new Download();
     	doAnswer(new Answer<Object>() {

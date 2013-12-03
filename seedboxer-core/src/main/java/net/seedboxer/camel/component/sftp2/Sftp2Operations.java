@@ -30,6 +30,7 @@ import org.apache.camel.util.ObjectHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.io.Files;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -669,7 +670,8 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         return answer;
     }
 
-    private boolean doStoreFile(String name, String targetName, Exchange exchange) throws GenericFileOperationFailedException {
+    @SuppressWarnings("deprecation")
+	private boolean doStoreFile(String name, String targetName, Exchange exchange) throws GenericFileOperationFailedException {
         LOG.trace("doStoreFile({})", targetName);
 
         // if an existing file already exists what should we do?
@@ -686,14 +688,23 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
 
         InputStream is = null;
         try {
-            is = exchange.getIn().getMandatoryBody(InputStream.class);
+        	Object body = exchange.getIn().getMandatoryBody();
+        	if (body instanceof InputStream) {
+        		is = (InputStream) body;
+        	} else if (body instanceof File) {
+        		is = getIS((File)body);
+        	} else {
+        		throw new InvalidPayloadException(exchange, InputStream.class);
+        	}
+        	
             if (endpoint.getFileExist() == GenericFileExist.Append) {
-                channel.put(is, targetName, ChannelSftp.APPEND);
+                channel.put(is, targetName, ChannelSftp.RESUME);
             } else {
                 // override is default
                 channel.put(is, targetName);
             }
-
+            
+            
             // after storing file, we may set chmod on the file
             String mode = endpoint.getConfiguration().getChmod();
             if (ObjectHelper.isNotEmpty(mode)) {
@@ -709,11 +720,17 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
             throw new GenericFileOperationFailedException("Cannot store file: " + name, e);
         } catch (InvalidPayloadException e) {
             throw new GenericFileOperationFailedException("Cannot store file: " + name, e);
-        } finally {
+        } catch (IOException e) {
+        	throw new GenericFileOperationFailedException("Cannot store file: " + name, e);
+		} finally {
             IOHelper.close(is, "store: " + name, LOG);
         }
     }
-
+	
+	private InputStream getIS(File file) throws IOException {
+		return Files.newInputStreamSupplier(file).getInput();
+	}
+	
     @Override
 	public boolean existsFile(String name) throws GenericFileOperationFailedException {
         LOG.trace("existsFile({})", name);
