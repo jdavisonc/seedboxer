@@ -22,14 +22,15 @@ package net.seedboxer.mule.processor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.domain.UserConfiguration;
 import net.seedboxer.core.logic.UsersManager;
 
 import org.apache.camel.Exchange;
@@ -60,20 +61,18 @@ public class DownloadReceiver implements Processor {
 		DownloadQueueItem item = (DownloadQueueItem) msg.getBody();
 		User user = item.getUser();
 		long downloadId = item.getId();
-
+		
+		Map<String, String> configs = usersController.getUserConfig(user.getId());
+		msg.setHeaders(new HashMap<String, Object>(configs));
 		msg.setHeader(Configuration.USER_ID, user.getId());
 		msg.setHeader(Configuration.DOWNLOAD_ID, item.getId());
 		msg.setHeader(Configuration.START_TIME, new Date());
-		List<UserConfiguration> configs = usersController.getUserConfig(user.getId());
-		for (UserConfiguration conf : configs) {
-			msg.setHeader(conf.getName(), conf.getValue());
-		}
-
+		
 		processDownload(msg, item);
 		LOGGER.info("USER_ID={}, DOWNLOAD_ID={}", user.getId(), downloadId);
 	}
 
-	private void processDownload(Message msg, DownloadQueueItem item) throws FileNotFoundException {
+	private void processDownload(Message msg, DownloadQueueItem item) throws IOException {
 		String downloadPath = item.getDownload();
 		File toUpload = new File(downloadPath);
 		if (!toUpload.exists()) {
@@ -83,6 +82,8 @@ public class DownloadReceiver implements Processor {
 
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
+		msg.setHeader(Exchange.FILE_NAME, fileName);
+		msg.setBody(toUpload);
 	}
 
 }

@@ -24,20 +24,20 @@ var seedboxerui = angular
 			    $scope.current = status;
 			    $scope.queue = queue;
 			},
-			templateUrl: '/ui/home.html',
+			templateUrl: 'ui/home.html',
 			resolve    :{
 			    status : userStatusService.getUserStatusData,
 			    queue : downloadsService.getQueue
 			}
 		}).
 		when('/account-settings', {
-			templateUrl: '/ui/account-settings.html'
+			templateUrl: 'ui/account-settings.html'
 		}).
 		when('/users', {
 			controller : function($scope, usersData){
 			    $scope.users = usersData.users;
 			},
-			templateUrl: '/ui/users.html',
+			templateUrl: 'ui/users.html',
 			resolve : {
 			    usersData : adminUsersService.getUsersList,
 			}
@@ -47,7 +47,7 @@ var seedboxerui = angular
 			    $scope.configs = configData.configs;
 			    $scope.types = configTypes;
 			},
-			templateUrl: '/ui/my-profile.html',
+			templateUrl: 'ui/my-profile.html',
 			resolve : {
 			    configData : userConfigService.getConfigList,
 			    configTypes : userConfigService.getConfigTypes
@@ -57,7 +57,7 @@ var seedboxerui = angular
 			controller  : function($scope, serverSettings){
 			    $scope.rssFeeds = serverSettings.rssFeeds
 			},
-			templateUrl: '/ui/server-settings.html',
+			templateUrl: 'ui/server-settings.html',
 			resolve : {
 			    serverSettings : adminRssService.getRssList
 			}
@@ -67,7 +67,7 @@ var seedboxerui = angular
 			controller : function($scope, downloads){
 			    $scope.downloads = downloads;
 			},
-			templateUrl: '/ui/downloads.html',
+			templateUrl: 'ui/downloads.html',
 			resolve : {
 			    downloads : downloadsService.getDownloads
 			}
@@ -76,7 +76,7 @@ var seedboxerui = angular
 			controller : function($scope, contents){
 			    $scope.contents = contents;
 			},
-			templateUrl: '/ui/contents.html',
+			templateUrl: 'ui/contents.html',
 			resolve : {
 			    contents : userContentService.getContentList
 			}

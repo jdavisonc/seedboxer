@@ -84,17 +84,11 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
         "Account" : [
             {id : "password", value : "", title : "Password", type : "password"},
         ],
-        "Home Server" : [
-            {id : "FtpUrl", value : "", title : "Ftp Url", type : "url", required : true},
-            {id : "FtpUsername", value : "", title : "Ftp Username", type : "text", required : true},
-            {id : "FtpPassword", value : "", title : "Ftp Password", type : "text", required : true},
-            {id : "FtpRemoteDir", value : "", title : "Ftp Remote Dir", type : "text", required : true}
-        ],
-        "Notifications" : [
-            {id : "NotificationEmail", value : "", title : "Notification Email", type : "email", required : true},
-            {id : "NotificationGCM", value : "", title : "Notification GCM", type : "text"},
-            {id : "NotificationGCMDeviceId", value : "", title : "Notification DevId", type : "text"},
-            {id : "NotificationGCMRegistrationId", value : "", title : "Notification GCM RegId", type : "text"},
+        homeServer : [
+            {id : "TransferUrl", value : "", title : "Url*", type : "url", required : true},
+            {id : "TransferUsername", value : "", title : "Username*", type : "text", required : true},
+            {id : "TransferPassword", value : "", title : "Password*", type : "text", required : true},
+            {id : "TransferRemoteDir", value : "", title : "Remote Dir*", type : "text", required : true}
         ],
         "Post Actions" : [
             {id : "SshUrl", value : "", title : "Ssh Url", type : "url"},

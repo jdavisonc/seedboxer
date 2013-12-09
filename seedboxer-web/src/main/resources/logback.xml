@@ -39,11 +39,11 @@
 	</appender>
 
 	<logger name="net.schmizz.sshj" level="OFF" />
-	<logger name="org.apache.camel.processor.DefaultErrorHandler" level="OFF" />
+	<logger name="org.apache.camel" level="INFO" />
 
 	<if condition='isDefined("debug")'>
 	    <then>
-			<logger name="net.seedboxer" level="DEBUG" />
+			<logger name="net.seedboxer" level="TRACE" />
 	    </then>
 	    <else>
 			<logger name="net.seedboxer" level="INFO" />
