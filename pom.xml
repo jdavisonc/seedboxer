@@ -29,7 +29,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.seedboxer</groupId>
 	<artifactId>seedboxer</artifactId>
-	<version>2.2-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>SeedBoxer</name>
 	<description>SeedBoxer is a content distribution system based on users content queue</description>

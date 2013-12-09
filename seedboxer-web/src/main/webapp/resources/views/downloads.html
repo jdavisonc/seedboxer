@@ -19,7 +19,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="download in downloads | filter:query">
+			<tr ng-repeat="download in downloads | filter:query | orderBy:'lastModified':reverse=true" >
 				<td>{{download.name}}</td>
 				<td><a class="btn btn-success btn-small" ng-click="putToDownload(download)"><i
 						class="icon-circle-arrow-down"></i></a></td>
