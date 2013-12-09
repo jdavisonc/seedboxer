@@ -82,6 +82,7 @@ public class DownloadReceiver implements Processor {
 
 		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
+		msg.setHeader(Exchange.FILE_NAME, fileName);
 		msg.setBody(toUpload);
 	}
 

@@ -26,6 +26,7 @@ import net.seedboxer.core.domain.Configuration;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +43,9 @@ public class TransferRouter {
 													 "throwExceptionOnConnectFailed=true&" +
 													 "recursive=true";
 
+	@Value("${sftp.privateKey}")
+	private String sftpPrivateKey;
+	
 	public String slip(Exchange ex) throws IOException {
 	    if (ex.getProperty("splitted") != null) {
 	    	return null;
@@ -66,7 +70,7 @@ public class TransferRouter {
 
 	private String sftp(String user, String pass, String server,
 			String remoteDir) {
-		return "sftp2://"+user+"@"+server+"/"+remoteDir+"?password="+pass+"&"+COMPONENTS_CONF;
+		return "sftp2://"+user+"@"+server+"/"+remoteDir+"?privateKeyFile="+sftpPrivateKey+"&password="+pass+"&"+COMPONENTS_CONF;
 	}
 
 	private String ftp(String user, String pass, String server, String remoteDir) {

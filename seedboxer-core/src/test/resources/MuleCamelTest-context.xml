@@ -43,9 +43,6 @@
 	</bean>
 	
 	<!-- Defines Mocks -->
-	<bean id="ftpSender" name="mockftpSender" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.mule.processor.transfer.FtpSender" />
-	</bean>
 	<bean id="fileReceiver" name="mockfileReceiver" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.FileReceiver" />
 	</bean>
@@ -72,9 +69,6 @@
 	</bean>
 	<bean id="transferRouter" name="mocktransferRouter" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.transfer.TransferRouter" />
-	</bean>
-	<bean id="transferSplitter" name="mocktransferSplitter" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.mule.processor.transfer.TransferSplitter" />
 	</bean>
 
 </beans>

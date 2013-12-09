@@ -37,7 +37,6 @@ import net.seedboxer.mule.processor.notification.EmailNotification;
 import net.seedboxer.mule.processor.notification.GCMNotification;
 import net.seedboxer.mule.processor.postaction.SSHCommandSender;
 import net.seedboxer.mule.processor.transfer.TransferRouter;
-import net.seedboxer.mule.processor.transfer.TransferSplitter;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -52,8 +51,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -76,7 +73,6 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 	private EmailNotification emailNotification;
 	private GCMNotification gcmNotification;
 	private TransferRouter transferRouter;
-	private TransferSplitter transferSplitter;
 	
 	@Mock
 	private Message msg;
@@ -102,9 +98,7 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 		emailNotification = applicationContext.getBean(EmailNotification.class);
 		gcmNotification = applicationContext.getBean(GCMNotification.class);
 		transferRouter = applicationContext.getBean(TransferRouter.class);
-		transferSplitter = applicationContext.getBean(TransferSplitter.class);
 		
-		Mockito.when(transferSplitter.splitMessage(any(Exchange.class))).thenReturn(ImmutableList.of(msg));
 		Mockito.when(msg.getBody()).thenReturn("Hello World");
 	}
 
@@ -177,14 +171,12 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 				return null;
 			}
 		}).when(queuePooler).process(any(Exchange.class));
-    	//doThrow(new TransportException("", null)).when(ftpSender).process(any(Exchange.class));
 
         getMockEndpoint("mock://bean:queuePooler").expectedBodiesReceived(EMPTY_MESSAGE);
         getMockEndpoint("mock://direct:processDownload").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:downloadReceiver").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:sshCommandSender").expectedMessageCount(0);
         getMockEndpoint("mock://bean:emailNotification").expectedBodiesReceived(download);
-        getMockEndpoint("mock://bean:ftpSender").expectedMessageCount(4);
         getMockEndpoint("mock://direct:email").expectedBodiesReceived(download);
         //getMockEndpoint("mock://bean:gcmNotification").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:downloadRemover").expectedBodiesReceived(download);

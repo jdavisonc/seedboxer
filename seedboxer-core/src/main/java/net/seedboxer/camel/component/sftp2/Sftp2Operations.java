@@ -4,6 +4,7 @@ import static org.apache.camel.util.ObjectHelper.isNotEmpty;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
+import net.seedboxer.common.ftp.filter.DirectoryFileFilter;
+import net.seedboxer.common.ftp.filter.NormalFileFilter;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.InvalidPayloadException;
 import org.apache.camel.component.file.FileComponent;
@@ -20,6 +24,7 @@ import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileEndpoint;
 import org.apache.camel.component.file.GenericFileExist;
 import org.apache.camel.component.file.GenericFileOperationFailedException;
+import org.apache.camel.component.file.remote.RemoteFileComponent;
 import org.apache.camel.component.file.remote.RemoteFileConfiguration;
 import org.apache.camel.component.file.remote.RemoteFileOperations;
 import org.apache.camel.component.file.remote.SftpConfiguration;
@@ -42,6 +47,11 @@ import com.jcraft.jsch.UserInfo;
 public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry> {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(Sftp2Operations.class);
+    
+	private final FileFilter directoryFileFilter = new DirectoryFileFilter();
+
+	private final FileFilter normalFileFilter = new NormalFileFilter();
+    
     private SftpEndpoint endpoint;
     private ChannelSftp channel;
     private Session session;
@@ -690,31 +700,14 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         try {
         	Object body = exchange.getIn().getMandatoryBody();
         	if (body instanceof InputStream) {
-        		is = (InputStream) body;
+        		doStoreFileFromIS(name, targetName, (InputStream)body);
         	} else if (body instanceof File) {
-        		is = getIS((File)body);
+        		doStoreFileFromFile(name, targetName, (File)body);
         	} else {
         		throw new InvalidPayloadException(exchange, InputStream.class);
         	}
-        	
-            if (endpoint.getFileExist() == GenericFileExist.Append) {
-                channel.put(is, targetName, ChannelSftp.RESUME);
-            } else {
-                // override is default
-                channel.put(is, targetName);
-            }
-            
-            
-            // after storing file, we may set chmod on the file
-            String mode = endpoint.getConfiguration().getChmod();
-            if (ObjectHelper.isNotEmpty(mode)) {
-                // parse to int using 8bit mode
-                int permissions = Integer.parseInt(mode, 8);
-                LOG.trace("Setting chmod: {} on file: ", mode, targetName);
-                channel.chmod(permissions, targetName);
-            }
 
-            return true;
+        	return true;
         
         } catch (SftpException e) {
             throw new GenericFileOperationFailedException("Cannot store file: " + name, e);
@@ -726,6 +719,61 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
             IOHelper.close(is, "store: " + name, LOG);
         }
     }
+
+	private boolean doStoreFileFromIS(String name, String targetName,
+			InputStream is) throws SftpException {
+		 if (endpoint.getFileExist() == GenericFileExist.Append) {
+             channel.put(is, targetName, ChannelSftp.RESUME);
+         } else {
+             // override is default
+             channel.put(is, targetName);
+         }
+		 
+         // after storing file, we may set chmod on the file
+         String mode = endpoint.getConfiguration().getChmod();
+         if (ObjectHelper.isNotEmpty(mode)) {
+             // parse to int using 8bit mode
+             int permissions = Integer.parseInt(mode, 8);
+             LOG.trace("Setting chmod: {} on file: ", mode, targetName);
+             channel.chmod(permissions, targetName);
+         }
+		 return true;
+	}
+
+	private boolean doStoreFileFromFile(String name, String targetName,
+			File file) throws IOException, SftpException {
+		if (file.isDirectory()) {
+			return doStoreDirectory(file);
+		} else {
+			return doStoreFileFromIS(name, targetName, getIS(file));
+		}
+	}
+	
+	private boolean doStoreDirectory(File file) throws IOException, SftpException {
+		boolean result = true;
+		buildDirectory(file.getName(), false);
+		String currentDir = null;
+		try {
+		    currentDir = getCurrentDirectory();
+		    changeCurrentDirectory(file.getName());
+		    
+			// Upload all directories first
+			for (File childFile : file.listFiles(directoryFileFilter)){
+				result &= doStoreFileFromFile(childFile.getName(), childFile.getName(), childFile);
+			}
+			// Upload all files
+			for (File childFile : file.listFiles(normalFileFilter)){
+				result &= doStoreFileFromFile(childFile.getName(), childFile.getName(), childFile);
+			}
+		    
+			return result;
+		} finally {
+			// change back to current directory if we changed directory
+		    if (currentDir != null) {
+		        changeCurrentDirectory(currentDir);
+		    }
+		}
+	}
 	
 	private InputStream getIS(File file) throws IOException {
 		return Files.newInputStreamSupplier(file).getInput();
@@ -791,11 +839,32 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         }
 
     }
+    
+    @Override
+    public void releaseRetreivedFileResources(Exchange exchange) throws GenericFileOperationFailedException {
+        InputStream is = exchange.getIn().getHeader(RemoteFileComponent.REMOTE_FILE_INPUT_STREAM, InputStream.class);
+        
+        if (is != null) {
+            try {
+                is.close();
+            } catch (IOException e) {
+                throw new GenericFileOperationFailedException(e.getMessage(), e);
+            }
+        }
+    }
 
     @Override
 	public boolean sendNoop() throws GenericFileOperationFailedException {
-        // is not implemented
-        return true;
+        if (isConnected()) {
+            try {
+                session.sendIgnore();
+                return true;
+            } catch (Exception e) {
+                LOG.debug("SFTP session was closed. Ignoring this exception.", e);
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -803,4 +872,5 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         // is not implemented
         return true;
     }
+	
 }
