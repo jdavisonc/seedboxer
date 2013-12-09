@@ -42,6 +42,8 @@
 	<!-- Aggretator for multiple feeds -->
 	<bean id="rssAggregationStrategy" class="net.seedboxer.sources.processor.rss.aggregator.AggregateRssFeedEntryStrategy"/>
 	
+	<bean id="aggregatorStrategy" class="net.seedboxer.mule.aggregate.GroupedExchangeAggregationStrategy"/>
+	
 	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
     	<property name="templateLoaderPath" value="classpath:templates/"/>
 	</bean>

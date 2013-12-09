@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>SeedBoxer Web</title>
-    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <link rel="icon" type="image/png" href="img/favicon.png" />
 
     <spring:url value="/webjars/jquery/2.0.0/jquery.js" var="jQuery"/>
     <script src="${jQuery}"></script>

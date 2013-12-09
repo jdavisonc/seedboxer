@@ -1,0 +1,2 @@
+class=net.seedboxer.camel.component.ftp2.Ftp2Component
+strategy.factory.class=org.apache.camel.component.file.remote.strategy.FtpProcessStrategyFactory

@@ -8,5 +8,6 @@
 	     
 
     <include file="DML_transfer_data.sql" relativeToChangelogFile="true"/>
+    <include file="DDL_seedboxer_new_squema_with_autoincrement.sql" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>
