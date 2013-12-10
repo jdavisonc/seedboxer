@@ -1,4 +1,4 @@
-Transfer to server (${.vars["FtpUrl"]}) completed.
+Transfer to server (${.vars["TransferUrl"]}) completed.
 
 Files: 
 <#list .vars["Files"] as item>

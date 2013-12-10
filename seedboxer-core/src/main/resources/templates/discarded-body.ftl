@@ -1,4 +1,4 @@
-Transfer to server (${.vars["FtpUrl"]}) fail.
+Transfer to server (${.vars["TransferUrl"]}) fail.
 
 Files: 
 <#list .vars["Files"] as item>
