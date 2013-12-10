@@ -126,90 +126,100 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- Ubuntu/Debian package creation -->
-			<plugin>
-				<artifactId>jdeb</artifactId>
-				<groupId>org.vafer</groupId>
-				<version>1.0.1-patched</version>
-				<executions>
-					<execution>
-						<phase>deploy</phase>
-						<goals>
-							<goal>jdeb</goal>
-						</goals>
-						<configuration>
-							<controlDir>${basedir}/src/deb/control</controlDir>
-							<dataSet>
-								<data>
-									<src>${project.build.directory}/${project.build.finalName}.jar</src>
-									<type>file</type>
-									<mapper>
-										<type>perm</type>
-										<prefix>/usr/share/seedboxer</prefix>
-										<user>seedboxer</user>
-										<group>seedboxer</group>
-									</mapper>
-								</data>
-
-								<data>
-									<type>link</type>
-									<symlink>true</symlink>
-									<linkName>/usr/share/java/seedboxer.jar</linkName>
-									<linkTarget>/usr/share/seedboxer/${project.build.finalName}.jar</linkTarget>
-								</data>
-
-								<data>
-									<src>${basedir}/src/deb/init.d</src>
-									<type>directory</type>
-									<mapper>
-										<type>perm</type>
-										<prefix>/etc/init.d</prefix>
-										<user>seedboxer</user>
-										<group>seedboxer</group>
-									</mapper>
-								</data>
-								
-								<data>
-									<type>template</type>
-									<paths>
-										<path>etc/seedboxer</path>
-										<path>var/log/seedboxer</path>
-										<path>var/run/seedboxer</path>
-									</paths>
-									<mapper>
-										<type>perm</type>
-										<user>seedboxer</user>
-										<group>seedboxer</group>
-									</mapper>
-								</data>
-								
-								<data>
-									<src>${basedir}/src/deb/seedboxer</src>
-									<type>directory</type>
-									<mapper>
-										<type>perm</type>
-										<prefix>/usr/share/seedboxer</prefix>
-										<user>seedboxer</user>
-										<group>seedboxer</group>
-									</mapper>
-								</data>
-								
-								<data>
-									<src>${basedir}/src/deb/install</src>
-									<type>directory</type>
-									<mapper>
-										<type>perm</type>
-										<prefix>/usr/share/dbconfig-common/data/seedboxer-standalone/install</prefix>
-									</mapper>
-								</data>
-
-							</dataSet>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deb</id>
+			<build>
+				<plugins>
+
+					<!-- Ubuntu/Debian package creation -->
+					<plugin>
+						<artifactId>jdeb</artifactId>
+						<groupId>org.vafer</groupId>
+						<version>1.0.1-patched</version>
+						<executions>
+							<execution>
+								<phase>deploy</phase>
+								<goals>
+									<goal>jdeb</goal>
+								</goals>
+								<configuration>
+									<controlDir>${basedir}/src/deb/control</controlDir>
+									<dataSet>
+										<data>
+											<src>${project.build.directory}/${project.build.finalName}.jar</src>
+											<type>file</type>
+											<mapper>
+												<type>perm</type>
+												<prefix>/usr/share/seedboxer</prefix>
+												<user>seedboxer</user>
+												<group>seedboxer</group>
+											</mapper>
+										</data>
+
+										<data>
+											<type>link</type>
+											<symlink>true</symlink>
+											<linkName>/usr/share/java/seedboxer.jar</linkName>
+											<linkTarget>/usr/share/seedboxer/${project.build.finalName}.jar</linkTarget>
+										</data>
+
+										<data>
+											<src>${basedir}/src/deb/init.d</src>
+											<type>directory</type>
+											<mapper>
+												<type>perm</type>
+												<prefix>/etc/init.d</prefix>
+												<user>seedboxer</user>
+												<group>seedboxer</group>
+											</mapper>
+										</data>
+
+										<data>
+											<type>template</type>
+											<paths>
+												<path>etc/seedboxer</path>
+												<path>var/log/seedboxer</path>
+												<path>var/run/seedboxer</path>
+											</paths>
+											<mapper>
+												<type>perm</type>
+												<user>seedboxer</user>
+												<group>seedboxer</group>
+											</mapper>
+										</data>
+
+										<data>
+											<src>${basedir}/src/deb/seedboxer</src>
+											<type>directory</type>
+											<mapper>
+												<type>perm</type>
+												<prefix>/usr/share/seedboxer</prefix>
+												<user>seedboxer</user>
+												<group>seedboxer</group>
+											</mapper>
+										</data>
+
+										<data>
+											<src>${basedir}/src/deb/install</src>
+											<type>directory</type>
+											<mapper>
+												<type>perm</type>
+												<prefix>/usr/share/dbconfig-common/data/seedboxer-standalone/install</prefix>
+											</mapper>
+										</data>
+
+									</dataSet>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
