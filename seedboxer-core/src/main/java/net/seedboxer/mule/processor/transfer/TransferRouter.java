@@ -41,7 +41,8 @@ public class TransferRouter {
 													 "disconnect=true&" +
 													 "fastExistsCheck=true&" +
 													 "throwExceptionOnConnectFailed=true&" +
-													 "recursive=true";
+													 "recursive=true&" +
+													 "transferListener=#downloadTransferListener";
 
 	@Value("${sftp.privateKey}")
 	private String sftpPrivateKey;
