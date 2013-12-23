@@ -26,10 +26,6 @@ package net.seedboxer.camel.component.file.remote;
  */
 public interface TransferListener {
 
-	void init(String src, long max);
-	
-	void count(long count);
-	
-	void end();
+	void bytesTransfered(String file, long bytesTransfered);
 	
 }

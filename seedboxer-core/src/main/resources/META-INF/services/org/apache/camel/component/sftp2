@@ -1,2 +1,2 @@
-class=net.seedboxer.camel.component.sftp2.Sftp2Component
+class=net.seedboxer.camel.component.file.remote.sftp2.Sftp2Component
 strategy.factory.class=org.apache.camel.component.file.remote.strategy.SftpProcessStrategyFactory

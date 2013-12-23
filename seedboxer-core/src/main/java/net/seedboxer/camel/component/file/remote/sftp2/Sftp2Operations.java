@@ -721,28 +721,25 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         }
     }
 
-    SftpProgressMonitor monitor = new SftpProgressMonitor() {
+    private class SftpProgressMonitorRouter implements SftpProgressMonitor {
 		
     	TransferListener listener = endpoint.getConfiguration().getTransferListener();
+    	private String src;
     	
 		@Override
 		public void init(int opt, String src, String dest, long max) {
-			if (listener != null) {
-				listener.init(src, max);
-			}
+			this.src = src;
 		}
 		
 		@Override
 		public void end() {
-			if (listener != null) {
-				listener.end();
-			}
+			;
 		}
 		
 		@Override
 		public boolean count(long count) {
 			if (listener != null) {
-				listener.count(count);
+				listener.bytesTransfered(src, count);
 			}
 			return false;
 		}
@@ -751,10 +748,10 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
 	private boolean doStoreFileFromIS(String name, String targetName,
 			InputStream is) throws SftpException {
 		 if (endpoint.getFileExist() == GenericFileExist.Append) {
-			channel.put(is, targetName, monitor, ChannelSftp.RESUME);
+			channel.put(is, targetName, new SftpProgressMonitorRouter(), ChannelSftp.RESUME);
          } else {
              // override is default
-             channel.put(is, targetName, monitor);
+             channel.put(is, targetName, new SftpProgressMonitorRouter());
          }
 		 
          // after storing file, we may set chmod on the file

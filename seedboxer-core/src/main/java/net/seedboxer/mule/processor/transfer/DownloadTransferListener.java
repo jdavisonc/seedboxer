@@ -36,18 +36,8 @@ public class DownloadTransferListener implements TransferListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadTransferListener.class);
 
 	@Override
-	public void init(String src, long max) {
-		LOGGER.warn("transfer Init! {} {}", src, max);
-	}
-
-	@Override
-	public void count(long count) {
-		LOGGER.warn("transfer count! {}", count);
-	}
-
-	@Override
-	public void end() {
-		LOGGER.warn("transfer end");
+	public void bytesTransfered(String file, long bytesTransfered) {
+		LOGGER.warn("Transfered {} : {}", file, bytesTransfered);
 	}
 
 }

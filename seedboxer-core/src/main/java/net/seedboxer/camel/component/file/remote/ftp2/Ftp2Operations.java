@@ -27,11 +27,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import net.seedboxer.camel.component.file.remote.TransferListener;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.InvalidPayloadException;
 import org.apache.camel.component.file.GenericFileExist;
 import org.apache.camel.component.file.GenericFileOperationFailedException;
 import org.apache.camel.component.file.remote.FtpOperations;
+import org.apache.camel.component.file.remote.RemoteFileConfiguration;
 import org.apache.camel.util.FileUtil;
 import org.apache.camel.util.IOHelper;
 import org.apache.commons.net.ftp.FTPClient;
@@ -56,6 +59,42 @@ public class Ftp2Operations extends FtpOperations {
 	public Ftp2Operations(FTPClient client,
 			FTPClientConfig clientConfig) {
 		super(client, clientConfig);
+	}
+	
+	private class TransferStreamListener implements CopyStreamListener {
+		
+		private String source;
+		
+		TransferListener transferListener;
+		
+		public TransferStreamListener(TransferListener transferListener) {
+			this.transferListener = transferListener;
+		}
+		
+		public void setSource(String source) {
+			this.source = source;
+		}
+		
+		@Override
+		public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
+			transferListener.bytesTransfered(source, bytesTransferred);
+		}
+		
+		@Override
+		public void bytesTransferred(CopyStreamEvent event) {
+			transferListener.bytesTransfered(source, event.getBytesTransferred());
+		}
+	};
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean connect(RemoteFileConfiguration configuration)
+			throws GenericFileOperationFailedException {
+		boolean res = super.connect(configuration);
+		
+		final TransferListener transferListener = ((Ftp2Endpoint)endpoint).getConfiguration().getTransferListener();
+		client.setCopyStreamListener(new TransferStreamListener(transferListener));
+		return res;
 	}
 
     @Override
@@ -93,9 +132,16 @@ public class Ftp2Operations extends FtpOperations {
 
         return answer;
     }
+    
+    private void setSourceCopyStreamListener(String source) {
+    	CopyStreamListener copyStreamListener = client.getCopyStreamListener();
+    	((TransferStreamListener)copyStreamListener).setSource(source);
+    }
 
     private boolean doStoreFile(String name, String targetName, Exchange exchange) throws GenericFileOperationFailedException {
         log.trace("doStoreFile({})", targetName);
+        
+        setSourceCopyStreamListener(targetName);
 
         // if an existing file already exists what should we do?
         if (endpoint.getFileExist() == GenericFileExist.Ignore || endpoint.getFileExist() == GenericFileExist.Fail) {
@@ -155,18 +201,7 @@ public class Ftp2Operations extends FtpOperations {
 			OutputStream outs = client.storeFileStream(targetName);
 			if (outs != null) {
 				try {
-					copyStream(is, outs, client.getBufferSize(), CopyStreamEvent.UNKNOWN_STREAM_SIZE, new CopyStreamListener() {
-						
-						@Override
-						public void bytesTransferred(long arg0, int arg1, long arg2) {
-							((Ftp2Endpoint)endpoint).getConfiguration().getTransferListener().count(arg0);
-						}
-						
-						@Override
-						public void bytesTransferred(CopyStreamEvent arg0) {
-							((Ftp2Endpoint)endpoint).getConfiguration().getTransferListener().count(0);
-						}
-					});
+					copyStream(is, outs, client.getBufferSize(), CopyStreamEvent.UNKNOWN_STREAM_SIZE, client.getCopyStreamListener());
 				} finally {
 					outs.close();
 				}
