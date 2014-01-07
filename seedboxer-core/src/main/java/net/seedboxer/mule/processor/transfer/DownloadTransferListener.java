@@ -37,7 +37,7 @@ public class DownloadTransferListener implements TransferListener {
 
 	@Override
 	public void bytesTransfered(String file, long bytesTransfered) {
-		LOGGER.warn("Transfered {} : {}", file, bytesTransfered);
+		LOGGER.trace("Transfered {} : {}", file, bytesTransfered);
 	}
 
 }
