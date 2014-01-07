@@ -106,8 +106,9 @@ seedboxerui.directive('xeditable', function() {
           angular.element(element).editable(scope);
           angular.element(element).on("save", function(evt, reason){
               var id = angular.element(element).attr("id");
+			  var value = reason.newValue;
               scope.$apply(function(){
-                  scope.value = angular.element(element).data("editable")["value"];
+                  scope.value = value;
                   
               });
               if(typeof scope.close == "function")
