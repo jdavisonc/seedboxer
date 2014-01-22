@@ -20,12 +20,14 @@
  ******************************************************************************/
 package net.seedboxer.core.logic;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.seedboxer.core.domain.DownloadSession;
 import net.seedboxer.core.type.Download;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
@@ -35,46 +37,57 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DownloadsSessionManager {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsSessionManager.class);
 
-	private final Map<Long, DownloadSession> downloadsPerUser;
-
-	private final Object lock;
+	private final Map<Long, DownloadSession> sessionsPerUser;
+	private final Map<Long, String> filesPerUser;
 
 	public DownloadsSessionManager() {
-		downloadsPerUser = new HashMap<Long, DownloadSession>();
-		lock = new Object();
+		sessionsPerUser = new ConcurrentHashMap<Long, DownloadSession>();
+		filesPerUser = new ConcurrentHashMap<Long, String>();
 	}
 
 	public Download getDownload(long userId) {
-		synchronized (lock) {
-			DownloadSession downloadSession = downloadsPerUser.get(userId);
-			if (downloadSession != null) {
-				return downloadSession.getDownloadType();
-			} else {
-				return null;
+		DownloadSession downloadSession = sessionsPerUser.get(userId);
+		if (downloadSession != null) {
+			return downloadSession.getDownloadType();
+		} else {
+			return null;
+		}
+	}
+
+	public void removeSession(long userId) {
+		sessionsPerUser.remove(userId);
+		filesPerUser.remove(userId);
+	}
+
+	public void setSessionProgress(Long userId, long mbsTransfered) {
+		DownloadSession session = sessionsPerUser.get(userId);
+		if (session != null) {
+			session.setTransferredInMbs(mbsTransfered);	
+		}
+	}
+	
+	public void addSession(long userId, String fileName, long totalSize) {
+		sessionsPerUser.put(userId, new DownloadSession(fileName, totalSize));
+		filesPerUser.put(userId, fileName);
+		LOGGER.debug("Session added: {} {}", userId, fileName);
+	}
+	
+	public Long searchUserFromFile(String filename) {
+		for (Map.Entry<Long, String> entry : filesPerUser.entrySet()) {
+			if (filename.contains(entry.getValue())) {
+				LOGGER.debug("Session found: {} {}", entry.getKey(), filename);
+				return entry.getKey();
 			}
 		}
+		LOGGER.warn("Session not found: {}", filename);
+		return null;
 	}
 
-	public void removeDownloadSession(long userId) {
-		synchronized (lock) {
-			downloadsPerUser.remove(userId);
-		}
-	}
-
-	public void addDownloadSession(Long userId, DownloadSession downloadSession) {
-		synchronized (lock) {
-			downloadsPerUser.put(userId, downloadSession);
-		}
-	}
-
-	public void abortDownloadSession(Long userId) {
-		synchronized (lock) {
-			DownloadSession downloadSession = downloadsPerUser.get(userId);
-			if (downloadSession != null) {
-				downloadSession.abort();
-			}
-		}
+	public void abortSession(long userId) {
+		// TODO
 	}
 
 }

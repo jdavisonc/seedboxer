@@ -31,7 +31,9 @@ import java.util.Map;
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.DownloadQueueItem;
 import net.seedboxer.core.domain.User;
+import net.seedboxer.core.logic.DownloadsSessionManager;
 import net.seedboxer.core.logic.UsersManager;
+import net.seedboxer.core.util.FileUtils;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -53,6 +55,9 @@ public class DownloadReceiver implements Processor {
 
 	@Autowired
 	private UsersManager usersController;
+	
+	@Autowired
+	private DownloadsSessionManager sessionManager;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -84,6 +89,8 @@ public class DownloadReceiver implements Processor {
 		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
 		msg.setHeader(Exchange.FILE_NAME, fileName);
 		msg.setBody(toUpload);
+		
+		sessionManager.addSession(item.getUser().getId(), fileName, FileUtils.calculateSize(toUpload));
 	}
 
 }

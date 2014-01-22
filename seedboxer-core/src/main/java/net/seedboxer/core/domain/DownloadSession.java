@@ -20,6 +20,8 @@
  ******************************************************************************/
 package net.seedboxer.core.domain;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import net.seedboxer.core.type.Download;
 
 /**
@@ -28,29 +30,41 @@ import net.seedboxer.core.type.Download;
  * 
  * @author Jorge Davison (jdavisonc)
  */
-public abstract class DownloadSession {
+public class DownloadSession {
 
-	public static final long MEGABYTE = 1024L * 1024L;
+	protected AtomicLong transferredInMbs = new AtomicLong(0);
 
-	protected double transferredInMbs = 0L;
+	protected long totalSize = 0L;
 
-	protected double totalSize = 0L;
+	private final String fileName;
 
-	private String fileName;
-
-	public DownloadSession(String fileName, double totalSize) {
+	public DownloadSession(String fileName, long totalSize) {
 		this.totalSize = totalSize;
 		this.fileName = fileName;
 	}
-
-	public double getMbsTransferred() {
-		return transferredInMbs;
+	
+	public long getTransferredInMbs() {
+		return transferredInMbs.get();
 	}
 
-	public abstract void abort();
+	public void setTransferredInMbs(long transferredInMbs) {
+		this.transferredInMbs.set(transferredInMbs);
+	}
+
+	public long getTotalSize() {
+		return totalSize;
+	}
+
+	public void setTotalSize(long totalSize) {
+		this.totalSize = totalSize;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
 
 	public Download getDownloadType() {
-		return new Download(fileName, (long)totalSize, (long)transferredInMbs);
+		return new Download(fileName, totalSize, transferredInMbs.get());
 	}
 
 }

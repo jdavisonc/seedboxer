@@ -1,54 +1,54 @@
 /*******************************************************************************
- * DownloadRemover.java
- *
+ * DownloadsSessionManagerTest.java
+ * 
  * Copyright (c) 2012 SeedBoxer Team.
- *
+ * 
  * This file is part of SeedBoxer.
- *
+ * 
  * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.mule.processor;
+package net.seedboxer.core.logic;
 
-import net.seedboxer.core.domain.Configuration;
-import net.seedboxer.core.logic.DownloadsQueueManager;
-import net.seedboxer.core.logic.DownloadsSessionManager;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Component
-public class DownloadRemover implements Processor {
+public class DownloadsSessionManagerTest {
 
-	@Autowired
-	private DownloadsQueueManager queueManager;
+	private static final Long USER_ID = 1L;
+	private static final String FILENAME = "This.Is.A.Test-SEEDBOXER.avi";
+	private DownloadsSessionManager manager;
 	
-	@Autowired
-	private DownloadsSessionManager sessionManager;
-
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Long downloadId = (Long) exchange.getIn().getHeader(Configuration.DOWNLOAD_ID);
-		Long userId = (Long) exchange.getIn().getHeader(Configuration.USER_ID);
-		queueManager.remove(downloadId);
-		sessionManager.removeSession(userId);
+	@Before
+	public void setUp() throws Exception {
+		manager = new DownloadsSessionManager();
 	}
+
+	@Test
+	public void shouldAddSession() throws Exception {
+		manager.addSession(USER_ID, FILENAME, 1000);
+	}
+	
+	@Test
+	public void shouldFindSession() throws Exception {
+		manager.addSession(USER_ID, FILENAME, 1000);
+		Assert.assertEquals(USER_ID, manager.searchUserFromFile("/some/path/that/finish/with/"+FILENAME));
+	}
+	
 
 }

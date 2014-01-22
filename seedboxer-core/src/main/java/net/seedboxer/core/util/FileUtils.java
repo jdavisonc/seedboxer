@@ -94,5 +94,9 @@ public class FileUtils {
 
 		return copyFile;
 	}
+	
+    public static long byteCountToDisplaySize(long size) {
+    	return size / MEGABYTE;
+    }
 
 }

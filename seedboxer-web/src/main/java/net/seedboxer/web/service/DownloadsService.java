@@ -185,7 +185,7 @@ public class DownloadsService {
 		boolean success = usersController.setUserStatus(user, Status.STOPPED);
 		if (success) {
 			try {
-				downloadSessionManager.abortDownloadSession(user.getId());
+				downloadSessionManager.abortSession(user.getId());
 				downloadsQueueManager.resetQueue(user);
 				LOGGER.info("Download stopped for user {}", user.getUsername());
 			} catch (Exception e) {

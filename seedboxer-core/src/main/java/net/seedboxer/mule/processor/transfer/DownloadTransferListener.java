@@ -21,9 +21,13 @@
 package net.seedboxer.mule.processor.transfer;
 
 import net.seedboxer.camel.component.file.remote.TransferListener;
+import net.seedboxer.core.logic.DownloadsSessionManager;
+import net.seedboxer.core.util.FileUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,13 +35,37 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@Scope("prototype")
 public class DownloadTransferListener implements TransferListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadTransferListener.class);
+	
+	@Autowired
+	private DownloadsSessionManager manager;
+	
+	private long totalBytes;
+	
+	private Long userId;
 
 	@Override
 	public void bytesTransfered(String file, long bytesTransfered) {
-		LOGGER.trace("Transfered {} : {}", file, bytesTransfered);
+		totalBytes += bytesTransfered;
+		
+		if (totalBytes % 1024 == 0) {
+			long sizeInMbs = FileUtils.byteCountToDisplaySize(totalBytes);
+			LOGGER.trace("Transfered '{}': {} Mb", file, sizeInMbs);
+			Long uid = getUserId(file);
+			if (uid != null) {
+				manager.setSessionProgress(uid, sizeInMbs);
+			}
+		}
+	}
+
+	private Long getUserId(String file) {
+		if (userId == null) {
+			userId = manager.searchUserFromFile(file);
+		}
+		return userId;
 	}
 
 }

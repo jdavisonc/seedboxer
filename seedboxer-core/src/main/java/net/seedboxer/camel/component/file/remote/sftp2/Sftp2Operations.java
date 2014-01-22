@@ -723,12 +723,16 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
 
     private class SftpProgressMonitorRouter implements SftpProgressMonitor {
 		
-    	TransferListener listener = endpoint.getConfiguration().getTransferListener();
+    	private final TransferListener listener;
     	private String src;
+    	
+    	public SftpProgressMonitorRouter() {
+			listener = endpoint.getConfiguration().getTransferListener();
+		}
     	
 		@Override
 		public void init(int opt, String src, String dest, long max) {
-			this.src = src;
+			this.src = dest;
 		}
 		
 		@Override
@@ -741,7 +745,7 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
 			if (listener != null) {
 				listener.bytesTransfered(src, count);
 			}
-			return false;
+			return true;
 		}
 	};
     
