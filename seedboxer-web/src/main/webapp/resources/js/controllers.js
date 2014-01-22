@@ -84,10 +84,10 @@ function ProfileCtrl($scope, $dialog, alertService, userConfigService, userDataR
         "Account" : [
             {id : "password", value : "", title : "Password", type : "password"},
         ],
-        homeServer : [
+        "Home Server" : [
             {id : "TransferUrl", value : "", title : "Url*", type : "url", required : true},
             {id : "TransferUsername", value : "", title : "Username*", type : "text", required : true},
-            {id : "TransferPassword", value : "", title : "Password*", type : "text", required : true},
+            {id : "TransferPassword", value : "", title : "Password*", type : "password", required : true},
             {id : "TransferRemoteDir", value : "", title : "Remote Dir*", type : "text", required : true}
         ],
         "Post Actions" : [
