@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DownloadsSessionManager {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadsSessionManager.class);
 
 	private final Map<Long, DownloadSession> sessionsPerUser;
@@ -62,20 +62,25 @@ public class DownloadsSessionManager {
 		filesPerUser.remove(userId);
 	}
 
-	public void setSessionProgress(Long userId, long mbsTransfered) {
-		DownloadSession session = sessionsPerUser.get(userId);
-		if (session != null) {
-			session.setTransferredInMbs(mbsTransfered);	
-		}
+	public DownloadSession getSession(Long userId) {
+		return sessionsPerUser.get(userId);
 	}
-	
+
+	public DownloadSession getSession(String filename) {
+		Long userId = searchUserFromFile(filename);
+		if (userId != null) {
+			return sessionsPerUser.get(userId);
+		}
+		return null;
+	}
+
 	public void addSession(long userId, String fileName, long totalSize) {
 		sessionsPerUser.put(userId, new DownloadSession(fileName, totalSize));
 		filesPerUser.put(userId, fileName);
 		LOGGER.debug("Session added: {} {}", userId, fileName);
 	}
-	
-	public Long searchUserFromFile(String filename) {
+
+	private Long searchUserFromFile(String filename) {
 		for (Map.Entry<Long, String> entry : filesPerUser.entrySet()) {
 			if (filename.contains(entry.getValue())) {
 				LOGGER.debug("Session found: {} {}", entry.getKey(), filename);

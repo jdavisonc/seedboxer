@@ -20,7 +20,10 @@
  ******************************************************************************/
 package net.seedboxer.core.logic;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import net.seedboxer.core.type.Download;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +36,7 @@ public class DownloadsSessionManagerTest {
 	private static final Long USER_ID = 1L;
 	private static final String FILENAME = "This.Is.A.Test-SEEDBOXER.avi";
 	private DownloadsSessionManager manager;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		manager = new DownloadsSessionManager();
@@ -43,12 +46,25 @@ public class DownloadsSessionManagerTest {
 	public void shouldAddSession() throws Exception {
 		manager.addSession(USER_ID, FILENAME, 1000);
 	}
-	
+
 	@Test
 	public void shouldFindSession() throws Exception {
 		manager.addSession(USER_ID, FILENAME, 1000);
-		Assert.assertEquals(USER_ID, manager.searchUserFromFile("/some/path/that/finish/with/"+FILENAME));
+		assertNotNull(manager.getSession("/some/path/that/finish/with/"+FILENAME));
 	}
-	
+
+	@Test
+	public void shouldGetSession() throws Exception {
+		manager.addSession(USER_ID, FILENAME, 1000);
+		assertNotNull(manager.getDownload(USER_ID));
+	}
+
+	@Test
+	public void shouldGetSessionWithValidData() throws Exception {
+		manager.addSession(USER_ID, FILENAME, 1000);
+		Download download = manager.getDownload(USER_ID);
+		assertEquals(FILENAME, download.getFileName());
+		assertEquals(1000, download.getSize());
+	}
 
 }
