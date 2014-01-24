@@ -21,6 +21,8 @@
 
 package net.seedboxer.core.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -58,6 +60,12 @@ public abstract class Content {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@Column(name="url")
+	private String url;
+	
+	@Column(name="external_id")
+	private String externalId;
 
 	@Transient
 	private MatchableItem matchableItem;
@@ -115,6 +123,22 @@ public abstract class Content {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 
 	@Override
 	public boolean equals(Object object){
@@ -132,9 +156,7 @@ public abstract class Content {
 
 	@Override
 	public int hashCode() {
-		int hash = 5;
-		hash = 43 * hash + (name != null ? name.hashCode() : 0);
-		return hash;
+		return Objects.hashCode(name);
 	}
 
 }

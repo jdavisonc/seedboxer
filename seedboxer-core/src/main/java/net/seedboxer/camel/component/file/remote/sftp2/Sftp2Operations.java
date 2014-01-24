@@ -56,11 +56,45 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
     private Sftp2Endpoint endpoint;
     private ChannelSftp channel;
     private Session session;
+    private SftpProgressMonitorRouter progressMonitor;
+
+    private class SftpProgressMonitorRouter implements SftpProgressMonitor {
+		
+    	private final TransferListener listener;
+    	private String source;
+    	
+    	public SftpProgressMonitorRouter(TransferListener listener) {
+			this.listener = listener;
+		}
+    	
+    	public void setSource(String source) {
+			this.source = source;
+		}
+    	
+		@Override
+		public void init(int opt, String src, String dest, long max) {
+			;
+		}
+		
+		@Override
+		public void end() {
+			;
+		}
+		
+		@Override
+		public boolean count(long count) {
+			if (listener != null) {
+				listener.bytesTransfered(source, count);
+			}
+			return true;
+		}
+	};
 
     /**
      * Extended user info which supports interactive keyboard mode, by entering the password.
      */
     public interface ExtendedUserInfo extends UserInfo, UIKeyboardInteractive {
+    	
     }
 
     @Override
@@ -113,6 +147,8 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
                     }
                     LOG.info("Connected to " + configuration.remoteServerInformation());
                 }
+                
+                progressMonitor = new SftpProgressMonitorRouter(endpoint.getConfiguration().getTransferListener());
 
                 // yes we could connect
                 connected = true;
@@ -681,7 +717,6 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
         return answer;
     }
 
-    @SuppressWarnings("deprecation")
 	private boolean doStoreFile(String name, String targetName, Exchange exchange) throws GenericFileOperationFailedException {
         LOG.trace("doStoreFile({})", targetName);
 
@@ -696,6 +731,8 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
                 throw new GenericFileOperationFailedException("File already exist: " + name + ". Cannot write new file.");
             }
         }
+        
+        progressMonitor.setSource(targetName);
 
         InputStream is = null;
         try {
@@ -720,42 +757,14 @@ public class Sftp2Operations implements RemoteFileOperations<ChannelSftp.LsEntry
             IOHelper.close(is, "store: " + name, LOG);
         }
     }
-
-    private class SftpProgressMonitorRouter implements SftpProgressMonitor {
-		
-    	private final TransferListener listener;
-    	private String src;
-    	
-    	public SftpProgressMonitorRouter() {
-			listener = endpoint.getConfiguration().getTransferListener();
-		}
-    	
-		@Override
-		public void init(int opt, String src, String dest, long max) {
-			this.src = dest;
-		}
-		
-		@Override
-		public void end() {
-			;
-		}
-		
-		@Override
-		public boolean count(long count) {
-			if (listener != null) {
-				listener.bytesTransfered(src, count);
-			}
-			return true;
-		}
-	};
     
 	private boolean doStoreFileFromIS(String name, String targetName,
 			InputStream is) throws SftpException {
 		 if (endpoint.getFileExist() == GenericFileExist.Append) {
-			channel.put(is, targetName, new SftpProgressMonitorRouter(), ChannelSftp.RESUME);
+			channel.put(is, targetName, progressMonitor, ChannelSftp.RESUME);
          } else {
              // override is default
-             channel.put(is, targetName, new SftpProgressMonitorRouter());
+             channel.put(is, targetName, progressMonitor);
          }
 		 
          // after storing file, we may set chmod on the file
