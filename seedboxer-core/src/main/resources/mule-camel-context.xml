@@ -79,6 +79,7 @@
 			<from uri="direct:processDownload" />
 			<to uri="bean:downloadReceiver"/>
 			<to uri="bean:downloadParser"/>
+			<to uri="bean:downloadHistory"/>
 			<to ref="uploadEndpoint" />
 		</route>
 		
@@ -98,7 +99,6 @@
 		<!-- Post Actions -->
 		<route>
 			<from uri="direct:postActionsEndpoint"/>
-			<to uri="bean:downloadHistory"/>
 			
 			<!-- SSH command sender -->
 			<filter>

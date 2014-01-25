@@ -55,6 +55,12 @@
 	<bean id="downloadRemover" name="mockdownloadRemover" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.DownloadRemover" />
 	</bean>
+	<bean id="downloadParser" name="mockdownloadParser" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.mule.processor.DownloadParser" />
+	</bean>
+	<bean id="downloadHistory" name="mockdownloadHistory" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="net.seedboxer.mule.processor.DownloadHistory" />
+	</bean>
 	<bean id="queuePooler" name="mockqueuePooler" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.QueuePooler" />
 	</bean>
