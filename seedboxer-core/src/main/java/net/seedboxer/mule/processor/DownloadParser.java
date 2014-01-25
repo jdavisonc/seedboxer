@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadRemover.java
+ * DownloadParser.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -21,9 +21,9 @@
 package net.seedboxer.mule.processor;
 
 import net.seedboxer.core.domain.Configuration;
-import net.seedboxer.core.domain.User;
-import net.seedboxer.core.logic.DownloadsQueueManager;
-import net.seedboxer.core.logic.DownloadsSessionManager;
+import net.seedboxer.core.domain.Content;
+import net.seedboxer.sources.parser.ParserManager;
+import net.seedboxer.sources.type.MatchableItem;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -31,28 +31,29 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
 @Component
-public class DownloadRemover implements Processor {
-
-	@Autowired
-	private DownloadsQueueManager queueManager;
+public class DownloadParser implements Processor {
 	
 	@Autowired
-	private DownloadsSessionManager sessionManager;
+	private ParserManager parserManager;
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		Long downloadId = msg.getHeader(Configuration.DOWNLOAD_ID, Long.class);
-		Long userId = msg.getHeader(Configuration.USER, User.class).getId();
+		String filename = msg.getHeader(Configuration.FILE_NAME, String.class);
 		
-		queueManager.remove(downloadId);
-		sessionManager.removeSession(userId);
+		MatchableItem item = getMachableItem(filename);
+		
+		Content matchedContent = parserManager.parseMatchableItem(item);
+		msg.setHeader(Configuration.CONTENT, matchedContent);
+	}
+
+	private MatchableItem getMachableItem(String filename) {
+		return new MatchableItem(filename);
 	}
 
 }

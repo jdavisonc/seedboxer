@@ -33,10 +33,15 @@ public class MatchableItem {
 	private URL url;
 	private String path;
 
+	public MatchableItem(String title) {
+		this.title = title;
+	}
+	
 	public MatchableItem(String title, String url) throws MalformedURLException{
 		this.title = title;
 		this.url = new URL(url);
 	}
+	
 	public String getTitle() {
 		return title;
 	}

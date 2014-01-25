@@ -32,13 +32,14 @@ import com.google.common.collect.ImmutableList.Builder;
 public class Configuration {
 
 	public static final String USER = "User";
-	public static final String USER_ID = "UserId";
 
 	public static final String DOWNLOAD_ID = "DownloadId";
 	public static final String DOWNLOAD_TOTAL_PIECES = "DownloadTotalPieces";
 
-	public static final String FILES = "Files";
-	public static final String FILES_NAME = "FilesName";
+	public static final String FILE = "File";
+	public static final String FILE_NAME = "FileName";
+	
+	public static final String CONTENT = "Content";
 
 	public static final String START_TIME = "Start";
 	public static final String END_TIME = "End";
@@ -73,10 +74,10 @@ public class Configuration {
 	
 	public static final List<String> values = new Builder<String>()
 			.add(USER)
-			.add(USER_ID)
 			.add(DOWNLOAD_ID)
-			.add(FILES)
-			.add(FILES_NAME)
+			.add(FILE)
+			.add(FILE_NAME)
+			.add(CONTENT)
 			.add(START_TIME)
 			.add(END_TIME)
 			.add(TRANSFER_USERNAME)

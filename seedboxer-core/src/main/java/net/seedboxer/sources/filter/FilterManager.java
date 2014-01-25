@@ -61,7 +61,7 @@ public class FilterManager {
 		Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
 		mappedContent = filterContentWithHistory(mappedContent);
 		if (!mappedContent.isEmpty()) {
-			updateHistory(mappedContent);
+			saveToHistory(mappedContent);
 		}
 		return mappedContent;
 	}
@@ -139,14 +139,16 @@ public class FilterManager {
 		return mappedContents;
 	}
 
-
-	private void updateHistory(Map<Content, List<User>> mappedContent){
-		for(Content content : mappedContent.keySet()){
-			content.setHistory(Boolean.TRUE);
-			for(User user : mappedContent.get(content)){
-				contentManager.saveContent(content, user);
+	public void saveToHistory(Map<Content, List<User>> mappedContent){
+		for(Map.Entry<Content, List<User>> entry : mappedContent.entrySet()){
+			for(User user : entry.getValue()){
+				saveToHistory(entry.getKey(), user);
 			}
-
 		}
+	}
+	
+	public void saveToHistory(Content content, User user) {
+		content.setHistory(Boolean.TRUE);
+		contentManager.saveContent(content, user);
 	}
 }

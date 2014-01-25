@@ -60,7 +60,7 @@ public class ParserManager {
 	public List<Content> parseMatchableItems(List<MatchableItem> items){
 		List<Content> parsedContentList = new ArrayList<Content>();
 		for(MatchableItem item : items){
-			Content parsedContent = parseItem(item);
+			Content parsedContent = parseMatchableItem(item);
 			if (parsedContent != null) {
 				parsedContentList.add(parsedContent);
 			}
@@ -68,7 +68,7 @@ public class ParserManager {
 		return parsedContentList;
 	}
 
-	private Content parseItem(MatchableItem item) {
+	public Content parseMatchableItem(MatchableItem item) {
 		Iterator<ContentParser> it = parsers.iterator();
 		Content parsedContent = null;
 		while (it.hasNext() && parsedContent == null) {
