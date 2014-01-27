@@ -87,5 +87,13 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	public void delete(Content content) {
 		getCurrentSession().delete(content);
 	}
+	
+	@Override
+	public List<Content> getHistoryContents(User user) {
+		Criteria criteria = getCurrentSession().createCriteria(Content.class);
+		criteria.add(Restrictions.eq("history", true));
+		criteria.add(Restrictions.eq("user", user));
+		return criteria.list();
+	}
 
 }

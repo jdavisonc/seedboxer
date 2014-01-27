@@ -276,12 +276,24 @@ seedboxerUiServices.service('alertService',function($rootScope, $timeout){
 seedboxerUiServices.service('userContentService',function($http,$q, userDataResource){
     var userContentService = {
 	listPath : 'webservices/user/content/list',
+	historyPath : 'webservices/user/content/history',
 	savePath: 'webservices/user/content/save',
 	deletePath: 'webservices/user/content/delete',
 	getContentList :  function(){
 	    var deferred = $q.defer();
 
 	    $http.get(userContentService.listPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
+	    	deferred.resolve(data.contents);
+	    }).error(function(){
+	    	deferred.reject("An error occured while fetching the configurations list.");
+	    });
+
+	    return deferred.promise;
+	},
+	getHistoryContents :  function(){
+	    var deferred = $q.defer();
+
+	    $http.get(userContentService.historyPath, {params : {apikey : userDataResource.getApiKey()}}).success(function(data){
 	    	deferred.resolve(data.contents);
 	    }).error(function(){
 	    	deferred.reject("An error occured while fetching the configurations list.");

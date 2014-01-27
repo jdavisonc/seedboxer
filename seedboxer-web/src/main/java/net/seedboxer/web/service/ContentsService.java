@@ -80,4 +80,17 @@ public class ContentsService {
 	private Content createUserContent(ContentInfo contentInfo) {
 		return (Content) mapper.map(contentInfo);
 	}
+
+	public List<ContentInfo> getUserHistory(User user) {
+		List<Content> history = contentManager.getHistory(user);
+		return Lists.transform(history, new Function<Content, ContentInfo>() {
+
+			@Override
+			@Nullable
+			public ContentInfo apply(@Nullable Content content) {
+				return createUserContentType(content);
+			}
+
+		});
+	}
 }

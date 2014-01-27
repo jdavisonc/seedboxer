@@ -82,4 +82,15 @@ public class ContentsAPI extends SeedBoxerAPI {
 		}
 	}
 	
+	@RequestMapping(value="history", method = RequestMethod.GET)
+	public @ResponseBody APIResponse historyContents() {
+		try {
+			List<ContentInfo> contents = contentsService.getUserHistory(getUser());
+			return new UserContentsAPIResponse(contents);
+		} catch (Exception e) {
+			LOGGER.error("Can not list user contents", e);
+			return APIResponse.createErrorResponse("Can not list user contents");
+		}
+	}
+	
 }

@@ -1,0 +1,33 @@
+<div ng-controller="HistoryCtrl">
+
+	<h2>History</h2>
+
+	<div class="span6 offset6">
+		<form class="navbar-search pull-right">
+			<input ng-model="query" type="text" class="search-query" placeholder="Search">
+		</form>
+	</div>
+	
+	<br/>
+	<br/>
+
+	<table id="contentTable" class="table table-bordered">
+		<thead>
+			<tr>
+			    <th style="width:35px">Type</th>
+				<th style="width:90%">Name</th>
+				<th>Quality</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="content in contents | filter:query">
+			    <td><img ng-src="img/{{content.type}}.png" width="25" heigth="25"></td>
+				<td>{{content.name}} - S{{content.season}}E{{content.episode}}</td>
+				<td>{{content.quality}}</td>
+				<th></th>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

@@ -56,9 +56,6 @@ public class SSHCommandSender implements Processor {
 
 	@Value("${ssh.timeToJoin}")
 	private int timeToJoin;
-
-	@Value("${ssh.variableNameInCmd}")
-	private String variableNameInCmd;
 	
 	private final freemarker.template.Configuration freemarkerConfiguration = new freemarker.template.Configuration();
 

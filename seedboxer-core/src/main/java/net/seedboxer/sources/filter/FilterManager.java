@@ -59,11 +59,7 @@ public class FilterManager {
 
 	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
 		Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
-		mappedContent = filterContentWithHistory(mappedContent);
-		if (!mappedContent.isEmpty()) {
-			saveToHistory(mappedContent);
-		}
-		return mappedContent;
+		return filterContentWithHistory(mappedContent);
 	}
 
 	/**
@@ -137,18 +133,5 @@ public class FilterManager {
 			mappedContents.remove(content);
 		}
 		return mappedContents;
-	}
-
-	public void saveToHistory(Map<Content, List<User>> mappedContent){
-		for(Map.Entry<Content, List<User>> entry : mappedContent.entrySet()){
-			for(User user : entry.getValue()){
-				saveToHistory(entry.getKey(), user);
-			}
-		}
-	}
-	
-	public void saveToHistory(Content content, User user) {
-		content.setHistory(Boolean.TRUE);
-		contentManager.saveContent(content, user);
 	}
 }

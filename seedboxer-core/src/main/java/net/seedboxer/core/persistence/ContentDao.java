@@ -50,4 +50,6 @@ public interface ContentDao {
 
 	void delete(Content content);
 
+	List<Content> getHistoryContents(User user);
+
 }

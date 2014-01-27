@@ -1,9 +1,7 @@
 Transfer to server (${.vars["TransferUrl"]}) fail.
 
-Files: 
-<#list .vars["Files"] as item>
-	* ${item}
-</#list>
+Files:
+	* ${.vars["FileName"]}
 
 The error was: 
 

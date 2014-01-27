@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadHistory.java
+ * DownloadHistoryTest.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -27,31 +27,45 @@ import net.seedboxer.core.logic.ContentManager;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Component
-public class DownloadHistory implements Processor {
+@RunWith(MockitoJUnitRunner.class)
+public class DownloadHistoryTest {
+
+	@InjectMocks
+	private final DownloadHistory downloadHistory = new DownloadHistory();
 	
+	@Mock
 	private ContentManager contentManager;
+
+	@Mock
+	private Exchange exchange;
 	
-	@Autowired
-	public void setContentManager(ContentManager contentManager) {
-		this.contentManager = contentManager;
-	}
+	@Mock
+	private Message message;
 
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Message msg = exchange.getIn();
+	@Mock
+	private Content content;
+
+	@Mock
+	private User user;
+
+	@Test
+	public void shouldSaveMsgContentInHIstoryWhenReceivesAMsg() throws Exception {
+		Mockito.when(exchange.getIn()).thenReturn(message);
+		Mockito.when(message.getHeader(Configuration.USER, User.class)).thenReturn(user);
+		Mockito.when(message.getHeader(Configuration.CONTENT, Content.class)).thenReturn(content);
 		
-		User user = msg.getHeader(Configuration.USER, User.class);
-		Content content = msg.getHeader(Configuration.CONTENT, Content.class);
-		contentManager.saveInHistory(content, user);
+		downloadHistory.process(exchange);
+		Mockito.verify(contentManager).saveInHistory(content, user);
 	}
-
 }

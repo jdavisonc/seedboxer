@@ -23,7 +23,6 @@ package net.seedboxer.mule.processor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +84,7 @@ public class DownloadReceiver implements Processor {
 		}
 		String fileName = toUpload.getName();
 
-		msg.setHeader(Configuration.FILE, Collections.singletonList(downloadPath));
+		msg.setHeader(Configuration.FILE, downloadPath);
 		msg.setHeader(Configuration.FILE_NAME, fileName);
 		msg.setHeader(Exchange.FILE_NAME, fileName);
 		msg.setBody(toUpload);
