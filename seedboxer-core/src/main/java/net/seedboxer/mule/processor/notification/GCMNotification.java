@@ -21,7 +21,6 @@
 package net.seedboxer.mule.processor.notification;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.logic.GCMController;
@@ -54,10 +53,9 @@ public class GCMNotification extends Notification {
 		sendMessage(msg, "FAILED");
 	}
 
-	@SuppressWarnings("unchecked")
 	private void sendMessage(Message msg, String success) {
 		String registrationId = (String) msg.getHeader(Configuration.NOTIFICATION_GCM_REGISTRATIONID);
-		String name = ((List<String>) msg.getHeader(Configuration.FILES_NAME)).get(0);
+		String name = msg.getHeader(Configuration.FILE_NAME, String.class);
 		try {
 			if (registrationId == null) {
 				LOGGER.error("GCM Notification failed, device not registered for the user");

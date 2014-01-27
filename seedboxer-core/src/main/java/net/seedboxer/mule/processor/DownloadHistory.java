@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentDao.java
+ * DownloadHistory.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,38 +18,40 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.mule.processor;
 
-package net.seedboxer.core.persistence;
-
-import java.util.List;
-
+import net.seedboxer.core.domain.Configuration;
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
+import net.seedboxer.core.logic.ContentManager;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-public interface ContentDao {
+@Component
+public class DownloadHistory implements Processor {
+	
+	private ContentManager contentManager;
+	
+	@Autowired
+	public void setContentManager(ContentManager contentManager) {
+		this.contentManager = contentManager;
+	}
 
-	void save(Content content);
-
-	/**
-	 * Returns all the content of a user that <b>is not history</b>
-	 * @param user
-	 * @return
-	 */
-	List<Content> getAllContents(User user);
-
-	<T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory);
-
-	<T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name, User user);
-
-	<T extends Content> List<T> getAllContentsWithName(String name, Class<? extends Content> contentType);
-
-	void delete(Content content);
-
-	List<Content> getHistoryContents(User user);
+	@Override
+	public void process(Exchange exchange) throws Exception {
+		Message msg = exchange.getIn();
+		
+		User user = msg.getHeader(Configuration.USER, User.class);
+		Content content = msg.getHeader(Configuration.CONTENT, Content.class);
+		contentManager.saveInHistory(content, user);
+	}
 
 }

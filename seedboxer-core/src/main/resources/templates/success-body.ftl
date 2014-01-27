@@ -1,9 +1,7 @@
 Transfer to server (${.vars["TransferUrl"]}) completed.
 
-Files: 
-<#list .vars["Files"] as item>
-	* ${item}
-</#list>
+Files:
+	* ${.vars["FileName"]}
 
 Start Date: ${.vars["Start"]?datetime}
 End Date: ${.vars["End"]?datetime}

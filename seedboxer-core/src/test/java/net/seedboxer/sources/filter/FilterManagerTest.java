@@ -22,23 +22,20 @@ package net.seedboxer.sources.filter;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.TvShow;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
 import net.seedboxer.core.type.Quality;
-import net.seedboxer.sources.filter.ContentFilter;
-import net.seedboxer.sources.filter.FilterManager;
-import net.seedboxer.sources.filter.TvShowFilter;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,36 +91,36 @@ public class FilterManagerTest {
 
 	@Test
 	public void shouldAddContentWhenUserNotHasInHistory() throws Exception {
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager).saveContent(parsedContent, user1);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertFalse(res.isEmpty());
 	}
 
 	@Test
 	public void shouldNotAddContentWhenFilterReturnsFalse() throws Exception {
 		when(contentFilter.filterIfPossible(any(Content.class), eq(parsedContent))).thenReturn(false);
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager, never()).saveContent(parsedContent, user1);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertTrue(res.isEmpty());
 	}
 
 	@Test
 	public void shouldNotAddContentWhenFilterIsNotPossible() throws Exception {
 		when(contentFilter.filterIfPossible(any(Content.class), eq(parsedContent))).thenReturn(null);
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager, never()).saveContent(parsedContent, user1);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertTrue(res.isEmpty());
 	}
 
 	@Test
 	public void shouldNotAddContentWhenUserAlreadyHasInHistory() throws Exception {
 		when(contentManager.getUsersWithContentInHistory(any(Content.class), any(List.class))).thenReturn(Collections.singletonList(user1));
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager, never()).saveContent(parsedContent, user1);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertTrue(res.isEmpty());
 	}
 
 	@Test
 	public void shouldNotAddContentWhenUsersDoesntHaveContentWithName() throws Exception {
 		when(contentManager.getAllContentOfTypeAndName(eq(CONTENT_NAME), eq(TvShow.class))).thenReturn(Collections.<Content> emptyList());
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager, never()).saveContent(parsedContent, user1);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertTrue(res.isEmpty());
 	}
 
 	@Test
@@ -133,9 +130,8 @@ public class FilterManagerTest {
 		list.add(content2);
 		when(contentManager.getAllContentOfTypeAndName(eq(CONTENT_NAME), eq(TvShow.class))).thenReturn(list);
 		when(contentManager.getUsersWithContentInHistory(eq(parsedContent), any(List.class))).thenReturn(Collections.singletonList(user1));
-		filterManager.filterContent(Collections.singletonList(parsedContent));
-		verify(contentManager, never()).saveContent(parsedContent, user1);
-		verify(contentManager).saveContent(parsedContent, user2);
+		Map<Content, List<User>> res = filterManager.filterContent(Collections.singletonList(parsedContent));
+		Assert.assertEquals(1, res.size());
 	}
 
 }

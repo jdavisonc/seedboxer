@@ -1,3 +1,4 @@
+package net.seedboxer.mule.processor;
 /*******************************************************************************
  * DownloadReceiver.java
  *
@@ -18,12 +19,10 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.mule.processor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +68,7 @@ public class DownloadReceiver implements Processor {
 		
 		Map<String, String> configs = usersController.getUserConfig(user.getId());
 		msg.setHeaders(new HashMap<String, Object>(configs));
-		msg.setHeader(Configuration.USER_ID, user.getId());
+		msg.setHeader(Configuration.USER, user);
 		msg.setHeader(Configuration.DOWNLOAD_ID, item.getId());
 		msg.setHeader(Configuration.START_TIME, new Date());
 		
@@ -85,8 +84,8 @@ public class DownloadReceiver implements Processor {
 		}
 		String fileName = toUpload.getName();
 
-		msg.setHeader(Configuration.FILES, Collections.singletonList(downloadPath));
-		msg.setHeader(Configuration.FILES_NAME, Collections.singletonList(fileName));
+		msg.setHeader(Configuration.FILE, downloadPath);
+		msg.setHeader(Configuration.FILE_NAME, fileName);
 		msg.setHeader(Exchange.FILE_NAME, fileName);
 		msg.setBody(toUpload);
 		

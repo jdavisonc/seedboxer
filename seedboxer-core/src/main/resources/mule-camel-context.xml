@@ -29,7 +29,7 @@
 	
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" errorHandlerRef="errorHandler">
 		
-		<jmxAgent id="agent" disabled="false"/>
+		<jmxAgent id="agent" disabled="true"/>
 
 		<errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:unexpectedError" />
 		
@@ -78,6 +78,8 @@
 		<route>
 			<from uri="direct:processDownload" />
 			<to uri="bean:downloadReceiver"/>
+			<to uri="bean:downloadParser"/>
+			<to uri="bean:downloadHistory"/>
 			<to ref="uploadEndpoint" />
 		</route>
 		

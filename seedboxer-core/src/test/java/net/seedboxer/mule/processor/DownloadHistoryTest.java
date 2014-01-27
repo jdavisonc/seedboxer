@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadRemover.java
+ * DownloadHistoryTest.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -21,38 +21,51 @@
 package net.seedboxer.mule.processor;
 
 import net.seedboxer.core.domain.Configuration;
+import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
-import net.seedboxer.core.logic.DownloadsQueueManager;
-import net.seedboxer.core.logic.DownloadsSessionManager;
+import net.seedboxer.core.logic.ContentManager;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author Jorge Davison (jdavisonc)
  *
  */
-@Component
-public class DownloadRemover implements Processor {
+@RunWith(MockitoJUnitRunner.class)
+public class DownloadHistoryTest {
 
-	@Autowired
-	private DownloadsQueueManager queueManager;
+	@InjectMocks
+	private final DownloadHistory downloadHistory = new DownloadHistory();
 	
-	@Autowired
-	private DownloadsSessionManager sessionManager;
+	@Mock
+	private ContentManager contentManager;
 
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Message msg = exchange.getIn();
-		Long downloadId = msg.getHeader(Configuration.DOWNLOAD_ID, Long.class);
-		Long userId = msg.getHeader(Configuration.USER, User.class).getId();
+	@Mock
+	private Exchange exchange;
+	
+	@Mock
+	private Message message;
+
+	@Mock
+	private Content content;
+
+	@Mock
+	private User user;
+
+	@Test
+	public void shouldSaveMsgContentInHIstoryWhenReceivesAMsg() throws Exception {
+		Mockito.when(exchange.getIn()).thenReturn(message);
+		Mockito.when(message.getHeader(Configuration.USER, User.class)).thenReturn(user);
+		Mockito.when(message.getHeader(Configuration.CONTENT, Content.class)).thenReturn(content);
 		
-		queueManager.remove(downloadId);
-		sessionManager.removeSession(userId);
+		downloadHistory.process(exchange);
+		Mockito.verify(contentManager).saveInHistory(content, user);
 	}
-
 }

@@ -20,10 +20,9 @@
  ******************************************************************************/
 package net.seedboxer.mule.processor.postaction;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.security.PublicKey;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +40,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
@@ -55,9 +56,8 @@ public class SSHCommandSender implements Processor {
 
 	@Value("${ssh.timeToJoin}")
 	private int timeToJoin;
-
-	@Value("${ssh.variableNameInCmd}")
-	private String variableNameInCmd;
+	
+	private final freemarker.template.Configuration freemarkerConfiguration = new freemarker.template.Configuration();
 
 	@Override
 	public void process(Exchange exchange) {
@@ -94,8 +94,8 @@ public class SSHCommandSender implements Processor {
 		});
 
 		try {
-			sshClient.setConnectTimeout((timeToJoin+5) * 1000); // Time to join plus 5 seconds
-			sshClient.setTimeout((timeToJoin+5) * 1000);
+			sshClient.setConnectTimeout((int)TimeUnit.SECONDS.toMillis(timeToJoin+5)); // Time to join plus 5 seconds
+			sshClient.setTimeout((int)TimeUnit.SECONDS.toMillis(timeToJoin+5));
 			sshClient.connect(url);
 			sshClient.authPassword(username, password);
 
@@ -114,19 +114,11 @@ public class SSHCommandSender implements Processor {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private String processTemplate(String command, Map<String, Object> templateVars)
 			throws IOException, TemplateException {
-
-		List<String> files = (List<String>) templateVars.get(Configuration.FILES);
-		StringBuffer sb = new StringBuffer();
-		for (String file : files) {
-			sb.append(new File(file).getName());
-			sb.append(",");
-		}
-		sb.deleteCharAt(sb.length()-1);
-
-		return command.replaceAll(variableNameInCmd, sb.toString());
+	
+		Template cmdTemplate = new Template("command", new StringReader(command), freemarkerConfiguration);
+		return FreeMarkerTemplateUtils.processTemplateIntoString(cmdTemplate, templateVars);		
 	}
 
 }

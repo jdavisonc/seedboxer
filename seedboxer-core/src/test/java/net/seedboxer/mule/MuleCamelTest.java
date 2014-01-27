@@ -143,6 +143,8 @@ public class MuleCamelTest extends CamelSpringTestSupport {
         getMockEndpoint("mock://bean:queuePooler").expectedBodiesReceived(EMPTY_MESSAGE);
         getMockEndpoint("mock://direct:processDownload").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:downloadReceiver").expectedBodiesReceived(download);
+        getMockEndpoint("mock://bean:downloadParser").expectedBodiesReceived(download);
+        getMockEndpoint("mock://bean:downloadHistory").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:sshCommandSender").expectedBodiesReceived(download);
         getMockEndpoint("mock://bean:emailNotification").expectedBodiesReceived(download);
         getMockEndpoint("mock://direct:email").expectedBodiesReceived(download);

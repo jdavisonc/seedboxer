@@ -139,6 +139,11 @@ public abstract class Content {
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
+	
+	@Transient
+	public String getType() {
+		return this.getClass().getSimpleName();
+	}
 
 	@Override
 	public boolean equals(Object object){

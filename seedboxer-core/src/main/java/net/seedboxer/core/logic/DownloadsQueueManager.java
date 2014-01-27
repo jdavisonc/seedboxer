@@ -86,8 +86,8 @@ public class DownloadsQueueManager {
 		queueDao.repush(downloadId);
 	}
 
-	public void push(User user, String download) {
-		queueDao.push(new DownloadQueueItem(user, download));
+	public void push(User user, String filepath) {
+		queueDao.push(new DownloadQueueItem(user, filepath));
 	}
 
 	public List<DownloadQueueItem> userQueue(User user) {

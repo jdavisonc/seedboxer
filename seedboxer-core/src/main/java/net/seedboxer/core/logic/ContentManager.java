@@ -80,6 +80,12 @@ public class ContentManager {
 		contentDao.save(content);
 	}
 
+	public void saveInHistory(Content content, User user) {
+		content.setHistory(Boolean.TRUE);
+		content.setUser(user);
+		contentDao.save(content);
+	}
+
 	public List<User> getUsersWithContentInHistory(Content content, List<User> users) {
 		List<User> usersWithContent = new ArrayList<User>();
 		for(User user : users){
@@ -100,6 +106,10 @@ public class ContentManager {
 	public void deleteContent(Content content, User user) {
 		content.setUser(user);
 		contentDao.delete(content);
+	}
+
+	public List<Content> getHistory(User user) {
+		return contentDao.getHistoryContents(user);
 	}
 
 }

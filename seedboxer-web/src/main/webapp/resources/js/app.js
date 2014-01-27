@@ -81,6 +81,15 @@ var seedboxerui = angular
 			    contents : userContentService.getContentList
 			}
 		}).
+		when('/history', {
+			controller : function($scope, contents){
+			    $scope.contents = contents;
+			},
+			templateUrl: 'ui/history.html',
+			resolve : {
+			    contents : userContentService.getHistoryContents
+			}
+		}).
 		otherwise({redirectTo: '/'});
 	    $route.reload();
 	});

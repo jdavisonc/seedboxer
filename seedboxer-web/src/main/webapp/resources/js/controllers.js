@@ -268,6 +268,19 @@ function HeaderCtrl($scope, userDataResource) {
 
 }
 
+function HistoryCtrl($scope, userContentService, alertService){
+
+	$scope.refreshHistory = function() {
+		userContentService.getHistoryContents().
+	    then(function(data){
+	    	$scope.contents = data;
+	    }),function(errorMsg){
+	    	alertService.showError("There was an error trying to fetch history");
+	    }
+	}
+
+}
+
 function ContentsCtrl($scope, userContentService, userDataResource, alertService){
     
     $scope.opts = {
