@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContentDao.java
+ * TraktServiceTest.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -18,34 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
+package net.seedboxer.sources.thirdparty.trakt;
 
-package net.seedboxer.core.persistence;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
-
-import net.seedboxer.core.domain.Content;
-import net.seedboxer.core.domain.ContentHistory;
-import net.seedboxer.core.domain.User;
-
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * @author Jorge Davison (jdavisonc)
  *
- * @author The-Sultan
  */
-public interface ContentDao {
-
-	void save(Content content);
+public class TraktServiceIT {
 	
-	void saveHistory(ContentHistory history);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TraktServiceIT.class);
 
-	List<Content> getAllContents(User user);
+	private static final String AUTH_KEY = "e2c47ad00b7ad043c455cb9a8978a9fb";
+	private TraktService traktService;
 
-	<T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name, User user);
+	@Before
+	public void setUp() throws Exception {
+		traktService = new TraktService(AUTH_KEY);
+	}
 
-	<T extends Content> List<T> getAllContentsWithName(String name, Class<? extends Content> contentType);
-
-	void delete(Content content);
-
-	List<ContentHistory> getHistoryContents(User user);
+	@Test
+	public void shouldConnectAndReturnResultWhenSearchForTVShow() throws Exception {
+		String url = traktService.searchTvShow("The Big Bang Theory");
+		LOGGER.error(url);
+		assertNotNull(url);
+	}
 
 }

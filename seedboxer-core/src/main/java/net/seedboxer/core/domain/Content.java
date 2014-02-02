@@ -25,13 +25,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,9 +38,9 @@ import net.seedboxer.sources.type.MatchableItem;
  * @author The-Sultan
  */
 @Entity
-@Table(name= "content")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Table(name="content")
 public abstract class Content {
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -53,13 +48,6 @@ public abstract class Content {
 
 	@Column(name="name")
 	private String name;
-
-	@Column(name="history")
-	private Boolean history = false;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private User user;
 	
 	@Column(name="url")
 	private String url;
@@ -98,30 +86,6 @@ public abstract class Content {
 
 	public void setMatchableItem(MatchableItem matchableItem) {
 		this.matchableItem = matchableItem;
-	}
-
-	public void setIsHistory(boolean history){
-		this.history = history;
-	}
-
-	public boolean isHistory(){
-		return history;
-	}
-
-	public Boolean getHistory() {
-		return history;
-	}
-
-	public void setHistory(Boolean history) {
-		this.history = history;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 	public String getUrl() {

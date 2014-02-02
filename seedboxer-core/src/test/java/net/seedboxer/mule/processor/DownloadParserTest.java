@@ -1,5 +1,5 @@
 /*******************************************************************************
- * DownloadParser.java
+ * DownloadParserTest.java
  *
  * Copyright (c) 2012 SeedBoxer Team.
  *
@@ -20,44 +20,50 @@
  ******************************************************************************/
 package net.seedboxer.mule.processor;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import net.seedboxer.core.domain.Configuration;
-import net.seedboxer.core.domain.Content;
 import net.seedboxer.sources.parser.ParserManager;
 import net.seedboxer.sources.type.MatchableItem;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * @author Jorge Davison (jdavisonc)
- *
- */
-@Component
-public class DownloadParser implements Processor {
+@RunWith(MockitoJUnitRunner.class)
+public class DownloadParserTest {
+
+	private static final String FILE_NAME = "FileName";
+
+	@InjectMocks
+	private final DownloadParser parser = new DownloadParser();
 	
-	@Autowired
+	@Mock
 	private ParserManager parserManager;
+
+	@Mock
+	private Exchange exchange;
+
+	@Mock
+	private Message msg;
 	
-	public void setParserManager(ParserManager parserManager) {
-		this.parserManager = parserManager;
+	@Before
+	public void setUp() throws Exception {
+		when(exchange.getIn()).thenReturn(msg);
+		when(msg.getHeader(Configuration.FILE_NAME, String.class)).thenReturn(FILE_NAME);
 	}
 
-	@Override
-	public void process(Exchange exchange) throws Exception {
-		Message msg = exchange.getIn();
-		String filename = msg.getHeader(Configuration.FILE_NAME, String.class);
+	@Test
+	public void shouldParserFileNames() throws Exception {
+		parser.process(exchange);
 		
-		MatchableItem item = getMachableItem(filename);
-		
-		Content matchedContent = parserManager.parseMatchableItem(item);
-		msg.setHeader(Configuration.CONTENT, matchedContent);
-	}
-
-	private MatchableItem getMachableItem(String filename) {
-		return new MatchableItem(filename);
+		verify(parserManager).parseMatchableItem(any(MatchableItem.class));
 	}
 
 }

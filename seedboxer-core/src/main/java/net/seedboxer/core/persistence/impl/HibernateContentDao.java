@@ -24,11 +24,12 @@ package net.seedboxer.core.persistence.impl;
 import java.util.List;
 
 import net.seedboxer.core.domain.Content;
+import net.seedboxer.core.domain.ContentHistory;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.persistence.ContentDao;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,30 +49,25 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	public void save(Content content){
 		getCurrentSession().save(content);
 	}
+	
+	@Override
+	public void saveHistory(ContentHistory history){
+		getCurrentSession().save(history);
+	}
 
 	@Override
 	public List<Content> getAllContents(User user) {
 		Criteria criteria = getCurrentSession().createCriteria(Content.class);
-		criteria.add(Restrictions.eq("history", false));
 		criteria.add(Restrictions.eq("user", user));
 		return criteria.list();
 	}
 
 	@Override
-	public <T extends Content> List<T> getContentHistory(Class<T> clazz, boolean isHistory){
-		Criteria criteria = getCurrentSession().createCriteria(clazz);
-		criteria.add(Restrictions.eq("history", isHistory));
-		return criteria.list();
-	}
-
-	@Override
-	public <T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name,
-			User user){
-		Criteria criteria = getCurrentSession().createCriteria(clazz);
-		Criterion rest1 = Restrictions.and(Restrictions.eq("name", name),Restrictions.eq("history",true));
-		rest1 = Restrictions.and(rest1,Restrictions.eq("user",user));
-		criteria.add(rest1);
-		return criteria.list();
+	public <T extends Content> List<T> getHistoryContentsFilteredByNameAndUser(Class<T> clazz, String name, User user){
+		Query query = getCurrentSession().createQuery("select c.* from content_history h, content c where h.content_id = c.id and h.user_id = :id and c.name = :name");
+		query.setString("name", name);
+		query.setLong("id", user.getId());
+		return query.list();
 	}
 
 	@Override
@@ -79,7 +75,6 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 			Class<? extends Content> clazz) {
 		Criteria criteria = getCurrentSession().createCriteria(clazz);
 		criteria.add(Restrictions.eq("name", name));
-		criteria.add(Restrictions.eq("history", false));
 		return criteria.list();
 	}
 
@@ -89,9 +84,8 @@ public class HibernateContentDao extends HibernateDao implements ContentDao {
 	}
 	
 	@Override
-	public List<Content> getHistoryContents(User user) {
-		Criteria criteria = getCurrentSession().createCriteria(Content.class);
-		criteria.add(Restrictions.eq("history", true));
+	public List<ContentHistory> getHistoryContents(User user) {
+		Criteria criteria = getCurrentSession().createCriteria(ContentHistory.class);
 		criteria.add(Restrictions.eq("user", user));
 		return criteria.list();
 	}

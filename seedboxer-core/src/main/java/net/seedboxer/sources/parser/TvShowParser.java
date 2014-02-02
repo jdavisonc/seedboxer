@@ -29,7 +29,6 @@ import net.seedboxer.core.type.Quality;
 
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author The-Sultan

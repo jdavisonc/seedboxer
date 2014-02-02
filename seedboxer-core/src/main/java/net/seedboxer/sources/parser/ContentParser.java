@@ -38,7 +38,6 @@ import net.seedboxer.sources.type.MatchableItem;
 
 public abstract class ContentParser<T extends Content> {
     
-    
     public T parse(MatchableItem item){
         T parsedContent = parse(item.getTitle());
         if(parsedContent != null)
