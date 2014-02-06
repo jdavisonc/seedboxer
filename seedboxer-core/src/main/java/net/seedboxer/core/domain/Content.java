@@ -21,7 +21,7 @@
 
 package net.seedboxer.core.domain;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
