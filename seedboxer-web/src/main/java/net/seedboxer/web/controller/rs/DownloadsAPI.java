@@ -26,6 +26,7 @@ import java.util.List;
 import net.seedboxer.core.type.FileValue;
 import net.seedboxer.web.service.DownloadsService;
 import net.seedboxer.web.type.api.APIResponse;
+import net.seedboxer.web.type.dto.FileValues;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public class DownloadsAPI extends SeedBoxerAPI {
 	}
 
 	@RequestMapping(value="update", method = RequestMethod.POST)
-	public @ResponseBody APIResponse update(@RequestBody List<FileValue> queueItems) {
+	public @ResponseBody APIResponse update(@RequestBody FileValues queueItems) {
 		try {
 			controller.updateQueue(getUser(), queueItems);
 			return APIResponse.createSuccessfulResponse();

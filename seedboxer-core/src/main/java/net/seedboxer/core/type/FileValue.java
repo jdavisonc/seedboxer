@@ -22,9 +22,6 @@ package net.seedboxer.core.type;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name="file")
 public class FileValue {
 
 	private String name;
@@ -56,7 +53,7 @@ public class FileValue {
 	public FileValue(String name, long queueId, int order) {
 		this.name = name;
 		this.queueId = queueId;
-                this.order = order;
+        this.order = order;
 	}
 
 	public String getName() {

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
@@ -32,6 +33,9 @@ import net.seedboxer.core.logic.ContentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 
 /**
@@ -46,6 +50,11 @@ public class FilterManager {
 	private ContentManager contentManager;
 
 	private List<ContentFilter> filters;
+	
+	private final Cache<Content, List<User>> cache = CacheBuilder.newBuilder()
+		       .maximumSize(500)
+		       .expireAfterWrite(10, TimeUnit.MINUTES)
+		       .build();
 
 	@Autowired
 	public void setFilters(List<ContentFilter> filters) {
@@ -59,7 +68,7 @@ public class FilterManager {
 
 	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
 		Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
-		return filterContentWithHistory(mappedContent);
+		return filterContentWithHistory(filterContentWithCache(mappedContent));
 	}
 
 	/**
@@ -134,4 +143,38 @@ public class FilterManager {
 		}
 		return mappedContents;
 	}
+	
+	/**
+	 * After having the content mapped to each user, this method filters the
+	 * users for each content using the user's cache (10 minutes by default to avoid dual downloads), if cache content is
+	 * equal to a matchedContent, then the user is removed.
+	 *
+	 * @param mappedContent
+	 * @return
+	 */
+	private Map<Content, List<User>> filterContentWithCache(Map<Content, List<User>> mappedContents){
+		List<Content> toRemove = new ArrayList<Content>();
+		for (Map.Entry<Content, List<User>> entries : mappedContents.entrySet()) {
+
+			Content content = entries.getKey();
+			List<User> users = entries.getValue();
+			List<User> usersThatAlreadyHaveThisContent = cache.getIfPresent(content);
+
+			if (usersThatAlreadyHaveThisContent != null) {
+				if (users.size() == usersThatAlreadyHaveThisContent.size()) {
+					toRemove.add(content);
+				} else {
+					users.removeAll(usersThatAlreadyHaveThisContent);
+				}
+			} else {
+				cache.put(content, users);
+			}
+		}
+
+		for (Content content : toRemove) {
+			mappedContents.remove(content);
+		}
+		return mappedContents;
+	}
+	
 }
