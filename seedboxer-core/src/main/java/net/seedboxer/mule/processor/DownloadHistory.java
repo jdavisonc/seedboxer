@@ -28,6 +28,8 @@ import net.seedboxer.core.logic.ContentManager;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,9 +39,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DownloadHistory implements Processor {
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadHistory.class);
+
 	private ContentManager contentManager;
-	
+
 	@Autowired
 	public void setContentManager(ContentManager contentManager) {
 		this.contentManager = contentManager;
@@ -48,10 +52,14 @@ public class DownloadHistory implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message msg = exchange.getIn();
-		
+
 		User user = msg.getHeader(Configuration.USER, User.class);
 		Content content = msg.getHeader(Configuration.CONTENT, Content.class);
-		contentManager.saveInHistory(content, user);
+		if (content != null) {
+			contentManager.saveInHistory(content, user);
+		} else {
+			LOGGER.error("Is not a content or can't be parsed. File: {}", msg.getHeader(Configuration.FILE_NAME, String.class));
+		}
 	}
 
 }
