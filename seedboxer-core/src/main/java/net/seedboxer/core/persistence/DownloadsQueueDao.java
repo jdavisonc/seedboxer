@@ -34,10 +34,10 @@ public interface DownloadsQueueDao {
 	void push(DownloadQueueItem item);
 
 	void repush(long downloadId);
+	
+	boolean hasInProgress(long userId);
 
-	DownloadQueueItem head(long userId);
-
-	void setInProgress(Long downloadId);
+	DownloadQueueItem setNextInProgress(long userId);
 
 	void remove(long downloadId);
 

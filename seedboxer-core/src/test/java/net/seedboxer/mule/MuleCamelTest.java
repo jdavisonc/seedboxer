@@ -22,7 +22,6 @@ package net.seedboxer.mule;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 
@@ -31,7 +30,6 @@ import net.seedboxer.core.type.Download;
 import net.seedboxer.mule.processor.DownloadPusher;
 import net.seedboxer.mule.processor.DownloadReceiver;
 import net.seedboxer.mule.processor.DownloadRemover;
-import net.seedboxer.mule.processor.FileReceiver;
 import net.seedboxer.mule.processor.QueuePooler;
 import net.seedboxer.mule.processor.notification.EmailNotification;
 import net.seedboxer.mule.processor.notification.GCMNotification;
@@ -64,7 +62,6 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 	private static final String POOLING_ENDPOINT = "direct:pooling";
 	private static final Object EMPTY_MESSAGE = "";
 
-	private FileReceiver fileReceiver;
 	private QueuePooler queuePooler;
 	private DownloadReceiver downloadReceiver;
 	private DownloadPusher downloadPusher;
@@ -89,7 +86,6 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 		
 		MockitoAnnotations.initMocks(this);
 		
-		fileReceiver = applicationContext.getBean(FileReceiver.class);
 		queuePooler = applicationContext.getBean(QueuePooler.class);
 		downloadReceiver = applicationContext.getBean(DownloadReceiver.class);
 		downloadPusher = applicationContext.getBean(DownloadPusher.class);
@@ -100,17 +96,6 @@ public class MuleCamelTest extends CamelSpringTestSupport {
 		transferRouter = applicationContext.getBean(TransferRouter.class);
 		
 		Mockito.when(msg.getBody()).thenReturn("Hello World");
-	}
-
-    @Test
-    public void shouldPushDownloadWhenReceiveFile() throws Exception {
-        getMockEndpoint("mock://bean:fileReceiver").expectedBodiesReceived(FILE);
-
-        template.sendBody(WATCHDOGFILE_ENDPOINT, FILE);
-
-        assertMockEndpointsSatisfied();
-
-		verify(fileReceiver).process(any(Exchange.class));
 	}
 
     @Test

@@ -60,20 +60,32 @@ public class HibernateDownloadsQueueDao extends HibernateDao implements Download
 	}
 
 	@Override
-	public DownloadQueueItem head(long userId) {
+	public boolean hasInProgress(long userId) {
+		Query query = getCurrentSession().createQuery("select count(*) from DownloadQueueItem d " +
+				"where d.user.id = :userId and d.inProgress = true");
+
+		query.setParameter("userId", userId);
+		Long result = (Long)query.uniqueResult();
+		return result != null && result != 0;
+	}
+
+	@Override
+	public DownloadQueueItem setNextInProgress(long userId) {
 		Query query = getCurrentSession().createQuery("from DownloadQueueItem d " +
 				"where d.user.id = :userId order by d.queueOrder");
 
 		query.setParameter("userId", userId);
 		query.setMaxResults(1);
-		return (DownloadQueueItem) query.uniqueResult();
-	}
-
-	@Override
-	public void setInProgress(Long downloadId) {
-		Query query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = true where id = :id");
-		query.setParameter("id", downloadId);
-		query.executeUpdate();
+		DownloadQueueItem item = (DownloadQueueItem) query.uniqueResult();
+		
+		if (item != null && !item.isInProgress()) {
+			query = getCurrentSession().createQuery("update DownloadQueueItem set inProgress = true where id = :id");
+			query.setParameter("id", item.getId());
+			query.executeUpdate();
+			
+			return item;
+		} 
+		return null;
 	}
 
 	@Override

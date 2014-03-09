@@ -43,9 +43,6 @@
 	</bean>
 	
 	<!-- Defines Mocks -->
-	<bean id="fileReceiver" name="mockfileReceiver" class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="net.seedboxer.mule.processor.FileReceiver" />
-	</bean>
 	<bean id="downloadPusher" name="mockdownloadPusher" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="net.seedboxer.mule.processor.DownloadPusher" />
 	</bean>

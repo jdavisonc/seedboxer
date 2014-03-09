@@ -56,11 +56,11 @@ public class DownloadsQueueManager {
 			List<DownloadQueueItem> newInQueue = new ArrayList<DownloadQueueItem>();
 			List<User> activeUsers = usersDao.getUsersByStatus(Status.STARTED);
 			for (User user : activeUsers) {
-				DownloadQueueItem inQueue = queueDao.head(user.getId());
-
-				if (inQueue!= null && !inQueue.isInProgress()) {
-					queueDao.setInProgress(inQueue.getId());
-					newInQueue.add(inQueue);
+				if ( !queueDao.hasInProgress(user.getId()) ) {
+					DownloadQueueItem inProgress = queueDao.setNextInProgress(user.getId());
+					if (inProgress!= null) {
+						newInQueue.add(inProgress);
+					}
 				}
 			}
 			return newInQueue;

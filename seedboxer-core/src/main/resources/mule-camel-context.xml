@@ -37,8 +37,6 @@
     		<redeliveryPolicy maximumRedeliveries="${ftp.retries}" redeliveryDelay="${ftp.retriesDelay}" asyncDelayedRedelivery="false"/>
 		</errorHandler>
 		
-		<endpoint id="watchDogFileEndpoint" uri="${mule.watchDogFileEndpoint.uri}"/>
-		
 		<endpoint id="uploadEndpoint" uri="${mule.uploadEndpoint.uri}"/>
 		
 		<endpoint id="emailEndpoint" uri="${mule.emailEndpoint.uri}"/>
@@ -54,12 +52,6 @@
 			</handled>
         	<to uri="bean:downloadPusher"/>
 	    </onException>
-		
-	    <!-- Get download from file and push to the queue -->
-		<route>
-			<from uri="watchDogFileEndpoint" />
-			<to uri="bean:fileReceiver"/>
-		</route>
 
 		<!-- Pooling queue for get new downloads -->
 		<route>

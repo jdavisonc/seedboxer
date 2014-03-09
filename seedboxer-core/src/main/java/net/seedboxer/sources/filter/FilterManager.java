@@ -27,11 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.Cache;
@@ -51,10 +54,10 @@ public class FilterManager {
 
 	private List<ContentFilter> filters;
 	
-	private final Cache<Content, List<User>> cache = CacheBuilder.newBuilder()
-		       .maximumSize(500)
-		       .expireAfterWrite(10, TimeUnit.MINUTES)
-		       .build();
+	private Cache<Content, List<User>> cache;
+	
+	@Value("${filter.cache.timeToLive}")
+	private int cacheTimeToLive = 10;
 
 	@Autowired
 	public void setFilters(List<ContentFilter> filters) {
@@ -64,6 +67,18 @@ public class FilterManager {
 	@Autowired
 	public void setContentManager(ContentManager contentManager) {
 		this.contentManager = contentManager;
+	}
+	
+	public void setCacheTimeToLive(int cacheTimeToLive) {
+		this.cacheTimeToLive = cacheTimeToLive;
+	}
+	
+	@PostConstruct
+	public void init() {
+		cache = CacheBuilder.newBuilder()
+			       .maximumSize(500)
+			       .expireAfterWrite(cacheTimeToLive, TimeUnit.MINUTES)
+			       .build();
 	}
 
 	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){

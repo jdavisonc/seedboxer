@@ -71,6 +71,7 @@ public class FilterManagerTest {
 	@Before
 	public void setUp() throws Exception {
 		filterManager = new FilterManager();
+		filterManager.init();
 		List<ContentFilter> f = Collections.singletonList((ContentFilter)contentFilter);
 		filterManager.setFilters(f);
 
