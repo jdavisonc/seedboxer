@@ -2,3 +2,9 @@ language: java
 branches:
   except:
     - travis
+env:
+  global:
+    - secure: "EjZmVBeVmIUEz5KFx9RezlrE/e+YF3EhGGelDmQlgeVzzXSDmK5ITX/YmXCBI9NOdqO6JVwDfTAi1od+1KqOGPk79mHZvAxNCL7tKLkCQN/KNA698Ov+0Md7EUbqqpomSQimGhlPaP0g2sO630khZC4rleS5rFs42eJm0HoJTYc="
+    - secure: "MEMyFLOWDp4ZwlsnwPp1vuyy6H+DE/OeWSDaKt02lVuFcntCqCjSrgqrFTRr885eVeBsLqQtgXbpyJKH+6RIlASetrFfuzvY3OyQ/dJaoP7U20amGN3jUobdAMnJUP4CKkUVc12KgVmS5lg6xY2VfP56vIjjVSTJiG8o3+QDnYc="
+before_install: "git clone -b travis `git config --get remote.origin.url` target/travis"
+script: "mvn deploy --settings target/travis/settings.xml"
