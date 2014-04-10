@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/seedboxer/seedboxer.png?branch=master)](https://travis-ci.org/seedboxer/seedboxer)
+
 ## What is SeedBoxer?
 
 Check our page [http://seedboxer.net](http://seedboxer.net) or the [Wiki](https://github.com/seedboxer/seedboxer/wiki).
@@ -7,7 +9,6 @@ Check our page [http://seedboxer.net](http://seedboxer.net) or the [Wiki](https:
 * [Page](http://seedboxer.net)
 * [Documentation](https://github.com/seedboxer/seedboxer/wiki)
 * [Changelog](https://github.com/seedboxer/seedboxer/wiki/Changelog)
-* Continuous Integration: [![Build Status](https://seedboxer.ci.cloudbees.com/job/Seedboxer/badge/icon)](https://seedboxer.ci.cloudbees.com/job/Seedboxer/)
 
 ## Authors and Contributors
 SeedBoxer is the work of:
