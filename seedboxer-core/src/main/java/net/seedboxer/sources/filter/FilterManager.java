@@ -21,28 +21,25 @@
 
 package net.seedboxer.sources.filter;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.PostConstruct;
-
 import net.seedboxer.core.domain.Content;
 import net.seedboxer.core.domain.User;
 import net.seedboxer.core.logic.ContentManager;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
 
 /**
- *
  * @author The-Sultan
  * @author Jorge Davison (jdavisonc)
  */
@@ -50,146 +47,141 @@ import com.google.common.cache.CacheBuilder;
 @SuppressWarnings("rawtypes")
 public class FilterManager {
 
-	private ContentManager contentManager;
+  private static final Logger LOGGER = LoggerFactory.getLogger(FilterManager.class);
 
-	private List<ContentFilter> filters;
-	
-	private Cache<Content, List<User>> cache;
-	
-	@Value("${filter.cache.timeToLive}")
-	private int cacheTimeToLive = 10;
+  private ContentManager contentManager;
 
-	@Autowired
-	public void setFilters(List<ContentFilter> filters) {
-		this.filters = filters;
-	}
+  private List<ContentFilter> filters;
 
-	@Autowired
-	public void setContentManager(ContentManager contentManager) {
-		this.contentManager = contentManager;
-	}
-	
-	public void setCacheTimeToLive(int cacheTimeToLive) {
-		this.cacheTimeToLive = cacheTimeToLive;
-	}
-	
-	@PostConstruct
-	public void init() {
-		cache = CacheBuilder.newBuilder()
-			       .maximumSize(500)
-			       .expireAfterWrite(cacheTimeToLive, TimeUnit.MINUTES)
-			       .build();
-	}
+  private Cache<Content, List<User>> cache;
 
-	public Map<Content,List<User>> filterContent(List<Content> parsedContentList){
-		Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
-		return filterContentWithHistory(filterContentWithCache(mappedContent));
-	}
+  @Value("${filter.cache.timeToLive}")
+  private int cacheTimeToLive = 10;
 
-	/**
-	 * Maps the newly parsed content with the users, using the configured
-	 * content for each user on the Database.
-	 *
-	 * @param allUsersContents
-	 * @param parsedContentList
-	 * @return
-	 */
-	private Map<Content,List<User>> mapContentWithUsers(List<Content> parsedContentList){
-		Map<Content, List<User>> mappedContent = new HashMap<Content, List<User>>();
-		for(Content parsedContent : parsedContentList){
-			if(mappedContent.containsKey(parsedContent)) {
-				continue;
-			}
+  @Autowired
+  public void setFilters(List<ContentFilter> filters) {
+    this.filters = filters;
+  }
 
-			List<User> usersWantingThisContent = findUsersWantingThisContent(parsedContent);
+  @Autowired
+  public void setContentManager(ContentManager contentManager) {
+    this.contentManager = contentManager;
+  }
 
-			if(!usersWantingThisContent.isEmpty()){
-				mappedContent.put(parsedContent, usersWantingThisContent);
-			}
-		}
-		return mappedContent;
-	}
+  public void setCacheTimeToLive(int cacheTimeToLive) {
+    this.cacheTimeToLive = cacheTimeToLive;
+  }
 
-	private List<User> findUsersWantingThisContent(Content parsedContent) {
-		List<User> usersWantingThisContent = new ArrayList<User>();
+  @PostConstruct
+  public void init() {
+    cache = CacheBuilder.newBuilder().maximumSize(500)
+        .expireAfterWrite(cacheTimeToLive, TimeUnit.MINUTES).build();
+  }
 
-		for(ContentFilter filter : filters){
-			for(Content content : getContentWithName(parsedContent.getName(), filter)){
+  public synchronized Map<Content, List<User>> filterContent(List<Content> parsedContentList) {
+    Map<Content, List<User>> mappedContent = mapContentWithUsers(parsedContentList);
+    return filterContentWithHistory(filterContentWithCache(mappedContent));
+  }
 
-				Boolean wantedContent = filter.filterIfPossible(content, parsedContent);
-				if(wantedContent != null && wantedContent){
-					usersWantingThisContent.add(content.getUser());
-				}
-			}
-		}
-		return usersWantingThisContent;
-	}
+  /**
+   * Maps the newly parsed content with the users, using the configured content for each user on the
+   * Database.
+   */
+  private Map<Content, List<User>> mapContentWithUsers(List<Content> parsedContentList) {
+    Map<Content, List<User>> mappedContent = new HashMap<Content, List<User>>();
+    for (Content parsedContent : parsedContentList) {
+      if (mappedContent.containsKey(parsedContent)) {
+        continue;
+      }
 
-	private List<Content> getContentWithName(String name, ContentFilter<?> filter) {
-		return contentManager.getAllContentOfTypeAndName(name, filter.getType());
-	}
+      List<User> usersWantingThisContent = findUsersWantingThisContent(parsedContent);
 
-	/**
-	 * After having the content mapped to each user, this method filters the
-	 * users for each content using the user's history, if history content is
-	 * equal to a matchedContent, then the user is removed.
-	 *
-	 * @param mappedContent
-	 * @return
-	 */
-	private Map<Content, List<User>> filterContentWithHistory(Map<Content, List<User>> mappedContents){
-		List<Content> toRemove = new ArrayList<Content>();
+      if (!usersWantingThisContent.isEmpty()) {
+        mappedContent.put(parsedContent, usersWantingThisContent);
+      }
+    }
+    return mappedContent;
+  }
 
-		for (Map.Entry<Content, List<User>> entries : mappedContents.entrySet()) {
+  private List<User> findUsersWantingThisContent(Content parsedContent) {
+    List<User> usersWantingThisContent = new ArrayList<User>();
 
-			Content content = entries.getKey();
-			List<User> users = entries.getValue();
-			List<User> usersThatAlreadyHaveThisContent = contentManager.getUsersWithContentInHistory(content, users);
+    for (ContentFilter filter : filters) {
+      for (Content content : getContentWithName(parsedContent.getName(), filter)) {
 
-			if (users.size() == usersThatAlreadyHaveThisContent.size()) {
-				toRemove.add(content);
-			} else {
-				users.removeAll(usersThatAlreadyHaveThisContent);
-			}
-		}
+        Boolean wantedContent = filter.filterIfPossible(content, parsedContent);
+        if (wantedContent != null && wantedContent) {
+          usersWantingThisContent.add(content.getUser());
+        }
+      }
+    }
+    return usersWantingThisContent;
+  }
 
-		for (Content content : toRemove) {
-			mappedContents.remove(content);
-		}
-		return mappedContents;
-	}
-	
-	/**
-	 * After having the content mapped to each user, this method filters the
-	 * users for each content using the user's cache (10 minutes by default to avoid dual downloads), if cache content is
-	 * equal to a matchedContent, then the user is removed.
-	 *
-	 * @param mappedContent
-	 * @return
-	 */
-	private Map<Content, List<User>> filterContentWithCache(Map<Content, List<User>> mappedContents){
-		List<Content> toRemove = new ArrayList<Content>();
-		for (Map.Entry<Content, List<User>> entries : mappedContents.entrySet()) {
+  private List<Content> getContentWithName(String name, ContentFilter<?> filter) {
+    return contentManager.getAllContentOfTypeAndName(name, filter.getType());
+  }
 
-			Content content = entries.getKey();
-			List<User> users = entries.getValue();
-			List<User> usersThatAlreadyHaveThisContent = cache.getIfPresent(content);
+  /**
+   * After having the content mapped to each user, this method filters the users for each content
+   * using the user's history, if history content is equal to a matchedContent, then the user is
+   * removed.
+   */
+  private Map<Content, List<User>> filterContentWithHistory(
+      Map<Content, List<User>> mappedContents) {
+    List<Content> toRemove = new ArrayList<Content>();
 
-			if (usersThatAlreadyHaveThisContent != null) {
-				if (users.size() == usersThatAlreadyHaveThisContent.size()) {
-					toRemove.add(content);
-				} else {
-					users.removeAll(usersThatAlreadyHaveThisContent);
-				}
-			} else {
-				cache.put(content, users);
-			}
-		}
+    for (Map.Entry<Content, List<User>> entries : mappedContents.entrySet()) {
 
-		for (Content content : toRemove) {
-			mappedContents.remove(content);
-		}
-		return mappedContents;
-	}
-	
+      Content content = entries.getKey();
+      List<User> users = entries.getValue();
+      List<User> usersThatAlreadyHaveThisContent = contentManager
+          .getUsersWithContentInHistory(content, users);
+
+      if (users.size() == usersThatAlreadyHaveThisContent.size()) {
+        toRemove.add(content);
+      } else {
+        users.removeAll(usersThatAlreadyHaveThisContent);
+      }
+    }
+
+    for (Content content : toRemove) {
+      mappedContents.remove(content);
+    }
+    return mappedContents;
+  }
+
+  /**
+   * After having the content mapped to each user, this method filters the users for each content
+   * using the user's cache (10 minutes by default to avoid dual downloads), if cache content is
+   * equal to a matchedContent, then the user is removed.
+   */
+  private Map<Content, List<User>> filterContentWithCache(Map<Content, List<User>> mappedContents) {
+    LOGGER.debug("Before filter with cache {}", mappedContents);
+
+    List<Content> toRemove = new ArrayList<Content>();
+    for (Map.Entry<Content, List<User>> entries : mappedContents.entrySet()) {
+
+      Content content = entries.getKey();
+      List<User> users = entries.getValue();
+      List<User> usersThatAlreadyHaveThisContent = cache.getIfPresent(content);
+
+      if (usersThatAlreadyHaveThisContent != null) {
+        if (users.size() == usersThatAlreadyHaveThisContent.size()) {
+          toRemove.add(content);
+        } else {
+          users.removeAll(usersThatAlreadyHaveThisContent);
+        }
+      } else {
+        cache.put(content, users);
+      }
+    }
+
+    for (Content content : toRemove) {
+      mappedContents.remove(content);
+    }
+    LOGGER.debug("After filter with cache {}", mappedContents);
+    return mappedContents;
+  }
+
 }
