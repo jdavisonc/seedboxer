@@ -75,7 +75,7 @@ public class Movie extends Content {
 
 	@Override
 	public String toString(){
-		return this.getName()+ "|"+ getYear() + "|" + this.getQuality();
+		return this.getName()+ "|"+ getYear() + "|" + quality;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class Movie extends Content {
 			if(object.getClass() == this.getClass()){
 				Movie movie = (Movie) object;
 				return year.equals(movie.getYear())
-    				&& this.getQuality().equals(movie.getQuality());
+    				&& quality.equals(movie.getQuality());
 
 			}
 		}

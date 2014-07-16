@@ -87,7 +87,7 @@ public class TvShow extends Content {
 
 	@Override
 	public String toString(){
-		return this.getName()+ "|S"+ season + "|E" + episode + "|" + this.getQuality();
+		return this.getName()+ "|S"+ season + "|E" + episode + "|" + quality;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class TvShow extends Content {
 				TvShow tvShow = (TvShow) object;
 				return season == tvShow.getSeason()
 						&& episode == tvShow.getEpisode()
-						&& this.getQuality() == tvShow.getQuality();
+						&& quality.equals(tvShow.getQuality());
 			}
 		}
 		return false;
