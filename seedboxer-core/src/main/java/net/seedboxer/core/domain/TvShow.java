@@ -21,97 +21,105 @@
 
 package net.seedboxer.core.domain;
 
+import com.google.common.base.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
 import net.seedboxer.core.type.Quality;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
 /**
- *
  * @author The-Sultan
  */
 @Entity
-@Table(name= "tv_show")
-@PrimaryKeyJoinColumn(name="content_id")
+@Table(name = "tv_show")
+@PrimaryKeyJoinColumn(name = "content_id")
 @Component
 @Scope("prototype")
 public class TvShow extends Content {
 
-	@Column(name="quality")
-	private String quality;
+  @Column(name = "quality")
+  private String quality;
 
-	@Column(name="season")
-	private Integer season;
+  @Column(name = "season")
+  private Integer season;
 
-	@Column(name="episode")
-	private Integer episode;
+  @Column(name = "episode")
+  private Integer episode;
 
-	public TvShow() { }
+  public TvShow() {
+  }
 
-	public TvShow(String name, Integer season, Integer episode, Quality quality){
-		super(name);
-		this.quality = quality.name();
-		this.season = season;
-		this.episode = episode;
-	}
+  public TvShow(String name, Integer season, Integer episode, Quality quality) {
+    super(name);
+    this.quality = quality.name();
+    this.season = season;
+    this.episode = episode;
+  }
 
-	public Integer getEpisode() {
-		return episode;
-	}
+  public Integer getEpisode() {
+    return episode;
+  }
 
-	public void setEpisode(Integer episode) {
-		this.episode = episode;
-	}
+  public void setEpisode(Integer episode) {
+    this.episode = episode;
+  }
 
-	public Quality getQuality() {
-		return Quality.valueOf(quality);
-	}
+  public Quality getQuality() {
+    return Quality.valueOf(quality);
+  }
 
-	public void setQuality(Quality quality) {
-		this.quality = quality.name();
-	}
+  public void setQuality(Quality quality) {
+    this.quality = quality.name();
+  }
 
-	public Integer getSeason() {
-		return season;
-	}
+  public Integer getSeason() {
+    return season;
+  }
 
-	public void setSeason(Integer season) {
-		this.season = season;
-	}
+  public void setSeason(Integer season) {
+    this.season = season;
+  }
 
-	@Override
-	public String toString(){
-		return this.getName()+ "|S"+ season + "|E" + episode + "|" + quality;
-	}
+  @Override
+  public String toString() {
+    return getName() + "|S" + season + "|E" + episode + "|" + quality;
+  }
 
-	@Override
-	public boolean equals(Object object){
-		boolean superEquals = super.equals(object);
-		if(superEquals){
-			if(object.getClass() == this.getClass()){
-				TvShow tvShow = (TvShow) object;
-				return season == tvShow.getSeason()
-						&& episode == tvShow.getEpisode()
-						&& quality.equals(tvShow.getQuality());
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = super.hashCode();
-		hash = 71 * hash + (quality != null ? quality.hashCode() : 0);
-		hash = 71 * hash + (season != null ? season.hashCode() : 0);
-		hash = 71 * hash + (episode != null ? episode.hashCode() : 0);
-		return hash;
-	}
+    TvShow tvShow = (TvShow) o;
+
+    if (episode != null ? !episode.equals(tvShow.episode) : tvShow.episode != null) {
+      return false;
+    }
+    if (!quality.equals(tvShow.quality)) {
+      return false;
+    }
+    if (season != null ? !season.equals(tvShow.season) : tvShow.season != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(quality, season, episode, super.hashCode());
+  }
 
 
 }

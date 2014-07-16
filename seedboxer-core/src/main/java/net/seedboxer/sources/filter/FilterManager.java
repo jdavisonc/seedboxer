@@ -23,8 +23,8 @@ package net.seedboxer.sources.filter;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Maps;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -88,7 +88,7 @@ public class FilterManager {
    * Database.
    */
   private Map<Content, List<User>> mapContentWithUsers(List<Content> parsedContentList) {
-    Map<Content, List<User>> mappedContent = new HashMap<Content, List<User>>();
+    Map<Content, List<User>> mappedContent = Maps.newHashMap();
     for (Content parsedContent : parsedContentList) {
       if (mappedContent.containsKey(parsedContent)) {
         continue;
