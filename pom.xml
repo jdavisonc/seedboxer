@@ -99,7 +99,7 @@
 		<spring.version>3.1.2.RELEASE</spring.version>
 		
 		<jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
-		<logback.version>1.0.6</logback.version>
+		<logback.version>1.2.0</logback.version>
 		
 		<guava.version>12.0</guava.version>
 		<bencode.version>1.0</bencode.version>
