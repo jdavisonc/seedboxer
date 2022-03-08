@@ -50,7 +50,7 @@
 	</developers>
 	
 	<properties>
-		<liquibase.version>2.0.5</liquibase.version>
+		<liquibase.version>4.8.0</liquibase.version>
 		<camel.version>2.12.0</camel.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<sqlite.version>3.7.2</sqlite.version>
